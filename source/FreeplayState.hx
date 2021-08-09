@@ -1,5 +1,6 @@
 package;
 
+import flixel.FlxState;
 #if desktop
 import Discord.DiscordClient;
 #end
@@ -35,21 +36,6 @@ class FreeplayState extends MusicBeatState
 
 	override function create()
 	{
-		var initSonglist = CoolUtil.coolTextFile(Paths.txt('freeplaySonglist'));
-
-		for (i in 0...initSonglist.length)
-		{
-			songs.push(new SongMetadata(initSonglist[i], 1, 'gf'));
-		}
-
-		/* 
-			if (FlxG.sound.music != null)
-			{
-				if (!FlxG.sound.music.playing)
-					FlxG.sound.playMusic(Paths.music('freakyMenu'));
-			}
-		 */
-
 		#if desktop
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
@@ -59,13 +45,27 @@ class FreeplayState extends MusicBeatState
 
 		#if debug
 		isDebug = true;
+		addSong('Test', 1, 'bf-pixel');
 		#end
+
+		var initSonglist = CoolUtil.coolTextFile(Paths.txt('freeplaySonglist'));
+
+		for (i in 0...initSonglist.length)
+		{
+			songs.push(new SongMetadata(initSonglist[i], 1, 'gf'));
+		}
+
+		if (FlxG.sound.music != null)
+		{
+			if (!FlxG.sound.music.playing)
+				FlxG.sound.playMusic(Paths.music('freakyMenu'));
+		}
 
 		if (StoryMenuState.weekUnlocked[2] || isDebug)
 			addWeek(['Bopeebo', 'Fresh', 'Dadbattle'], 1, ['dad']);
 
 		if (StoryMenuState.weekUnlocked[2] || isDebug)
-			addWeek(['Spookeez', 'South', 'Monster'], 2, ['spooky']);
+			addWeek(['Spookeez', 'South', 'Monster'], 2, ['spooky', 'spooky', 'monster']);
 
 		if (StoryMenuState.weekUnlocked[3] || isDebug)
 			addWeek(['Pico', 'Philly', 'Blammed'], 3, ['pico']);
@@ -78,6 +78,9 @@ class FreeplayState extends MusicBeatState
 
 		if (StoryMenuState.weekUnlocked[6] || isDebug)
 			addWeek(['Senpai', 'Roses', 'Thorns'], 6, ['senpai', 'senpai', 'spirit']);
+
+		if (StoryMenuState.weekUnlocked[7] || isDebug)
+			addWeek(['Ugh', 'Guns', 'Stress'], 6, ['tankman', 'tankman', 'tankman']);
 
 		// LOAD MUSIC
 
@@ -197,13 +200,12 @@ class FreeplayState extends MusicBeatState
 		var accepted = controls.ACCEPT;
 
 		if (upP)
-		{
 			changeSelection(-1);
-		}
 		if (downP)
-		{
 			changeSelection(1);
-		}
+
+		if (FlxG.mouse.wheel != 0)
+			changeSelection(-Math.round(FlxG.mouse.wheel / 4));
 
 		if (controls.LEFT_P)
 			changeDiff(-1);
@@ -212,15 +214,13 @@ class FreeplayState extends MusicBeatState
 
 		if (controls.BACK)
 		{
+			FlxG.sound.play(Paths.sound('cancelMenu'));
 			FlxG.switchState(new MainMenuState());
 		}
 
 		if (accepted)
 		{
 			var poop:String = Highscore.formatSong(songs[curSelected].songName.toLowerCase(), curDifficulty);
-
-			trace(poop);
-
 			PlayState.SONG = Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase());
 			PlayState.isStoryMode = false;
 			PlayState.storyDifficulty = curDifficulty;
@@ -230,6 +230,12 @@ class FreeplayState extends MusicBeatState
 			LoadingState.loadAndSwitchState(new PlayState());
 		}
 	}
+
+	/*override function switchTo(nextState:FlxState):Bool
+	{
+		clearDaCache(songs[curSelected].songName);
+		return super.switchTo(newState);
+	}*/
 
 	function changeDiff(change:Int = 0)
 	{

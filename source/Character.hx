@@ -29,62 +29,49 @@ class Character extends FlxSprite
 			case 'gf':
 				frames = Paths.getSparrowAtlas('characters/GF_assets');
 
-				animation.addByPrefix('cheer', 'GF Cheer', 24, false);
-				animation.addByPrefix('singLEFT', 'GF left note', 24, false);
-				animation.addByPrefix('singRIGHT', 'GF Right Note', 24, false);
-				animation.addByPrefix('singUP', 'GF Up Note', 24, false);
-				animation.addByPrefix('singDOWN', 'GF Down Note', 24, false);
+				quickAnimAdd('cheer', 'GF Cheer');
+				quickAnimAdd('singLEFT', 'GF left note');
+				quickAnimAdd('singRIGHT', 'GF Right Note');
+				quickAnimAdd('singUP', 'GF Up Note');
+				quickAnimAdd('singDOWN', 'GF Down Note');
 				animation.addByIndices('sad', 'gf sad', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], "", 24, false);
 				animation.addByIndices('danceLeft', 'GF Dancing Beat', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
 				animation.addByIndices('danceRight', 'GF Dancing Beat', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
 				animation.addByIndices('hairBlow', "GF Dancing Beat Hair blowing", [0, 1, 2, 3], "", 24);
 				animation.addByIndices('hairFall', "GF Dancing Beat Hair Landing", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], "", 24, false);
-				animation.addByPrefix('scared', 'GF FEAR', 24);
+				quickAnimAdd('scared', 'GF FEAR');
 
-				addOffset('cheer');
-				addOffset('sad', -2, -2);
-				addOffset('danceLeft', 0, -9);
-				addOffset('danceRight', 0, -9);
+				loadOffsetFile(curCharacter);
 
-				addOffset("singUP", 0, 4);
-				addOffset("singRIGHT", 0, -20);
-				addOffset("singLEFT", 0, -19);
-				addOffset("singDOWN", 0, -20);
-				addOffset('hairBlow', 45, -8);
-				addOffset('hairFall', 0, -9);
+				playAnim('danceRight');
 
-				addOffset('scared', -2, -17);
+			case 'gf-tankmen':
+				frames = Paths.getSparrowAtlas('characters/gfTankmen');
+
+				quickAnimAdd('sad', 'GF Crying at Gunpoint');
+				animation.addByIndices('danceLeft', 'GF Dancing at Gunpoint', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
+				animation.addByIndices('danceRight', 'GF Dancing at Gunpoint', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
+
+				loadOffsetFile('gf');
 
 				playAnim('danceRight');
 
 			case 'gf-christmas':
 				frames = Paths.getSparrowAtlas('characters/gfChristmas');
 
-				animation.addByPrefix('cheer', 'GF Cheer', 24, false);
-				animation.addByPrefix('singLEFT', 'GF left note', 24, false);
-				animation.addByPrefix('singRIGHT', 'GF Right Note', 24, false);
-				animation.addByPrefix('singUP', 'GF Up Note', 24, false);
-				animation.addByPrefix('singDOWN', 'GF Down Note', 24, false);
+				quickAnimAdd('cheer', 'GF Cheer');
+				quickAnimAdd('singLEFT', 'GF left note');
+				quickAnimAdd('singRIGHT', 'GF Right Note');
+				quickAnimAdd('singUP', 'GF Up Note');
+				quickAnimAdd('singDOWN', 'GF Down Note');
 				animation.addByIndices('sad', 'gf sad', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], "", 24, false);
 				animation.addByIndices('danceLeft', 'GF Dancing Beat', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
 				animation.addByIndices('danceRight', 'GF Dancing Beat', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
 				animation.addByIndices('hairBlow', "GF Dancing Beat Hair blowing", [0, 1, 2, 3], "", 24);
 				animation.addByIndices('hairFall', "GF Dancing Beat Hair Landing", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], "", 24, false);
-				animation.addByPrefix('scared', 'GF FEAR', 24);
+				quickAnimAdd('scared', 'GF FEAR');
 
-				addOffset('cheer');
-				addOffset('sad', -2, -2);
-				addOffset('danceLeft', 0, -9);
-				addOffset('danceRight', 0, -9);
-
-				addOffset("singUP", 0, 4);
-				addOffset("singRIGHT", 0, -20);
-				addOffset("singLEFT", 0, -19);
-				addOffset("singDOWN", 0, -20);
-				addOffset('hairBlow', 45, -8);
-				addOffset('hairFall', 0, -9);
-
-				addOffset('scared', -2, -17);
+				loadOffsetFile(curCharacter);
 
 				playAnim('danceRight');
 
@@ -96,8 +83,7 @@ class Character extends FlxSprite
 				animation.addByIndices('danceRight', 'GF Dancing Beat Hair blowing CAR', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24,
 					false);
 
-				addOffset('danceLeft', 0);
-				addOffset('danceRight', 0);
+				loadOffsetFile(curCharacter);
 
 				playAnim('danceRight');
 
@@ -108,8 +94,7 @@ class Character extends FlxSprite
 				animation.addByIndices('danceLeft', 'GF IDLE', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
 				animation.addByIndices('danceRight', 'GF IDLE', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
 
-				addOffset('danceLeft', 0);
-				addOffset('danceRight', 0);
+				loadOffsetFile(curCharacter);
 
 				playAnim('danceRight');
 
@@ -120,139 +105,107 @@ class Character extends FlxSprite
 			case 'dad':
 				frames = Paths.getSparrowAtlas('characters/DADDY_DEAREST');
 
-				animation.addByPrefix('idle', 'Dad idle dance', 24);
-				animation.addByPrefix('singUP', 'Dad Sing Note UP', 24);
-				animation.addByPrefix('singRIGHT', 'Dad Sing Note RIGHT', 24);
-				animation.addByPrefix('singDOWN', 'Dad Sing Note DOWN', 24);
-				animation.addByPrefix('singLEFT', 'Dad Sing Note LEFT', 24);
+				quickAnimAdd('idle', 'Dad idle dance');
+				quickAnimAdd('singUP', 'Dad Sing Note UP');
+				quickAnimAdd('singRIGHT', 'Dad Sing Note RIGHT');
+				quickAnimAdd('singDOWN', 'Dad Sing Note DOWN');
+				quickAnimAdd('singLEFT', 'Dad Sing Note LEFT');
 
-				addOffset('idle');
-				addOffset("singUP", -6, 50);
-				addOffset("singRIGHT", 0, 27);
-				addOffset("singLEFT", -10, 10);
-				addOffset("singDOWN", 0, -30);
+				loadOffsetFile(curCharacter);
 
 				playAnim('idle');
 			case 'spooky':
 				frames = Paths.getSparrowAtlas('characters/spooky_kids_assets');
 
-				animation.addByPrefix('singUP', 'spooky UP NOTE', 24, false);
-				animation.addByPrefix('singDOWN', 'spooky DOWN note', 24, false);
-				animation.addByPrefix('singLEFT', 'note sing left', 24, false);
-				animation.addByPrefix('singRIGHT', 'spooky sing right', 24, false);
+				quickAnimAdd('singUP', 'spooky UP NOTE');
+				quickAnimAdd('singDOWN', 'spooky DOWN note');
+				quickAnimAdd('singLEFT', 'note sing left');
+				quickAnimAdd('singRIGHT', 'spooky sing right');
 				animation.addByIndices('danceLeft', 'spooky dance idle', [0, 2, 6], "", 12, false);
 				animation.addByIndices('danceRight', 'spooky dance idle', [8, 10, 12, 14], "", 12, false);
 
-				addOffset('danceLeft');
-				addOffset('danceRight');
-
-				addOffset("singUP", -20, 26);
-				addOffset("singRIGHT", -130, -14);
-				addOffset("singLEFT", 130, -10);
-				addOffset("singDOWN", -50, -130);
+				loadOffsetFile(curCharacter);
 
 				playAnim('danceRight');
 			case 'mom':
 				frames = Paths.getSparrowAtlas('characters/Mom_Assets');
 
-				animation.addByPrefix('idle', "Mom Idle", 24, false);
-				animation.addByPrefix('singUP', "Mom Up Pose", 24, false);
-				animation.addByPrefix('singDOWN', "MOM DOWN POSE", 24, false);
-				animation.addByPrefix('singLEFT', 'Mom Left Pose', 24, false);
+				quickAnimAdd('idle', "Mom Idle");
+				quickAnimAdd('singUP', "Mom Up Pose");
+				quickAnimAdd('singDOWN', "MOM DOWN POSE");
+				quickAnimAdd('singLEFT', 'Mom Left Pose');
 				// ANIMATION IS CALLED MOM LEFT POSE BUT ITS FOR THE RIGHT
 				// CUZ DAVE IS DUMB!
-				animation.addByPrefix('singRIGHT', 'Mom Pose Left', 24, false);
+				quickAnimAdd('singRIGHT', 'Mom Pose Left');
 
-				addOffset('idle');
-				addOffset("singUP", 14, 71);
-				addOffset("singRIGHT", 10, -60);
-				addOffset("singLEFT", 250, -23);
-				addOffset("singDOWN", 20, -160);
+				loadOffsetFile(curCharacter);
 
 				playAnim('idle');
 
 			case 'mom-car':
 				frames = Paths.getSparrowAtlas('characters/momCar');
 
-				animation.addByPrefix('idle', "Mom Idle", 24, false);
-				animation.addByPrefix('singUP', "Mom Up Pose", 24, false);
-				animation.addByPrefix('singDOWN', "MOM DOWN POSE", 24, false);
-				animation.addByPrefix('singLEFT', 'Mom Left Pose', 24, false);
+				quickAnimAdd('idleHair', "Mom Idle");
+				quickAnimAdd('singUP', "Mom Up Pose");
+				quickAnimAdd('singDOWN', "MOM DOWN POSE");
+				quickAnimAdd('singLEFT', 'Mom Left Pose');
 				// ANIMATION IS CALLED MOM LEFT POSE BUT ITS FOR THE RIGHT
 				// CUZ DAVE IS DUMB!
-				animation.addByPrefix('singRIGHT', 'Mom Pose Left', 24, false);
+				quickAnimAdd('singRIGHT', 'Mom Pose Left');
 
-				addOffset('idle');
-				addOffset("singUP", 14, 71);
-				addOffset("singRIGHT", 10, -60);
-				addOffset("singLEFT", 250, -23);
-				addOffset("singDOWN", 20, -160);
+				loadOffsetFile(curCharacter);
 
 				playAnim('idle');
 			case 'monster':
 				frames = Paths.getSparrowAtlas('characters/Monster_Assets');
 
-				animation.addByPrefix('idle', 'monster idle', 24, false);
-				animation.addByPrefix('singUP', 'monster up note', 24, false);
-				animation.addByPrefix('singDOWN', 'monster down', 24, false);
-				animation.addByPrefix('singLEFT', 'Monster left note', 24, false);
-				animation.addByPrefix('singRIGHT', 'Monster Right note', 24, false);
+				quickAnimAdd('idle', 'monster idle');
+				quickAnimAdd('singUP', 'monster up note');
+				quickAnimAdd('singDOWN', 'monster down');
+				quickAnimAdd('singLEFT', 'Monster left note');
+				quickAnimAdd('singRIGHT', 'Monster Right note');
 
-				addOffset('idle');
-				addOffset("singUP", -20, 50);
-				addOffset("singRIGHT", -51);
-				addOffset("singLEFT", -30);
-				addOffset("singDOWN", -30, -40);
+				loadOffsetFile(curCharacter);
+
 				playAnim('idle');
 			case 'monster-christmas':
 				frames = Paths.getSparrowAtlas('characters/monsterChristmas');
 
-				animation.addByPrefix('idle', 'monster idle', 24, false);
-				animation.addByPrefix('singUP', 'monster up note', 24, false);
-				animation.addByPrefix('singDOWN', 'monster down', 24, false);
-				animation.addByPrefix('singLEFT', 'Monster left note', 24, false);
-				animation.addByPrefix('singRIGHT', 'Monster Right note', 24, false);
+				quickAnimAdd('idle', 'monster idle');
+				quickAnimAdd('singUP', 'monster up note');
+				quickAnimAdd('singDOWN', 'monster down');
+				quickAnimAdd('singLEFT', 'Monster left note');
+				quickAnimAdd('singRIGHT', 'Monster Right note');
 
-				addOffset('idle');
-				addOffset("singUP", -20, 50);
-				addOffset("singRIGHT", -51);
-				addOffset("singLEFT", -30);
-				addOffset("singDOWN", -40, -94);
+				loadOffsetFile(curCharacter);
+
 				playAnim('idle');
 			case 'pico':
 				frames = Paths.getSparrowAtlas('characters/Pico_FNF_assetss');
 
-				animation.addByPrefix('idle', "Pico Idle Dance", 24);
-				animation.addByPrefix('singUP', 'pico Up note0', 24, false);
-				animation.addByPrefix('singDOWN', 'Pico Down Note0', 24, false);
+				quickAnimAdd('idle', "Pico Idle Dance");
+				quickAnimAdd('singUP', 'pico Up note0');
+				quickAnimAdd('singDOWN', 'Pico Down Note0');
 				if (isPlayer)
 				{
-					animation.addByPrefix('singLEFT', 'Pico NOTE LEFT0', 24, false);
-					animation.addByPrefix('singRIGHT', 'Pico Note Right0', 24, false);
-					animation.addByPrefix('singRIGHTmiss', 'Pico Note Right Miss', 24, false);
-					animation.addByPrefix('singLEFTmiss', 'Pico NOTE LEFT miss', 24, false);
+					quickAnimAdd('singLEFT', 'Pico NOTE LEFT0');
+					quickAnimAdd('singRIGHT', 'Pico Note Right0');
+					quickAnimAdd('singRIGHTmiss', 'Pico Note Right Miss');
+					quickAnimAdd('singLEFTmiss', 'Pico NOTE LEFT miss');
 				}
 				else
 				{
 					// Need to be flipped! REDO THIS LATER!
-					animation.addByPrefix('singLEFT', 'Pico Note Right0', 24, false);
-					animation.addByPrefix('singRIGHT', 'Pico NOTE LEFT0', 24, false);
-					animation.addByPrefix('singRIGHTmiss', 'Pico NOTE LEFT miss', 24, false);
-					animation.addByPrefix('singLEFTmiss', 'Pico Note Right Miss', 24, false);
+					quickAnimAdd('singLEFT', 'Pico Note Right0');
+					quickAnimAdd('singRIGHT', 'Pico NOTE LEFT0');
+					quickAnimAdd('singRIGHTmiss', 'Pico NOTE LEFT miss');
+					quickAnimAdd('singLEFTmiss', 'Pico Note Right Miss');
 				}
 
-				animation.addByPrefix('singUPmiss', 'pico Up note miss', 24);
-				animation.addByPrefix('singDOWNmiss', 'Pico Down Note MISS', 24);
+				quickAnimAdd('singUPmiss', 'pico Up note miss');
+				quickAnimAdd('singDOWNmiss', 'Pico Down Note MISS');
 
-				addOffset('idle');
-				addOffset("singUP", -29, 27);
-				addOffset("singRIGHT", -68, -7);
-				addOffset("singLEFT", 65, 9);
-				addOffset("singDOWN", 200, -70);
-				addOffset("singUPmiss", -19, 67);
-				addOffset("singRIGHTmiss", -60, 41);
-				addOffset("singLEFTmiss", 62, 64);
-				addOffset("singDOWNmiss", 210, -28);
+				loadOffsetFile(curCharacter);
 
 				playAnim('idle');
 
@@ -261,37 +214,56 @@ class Character extends FlxSprite
 			case 'bf':
 				frames = Paths.getSparrowAtlas('characters/BOYFRIEND');
 
-				animation.addByPrefix('idle', 'BF idle dance', 24, false);
-				animation.addByPrefix('singUP', 'BF NOTE UP0', 24, false);
-				animation.addByPrefix('singLEFT', 'BF NOTE LEFT0', 24, false);
-				animation.addByPrefix('singRIGHT', 'BF NOTE RIGHT0', 24, false);
-				animation.addByPrefix('singDOWN', 'BF NOTE DOWN0', 24, false);
-				animation.addByPrefix('singUPmiss', 'BF NOTE UP MISS', 24, false);
-				animation.addByPrefix('singLEFTmiss', 'BF NOTE LEFT MISS', 24, false);
-				animation.addByPrefix('singRIGHTmiss', 'BF NOTE RIGHT MISS', 24, false);
-				animation.addByPrefix('singDOWNmiss', 'BF NOTE DOWN MISS', 24, false);
-				animation.addByPrefix('hey', 'BF HEY', 24, false);
+				quickAnimAdd('idle', 'BF idle dance');
+				quickAnimAdd('singUP', 'BF NOTE UP0');
+				quickAnimAdd('singLEFT', 'BF NOTE LEFT0');
+				quickAnimAdd('singRIGHT', 'BF NOTE RIGHT0');
+				quickAnimAdd('singDOWN', 'BF NOTE DOWN0');
+				quickAnimAdd('singUPmiss', 'BF NOTE UP MISS');
+				quickAnimAdd('singLEFTmiss', 'BF NOTE LEFT MISS');
+				quickAnimAdd('singRIGHTmiss', 'BF NOTE RIGHT MISS');
+				quickAnimAdd('singDOWNmiss', 'BF NOTE DOWN MISS');
+				quickAnimAdd('hey', 'BF HEY');
 
-				animation.addByPrefix('firstDeath', "BF dies", 24, false);
+				quickAnimAdd('firstDeath', "BF dies");
 				animation.addByPrefix('deathLoop', "BF Dead Loop", 24, true);
-				animation.addByPrefix('deathConfirm', "BF Dead confirm", 24, false);
+				quickAnimAdd('deathConfirm', "BF Dead confirm");
 
-				animation.addByPrefix('scared', 'BF idle shaking', 24);
+				quickAnimAdd('scared', 'BF idle shaking');
 
-				addOffset('idle', -5);
-				addOffset("singUP", -29, 27);
-				addOffset("singRIGHT", -38, -7);
-				addOffset("singLEFT", 12, -6);
-				addOffset("singDOWN", -10, -50);
-				addOffset("singUPmiss", -29, 27);
-				addOffset("singRIGHTmiss", -30, 21);
-				addOffset("singLEFTmiss", 12, 24);
-				addOffset("singDOWNmiss", -11, -19);
-				addOffset("hey", 7, 4);
-				addOffset('firstDeath', 37, 11);
-				addOffset('deathLoop', 37, 5);
-				addOffset('deathConfirm', 37, 69);
-				addOffset('scared', -4);
+				loadOffsetFile(curCharacter);
+
+				playAnim('idle');
+
+				flipX = true;
+
+			case 'bf-holding-gf':
+				frames = Paths.getSparrowAtlas('characters/bfAndGF');
+
+				quickAnimAdd('idle', 'BF idle dance');
+				quickAnimAdd('singUP', 'BF NOTE UP0');
+				quickAnimAdd('singLEFT', 'BF NOTE LEFT0');
+				quickAnimAdd('singRIGHT', 'BF NOTE RIGHT0');
+				quickAnimAdd('singDOWN', 'BF NOTE DOWN0');
+				quickAnimAdd('singUPmiss', 'BF NOTE UP MISS');
+				quickAnimAdd('singLEFTmiss', 'BF NOTE LEFT MISS');
+				quickAnimAdd('singRIGHTmiss', 'BF NOTE RIGHT MISS');
+				quickAnimAdd('singDOWNmiss', 'BF NOTE DOWN MISS');
+
+				loadOffsetFile(curCharacter);
+
+				playAnim('idle');
+
+				flipX = true;
+
+			case 'bf-holding-gf-dead':
+				frames = Paths.getSparrowAtlas('characters/bfHoldingGF-DEAD');
+
+				quickAnimAdd('firstDeath', "BF Dies with GF");
+				animation.addByPrefix('deathLoop', "BF Dead with GF Loop", 24, true);
+				quickAnimAdd('deathConfirm', "RETRY confirm holding gf");
+
+				loadOffsetFile(curCharacter);
 
 				playAnim('idle');
 
@@ -300,27 +272,18 @@ class Character extends FlxSprite
 			case 'bf-christmas':
 				frames = Paths.getSparrowAtlas('characters/bfChristmas');
 
-				animation.addByPrefix('idle', 'BF idle dance', 24, false);
-				animation.addByPrefix('singUP', 'BF NOTE UP0', 24, false);
-				animation.addByPrefix('singLEFT', 'BF NOTE LEFT0', 24, false);
-				animation.addByPrefix('singRIGHT', 'BF NOTE RIGHT0', 24, false);
-				animation.addByPrefix('singDOWN', 'BF NOTE DOWN0', 24, false);
-				animation.addByPrefix('singUPmiss', 'BF NOTE UP MISS', 24, false);
-				animation.addByPrefix('singLEFTmiss', 'BF NOTE LEFT MISS', 24, false);
-				animation.addByPrefix('singRIGHTmiss', 'BF NOTE RIGHT MISS', 24, false);
-				animation.addByPrefix('singDOWNmiss', 'BF NOTE DOWN MISS', 24, false);
-				animation.addByPrefix('hey', 'BF HEY', 24, false);
+				quickAnimAdd('idle', 'BF idle dance');
+				quickAnimAdd('singUP', 'BF NOTE UP0');
+				quickAnimAdd('singLEFT', 'BF NOTE LEFT0');
+				quickAnimAdd('singRIGHT', 'BF NOTE RIGHT0');
+				quickAnimAdd('singDOWN', 'BF NOTE DOWN0');
+				quickAnimAdd('singUPmiss', 'BF NOTE UP MISS');
+				quickAnimAdd('singLEFTmiss', 'BF NOTE LEFT MISS');
+				quickAnimAdd('singRIGHTmiss', 'BF NOTE RIGHT MISS');
+				quickAnimAdd('singDOWNmiss', 'BF NOTE DOWN MISS');
+				quickAnimAdd('hey', 'BF HEY');
 
-				addOffset('idle', -5);
-				addOffset("singUP", -29, 27);
-				addOffset("singRIGHT", -38, -7);
-				addOffset("singLEFT", 12, -6);
-				addOffset("singDOWN", -10, -50);
-				addOffset("singUPmiss", -29, 27);
-				addOffset("singRIGHTmiss", -30, 21);
-				addOffset("singLEFTmiss", 12, 24);
-				addOffset("singDOWNmiss", -11, -19);
-				addOffset("hey", 7, 4);
+				loadOffsetFile(curCharacter);
 
 				playAnim('idle');
 
@@ -328,50 +291,35 @@ class Character extends FlxSprite
 			case 'bf-car':
 				frames = Paths.getSparrowAtlas('characters/bfCar');
 
-				animation.addByPrefix('idle', 'BF idle dance', 24, false);
-				animation.addByPrefix('singUP', 'BF NOTE UP0', 24, false);
-				animation.addByPrefix('singLEFT', 'BF NOTE LEFT0', 24, false);
-				animation.addByPrefix('singRIGHT', 'BF NOTE RIGHT0', 24, false);
-				animation.addByPrefix('singDOWN', 'BF NOTE DOWN0', 24, false);
-				animation.addByPrefix('singUPmiss', 'BF NOTE UP MISS', 24, false);
-				animation.addByPrefix('singLEFTmiss', 'BF NOTE LEFT MISS', 24, false);
-				animation.addByPrefix('singRIGHTmiss', 'BF NOTE RIGHT MISS', 24, false);
-				animation.addByPrefix('singDOWNmiss', 'BF NOTE DOWN MISS', 24, false);
+				quickAnimAdd('idleHair', 'BF idle dance');
+				quickAnimAdd('singUP', 'BF NOTE UP0');
+				quickAnimAdd('singLEFT', 'BF NOTE LEFT0');
+				quickAnimAdd('singRIGHT', 'BF NOTE RIGHT0');
+				quickAnimAdd('singDOWN', 'BF NOTE DOWN0');
+				quickAnimAdd('singUPmiss', 'BF NOTE UP MISS');
+				quickAnimAdd('singLEFTmiss', 'BF NOTE LEFT MISS');
+				quickAnimAdd('singRIGHTmiss', 'BF NOTE RIGHT MISS');
+				quickAnimAdd('singDOWNmiss', 'BF NOTE DOWN MISS');
 
-				addOffset('idle', -5);
-				addOffset("singUP", -29, 27);
-				addOffset("singRIGHT", -38, -7);
-				addOffset("singLEFT", 12, -6);
-				addOffset("singDOWN", -10, -50);
-				addOffset("singUPmiss", -29, 27);
-				addOffset("singRIGHTmiss", -30, 21);
-				addOffset("singLEFTmiss", 12, 24);
-				addOffset("singDOWNmiss", -11, -19);
+				loadOffsetFile(curCharacter);
+
 				playAnim('idle');
 
 				flipX = true;
 			case 'bf-pixel':
 				frames = Paths.getSparrowAtlas('characters/bfPixel');
 
-				animation.addByPrefix('idle', 'BF IDLE', 24, false);
-				animation.addByPrefix('singUP', 'BF UP NOTE', 24, false);
-				animation.addByPrefix('singLEFT', 'BF LEFT NOTE', 24, false);
-				animation.addByPrefix('singRIGHT', 'BF RIGHT NOTE', 24, false);
-				animation.addByPrefix('singDOWN', 'BF DOWN NOTE', 24, false);
-				animation.addByPrefix('singUPmiss', 'BF UP MISS', 24, false);
-				animation.addByPrefix('singLEFTmiss', 'BF LEFT MISS', 24, false);
-				animation.addByPrefix('singRIGHTmiss', 'BF RIGHT MISS', 24, false);
-				animation.addByPrefix('singDOWNmiss', 'BF DOWN MISS', 24, false);
+				quickAnimAdd('idle', 'BF IDLE');
+				quickAnimAdd('singUP', 'BF UP NOTE');
+				quickAnimAdd('singLEFT', 'BF LEFT NOTE');
+				quickAnimAdd('singRIGHT', 'BF RIGHT NOTE');
+				quickAnimAdd('singDOWN', 'BF DOWN NOTE');
+				quickAnimAdd('singUPmiss', 'BF UP MISS');
+				quickAnimAdd('singLEFTmiss', 'BF LEFT MISS');
+				quickAnimAdd('singRIGHTmiss', 'BF RIGHT MISS');
+				quickAnimAdd('singDOWNmiss', 'BF DOWN MISS');
 
-				addOffset('idle');
-				addOffset("singUP");
-				addOffset("singRIGHT");
-				addOffset("singLEFT");
-				addOffset("singDOWN");
-				addOffset("singUPmiss");
-				addOffset("singRIGHTmiss");
-				addOffset("singLEFTmiss");
-				addOffset("singDOWNmiss");
+				loadOffsetFile(curCharacter);
 
 				setGraphicSize(Std.int(width * 6));
 				updateHitbox();
@@ -387,15 +335,14 @@ class Character extends FlxSprite
 			case 'bf-pixel-dead':
 				frames = Paths.getSparrowAtlas('characters/bfPixelsDEAD');
 
-				animation.addByPrefix('singUP', "BF Dies pixel", 24, false);
-				animation.addByPrefix('firstDeath', "BF Dies pixel", 24, false);
+				quickAnimAdd('singUP', "BF Dies pixel");
+				quickAnimAdd('firstDeath', "BF Dies pixel");
 				animation.addByPrefix('deathLoop', "Retry Loop", 24, true);
-				animation.addByPrefix('deathConfirm', "RETRY CONFIRM", 24, false);
+				quickAnimAdd('deathConfirm', "RETRY CONFIRM");
 				animation.play('firstDeath');
 
-				addOffset('firstDeath');
-				addOffset('deathLoop', -37);
-				addOffset('deathConfirm', -37);
+				loadOffsetFile(curCharacter);
+
 				playAnim('firstDeath');
 				// pixel bullshit
 				setGraphicSize(Std.int(width * 6));
@@ -406,17 +353,13 @@ class Character extends FlxSprite
 			case 'senpai':
 				frames = Paths.getSparrowAtlas('characters/senpai');
 
-				animation.addByPrefix('idle', 'Senpai Idle', 24, false);
-				animation.addByPrefix('singUP', 'SENPAI UP NOTE', 24, false);
-				animation.addByPrefix('singLEFT', 'SENPAI LEFT NOTE', 24, false);
-				animation.addByPrefix('singRIGHT', 'SENPAI RIGHT NOTE', 24, false);
-				animation.addByPrefix('singDOWN', 'SENPAI DOWN NOTE', 24, false);
+				quickAnimAdd('idle', 'Senpai Idle');
+				quickAnimAdd('singUP', 'SENPAI UP NOTE');
+				quickAnimAdd('singLEFT', 'SENPAI LEFT NOTE');
+				quickAnimAdd('singRIGHT', 'SENPAI RIGHT NOTE');
+				quickAnimAdd('singDOWN', 'SENPAI DOWN NOTE');
 
-				addOffset('idle');
-				addOffset("singUP", 5, 37);
-				addOffset("singRIGHT");
-				addOffset("singLEFT", 40);
-				addOffset("singDOWN", 14);
+				loadOffsetFile(curCharacter);
 
 				playAnim('idle');
 
@@ -427,17 +370,14 @@ class Character extends FlxSprite
 			case 'senpai-angry':
 				frames = Paths.getSparrowAtlas('characters/senpai');
 
-				animation.addByPrefix('idle', 'Angry Senpai Idle', 24, false);
-				animation.addByPrefix('singUP', 'Angry Senpai UP NOTE', 24, false);
-				animation.addByPrefix('singLEFT', 'Angry Senpai LEFT NOTE', 24, false);
-				animation.addByPrefix('singRIGHT', 'Angry Senpai RIGHT NOTE', 24, false);
-				animation.addByPrefix('singDOWN', 'Angry Senpai DOWN NOTE', 24, false);
+				quickAnimAdd('idle', 'Angry Senpai Idle');
+				quickAnimAdd('singUP', 'Angry Senpai UP NOTE');
+				quickAnimAdd('singLEFT', 'Angry Senpai LEFT NOTE');
+				quickAnimAdd('singRIGHT', 'Angry Senpai RIGHT NOTE');
+				quickAnimAdd('singDOWN', 'Angry Senpai DOWN NOTE');
 
-				addOffset('idle');
-				addOffset("singUP", 5, 37);
-				addOffset("singRIGHT");
-				addOffset("singLEFT", 40);
-				addOffset("singDOWN", 14);
+				loadOffsetFile(curCharacter);
+
 				playAnim('idle');
 
 				setGraphicSize(Std.int(width * 6));
@@ -448,17 +388,13 @@ class Character extends FlxSprite
 			case 'spirit':
 				frames = Paths.getPackerAtlas('characters/spirit');
 
-				animation.addByPrefix('idle', "idle spirit_", 24, false);
-				animation.addByPrefix('singUP', "up_", 24, false);
-				animation.addByPrefix('singRIGHT', "right_", 24, false);
-				animation.addByPrefix('singLEFT', "left_", 24, false);
-				animation.addByPrefix('singDOWN', "spirit down_", 24, false);
+				quickAnimAdd('idle', "idle spirit_");
+				quickAnimAdd('singUP', "up_");
+				quickAnimAdd('singRIGHT', "right_");
+				quickAnimAdd('singLEFT', "left_");
+				quickAnimAdd('singDOWN', "spirit down_");
 
-				addOffset('idle', -220, -280);
-				addOffset('singUP', -220, -240);
-				addOffset("singRIGHT", -220, -280);
-				addOffset("singLEFT", -200, -280);
-				addOffset("singDOWN", 170, 110);
+				loadOffsetFile(curCharacter);
 
 				setGraphicSize(Std.int(width * 6));
 				updateHitbox();
@@ -470,32 +406,50 @@ class Character extends FlxSprite
 			case 'parents-christmas':
 				frames = Paths.getSparrowAtlas('characters/mom_dad_christmas_assets');
 
-				animation.addByPrefix('idle', 'Parent Christmas Idle', 24, false);
-				animation.addByPrefix('singUP', 'Parent Up Note Dad', 24, false);
-				animation.addByPrefix('singDOWN', 'Parent Down Note Dad', 24, false);
-				animation.addByPrefix('singLEFT', 'Parent Left Note Dad', 24, false);
-				animation.addByPrefix('singRIGHT', 'Parent Right Note Dad', 24, false);
+				quickAnimAdd('idle', 'Parent Christmas Idle');
+				quickAnimAdd('singUP', 'Parent Up Note Dad');
+				quickAnimAdd('singDOWN', 'Parent Down Note Dad');
+				quickAnimAdd('singLEFT', 'Parent Left Note Dad');
+				quickAnimAdd('singRIGHT', 'Parent Right Note Dad');
 
-				animation.addByPrefix('singUP-alt', 'Parent Up Note Mom', 24, false);
+				quickAnimAdd('singUP-alt', 'Parent Up Note Mom');
+				quickAnimAdd('singDOWN-alt', 'Parent Down Note Mom');
+				quickAnimAdd('singLEFT-alt', 'Parent Left Note Mom');
+				quickAnimAdd('singRIGHT-alt', 'Parent Right Note Mom');
 
-				animation.addByPrefix('singDOWN-alt', 'Parent Down Note Mom', 24, false);
-				animation.addByPrefix('singLEFT-alt', 'Parent Left Note Mom', 24, false);
-				animation.addByPrefix('singRIGHT-alt', 'Parent Right Note Mom', 24, false);
-
-				addOffset('idle');
-				addOffset("singUP", -47, 24);
-				addOffset("singRIGHT", -1, -23);
-				addOffset("singLEFT", -30, 16);
-				addOffset("singDOWN", -31, -29);
-				addOffset("singUP-alt", -47, 24);
-				addOffset("singRIGHT-alt", -1, -24);
-				addOffset("singLEFT-alt", -30, 15);
-				addOffset("singDOWN-alt", -30, -27);
+				loadOffsetFile(curCharacter);
 
 				playAnim('idle');
+			case 'tankman':
+				frames = Paths.getSparrowAtlas('characters/tankmanCaptain');
+
+				quickAnimAdd('idle', "Tankman Idle Dance");
+				quickAnimAdd('singUP', 'Tankman UP note');
+				quickAnimAdd('singDOWN', 'Tankman DOWN note');
+				if (isPlayer)
+				{
+					quickAnimAdd('singLEFT', 'Tankman Note Left');
+					quickAnimAdd('singRIGHT', 'Tankman Right Note');
+				}
+				else
+				{
+					// Need to be flipped! REDO THIS LATER!
+					quickAnimAdd('singLEFT', 'Tankman Right Note');
+					quickAnimAdd('singRIGHT', 'Tankman Note Left');
+				}
+
+				quickAnimAdd('singDOWN-alt', 'PRETTY GOOD'); // PRETTY GOOD
+				quickAnimAdd('singUP-alt', 'TANKMAN UGH'); // UGHHHHHHHH
+
+				loadOffsetFile(curCharacter);
+
+				playAnim('idle');
+
+				flipX = true;
 		}
 
 		dance();
+		animation.finish();
 
 		if (isPlayer)
 		{
@@ -540,6 +494,13 @@ class Character extends FlxSprite
 			}
 		}
 
+		if (curCharacter.endsWith('-car'))
+		{
+			// Looping hair anims after idle finished
+			if (!animation.curAnim.name.startsWith('sing') && animation.curAnim.finished)
+				playAnim('idleHair');
+		}
+
 		switch (curCharacter)
 		{
 			case 'gf':
@@ -548,6 +509,22 @@ class Character extends FlxSprite
 		}
 
 		super.update(elapsed);
+	}
+
+	private function loadOffsetFile(name:String)
+	{
+		var characters:Array<String> = CoolUtil.coolTextFile(Paths.file('images/characters/${name}Offsets.txt', TEXT));
+		
+		for (i in 0...name.length)
+		{
+			var character = characters[i].split(" ");
+			addOffset(character[0], Std.parseInt(character[1]), Std.parseInt(character[2]));
+		}
+	}
+
+	public function quickAnimAdd(name:String, prefix:String)
+	{
+		animation.addByPrefix(name, prefix, 24, false);
 	}
 
 	private var danced:Bool = false;
@@ -561,7 +538,7 @@ class Character extends FlxSprite
 		{
 			switch (curCharacter)
 			{
-				case 'gf':
+				case 'gf' | 'gf-christmas' | 'gf-car' | 'gf-pixel' | 'gf-tankmen':
 					if (!animation.curAnim.name.startsWith('hair'))
 					{
 						danced = !danced;
@@ -572,37 +549,9 @@ class Character extends FlxSprite
 							playAnim('danceLeft');
 					}
 
-				case 'gf-christmas':
-					if (!animation.curAnim.name.startsWith('hair'))
-					{
-						danced = !danced;
-
-						if (danced)
-							playAnim('danceRight');
-						else
-							playAnim('danceLeft');
-					}
-
-				case 'gf-car':
-					if (!animation.curAnim.name.startsWith('hair'))
-					{
-						danced = !danced;
-
-						if (danced)
-							playAnim('danceRight');
-						else
-							playAnim('danceLeft');
-					}
-				case 'gf-pixel':
-					if (!animation.curAnim.name.startsWith('hair'))
-					{
-						danced = !danced;
-
-						if (danced)
-							playAnim('danceRight');
-						else
-							playAnim('danceLeft');
-					}
+				case 'tankman':
+					if (!animation.curAnim.name.endsWith('DOWN-alt'))
+						playAnim('idle');
 
 				case 'spooky':
 					danced = !danced;
@@ -611,18 +560,19 @@ class Character extends FlxSprite
 						playAnim('danceRight');
 					else
 						playAnim('danceLeft');
+
 				default:
 					playAnim('idle');
 			}
 		}
 	}
 
-	public function playAnim(AnimName:String, Force:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void
+	public function playAnim(animName:String, force:Bool = false, reversed:Bool = false, frame:Int = 0):Void
 	{
-		animation.play(AnimName, Force, Reversed, Frame);
+		animation.play(animName, force, reversed, frame);
 
-		var daOffset = animOffsets.get(AnimName);
-		if (animOffsets.exists(AnimName))
+		var daOffset = animOffsets.get(animName);
+		if (animOffsets.exists(animName))
 		{
 			offset.set(daOffset[0], daOffset[1]);
 		}
@@ -631,16 +581,16 @@ class Character extends FlxSprite
 
 		if (curCharacter == 'gf')
 		{
-			if (AnimName == 'singLEFT')
+			if (animName == 'singLEFT')
 			{
 				danced = true;
 			}
-			else if (AnimName == 'singRIGHT')
+			else if (animName == 'singRIGHT')
 			{
 				danced = false;
 			}
 
-			if (AnimName == 'singUP' || AnimName == 'singDOWN')
+			if (animName == 'singUP' || animName == 'singDOWN')
 			{
 				danced = !danced;
 			}
