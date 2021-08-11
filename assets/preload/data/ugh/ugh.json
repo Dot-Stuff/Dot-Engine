@@ -3,6 +3,8 @@
         "song": "Ugh",
         "bpm": 160.0,
         "needsVoices": true,
+        "stageDefault": "tank",
+        "gf": "gf-tankmen",
         "player1": "bf",
         "player2": "tankman",
         "speed": 1.8,

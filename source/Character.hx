@@ -515,7 +515,7 @@ class Character extends FlxSprite
 	{
 		var characters:Array<String> = CoolUtil.coolTextFile(Paths.file('images/characters/${name}Offsets.txt', TEXT));
 		
-		for (i in 0...name.length)
+		for (i in name)
 		{
 			var character = characters[i].split(" ");
 			addOffset(character[0], Std.parseInt(character[1]), Std.parseInt(character[2]));

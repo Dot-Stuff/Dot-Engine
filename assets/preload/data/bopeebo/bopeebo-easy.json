@@ -857,6 +857,7 @@
         "validScore": true,
         "sections": 0,
         "needsVoices": true,
+        "stageDefault": "stage",
         "bpm": 100,
         "speed": 1,
         "gf": "gf"

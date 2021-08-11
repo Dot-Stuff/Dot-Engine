@@ -2,7 +2,6 @@ package;
 
 import Section.SwagSection;
 import haxe.Json;
-import haxe.format.JsonParser;
 import lime.utils.Assets;
 
 using StringTools;
@@ -11,12 +10,15 @@ typedef SwagSong =
 {
 	var song:String;
 	var notes:Array<SwagSection>;
-	var bpm:Int;
+	var bpm:Float;
+	var hasDialogue:Bool;
 	var needsVoices:Bool;
+	var stageDefault:String;
 	var speed:Float;
 
 	var player1:String;
 	var player2:String;
+	var gf:String;
 	var validScore:Bool;
 }
 
@@ -24,10 +26,13 @@ class Song
 {
 	public var song:String;
 	public var notes:Array<SwagSection>;
-	public var bpm:Int;
+	public var bpm:Float;
+	public var hasDialogue:Bool = false;
 	public var needsVoices:Bool = true;
+	public var stageDefault:String = 'stage';
 	public var speed:Float = 1;
 
+	public var gf:String = 'gf';
 	public var player1:String = 'bf';
 	public var player2:String = 'dad';
 

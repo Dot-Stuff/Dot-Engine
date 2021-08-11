@@ -3,6 +3,8 @@
         "song": "Monster",
         "bpm": 95,
         "needsVoices": true,
+        "stageDefault": "spooky",
+        "gf": "gf",
         "player1": "bf",
         "player2": "monster",
         "speed": 1.6,

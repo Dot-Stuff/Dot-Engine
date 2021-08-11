@@ -3,6 +3,8 @@
         "song": "Stress",
         "bpm": 178.0,
         "needsVoices": true,
+        "stageDefault": "tank",
+        "gf": "gf-tankmen",
         "player1": "bf-holding-gf",
         "player2": "tankman",
         "speed": 2.2,

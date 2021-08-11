@@ -1,7 +1,5 @@
 package;
 
-import flixel.FlxG;
-
 class Highscore
 {
 	#if (haxe >= "4.0.0")

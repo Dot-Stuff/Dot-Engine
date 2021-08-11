@@ -1,12 +1,8 @@
 package;
 
-import flixel.FlxState;
-#if desktop
-import Discord.DiscordClient;
-#end
 import flash.text.TextField;
-import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.FlxState;
 import flixel.addons.display.FlxGridOverlay;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
@@ -15,6 +11,9 @@ import flixel.util.FlxColor;
 import lime.utils.Assets;
 
 using StringTools;
+#if desktop
+import Discord.DiscordClient;
+#end
 
 class FreeplayState extends MusicBeatState
 {
@@ -80,7 +79,7 @@ class FreeplayState extends MusicBeatState
 			addWeek(['Senpai', 'Roses', 'Thorns'], 6, ['senpai', 'senpai', 'spirit']);
 
 		if (StoryMenuState.weekUnlocked[7] || isDebug)
-			addWeek(['Ugh', 'Guns', 'Stress'], 6, ['tankman', 'tankman', 'tankman']);
+			addWeek(['Ugh', 'Guns', 'Stress'], 7, ['tankman', 'tankman', 'tankman']);
 
 		// LOAD MUSIC
 

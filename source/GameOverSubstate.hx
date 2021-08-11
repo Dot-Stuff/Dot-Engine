@@ -1,9 +1,6 @@
 package;
 
-import flixel.FlxG;
 import flixel.FlxObject;
-import flixel.FlxSubState;
-import flixel.math.FlxPoint;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 
@@ -16,17 +13,18 @@ class GameOverSubstate extends MusicBeatSubstate
 
 	public function new(x:Float, y:Float)
 	{
-		var daStage = PlayState.curStage;
+		var daStage = PlayState.SONG.stageDefault;
 		var daBf:String = '';
 		switch (daStage)
 		{
 			case 'school' | 'schoolEvil':
 				stageSuffix = '-pixel';
 				daBf = 'bf-pixel-dead';
-			case 'tank':
-				daBf = 'bf-holding-gf-dead';
 			default:
-				daBf = 'bf';
+				if (PlayState.SONG.song == 'stress')
+					daBf = 'bf-holding-gf-dead';
+				else
+					daBf = 'bf';
 		}
 
 		super();
@@ -69,20 +67,17 @@ class GameOverSubstate extends MusicBeatSubstate
 				FlxG.switchState(new FreeplayState());
 		}
 
-		if (bf.animation.curAnim.name == 'firstDeath' && bf.animation.curAnim.curFrame == 12)
+		if (bf.animation.curAnim.name == 'firstDeath')
 		{
-			FlxG.camera.follow(camFollow, LOCKON, 0.01);
-		}
+			if (bf.animation.curAnim.curFrame == 12)
+				FlxG.camera.follow(camFollow, LOCKON, 0.01);
 
-		if (bf.animation.curAnim.name == 'firstDeath' && bf.animation.curAnim.finished)
-		{
-			FlxG.sound.playMusic(Paths.music('gameOver' + stageSuffix));
+			if (bf.animation.curAnim.finished)
+				FlxG.sound.playMusic(Paths.music('gameOver' + stageSuffix));
 		}
 
 		if (FlxG.sound.music.playing)
-		{
 			Conductor.songPosition = FlxG.sound.music.time;
-		}
 	}
 
 	override function beatHit()

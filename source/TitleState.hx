@@ -1,38 +1,35 @@
 package;
 
-#if desktop
-import Discord.DiscordClient;
-import sys.thread.Thread;
-#end
-import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.FlxState;
-import flixel.addons.display.FlxGridOverlay;
 import flixel.addons.transition.FlxTransitionSprite.GraphicTransTileDiamond;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.transition.TransitionData;
 import flixel.graphics.FlxGraphic;
-import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxGroup;
 import flixel.input.gamepad.FlxGamepad;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
-import flixel.system.FlxSound;
-import flixel.system.ui.FlxSoundTray;
-import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
-import io.newgrounds.NG;
+import io.colyseus.Client;
+import io.colyseus.Room;
 import lime.app.Application;
+import netTest.MyRoomState;
 import openfl.Assets;
 
 using StringTools;
+#if desktop
+import Discord.DiscordClient;
+import sys.thread.Thread;
+#end
 
 class TitleState extends MusicBeatState
 {
-	static var initialized:Bool = false;
+	public static var initialized:Bool = false;
+
+	var startedIntro:Bool;
 
 	var blackScreen:FlxSprite;
 	var credGroup:FlxGroup;
@@ -44,8 +41,63 @@ class TitleState extends MusicBeatState
 
 	var wackyImage:FlxSprite;
 
+	private var client:Client;
+	private var room:Room<MyRoomState>;
+
 	override public function create():Void
 	{
+		startedIntro = false;
+		client = new Client("ws://71.188.110.159:2567");
+
+		client.joinOrCreate("my_room", [], MyRoomState, function(err, room)
+		{
+			if (err != null)
+			{
+				trace("ERROR: " + err);
+				return;
+			}
+
+			this.room = room;
+
+			/*room.state.entities.onAdd = function(entity, key) {
+						trace("entity added at " + key + " => " + entity);
+
+						entity.onChange = function (changes) {
+							trace("entity changes => " + changes);
+						}
+			}*/
+			/*room.state.entities.onChange = function(entity, key) {
+				trace("entity changed at " + key + " => " + entity);
+			}*/
+			/*room.state.entities.onRemove = function(entity, key) {
+				trace("entity removed at " + key + " => " + entity);
+			}*/
+
+			this.room.onMessage("type", function(message)
+			{
+				if (message == 'enterPressed')
+				{
+					FlxG.switchState(new MainMenuState());
+				}
+				trace("onMessage: 'type' => " + message);
+			});
+
+			this.room.onError += function(code:Int, message:String)
+			{
+				trace("ROOM ERROR: " + code + " => " + message);
+			};
+
+			this.room.onLeave += function()
+			{
+				trace("ROOM LEAVE");
+			};
+		});
+
+		FlxG.game.focusLostFramerate = 60;
+		FlxG.autoPause = false;
+
+		FlxG.sound.muteKeys = [ZERO];
+
 		#if polymod
 		polymod.Polymod.init({modRoot: "mods", dirs: ['introMod']});
 		#end
@@ -53,6 +105,7 @@ class TitleState extends MusicBeatState
 		PlayerSettings.init();
 
 		curWacky = FlxG.random.getObject(getIntroTextShit());
+		FlxG.sound.cache(Paths.music('freakyMenu'));
 
 		// DEBUG BULLSHIT
 
@@ -87,6 +140,10 @@ class TitleState extends MusicBeatState
 		FlxG.switchState(new FreeplayState());
 		#elseif CHARTING
 		FlxG.switchState(new ChartingState());
+		#elseif NETTEST
+		FlxG.switchState(new netTest.NetTest());
+		#elseif ANIMDEBUG
+		FlxG.switchState(new AnimationDebug());
 		#else
 		new FlxTimer().start(1, function(tmr:FlxTimer)
 		{
@@ -96,10 +153,11 @@ class TitleState extends MusicBeatState
 
 		#if desktop
 		DiscordClient.initialize();
-		
-		Application.current.onExit.add (function (exitCode) {
+
+		Application.current.onExit.add(function(exitCode)
+		{
 			DiscordClient.shutdown();
-		 });
+		});
 		#end
 	}
 
@@ -123,10 +181,6 @@ class TitleState extends MusicBeatState
 
 			transIn = FlxTransitionableState.defaultTransIn;
 			transOut = FlxTransitionableState.defaultTransOut;
-
-			// HAD TO MODIFY SOME BACKEND SHIT
-			// IF THIS PR IS HERE IF ITS ACCEPTED UR GOOD TO GO
-			// https://github.com/HaxeFlixel/flixel-addons/pull/348
 
 			// var music:FlxSound = new FlxSound();
 			// music.loadStream(Paths.music('freakyMenu'));
@@ -212,6 +266,7 @@ class TitleState extends MusicBeatState
 		else
 			initialized = true;
 
+		startedIntro = true;
 		// credGroup.add(credTextShit);
 	}
 
@@ -236,22 +291,16 @@ class TitleState extends MusicBeatState
 	{
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
-		// FlxG.watch.addQuick('amp', FlxG.sound.music.amplitude);
 
 		if (FlxG.keys.justPressed.F)
-		{
 			FlxG.fullscreen = !FlxG.fullscreen;
-		}
-
 		var pressedEnter:Bool = FlxG.keys.justPressed.ENTER;
 
 		#if mobile
 		for (touch in FlxG.touches.list)
 		{
 			if (touch.justPressed)
-			{
 				pressedEnter = true;
-			}
 		}
 		#end
 
@@ -270,21 +319,22 @@ class TitleState extends MusicBeatState
 
 		if (pressedEnter && !transitioning && skippedIntro)
 		{
-			#if !switch
+			room.send('type', "enterPressed");
+
 			NGio.unlockMedal(60960);
 
 			// If it's Friday according to da clock
 			if (Date.now().getDay() == 5)
 				NGio.unlockMedal(61034);
-			#end
 
 			titleText.animation.play('press');
-
 			FlxG.camera.flash(FlxColor.WHITE, 1);
 			FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);
-
 			transitioning = true;
-			// FlxG.sound.music.stop();
+
+			Assets.cache.clear(Paths.image('gfDanceTitle'));
+			Assets.cache.clear(Paths.image('logoBumpin'));
+			Assets.cache.clear(Paths.image('titleEnter'));
 
 			new FlxTimer().start(2, function(tmr:FlxTimer)
 			{
@@ -309,10 +359,8 @@ class TitleState extends MusicBeatState
 			// FlxG.sound.play(Paths.music('titleShoot'), 0.7);
 		}
 
-		if (pressedEnter && !skippedIntro)
-		{
+		if (pressedEnter && !skippedIntro && initialized)
 			skipIntro();
-		}
 
 		super.update(elapsed);
 	}
