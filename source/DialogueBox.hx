@@ -30,18 +30,24 @@ class DialogueBox extends FlxSpriteGroup
 	var handSelect:FlxSprite;
 	var bgFade:FlxSprite;
 
-	public function new(talkingRight:Bool = true, ?dialogueList:Array<DialogueSection>)
+	public function new()
 	{
 		super();
 
-		if (PlayState.SONG.stageDefault == 'school-evil')
-			FlxG.sound.playMusic(Paths.music('LunchboxScary'), 0);
-		else if (PlayState.SONG.stageDefault == 'school')
-			FlxG.sound.playMusic(Paths.music('Lunchbox'), 0);
-		else
-			FlxG.sound.playMusic(Paths.music('smileFace'), 0);
+		var dialogueList:Array<DialogueSection> = PlayState.SONG.dialogue;
 
-		FlxG.sound.music.fadeIn(1, 0, 0.8);
+		switch (PlayState.SONG.stageDefault)
+		{
+			case 'school-evil':
+				FlxG.sound.playMusic(Paths.music('LunchboxScary'), 0);
+				FlxG.sound.music.fadeIn(1, 0, 0.8);
+			case 'school':
+				FlxG.sound.playMusic(Paths.music('Lunchbox'), 0);
+				FlxG.sound.music.fadeIn(1, 0, 0.8);
+			case 'stage':
+				FlxG.sound.playMusic(Paths.music('smileFace'), 0);
+				FlxG.sound.music.fadeIn(1, 0, 0.8);
+		}
 
 		bgFade = new FlxSprite(-200, -200).makeGraphic(Std.int(FlxG.width * 1.3), Std.int(FlxG.height * 1.3), 0xFFB3DFd8);
 		bgFade.scrollFactor.set();
@@ -194,18 +200,22 @@ class DialogueBox extends FlxSpriteGroup
 
 					FlxG.sound.music.fadeOut(2.2, 0);
 
-					new FlxTimer().start(0.2, function(tmr:FlxTimer)
+					if (atSchool())
 					{
-						box.alpha -= 1 / 5;
-						bgFade.alpha -= 1 / 5 * 0.7;
-						portraitLeft.visible = false;
-						portraitRight.visible = false;
-						if (atSchool())
+						new FlxTimer().start(0.2, function(tmr:FlxTimer)
 						{
+							box.alpha -= 1 / 5;
+							bgFade.alpha -= 1 / 5 * 0.7;
+							portraitLeft.visible = false;
+							portraitRight.visible = false;
 							swagDialogue.alpha -= 1 / 5;
 							dropText.alpha = swagDialogue.alpha;
-						}
-					}, 5);
+						}, 5);
+					}
+					else if (PlayState.SONG.stageDefault == 'school-evil' || PlayState.SONG.stageDefault == 'stage')
+					{
+						box.animation.play('normalOpen', false, true);
+					}
 
 					new FlxTimer().start(1.2, function(tmr:FlxTimer)
 					{
@@ -259,7 +269,7 @@ class DialogueBox extends FlxSpriteGroup
 		}
 		else
 		{
-			var theDialog:Alphabet = new Alphabet(0, 70, dialogueList[0].dialogue, false, true);
+			var theDialog:Alphabet = new Alphabet(0, 70, dialogueList[0].dialogue, false, true, 'gf');
 			dialogue = theDialog;
 			add(theDialog);
 		}

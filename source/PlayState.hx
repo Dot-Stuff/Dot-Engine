@@ -584,12 +584,9 @@ class PlayState extends MusicBeatState
 		add(dad);
 		add(boyfriend);
 
-		var doof:DialogueBox;
-
-		if (SONG.dialogue != null && SONG.hasDialogue)
-			doof = new DialogueBox(false, SONG.dialogue);
-		else
-			doof = new DialogueBox(false, null);
+		var doof:DialogueBox = new DialogueBox();
+		if (PlayState.SONG.stageDefault == 'stage')
+			doof.y = FlxG.height * 0.5;
 
 		doof.scrollFactor.set();
 		doof.finishThing = startCountdown;
