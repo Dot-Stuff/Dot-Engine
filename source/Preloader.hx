@@ -10,9 +10,9 @@ import flixel.system.FlxBasePreloader;
 
 class Preloader extends FlxBasePreloader
 {
-	public function new(MinDisplayTime:Float = 3, ?AllowedURLs:Array<String>)
+	public function new(MinDisplayTime:Float = 3)
 	{
-		super(MinDisplayTime, AllowedURLs);
+		super(3);
 	}
 
 	var logo:Sprite;

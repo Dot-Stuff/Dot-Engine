@@ -145,6 +145,17 @@ class LoadingState extends MusicBeatState
 	
 	inline static public function loadAndSwitchState(target:FlxState, stopMusic = false)
 	{
+		if (PlayState.SONG != null && PlayState.spriteList != null)
+		{
+			Assets.cache.clear(Paths.inst(PlayState.SONG.song));
+			Assets.cache.clear(Paths.voices(PlayState.SONG.song));
+
+			for (i in 0...PlayState.spriteList.length)
+			{
+				Assets.cache.clear(Paths.image(PlayState.spriteList[i]));
+			}
+		}
+
 		FlxG.switchState(getNextState(target, stopMusic));
 	}
 	

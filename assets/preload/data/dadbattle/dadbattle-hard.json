@@ -2084,6 +2084,24 @@
                 "typeOfSection": 0
             }
         ],
+        "dialogue": [
+            {
+                "isPlayer1": true,
+                "angry": true,
+                "dialogue": "gah you think you're hot stuff?"
+            },
+            {
+                "isPlayer1": true,
+                "angry": true,
+                "dialogue": "If you can beat me here..."
+            },
+            {
+                "isPlayer1": true,
+                "angry": true,
+                "dialogue": "Only then I will even CONSIDER letting you date my daughter!"
+            }
+        ],
+        "hasDialogue": true,
         "needsVoices": true,
         "stageDefault": "stage",
         "speed": 2.3000000000000007,

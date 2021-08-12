@@ -11,6 +11,13 @@ typedef SwagSection =
 	var altAnim:Bool;
 }
 
+typedef DialogueSection =
+{
+	var isPlayer1:Bool;
+	var angry:Bool;
+	var dialogue:String;
+}
+
 class Section
 {
 	public var sectionNotes:Array<Dynamic> = [];

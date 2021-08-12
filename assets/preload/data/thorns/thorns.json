@@ -2846,11 +2846,38 @@
                 "altAnim": false
             }
         ],
+        "dialogue": [
+            {
+                "isPlayer1": true,
+                "angry": false,
+                "dialogue": "Direct contact with real humans, after being trapped in here for so long..."
+            },
+            {
+                "isPlayer1": true,
+                "angry": false,
+                "dialogue": "and HER of all people."
+            },
+            {
+                "isPlayer1": true,
+                "angry": false,
+                "dialogue": "I'll make her father pay for what he's done to me and all the others...."
+            },
+            {
+                "isPlayer1": true,
+                "angry": false,
+                "dialogue": "I'll beat you and make you take my place."
+            },
+            {
+                "isPlayer1": true,
+                "angry": false,
+                "dialogue": "You don't mind your bodies being borrowed right? It's only fair..."
+            }
+        ],
         "bpm": 190,
         "sections": 0,
         "hasDialogue": true,
         "needsVoices": true,
-        "stageDefault": "schoolEvil",
+        "stageDefault": "school-evil",
         "player1": "bf-pixel",
         "player2": "spirit",
         "gf": "gf-pixel",

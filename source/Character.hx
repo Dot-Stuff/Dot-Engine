@@ -145,6 +145,7 @@ class Character extends FlxSprite
 			case 'mom-car':
 				frames = Paths.getSparrowAtlas('characters/momCar');
 
+				quickAnimAdd('idle', "Mom Idle");
 				quickAnimAdd('idleHair', "Mom Idle");
 				quickAnimAdd('singUP', "Mom Up Pose");
 				quickAnimAdd('singDOWN', "MOM DOWN POSE");
@@ -291,6 +292,7 @@ class Character extends FlxSprite
 			case 'bf-car':
 				frames = Paths.getSparrowAtlas('characters/bfCar');
 
+				quickAnimAdd('idle', 'BF idle dance');
 				quickAnimAdd('idleHair', 'BF idle dance');
 				quickAnimAdd('singUP', 'BF NOTE UP0');
 				quickAnimAdd('singLEFT', 'BF NOTE LEFT0');
@@ -501,12 +503,9 @@ class Character extends FlxSprite
 				playAnim('idleHair');
 		}
 
-		switch (curCharacter)
-		{
-			case 'gf':
-				if (animation.curAnim.name == 'hairFall' && animation.curAnim.finished)
-					playAnim('danceRight');
-		}
+		if (curCharacter == 'gf'
+			&& animation.curAnim.name == 'hairFall' && animation.curAnim.finished)
+			playAnim('danceRight');
 
 		super.update(elapsed);
 	}

@@ -550,8 +550,21 @@
                 "typeOfSection": 0
             }
         ],
+        "dialogue": [
+            {
+                "isPlayer1": true,
+                "angry": false,
+                "dialogue": "Hey you're pretty cute."
+            },
+            {
+                "isPlayer1": true,
+                "angry": false,
+                "dialogue": "Use the arrow keys to keep up with me singing."
+            }
+        ],
         "bpm": 100,
         "sections": 0,
+        "hasDialogue": true,
         "needsVoices": false,
         "stageDefault": "stage",
         "player1": "bf",

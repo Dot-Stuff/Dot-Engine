@@ -4,6 +4,7 @@
         "player1": "bf",
         "gf": "gf",
         "speed": 1.8000000000000007,
+        "hasDialogue": true,
         "needsVoices": true,
         "stageDefault": "stage",
         "sectionLengths": [],
@@ -1523,6 +1524,13 @@
                 "mustHitSection": true,
                 "sectionNotes": [],
                 "typeOfSection": 0
+            }
+        ],
+        "dialogue": [
+            {
+                "isPlayer1": true,
+                "angry": false,
+                "dialogue": "Not too shabby boy."
             }
         ],
         "bpm": 120,

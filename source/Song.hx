@@ -1,6 +1,7 @@
 package;
 
 import Section.SwagSection;
+import Section.DialogueSection;
 import haxe.Json;
 import lime.utils.Assets;
 
@@ -10,6 +11,7 @@ typedef SwagSong =
 {
 	var song:String;
 	var notes:Array<SwagSection>;
+	var dialogue:Array<DialogueSection>;
 	var bpm:Float;
 	var hasDialogue:Bool;
 	var needsVoices:Bool;
@@ -26,6 +28,7 @@ class Song
 {
 	public var song:String;
 	public var notes:Array<SwagSection>;
+	public var dialogue:Array<DialogueSection>;
 	public var bpm:Float;
 	public var hasDialogue:Bool = false;
 	public var needsVoices:Bool = true;
@@ -36,10 +39,11 @@ class Song
 	public var player1:String = 'bf';
 	public var player2:String = 'dad';
 
-	public function new(song, notes, bpm)
+	public function new(song, notes, dialogue, bpm)
 	{
 		this.song = song;
 		this.notes = notes;
+		this.dialogue = dialogue;
 		this.bpm = bpm;
 	}
 

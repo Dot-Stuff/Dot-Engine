@@ -3135,7 +3135,7 @@
         "bpm": 159,
         "sections": 0,
         "needsVoices": true,
-        "stageDefault": "mallEvil",
+        "stageDefault": "mall-evil",
         "player1": "bf-christmas",
         "player2": "monster-christmas",
         "gf": "gf-christmas",

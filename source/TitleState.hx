@@ -47,7 +47,11 @@ class TitleState extends MusicBeatState
 	override public function create():Void
 	{
 		startedIntro = false;
+		#if debug
+		client = new Client('ws://localhost:2567');
+		#else
 		client = new Client("ws://71.188.110.159:2567");
+		#end
 
 		client.joinOrCreate("my_room", [], MyRoomState, function(err, room)
 		{

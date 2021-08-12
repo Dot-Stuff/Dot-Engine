@@ -1678,6 +1678,23 @@
                 "altAnim": false
             }
         ],
+        "dialogue": [
+            {
+                "isPlayer1": true,
+                "angry": false,
+                "dialogue": "Not bad for an ugly worm."
+            },
+            {
+                "isPlayer1": true,
+                "angry": false,
+                "dialogue": "But this time I'll rip your nuts off right after your girlfriend finishes gargling mine."
+            },
+            {
+                "isPlayer1": false,
+                "angry": false,
+                "dialogue": "Bop beep be be skdoo bep"
+            }
+        ],
         "bpm": 120,
         "sections": 0,
         "hasDialogue": true,

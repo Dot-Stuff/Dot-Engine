@@ -2097,6 +2097,23 @@
                 "altAnim": false
             }
         ],
+        "dialogue": [
+            {
+                "isPlayer1": true,
+                "angry": false,
+                "dialogue": "Ah, a new fair maiden has come in search of true love!"
+            },
+            {
+                "isPlayer1": true,
+                "angry": false,
+                "dialogue": "A serenade between gentlemen shall decide where her beautiful heart shall reside."
+            },
+            {
+                "isPlayer1": false,
+                "angry": false,
+                "dialogue": "Beep bo bop"
+            }
+        ],
         "bpm": 144,
         "sections": 0,
         "hasDialogue": true,
