@@ -2098,7 +2098,7 @@
             {
                 "isPlayer1": true,
                 "angry": true,
-                "dialogue": "Only then I will even CONSIDER letting you date my daughter!"
+                "dialogue": "Only then I will even CONSIDER letting you \ndate my daughter!"
             }
         ],
         "hasDialogue": true,

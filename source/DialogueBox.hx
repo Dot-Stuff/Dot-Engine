@@ -6,7 +6,6 @@ import flixel.addons.text.FlxTypeText;
 import flixel.group.FlxSpriteGroup;
 import flixel.text.FlxText;
 import flixel.util.FlxTimer;
-import openfl.utils.Assets as OpenFlAssets;
 
 using StringTools;
 
@@ -240,6 +239,9 @@ class DialogueBox extends FlxSpriteGroup
 	{
 		cleanDialog();
 
+		if (!atSchool())
+			box.flipX = dialogueList[0].isPlayer1;
+		
 		if (dialogueList[0].isPlayer1)
 		{
 			portraitRight.visible = false;
@@ -262,7 +264,7 @@ class DialogueBox extends FlxSpriteGroup
 
 	function cleanDialog():Void
 	{
-		if (PlayState.SONG.stageDefault.startsWith('school'))
+		if (atSchool())
 		{
 			swagDialogue.resetText(dialogueList[0].dialogue);
 			swagDialogue.start(0.04, true);

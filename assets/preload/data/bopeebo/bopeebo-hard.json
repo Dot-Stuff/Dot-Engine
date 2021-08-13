@@ -843,7 +843,7 @@
             {
                 "isPlayer1": true,
                 "angry": false,
-                "dialogue": "You think you can just sing with my daughter like that?"
+                "dialogue": "You think you can just sing\nwith my daughter like that?"
             },
             {
                 "isPlayer1": true,
@@ -853,7 +853,7 @@
             {
                 "isPlayer1": true,
                 "angry": true,
-                "dialogue": "You're going to have to go through ME first!"
+                "dialogue": "You're going to have to go \nthrough ME first!"
             }
         ],
         "player2": "dad",

@@ -559,7 +559,7 @@
             {
                 "isPlayer1": true,
                 "angry": false,
-                "dialogue": "Use the arrow keys to keep up with me singing."
+                "dialogue": "Use the arrow keys to keep up \nwith me singing."
             }
         ],
         "bpm": 100,

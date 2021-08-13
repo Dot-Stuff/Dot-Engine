@@ -1,5 +1,6 @@
 package;
 
+import flixel.util.FlxSort;
 import flixel.FlxSprite;
 
 using StringTools;
@@ -474,6 +475,29 @@ class Character extends FlxSprite
 				}
 			}
 		}
+	}
+
+	public function loadMappedAnims() 
+	{
+		var swagShit = Song.loadFromJson('picospeaker', 'stress');
+
+		var notes = swagShit.notes;
+
+		for (section in notes)
+		{
+			for (idk in section.sectionNotes)
+			{
+				// animationNotes.push(idk);
+			}
+		}
+
+		// trace(animationNotes);
+		// animationNotes.sort(sortAnims);
+	}
+
+	function sortAnims(val1:Array<Dynamic>, val2:Array<Dynamic>):Int
+	{
+		return FlxSort.byValues(FlxSort.ASCENDING, val1[0], val2[0]);
 	}
 
 	override function update(elapsed:Float)
