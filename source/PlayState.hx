@@ -1,6 +1,5 @@
 package;
 
-import haxe.macro.Expr.Function;
 import flixel.math.FlxAngle;
 import Section.SwagSection;
 import Song.SwagSong;
@@ -37,6 +36,8 @@ class PlayState extends MusicBeatState
 	public static var storyWeek:Int = 0;
 	public static var storyPlaylist:Array<String> = [];
 	public static var storyDifficulty:Int = 1;
+	public static var deathCounter:Int = 0;
+	public static var practiceMode:Bool = false;
 
 	private var vocals:FlxSound;
 	private var vocalsFinished:Bool = false;
@@ -80,15 +81,15 @@ class PlayState extends MusicBeatState
 
 	var halloweenBG:FlxSprite;
 
-	var phillyCityLights:FlxTypedGroup<FlxSprite>;
+	var phillyCityLights:FlxTypedGroup<BGSprite>;
 	var phillyTrain:FlxSprite;
 	var trainSound:FlxSound;
 
 	var foregroundSprites:FlxTypedGroup<BGSprite>;
 
-	var limo:FlxSprite;
+	var limo:BGSprite;
 	var grpLimoDancers:FlxTypedGroup<BackgroundDancer>;
-	var fastCar:FlxSprite;
+	var fastCar:BGSprite;
 
 	var upperBoppers:FlxSprite;
 	var bottomBoppers:FlxSprite;
@@ -212,40 +213,37 @@ class PlayState extends MusicBeatState
 				}
 			case 'philly':
 				{
-					var bg:FlxSprite = new FlxSprite(-100).loadGraphic(Paths.image('philly/sky'));
-					bg.scrollFactor.set(0.1, 0.1);
+					var bg:BGSprite = new BGSprite(-100, 0, 'philly/sky', 0.1, 0.1);
 					add(bg);
 
-					var city:FlxSprite = new FlxSprite(-10).loadGraphic(Paths.image('philly/city'));
-					city.scrollFactor.set(0.3, 0.3);
+					var city:BGSprite = new BGSprite(-10, 0, 'philly/city', 0.3, 0.3);
 					city.setGraphicSize(Std.int(city.width * 0.85));
 					city.updateHitbox();
 					add(city);
 
-					phillyCityLights = new FlxTypedGroup<FlxSprite>();
-					add(phillyCityLights);
+					phillyCityLights = new FlxTypedGroup<BGSprite>();
 
 					for (i in 0...5)
 					{
-						var light:FlxSprite = new FlxSprite(city.x).loadGraphic(Paths.image('philly/win' + i));
-						light.scrollFactor.set(0.3, 0.3);
+						var light:BGSprite = new BGSprite(city.x, 0, 'philly/win$i', 0.3, 0.3);
 						light.visible = false;
 						light.setGraphicSize(Std.int(light.width * 0.85));
 						light.updateHitbox();
-						light.antialiasing = true;
 						phillyCityLights.add(light);
 					}
 
-					var streetBehind:FlxSprite = new FlxSprite(-40, 50).loadGraphic(Paths.image('philly/behindTrain'));
+					add(phillyCityLights);
+
+					var streetBehind:BGSprite = new BGSprite(-40, 50, 'philly/behindTrain');
 					add(streetBehind);
 
-					phillyTrain = new FlxSprite(2000, 360).loadGraphic(Paths.image('philly/train'));
+					phillyTrain = new BGSprite(2000, 360, 'philly/train');
 					add(phillyTrain);
 
 					trainSound = new FlxSound().loadEmbedded(Paths.sound('train_passes'));
 					FlxG.sound.list.add(trainSound);
 
-					var street:FlxSprite = new FlxSprite(-40, streetBehind.y).loadGraphic(Paths.image('philly/street'));
+					var street:BGSprite = new BGSprite(-40, streetBehind.y, 'philly/street');
 					add(street);
 
 					spriteList = [
@@ -263,19 +261,13 @@ class PlayState extends MusicBeatState
 				}
 			case 'limo':
 				{
-					var skyBG:FlxSprite = new FlxSprite(-120, -50).loadGraphic(Paths.image('limo/limoSunset'));
-					skyBG.scrollFactor.set(0.1, 0.1);
+					var skyBG:BGSprite = new BGSprite(-120, -50, 'limo/limoSunset', 0.1, 0.1);
 					add(skyBG);
 
-					var bgLimo:FlxSprite = new FlxSprite(-200, 480);
-					bgLimo.frames = Paths.getSparrowAtlas('limo/bgLimo');
-					bgLimo.animation.addByPrefix('drive', "background limo pink", 24);
-					bgLimo.animation.play('drive');
-					bgLimo.scrollFactor.set(0.4, 0.4);
+					var bgLimo:BGSprite = new BGSprite(-200, 480, 'limo/bgLimo', 0.4, 0.4, ['background limo pink']);
 					add(bgLimo);
 
 					grpLimoDancers = new FlxTypedGroup<BackgroundDancer>();
-					add(grpLimoDancers);
 
 					for (i in 0...5)
 					{
@@ -284,27 +276,13 @@ class PlayState extends MusicBeatState
 						grpLimoDancers.add(dancer);
 					}
 
-					var overlayShit:FlxSprite = new FlxSprite(-500, -600).loadGraphic(Paths.image('limo/limoOverlay'));
-					overlayShit.alpha = 0.5;
-					// add(overlayShit);
+					add(grpLimoDancers);
 
-					// var shaderBullshit = new BlendModeEffect(new OverlayShader(), FlxColor.RED);
+					limo = new BGSprite(-120, 550, 'limo/limoDrive', 1, 1, ['Limo stage']);
 
-					// FlxG.camera.setFilters([new ShaderFilter(cast shaderBullshit.shader)]);
+					fastCar = new BGSprite(-300, 160, 'limo/fastCarLol');
 
-					// overlayShit.shader = shaderBullshit;
-
-					var limoTex = Paths.getSparrowAtlas('limo/limoDrive');
-
-					limo = new FlxSprite(-120, 550);
-					limo.frames = limoTex;
-					limo.animation.addByPrefix('drive', "Limo stage", 24);
-					limo.animation.play('drive');
-					limo.antialiasing = true;
-
-					fastCar = new FlxSprite(-300, 160).loadGraphic(Paths.image('limo/fastCarLol'));
-
-					spriteList = ["limo/limoSunset", "limo/bgLimo", "limo/limoOverlay", "limo/limoDrive", "limo/fastCarLol"];
+					spriteList = ["limo/limoSunset", "limo/bgLimo", "limo/limoDrive", "limo/fastCarLol"];
 				}
 			case 'mall':
 				{
@@ -462,9 +440,9 @@ class PlayState extends MusicBeatState
 				}
 			case 'tank':
 				{
-					defaultCamZoom = 0.90;
+					defaultCamZoom = 0.9;
 
-					var tankSky:BGSprite = new BGSprite(-400, -400, 'tankSky');
+					var tankSky:BGSprite = new BGSprite(-400, -400, 'tankSky', 0, 0);
 					add(tankSky);
 
 					var tankClouds:BGSprite = new BGSprite(FlxG.random.int(-700, -100), FlxG.random.int(-20, 20), 'tankClouds', 0, 0);
@@ -526,7 +504,21 @@ class PlayState extends MusicBeatState
 					var fgTank3:BGSprite = new BGSprite(1300, 1200, 'tank3', 3.5, 2.5, ['fg']);
 					foregroundSprites.add(fgTank3);
 
-					spriteList = ["tankSky", "tankMountains", "tankBuildings", "tankRuins"];
+					spriteList = ["tankSky",
+						"tankMountains",
+						"tankBuildings",
+						"tankRuins",
+						"smokeLeft",
+						"smokeRight",
+						"tankWatchtower",
+						"tankRolling",
+						"tankGround",
+						"tank0",
+						"tank1",
+						"tank2",
+						"tank3",
+						"tank4",
+						"tank5"];
 				}
 			case 'stage':
 				{
@@ -941,23 +933,6 @@ class PlayState extends MusicBeatState
 				spr.destroy();
 			}
 		});
-	}
-
-	public override function switchTo(nextState:FlxState):Bool
-	{
-		// HAHA FAT. DON'T COPY KADEDEV.
-		if (SONG != null && spriteList != null)
-		{
-			Assets.cache.clear(Paths.inst(PlayState.SONG.song));
-			Assets.cache.clear(Paths.voices(PlayState.SONG.song));
-
-			for (i in 0...spriteList.length)
-			{
-				Assets.cache.clear(Paths.image(spriteList[i]));
-			}
-		}
-
-		return super.switchTo(nextState);
 	}
 
 	var previousFrameTime:Int = 0;
@@ -1546,11 +1521,11 @@ class PlayState extends MusicBeatState
 							daNote.destroy();
 						}
 					}
-					// if (daNote.y < -daNote.height)
-					if (daNote.tooLate || daNote.wasGoodHit)
+					if (daNote.y < -daNote.height)
+					// if (daNote.tooLate || daNote.wasGoodHit)
 					{
-						// if (daNote.tooLate || !daNote.wasGoodHit)
-						if (daNote.tooLate)
+						if (daNote.tooLate || !daNote.wasGoodHit)
+						// if (daNote.tooLate)
 						{
 							health -= 0.0475;
 							vocals.volume = 0;
@@ -1581,6 +1556,8 @@ class PlayState extends MusicBeatState
 			combo = 0;
 			displayCombo();
 		}
+
+		songScore -= 10;
 	}
 
 	function endSong():Void
@@ -2001,20 +1978,30 @@ class PlayState extends MusicBeatState
 		});
 	}
 
+	public override function switchTo(nextState:FlxState):Bool
+	{
+		// HAHA FAT. DON'T COPY KADEDEV.
+		if (SONG != null && spriteList != null)
+		{
+			Assets.cache.clear(Paths.inst(PlayState.SONG.song));
+			Assets.cache.clear(Paths.voices(PlayState.SONG.song));
+
+			for (i in 0...spriteList.length)
+			{
+				Assets.cache.clear(Paths.image(spriteList[i]));
+			}
+		}
+
+		return super.switchTo(nextState);
+	}
+
 	function noteMiss(direction:Int = 1):Void
 	{
 		health -= 0.04;
-		if (combo > 5 && gf.animOffsets.exists('sad'))
-		{
-			gf.playAnim('sad');
-		}
-		combo = 0;
+		killCombo();
 
-		songScore -= 10;
-
+		vocals.volume = 0;
 		FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2));
-		// FlxG.sound.play(Paths.sound('missnote1'), 1, false);
-		// FlxG.log.add('played imss note');
 
 		switch (direction)
 		{

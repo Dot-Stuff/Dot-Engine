@@ -191,17 +191,13 @@ class FreeplayState extends MusicBeatState
 
 		scoreText.text = "PERSONAL BEST:" + lerpScore;
 
-		var upP = controls.UP_P;
-		var downP = controls.DOWN_P;
-		var accepted = controls.ACCEPT;
-
-		if (upP)
-			changeSelection(-1);
-		if (downP)
-			changeSelection(1);
-
 		if (FlxG.mouse.wheel != 0)
 			changeSelection(-Math.round(FlxG.mouse.wheel / 4));
+
+		if (controls.UP_P)
+			changeSelection(-1);
+		if (controls.DOWN_P)
+			changeSelection(1);
 
 		if (controls.LEFT_P)
 			changeDiff(-1);
@@ -214,7 +210,7 @@ class FreeplayState extends MusicBeatState
 			FlxG.switchState(new MainMenuState());
 		}
 
-		if (accepted)
+		if (controls.ACCEPT)
 		{
 			var poop:String = Highscore.formatSong(songs[curSelected].songName.toLowerCase(), curDifficulty);
 			PlayState.SONG = Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase());

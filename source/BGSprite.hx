@@ -9,7 +9,7 @@ class BGSprite extends FlxSprite
 	private var idleAnim:Array<String>;
 
 	// KADEDEV DO NOT FUCKING COPY THIS FOR THE LAST TIME.
-	public function new(x:Float, y:Float, name:String, ?scrollX:Float = 0, ?scrollY:Float = 0, ?idleAnim:Array<String>, ?isLoop:Bool = false)
+	public function new(x:Float, y:Float, name:String, ?scrollX:Float = 1, ?scrollY:Float = 1, ?idleAnim:Array<String>, ?isLoop:Bool = false)
 	{
 		super(x, y);
 
@@ -31,7 +31,7 @@ class BGSprite extends FlxSprite
             // trace('KadeDev is ew: ${idleAnim}');
 			for (i in 0...idleAnim.length)
 			{
-				animation.addByPrefix(idleAnim[i], idleAnim[i], 24, true);
+				animation.addByPrefix(idleAnim[i], idleAnim[i], 24, isLoop);
 			}
 
 			dance();
