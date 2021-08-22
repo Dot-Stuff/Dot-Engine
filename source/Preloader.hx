@@ -34,14 +34,14 @@ class Preloader extends FlxBasePreloader
 		super.create();
 	}
 
-	override function update(Percent:Float):Void
+	override function update(percent:Float):Void
 	{
-		if (Percent < 69)
+		if (percent < 69)
 		{
-			logo.scaleX += Percent / 1920;
-			logo.scaleY += Percent / 1920;
-			logo.x -= Percent * 0.6;
-			logo.y -= Percent / 2;
+			logo.scaleX += percent / 1920;
+			logo.scaleY += percent / 1920;
+			logo.x -= percent * 0.6;
+			logo.y -= percent / 2;
 		}
 		else
 		{
@@ -51,6 +51,6 @@ class Preloader extends FlxBasePreloader
 			logo.y = (this._height / 2) - ((logo.height) / 2);
 		}
 
-		super.update(Percent);
+		super.update(percent);
 	}
 }

@@ -1,10 +1,11 @@
 package;
 
+import flixel.util.FlxColor;
+import flixel.ui.FlxBar;
 import lime.app.Promise;
 import lime.app.Future;
 import flixel.FlxState;
 import flixel.FlxSprite;
-import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.util.FlxTimer;
 
 import openfl.utils.Assets;
@@ -22,9 +23,8 @@ class LoadingState extends MusicBeatState
 	var stopMusic = false;
 	var callbacks:MultiCallback;
 	
-	var logo:FlxSprite;
-	var gfDance:FlxSprite;
-	var danceLeft = false;
+	var funkay:FlxSprite;
+	var loadBar:FlxBar;
 	
 	function new(target:FlxState, stopMusic:Bool)
 	{
@@ -35,22 +35,21 @@ class LoadingState extends MusicBeatState
 	
 	override function create()
 	{
-		logo = new FlxSprite(-150, -100);
-		logo.frames = Paths.getSparrowAtlas('logoBumpin');
-		logo.antialiasing = true;
-		logo.animation.addByPrefix('bump', 'logo bumpin', 24);
-		logo.animation.play('bump');
-		logo.updateHitbox();
-		// logoBl.screenCenter();
-		// logoBl.color = FlxColor.BLACK;
+		funkay = new FlxSprite(FlxG.width, FlxG.height);
+		funkay.frames = Paths.getSparrowAtlas('funkay');
+		funkay.animation.addByPrefix('bump', 'logo bumpin', 24);
+		funkay.animation.play('bump');
+		funkay.setGraphicSize(0, FlxG.height);
+		funkay.updateHitbox();
+		funkay.antialiasing = true;
+		add(funkay);
+		funkay.scrollFactor.set();
+		funkay.screenCenter();
 
-		gfDance = new FlxSprite(FlxG.width * 0.4, FlxG.height * 0.07);
-		gfDance.frames = Paths.getSparrowAtlas('gfDanceTitle');
-		gfDance.animation.addByIndices('danceLeft', 'gfDance', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
-		gfDance.animation.addByIndices('danceRight', 'gfDance', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
-		gfDance.antialiasing = true;
-		add(gfDance);
-		add(logo);
+		loadBar = new FlxBar(0, FlxG.height - 20);
+		loadBar.makeGraphic(FlxG.width, 10, FlxColor.RED);
+		loadBar.screenCenter(X);
+		add(loadBar);
 		
 		initSongsManifest().onComplete
 		(
@@ -78,12 +77,6 @@ class LoadingState extends MusicBeatState
 	{
 		if (!Assets.cache.hasSound(path))
 		{
-			var library = Assets.getLibrary("songs");
-			final symbolPath = path.split(":").pop();
-			// @:privateAccess
-			// library.types.set(symbolPath, SOUND);
-			// @:privateAccess
-			// library.pathGroups.set(symbolPath, [library.__cacheBreak(symbolPath)]);
 			var callback = callbacks.add("song:" + path);
 			Assets.loadSound(path).onComplete(function (_) { callback(); });
 		}
@@ -102,20 +95,7 @@ class LoadingState extends MusicBeatState
 			Assets.loadLibrary(library).onComplete(function (_) { callback(); });
 		}
 	}
-	
-	override function beatHit()
-	{
-		super.beatHit();
-		
-		logo.animation.play('bump');
-		danceLeft = !danceLeft;
-		
-		if (danceLeft)
-			gfDance.animation.play('danceRight');
-		else
-			gfDance.animation.play('danceLeft');
-	}
-	
+
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);

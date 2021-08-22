@@ -4,6 +4,8 @@ import flixel.FlxObject;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 
+using StringTools;
+
 class GameOverSubstate extends MusicBeatSubstate
 {
 	var bf:Boyfriend;
@@ -11,20 +13,20 @@ class GameOverSubstate extends MusicBeatSubstate
 
 	var stageSuffix:String = "";
 
+	private var randomGameover:Int;
+
 	public function new(x:Float, y:Float)
 	{
-		var daStage = PlayState.SONG.stageDefault;
 		var daBf:String = '';
-		switch (daStage)
+		switch (PlayState.SONG.player1.toLowerCase())
 		{
-			case 'school' | 'schoolEvil':
+			case 'bf-pixel':
 				stageSuffix = '-pixel';
 				daBf = 'bf-pixel-dead';
+			case 'bf-holding-gf':
+				daBf = 'bf-holding-gf-dead';
 			default:
-				if (PlayState.SONG.song == 'stress')
-					daBf = 'bf-holding-gf-dead';
-				else
-					daBf = 'bf';
+				daBf = 'bf';
 		}
 
 		super();
@@ -46,6 +48,7 @@ class GameOverSubstate extends MusicBeatSubstate
 		FlxG.camera.target = null;
 
 		bf.playAnim('firstDeath');
+		randomGameover = FlxG.random.int(1, 24, [1, 3, 8, 13, 17, 21]);
 	}
 
 	override function update(elapsed:Float)
@@ -73,11 +76,22 @@ class GameOverSubstate extends MusicBeatSubstate
 				FlxG.camera.follow(camFollow, LOCKON, 0.01);
 
 			if (bf.animation.curAnim.finished)
-				FlxG.sound.playMusic(Paths.music('gameOver' + stageSuffix));
+			{
+				bf.startedDeath = true;
+				coolStartDeath();
+
+				if (PlayState.storyWeek == 7)
+					FlxG.sound.play(Paths.sound('jeffGameover/jeffGameover-$randomGameover'));
+			}
 		}
 
 		if (FlxG.sound.music.playing)
 			Conductor.songPosition = FlxG.sound.music.time;
+	}
+
+	public function coolStartDeath()
+	{
+		FlxG.sound.playMusic(Paths.music('gameOver$stageSuffix'));
 	}
 
 	override function beatHit()

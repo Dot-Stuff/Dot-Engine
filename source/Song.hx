@@ -10,13 +10,12 @@ using StringTools;
 typedef SwagSong =
 {
 	var song:String;
-	var notes:Array<SwagSection>;
+	var notes:Array<Array<SwagSection>>;
 	var dialogue:Array<DialogueSection>;
 	var bpm:Float;
-	var hasDialogue:Bool;
 	var needsVoices:Bool;
 	var stageDefault:String;
-	var speed:Float;
+	var speed:Array<Float>;
 
 	var player1:String;
 	var player2:String;
@@ -27,13 +26,12 @@ typedef SwagSong =
 class Song
 {
 	public var song:String;
-	public var notes:Array<SwagSection>;
+	public var notes:Array<Array<SwagSection>>;
 	public var dialogue:Array<DialogueSection>;
 	public var bpm:Float;
-	public var hasDialogue:Bool = false;
 	public var needsVoices:Bool = true;
 	public var stageDefault:String = 'stage';
-	public var speed:Float = 1;
+	public var speed:Array<Float> = [1, 1, 1];
 
 	public var gf:String = 'gf';
 	public var player1:String = 'bf';
@@ -47,9 +45,9 @@ class Song
 		this.bpm = bpm;
 	}
 
-	public static function loadFromJson(jsonInput:String, ?folder:String):SwagSong
+	public static function loadFromJson(jsonInput:String):SwagSong
 	{
-		var rawJson = Assets.getText(Paths.json(folder.toLowerCase() + '/' + jsonInput.toLowerCase())).trim();
+		var rawJson = Assets.getText(Paths.json(jsonInput.toLowerCase())).trim();
 
 		while (!rawJson.endsWith("}"))
 		{

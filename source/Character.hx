@@ -15,6 +15,8 @@ class Character extends FlxSprite
 
 	public var holdTimer:Float = 0;
 
+	public var animationNotes:Array<Dynamic> = [];
+
 	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false)
 	{
 		super(x, y);
@@ -83,6 +85,7 @@ class Character extends FlxSprite
 				animation.addByIndices('danceLeft', 'GF Dancing Beat Hair blowing CAR', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
 				animation.addByIndices('danceRight', 'GF Dancing Beat Hair blowing CAR', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24,
 					false);
+				animation.addByIndices("idleHair", "GF Dancing Beat Hair blowing CAR", [10, 11, 12, 25, 26, 27], "", 24, true);
 
 				loadOffsetFile(curCharacter);
 
@@ -106,7 +109,7 @@ class Character extends FlxSprite
 			case 'dad':
 				frames = Paths.getSparrowAtlas('characters/DADDY_DEAREST');
 
-				quickAnimAdd('idle', 'Dad idle dance');
+				quickAnimAdd('idle', 'Dad Idle Dance');
 				quickAnimAdd('singUP', 'Dad Sing Note UP');
 				quickAnimAdd('singRIGHT', 'Dad Sing Note RIGHT');
 				quickAnimAdd('singDOWN', 'Dad Sing Note DOWN');
@@ -147,13 +150,13 @@ class Character extends FlxSprite
 				frames = Paths.getSparrowAtlas('characters/momCar');
 
 				quickAnimAdd('idle', "Mom Idle");
-				quickAnimAdd('idleHair', "Mom Idle");
 				quickAnimAdd('singUP', "Mom Up Pose");
 				quickAnimAdd('singDOWN', "MOM DOWN POSE");
 				quickAnimAdd('singLEFT', 'Mom Left Pose');
 				// ANIMATION IS CALLED MOM LEFT POSE BUT ITS FOR THE RIGHT
 				// CUZ DAVE IS DUMB!
 				quickAnimAdd('singRIGHT', 'Mom Pose Left');
+				animation.addByIndices("idleHair", "Mom Idle", [10, 11, 12, 13], "", 24, true);
 
 				loadOffsetFile(curCharacter);
 
@@ -213,6 +216,20 @@ class Character extends FlxSprite
 
 				flipX = true;
 
+			case 'pico-speaker':
+				frames = Paths.getSparrowAtlas('characters/picoSpeaker');
+
+				quickAnimAdd('shoot1', 'Pico shoot 1');
+				quickAnimAdd('shoot2', 'Pico shoot 2');
+				quickAnimAdd('shoot3', 'Pico shoot 3');
+				quickAnimAdd('shoot4', 'Pico shoot 4');
+
+				loadOffsetFile(curCharacter);
+
+				playAnim("shoot1");
+
+				loadMappedAnims();
+
 			case 'bf':
 				frames = Paths.getSparrowAtlas('characters/BOYFRIEND');
 
@@ -258,19 +275,6 @@ class Character extends FlxSprite
 
 				flipX = true;
 
-			case 'bf-holding-gf-dead':
-				frames = Paths.getSparrowAtlas('characters/bfHoldingGF-DEAD');
-
-				quickAnimAdd('firstDeath', "BF Dies with GF");
-				animation.addByPrefix('deathLoop', "BF Dead with GF Loop", 24, true);
-				quickAnimAdd('deathConfirm', "RETRY confirm holding gf");
-
-				loadOffsetFile(curCharacter);
-
-				playAnim('idle');
-
-				flipX = true;
-
 			case 'bf-christmas':
 				frames = Paths.getSparrowAtlas('characters/bfChristmas');
 
@@ -294,7 +298,6 @@ class Character extends FlxSprite
 				frames = Paths.getSparrowAtlas('characters/bfCar');
 
 				quickAnimAdd('idle', 'BF idle dance');
-				quickAnimAdd('idleHair', 'BF idle dance');
 				quickAnimAdd('singUP', 'BF NOTE UP0');
 				quickAnimAdd('singLEFT', 'BF NOTE LEFT0');
 				quickAnimAdd('singRIGHT', 'BF NOTE RIGHT0');
@@ -303,6 +306,7 @@ class Character extends FlxSprite
 				quickAnimAdd('singLEFTmiss', 'BF NOTE LEFT MISS');
 				quickAnimAdd('singRIGHTmiss', 'BF NOTE RIGHT MISS');
 				quickAnimAdd('singDOWNmiss', 'BF NOTE DOWN MISS');
+				animation.addByIndices('idleHair', 'BF idle dance', [10, 11, 12, 13], "", 24, true);
 
 				loadOffsetFile(curCharacter);
 
@@ -351,6 +355,20 @@ class Character extends FlxSprite
 				setGraphicSize(Std.int(width * 6));
 				updateHitbox();
 				antialiasing = false;
+				flipX = true;
+
+			case 'bf-holding-gf-dead':
+				frames = Paths.getSparrowAtlas('characters/bfHoldingGF-DEAD');
+
+				quickAnimAdd('singUP', "BF Dead with GF Loop");
+				quickAnimAdd('firstDeath', "BF Dies with GF");
+				animation.addByPrefix('deathLoop', "BF Dead with GF Loop", 24, true);
+				quickAnimAdd('deathConfirm', "RETRY confirm holding gf");
+
+				loadOffsetFile(curCharacter);
+
+				playAnim('idle');
+
 				flipX = true;
 
 			case 'senpai':
@@ -479,20 +497,22 @@ class Character extends FlxSprite
 
 	public function loadMappedAnims() 
 	{
-		var swagShit = Song.loadFromJson('picospeaker', 'stress');
+		var swagShit = Song.loadFromJson('pico-speaker');
 
-		var notes = swagShit.notes;
+		var notes = swagShit.notes[PlayState.storyDifficulty];
 
 		for (section in notes)
 		{
 			for (idk in section.sectionNotes)
 			{
-				// animationNotes.push(idk);
+				animationNotes.push(idk);
 			}
 		}
 
-		// trace(animationNotes);
-		// animationNotes.sort(sortAnims);
+		TankmenBG.animationNotes = animationNotes;
+
+		trace(animationNotes);
+		animationNotes.sort(sortAnims);
 	}
 
 	function sortAnims(val1:Array<Dynamic>, val2:Array<Dynamic>):Int
@@ -500,9 +520,25 @@ class Character extends FlxSprite
 		return FlxSort.byValues(FlxSort.ASCENDING, val1[0], val2[0]);
 	}
 
+	public function quickAnimAdd(name:String, prefix:String)
+	{
+		animation.addByPrefix(name, prefix, 24, false);
+	}
+
+	private function loadOffsetFile(offsetCharacter:String)
+	{
+		var daFile:Array<String> = CoolUtil.coolTextFile(Paths.file('images/characters/${offsetCharacter}Offsets.txt', TEXT));
+		
+		for (i in daFile)
+		{
+			var splitWords:Array<String> = i.split(" ");
+			addOffset(splitWords[0], Std.parseInt(splitWords[1]), Std.parseInt(splitWords[2]));
+		}
+	}
+
 	override function update(elapsed:Float)
 	{
-		if (!curCharacter.startsWith('bf'))
+		if (!isPlayer)
 		{
 			if (animation.curAnim.name.startsWith('sing'))
 			{
@@ -527,27 +563,38 @@ class Character extends FlxSprite
 				playAnim('idleHair');
 		}
 
-		if (curCharacter == 'gf'
-			&& animation.curAnim.name == 'hairFall' && animation.curAnim.finished)
-			playAnim('danceRight');
+		switch (curCharacter)
+		{
+			case 'gf':
+				if (animation.curAnim.name == 'hairFall' && animation.curAnim.finished)
+					playAnim('danceRight');
+			case 'pico-speaker':
+				// for pico??
+				if (animationNotes.length > 0)
+				{
+					if (Conductor.songPosition > animationNotes[0][0])
+					{
+						trace('played shoot anim' + animationNotes[0][1]);
+
+						var shootAnim:Int = 1;
+
+						if (animationNotes[0][1] >= 2)
+							shootAnim = 3;
+
+						shootAnim += FlxG.random.int(0, 1);
+
+						playAnim('shoot$shootAnim', true);
+						animationNotes.shift();
+					}
+				}
+
+				if (animation.curAnim.finished)
+				{
+					playAnim(animation.curAnim.name, false, false, animation.curAnim.numFrames - 3);
+				}
+		}
 
 		super.update(elapsed);
-	}
-
-	private function loadOffsetFile(name:String)
-	{
-		var characters:Array<String> = CoolUtil.coolTextFile(Paths.file('images/characters/${name}Offsets.txt', TEXT));
-		
-		for (i in name)
-		{
-			var character = characters[i].split(" ");
-			addOffset(character[0], Std.parseInt(character[1]), Std.parseInt(character[2]));
-		}
-	}
-
-	public function quickAnimAdd(name:String, prefix:String)
-	{
-		animation.addByPrefix(name, prefix, 24, false);
 	}
 
 	private var danced:Bool = false;
@@ -572,6 +619,9 @@ class Character extends FlxSprite
 							playAnim('danceLeft');
 					}
 
+				case 'pico-speaker':
+					// lol weed
+					// playAnim('shoot' + FlxG.random.int(1, 4), true);
 				case 'tankman':
 					if (!animation.curAnim.name.endsWith('DOWN-alt'))
 						playAnim('idle');

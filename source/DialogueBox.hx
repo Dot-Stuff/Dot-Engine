@@ -48,20 +48,22 @@ class DialogueBox extends FlxSpriteGroup
 				FlxG.sound.music.fadeIn(1, 0, 0.8);
 		}
 
-		bgFade = new FlxSprite(-200, -200).makeGraphic(Std.int(FlxG.width * 1.3), Std.int(FlxG.height * 1.3), 0xFFB3DFd8);
-		bgFade.scrollFactor.set();
-		bgFade.alpha = 0;
-		add(bgFade);
-
-		new FlxTimer().start(0.83, function(tmr:FlxTimer)
+		if (atSchool())
 		{
-			bgFade.alpha += (1 / 5) * 0.7;
-			if (bgFade.alpha > 0.7)
-				bgFade.alpha = 0.7;
-		}, 5);
+			bgFade = new FlxSprite(-200, -200).makeGraphic(Std.int(FlxG.width * 1.3), Std.int(FlxG.height * 1.3), 0xFFB3DFd8);
+			bgFade.scrollFactor.set();
+			bgFade.alpha = 0;
+			add(bgFade);
 
-		if (PlayState.SONG.stageDefault.startsWith('school'))
+			new FlxTimer().start(0.83, function(tmr:FlxTimer)
+			{
+				bgFade.alpha += (1 / 5) * 0.7;
+				if (bgFade.alpha > 0.7)
+					bgFade.alpha = 0.7;
+			}, 5);
+
 			box = new FlxSprite(-20, 45);
+		}
 		else
 			box = new FlxSprite(40);
 
@@ -92,49 +94,36 @@ class DialogueBox extends FlxSpriteGroup
 
 		this.dialogueList = dialogueList;
 
-		portraitLeft = new FlxSprite(-20, 40);
-		portraitLeft.frames = Paths.getSparrowAtlas('dialogue/${PlayState.SONG.player2}Portrait');
-		portraitLeft.animation.addByPrefix('enter', 'Portrait Enter', 24, false);
-
-		if (PlayState.SONG.stageDefault.startsWith('school'))
-			portraitLeft.setGraphicSize(Std.int(portraitLeft.width * PlayState.daPixelZoom * 0.9));
-		else
-			portraitLeft.setGraphicSize(Std.int(portraitLeft.width * 0.9));
-
-		portraitLeft.updateHitbox();
-		portraitLeft.scrollFactor.set();
-		add(portraitLeft);
-		portraitLeft.visible = false;
-
-		portraitRight = new FlxSprite(0, 40);
-		portraitRight.frames = Paths.getSparrowAtlas('dialogue/${PlayState.SONG.player1}Portrait');
-		portraitRight.animation.addByPrefix('enter', 'Portrait Enter', 24, false);
-
-		if (atSchool())
-			portraitRight.setGraphicSize(Std.int(portraitRight.width * PlayState.daPixelZoom * 0.9));
-		else
-			portraitRight.setGraphicSize(Std.int(portraitRight.width * 0.9));
-
-		portraitRight.updateHitbox();
-		portraitRight.scrollFactor.set();
-		add(portraitRight);
-		portraitRight.visible = false;
-
-		box.animation.play('normalOpen');
-
-		if (atSchool())
-			box.setGraphicSize(Std.int(box.width * PlayState.daPixelZoom * 0.9));
-		else
-			box.setGraphicSize(Std.int(box.width * 0.9));
-
-		box.updateHitbox();
-		add(box);
-
-		box.screenCenter(X);
-		portraitLeft.screenCenter(X);
-
 		if (atSchool())
 		{
+			portraitLeft = new FlxSprite(-20, 40);
+			portraitLeft.frames = Paths.getSparrowAtlas('dialogue/${PlayState.SONG.player2}Portrait');
+			portraitLeft.animation.addByPrefix('enter', 'Portrait Enter', 24, false);
+			portraitLeft.setGraphicSize(Std.int(portraitLeft.width * PlayState.daPixelZoom * 0.9));
+			portraitLeft.updateHitbox();
+			portraitLeft.scrollFactor.set();
+			add(portraitLeft);
+			portraitLeft.visible = false;
+
+			portraitRight = new FlxSprite(0, 40);
+			portraitRight.frames = Paths.getSparrowAtlas('dialogue/${PlayState.SONG.player1}Portrait');
+			portraitRight.animation.addByPrefix('enter', 'Portrait Enter', 24, false);
+			portraitRight.setGraphicSize(Std.int(portraitRight.width * PlayState.daPixelZoom * 0.9));
+			portraitRight.updateHitbox();
+			portraitRight.scrollFactor.set();
+			add(portraitRight);
+			portraitRight.visible = false;
+
+			box.animation.play('normalOpen');
+
+			box.setGraphicSize(Std.int(box.width * PlayState.daPixelZoom * 0.9));
+
+			box.updateHitbox();
+			add(box);
+
+			box.screenCenter(X);
+			portraitLeft.screenCenter(X);
+
 			handSelect = new FlxSprite(FlxG.width * 0.9, FlxG.height * 0.9).loadGraphic(Paths.image('dialogue/hand_textbox'));
 			add(handSelect);
 
@@ -151,6 +140,14 @@ class DialogueBox extends FlxSpriteGroup
 		}
 		else
 		{
+			box.animation.play('normalOpen');
+
+			box.setGraphicSize(Std.int(box.width * 0.9));
+
+			box.screenCenter(X);
+			box.updateHitbox();
+			add(box);
+
 			dialogue = new Alphabet(0, 80, "", false, true);
 			add(dialogue);
 		}
@@ -211,9 +208,13 @@ class DialogueBox extends FlxSpriteGroup
 							dropText.alpha = swagDialogue.alpha;
 						}, 5);
 					}
-					else if (PlayState.SONG.stageDefault == 'school-evil' || PlayState.SONG.stageDefault == 'stage')
+					else
 					{
-						box.animation.play('normalOpen', false, true);
+						new FlxTimer().start(0.2, function(tmr:FlxTimer)
+						{
+							box.alpha -= 1 / 5;
+							dialogue.alpha -= 1 / 5;
+						}, 5);
 					}
 
 					new FlxTimer().start(1.2, function(tmr:FlxTimer)
@@ -239,27 +240,29 @@ class DialogueBox extends FlxSpriteGroup
 	{
 		cleanDialog();
 
-		if (!atSchool())
+		if (atSchool())
+		{
+			if (dialogueList[0].isPlayer1)
+			{
+				portraitRight.visible = false;
+				if (!portraitLeft.visible)
+				{
+					portraitLeft.visible = true;
+					portraitLeft.animation.play('enter');
+				}
+			}
+			else if (!dialogueList[0].isPlayer1)
+			{
+				portraitLeft.visible = false;
+				if (!portraitRight.visible)
+				{
+					portraitRight.visible = true;
+					portraitRight.animation.play('enter');
+				}
+			}
+		}
+		else
 			box.flipX = dialogueList[0].isPlayer1;
-		
-		if (dialogueList[0].isPlayer1)
-		{
-			portraitRight.visible = false;
-			if (!portraitLeft.visible)
-			{
-				portraitLeft.visible = true;
-				portraitLeft.animation.play('enter');
-			}
-		}
-		else if (!dialogueList[0].isPlayer1)
-		{
-			portraitLeft.visible = false;
-			if (!portraitRight.visible)
-			{
-				portraitRight.visible = true;
-				portraitRight.animation.play('enter');
-			}
-		}
 	}
 
 	function cleanDialog():Void

@@ -13,10 +13,7 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
-import io.colyseus.Client;
-import io.colyseus.Room;
 import lime.app.Application;
-import netTest.MyRoomState;
 import openfl.Assets;
 
 using StringTools;
@@ -41,66 +38,14 @@ class TitleState extends MusicBeatState
 
 	var wackyImage:FlxSprite;
 
-	private var client:Client;
-	private var room:Room<MyRoomState>;
-
 	override public function create():Void
 	{
 		startedIntro = false;
-		#if debug
-		client = new Client('ws://localhost:2567');
-		#else
-		client = new Client("ws://71.188.110.159:2567");
-		#end
-
-		client.joinOrCreate("my_room", [], MyRoomState, function(err, room)
-		{
-			if (err != null)
-			{
-				trace("ERROR: " + err);
-				return;
-			}
-
-			this.room = room;
-
-			/*room.state.entities.onAdd = function(entity, key) {
-						trace("entity added at " + key + " => " + entity);
-
-						entity.onChange = function (changes) {
-							trace("entity changes => " + changes);
-						}
-			}*/
-			/*room.state.entities.onChange = function(entity, key) {
-				trace("entity changed at " + key + " => " + entity);
-			}*/
-			/*room.state.entities.onRemove = function(entity, key) {
-				trace("entity removed at " + key + " => " + entity);
-			}*/
-
-			this.room.onMessage("type", function(message)
-			{
-				if (message == 'enterPressed')
-				{
-					FlxG.switchState(new MainMenuState());
-				}
-				trace("onMessage: 'type' => " + message);
-			});
-
-			this.room.onError += function(code:Int, message:String)
-			{
-				trace("ROOM ERROR: " + code + " => " + message);
-			};
-
-			this.room.onLeave += function()
-			{
-				trace("ROOM LEAVE");
-			};
-		});
 
 		FlxG.game.focusLostFramerate = 60;
 		FlxG.autoPause = false;
 
-		FlxG.sound.muteKeys = [ZERO];
+		FlxG.sound.muteKeys = [ZERO, NUMPADZERO];
 
 		#if polymod
 		polymod.Polymod.init({modRoot: "mods", dirs: ['introMod']});
@@ -148,6 +93,8 @@ class TitleState extends MusicBeatState
 		FlxG.switchState(new netTest.NetTest());
 		#elseif ANIMDEBUG
 		FlxG.switchState(new AnimationDebug());
+		#elseif CUTSCENE
+		FlxG.switchState(new CutsceneAnimTestState());
 		#else
 		new FlxTimer().start(1, function(tmr:FlxTimer)
 		{
@@ -323,15 +270,15 @@ class TitleState extends MusicBeatState
 
 		if (pressedEnter && !transitioning && skippedIntro)
 		{
-			room.send('type', "enterPressed");
-
 			NGio.unlockMedal(60960);
 
 			// If it's Friday according to da clock
 			if (Date.now().getDay() == 5)
 				NGio.unlockMedal(61034);
 
-			titleText.animation.play('press');
+			if (titleText != null)
+				titleText.animation.play('press');
+
 			FlxG.camera.flash(FlxColor.WHITE, 1);
 			FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);
 			transitioning = true;
@@ -346,14 +293,14 @@ class TitleState extends MusicBeatState
 
 				var version:String = "v" + Application.current.meta.get('version');
 
-				if (version.trim() != NGio.GAME_VER_NUMS.trim() && !OutdatedSubState.leftState)
+				if (version.trim() != NGio.GAME_VER.trim() && !OutdatedSubState.leftState)
 				{
 					FlxG.switchState(new OutdatedSubState());
 					trace('OLD VERSION!');
 					trace('old ver');
 					trace(version.trim());
 					trace('cur ver');
-					trace(NGio.GAME_VER_NUMS.trim());
+					trace(NGio.GAME_VER.trim());
 				}
 				else
 				{

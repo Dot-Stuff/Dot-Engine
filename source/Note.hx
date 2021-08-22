@@ -1,5 +1,6 @@
 package;
 
+import ui.PreferencesMenu;
 import flixel.FlxSprite;
 
 using StringTools;
@@ -48,9 +49,7 @@ class Note extends FlxSprite
 
 		this.noteData = noteData;
 
-		var daStage:String = PlayState.SONG.stageDefault;
-
-		if (daStage.startsWith('school'))
+		if (PlayState.SONG.stageDefault.startsWith('school'))
 		{
 			loadGraphic(Paths.image('weeb/pixelUI/arrows-pixels'), true, 17, 17);
 
@@ -81,12 +80,12 @@ class Note extends FlxSprite
 		{
 			frames = Paths.getSparrowAtlas('NOTE_assets');
 
-			animation.addByPrefix('greenScroll', 'green0');
-			animation.addByPrefix('redScroll', 'red0');
-			animation.addByPrefix('blueScroll', 'blue0');
-			animation.addByPrefix('purpleScroll', 'purple0');
+			animation.addByPrefix('greenScroll', 'green instance');
+			animation.addByPrefix('redScroll', 'red instance');
+			animation.addByPrefix('blueScroll', 'blue instance');
+			animation.addByPrefix('purpleScroll', 'purple instance');
 
-			animation.addByPrefix('purpleholdend', 'pruple end hold');
+			animation.addByPrefix('purpleholdend', 'pruple hold end');
 			animation.addByPrefix('greenholdend', 'green hold end');
 			animation.addByPrefix('redholdend', 'red hold end');
 			animation.addByPrefix('blueholdend', 'blue hold end');
@@ -108,6 +107,9 @@ class Note extends FlxSprite
 		{
 			alpha = 0.6;
 
+			if (PreferencesMenu.getPref('downscroll'))
+				angle = 180;
+
 			x += width / 2;
 
 			animation.play('${noteColors[noteData]}holdend');
@@ -116,14 +118,14 @@ class Note extends FlxSprite
 
 			x -= width / 2;
 
-			if (daStage.startsWith('school'))
+			if (PlayState.SONG.stageDefault.startsWith('school'))
 				x += 30;
 
 			if (prevNote.isSustainNote)
 			{
 				prevNote.animation.play('${noteColors[prevNote.noteData]}hold');
 
-				prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.5 * PlayState.SONG.speed;
+				prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.5 * PlayState.SONG.speed[PlayState.storyDifficulty];
 				prevNote.updateHitbox();
 			}
 		}
@@ -154,10 +156,9 @@ class Note extends FlxSprite
 				{
 					// The * 0.5 is so that it's easier to hit them too late, instead of too early
 					canBeHit = (strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * 0.5));
-
-					if (strumTime < Conductor.songPosition - Conductor.safeZoneOffset && !wasGoodHit)
-						tooLate = true;
 				}
+				else if (strumTime < Conductor.songPosition - Conductor.safeZoneOffset && !wasGoodHit)
+					tooLate = true;
 			}
 		}
 		else
@@ -168,10 +169,7 @@ class Note extends FlxSprite
 				wasGoodHit = true;
 		}
 
-		if (tooLate)
-		{
-			if (alpha > 0.3)
-				alpha = 0.3;
-		}
+		if (tooLate && alpha > 0.3)
+			alpha = 0.3;
 	}
 }

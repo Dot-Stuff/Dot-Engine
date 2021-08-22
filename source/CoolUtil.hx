@@ -17,6 +17,15 @@ class CoolUtil
 	{
 		var daList:Array<String> = Assets.getText(path).trim().split('\n');
 
+		var swagArray:Array<String> = Assets.getText(path).trim().split('\n');
+
+		for (item in swagArray)
+		{
+			// Comment support in the quick lil text formats??? using //
+			if (!item.trim().startsWith('//'))
+				daList.push(item);
+		}
+
 		for (i in 0...daList.length)
 		{
 			daList[i] = daList[i].trim();
@@ -33,5 +42,15 @@ class CoolUtil
 			dumbArray.push(i);
 		}
 		return dumbArray;
+	}
+
+	public static function camLerpShit(ratio:Float):Float
+	{
+		return FlxG.elapsed / 0.016666666666666666 * ratio;
+	}
+
+	public static function coolLerp(a:Float, b:Int, ratio:Float):Float
+	{
+		return a + camLerpShit(ratio) * (b - a);
 	}
 }
