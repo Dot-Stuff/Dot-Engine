@@ -846,6 +846,8 @@ class PlayState extends MusicBeatState
 
 	function gunsIntro():Void
 	{
+		inCutscene = true;
+
 		camFollow.setPosition(camPos.x, camPos.y);
 
 		camHUD.visible = false;

@@ -1,5 +1,6 @@
 package;
 
+import flixel.system.FlxSound;
 import flixel.FlxSprite;
 import flixel.group.FlxSpriteGroup;
 import flixel.math.FlxMath;
@@ -38,7 +39,7 @@ class Alphabet extends FlxSpriteGroup
 
 	var isBold:Bool = false;
 
-	public function new(x:Float, y:Float, text:String = "", ?bold:Bool = false, typed:Bool = false, ?playerName:String = 'BF')
+	public function new(x:Float, y:Float, text:String = "", ?bold:Bool = false, typed:Bool = false)
 	{
 		super(x, y);
 
@@ -49,7 +50,7 @@ class Alphabet extends FlxSpriteGroup
 		if (text != "")
 		{
 			if (typed)
-				startTypedText(playerName);
+				startTypedText();
 			else
 				addText();
 		}
@@ -97,7 +98,7 @@ class Alphabet extends FlxSpriteGroup
 
 	public var personTalking:String = 'gf';
 
-	public function startTypedText(playerName:String):Void
+	public function startTypedText():Void
 	{
 		_finalText = text;
 		doSplitWords();
@@ -164,8 +165,8 @@ class Alphabet extends FlxSpriteGroup
 					letter.x += 90;
 				}
 
-				if (FlxG.random.bool(40))
-					FlxG.sound.play(Paths.soundRandom('${playerName.toUpperCase()}_', 1, 4));
+				/*if (FlxG.random.bool(40))
+					FlxG.sound.play(Paths.soundRandom('${personTalking}_', 1, 4));*/
 
 				add(letter);
 

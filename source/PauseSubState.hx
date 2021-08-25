@@ -84,9 +84,9 @@ class PauseSubState extends MenuSubState
 		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
 	}
 
-	public override function changeItem(direction:MenuDirections)
+	public override function changeItem(change:Int = 0)
 	{
-		super.changeItem(direction);
+		super.changeItem(change);
 
 		if (curSelected >= menuItems.length)
 			curSelected = 0;
@@ -166,7 +166,7 @@ class PauseSubState extends MenuSubState
 			menuItems.add(songText);
 		}
 
-		changeItem(NONE);
+		changeItem();
 	}
 
 	function pauseOG()
@@ -213,6 +213,6 @@ class PauseSubState extends MenuSubState
 			menuItems.add(songText);
 		}
 
-		changeItem(NONE);
+		changeItem();
 	}
 }

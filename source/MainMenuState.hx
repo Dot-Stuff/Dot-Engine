@@ -99,8 +99,10 @@ class MainMenuState extends MenuState
 		{
 			selectedItem = true;
 
-			FlxG.switchState(new ui.OptionsState());
-			trace("Options Menu Selected");
+			/*FlxG.switchState(new ui.OptionsState());
+			trace("Options Menu Selected");*/
+
+			FlxG.switchState(new ui.MultiplayerMenu());
 		});
 
 		for (i in 0...items.length)
@@ -117,7 +119,7 @@ class MainMenuState extends MenuState
 			menuItem.antialiasing = true;
 		}
 
-		changeItem(NONE);
+		changeItem();
 	}
 
 	override function update(elapsed:Float)
@@ -135,9 +137,9 @@ class MainMenuState extends MenuState
 		});
 	}
 
-	public override function changeItem(direction:MenuDirections)
+	public override function changeItem(change:Int = 0)
 	{
-		super.changeItem(direction);
+		super.changeItem(change);
 
 		if (curSelected >= menuItems.length)
 			curSelected = 0;

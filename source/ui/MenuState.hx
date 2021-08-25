@@ -2,13 +2,6 @@ package ui;
 
 import flixel.FlxObject;
 
-enum MenuDirections
-{
-	NONE;
-	UP;
-	DOWN;
-}
-
 class MenuMetadata
 {
 	public var name:String = "";
@@ -47,13 +40,13 @@ class MenuState extends MusicBeatState
 			{
 				FlxG.sound.play(Paths.sound('scrollMenu'));
 	
-				changeItem(UP);
+				changeItem(-1);
 			}
 			else if (controls.UI_DOWN_P)
 			{
 				FlxG.sound.play(Paths.sound('scrollMenu'));
 	
-				changeItem(DOWN);
+				changeItem(1);
 			}
 	
 			if (controls.ACCEPT)
@@ -68,12 +61,9 @@ class MenuState extends MusicBeatState
 		items.push(new MenuMetadata(name, onAccept));
 	}
 
-	public function changeItem(direction:MenuDirections)
+	public function changeItem(change:Int = 0)
 	{
-		if (direction.match(UP))
-			curSelected--;
-		else if (direction.match(DOWN))
-			curSelected++;
+		curSelected += change;
 	}
 
 	public function acceptItem()
@@ -99,13 +89,13 @@ class MenuSubState extends MusicBeatSubstate
 			{
 				FlxG.sound.play(Paths.sound('scrollMenu'));
 	
-				changeItem(UP);
+				changeItem(-1);
 			}
 			else if (controls.UI_DOWN_P)
 			{
 				FlxG.sound.play(Paths.sound('scrollMenu'));
 	
-				changeItem(DOWN);
+				changeItem(1);
 			}
 	
 			if (controls.ACCEPT)
@@ -120,12 +110,9 @@ class MenuSubState extends MusicBeatSubstate
 		items.push(new MenuMetadata(name, onAccept));
 	}
 
-	public function changeItem(direction:MenuDirections)
+	public function changeItem(change:Int = 0)
 	{
-		if (direction.match(UP))
-			curSelected--;
-		else if (direction.match(DOWN))
-			curSelected++;
+		curSelected += change;
 	}
 
 	public function acceptItem()

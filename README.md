@@ -8,7 +8,7 @@ This is the repository for Friday Night Funkin, a game originally made for Ludum
 [Play on Newgrounds](https://www.newgrounds.com/portal/view/770371)
 [Support the project](https://ninja-muffin24.itch.io/funkin)
 
-IF YOU MAKE A MOD AND DISTRIBUTE A MODIFIED / RECOMIPLED VERSION, YOU MUST OPEN SOURCE YOUR MOD AS WELL
+IF YOU MAKE A MOD AND DISTRIBUTE A MODIFIED / RECOMPILED VERSION, YOU MUST OPEN SOURCE YOUR MOD AS WELL
 
 ## Credits / shoutouts
 
