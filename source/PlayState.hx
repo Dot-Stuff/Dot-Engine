@@ -624,7 +624,7 @@ class PlayState extends MusicBeatState
 		add(foregroundSprites);
 
 		var doof:DialogueBox = new DialogueBox();
-		if (PlayState.SONG.stageDefault == 'stage')
+		if (!SONG.stageDefault.startsWith('school'))
 			doof.y = FlxG.height * 0.5;
 
 		doof.scrollFactor.set();

@@ -166,7 +166,7 @@ class Alphabet extends FlxSpriteGroup
 				}
 
 				/*if (FlxG.random.bool(40))
-					FlxG.sound.play(Paths.soundRandom('${personTalking}_', 1, 4));*/
+					FlxG.sound.play(Paths.soundRandom('${personTalking}_', 1, 4)); */
 
 				add(letter);
 
@@ -263,6 +263,17 @@ class AlphaCharacter extends FlxSprite
 			case "!":
 				animation.addByPrefix(letter, 'exclamation point', 24);
 				animation.play(letter);
+			case '-':
+				animation.addByPrefix(letter, '-', 24);
+				animation.play(letter);
+				y += 30;
+			case '_':
+				animation.addByPrefix(letter, '_', 24);
+				animation.play(letter);
+			case ',':
+				animation.addByPrefix(letter, 'comma', 24);
+				animation.play(letter);
+				y += 50;
 		}
 
 		updateHitbox();
