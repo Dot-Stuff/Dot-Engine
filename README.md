@@ -4,8 +4,7 @@ This is the repository for Friday Night Funkin, a game originally made for Ludum
 
 [Play the Ludum Dare prototype](https://ninja-muffin24.itch.io/friday-night-funkin)
 
-[Play on Newgrounds](https://www.newgrounds.com/portal/view/770371)
-[Support the project](https://ninja-muffin24.itch.io/funkin)
+[Play on Newgrounds](https://www.newgrounds.com/portal/view/770371) or [Support the project](https://ninja-muffin24.itch.io/funkin)
 
 IF YOU MAKE A MOD AND DISTRIBUTE A MODIFIED / RECOMPILED VERSION, YOU MUST OPEN SOURCE YOUR MOD AS WELL
 
@@ -84,7 +83,7 @@ To run it from your desktop (Windows, Mac, Linux) it can be a bit more involved.
 * Windows SDK (10.0.17763.0)
 
 Once that is done you can open up a command line in the project's directory and run `lime test windows -debug`. Once that command finishes (it takes forever even on a higher end PC), you can run FNF from the .exe file under export\release\windows\bin
-As for Mac, 'lime test mac -debug' should work, if not the internet surely has a guide on how to compile Haxe stuff for Mac.
+As for Mac, `lime test mac -debug` should work, if not the internet surely has a guide on how to compile Haxe stuff for Mac.
 
 ### Additional guides
 
