@@ -56,9 +56,6 @@ You should have everything ready for compiling the game! Follow the guide below 
 At the moment, you can optionally fix the debug screen.
 - Run `haxelib git openfl https://github.com/openfl/openfl` in the terminal/command-prompt.
 
-At the moment, you can optionally fix the transition bug in songs with zoomed-out cameras.
-- Run `haxelib git flixel-addons https://github.com/HaxeFlixel/flixel-addons` in the terminal/command-prompt.
-
 ### Ignored files
 
 I gitignore the API keys for the game, so that no one can nab them and post fake high scores on the leaderboards. But because of that the game
