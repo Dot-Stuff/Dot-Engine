@@ -15,9 +15,12 @@ import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import lime.app.Application;
 import openfl.Assets;
+#if ANIMDEBUG
+import ui.AnimationDebug;
+#end
 
 using StringTools;
-#if desktop
+#if discord_rpc
 import Discord.DiscordClient;
 import sys.thread.Thread;
 #end
@@ -48,12 +51,13 @@ class TitleState extends MusicBeatState
 		FlxG.sound.muteKeys = [ZERO, NUMPADZERO];
 
 		#if polymod
-		polymod.Polymod.init({modRoot: "mods", dirs: ['introMod']});
+		polymod.Polymod.init({modRoot: "mods", dirs: ['introMod'], framework: OPENFL});
 		#end
 
 		PlayerSettings.init();
 
 		curWacky = FlxG.random.getObject(getIntroTextShit());
+
 		FlxG.sound.cache(Paths.music('freakyMenu'));
 
 		// DEBUG BULLSHIT
@@ -102,7 +106,7 @@ class TitleState extends MusicBeatState
 		});
 		#end
 
-		#if desktop
+		#if discord_rpc
 		DiscordClient.initialize();
 
 		Application.current.onExit.add(function(exitCode)
@@ -177,11 +181,6 @@ class TitleState extends MusicBeatState
 		titleText.updateHitbox();
 		// titleText.screenCenter(X);
 		add(titleText);
-
-		var logo:FlxSprite = new FlxSprite().loadGraphic(Paths.image('logo'));
-		logo.screenCenter();
-		logo.antialiasing = true;
-		// add(logo);
 
 		// FlxTween.tween(logoBl, {y: logoBl.y + 50}, 0.6, {ease: FlxEase.quadInOut, type: PINGPONG});
 		// FlxTween.tween(logo, {y: logoBl.y + 50}, 0.6, {ease: FlxEase.quadInOut, type: PINGPONG, startDelay: 0.1});

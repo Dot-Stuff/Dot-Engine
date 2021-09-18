@@ -67,7 +67,7 @@ class SongConverter
 		fileNormal.song.speed.push(daOgSpeed);
 		fileNormal.song.speed.push(fileEasy.song.speed);
 
-		fileNormal.song.stageDefault = getStage(songName);
+		fileNormal.curStage = getStage(songName);
 		fileNormal.song.gf = getGF(songName);
 
 		if (!FileSystem.exists('songs'))
@@ -99,7 +99,7 @@ class SongConverter
 			case 'spookeez' | 'monster' | 'south':
 				return "spooky";
 			case 'pico' | 'blammed' | 'philly':
-				return "spooky";
+				return "philly";
 			case 'milf' | 'satin-panties' | 'high':
 				return "limo";
 			case 'eggnog' | 'cocoa':

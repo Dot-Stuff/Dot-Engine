@@ -29,7 +29,7 @@ IF YOU WANT TO COMPILE THE GAME YOURSELF, CONTINUE READING!!!
 ### Installing the Required Programs
 
 First you need to install Haxe and HaxeFlixel. I'm too lazy to write and keep updated with that setup (which is pretty simple). 
-1. [Install Haxe 4.1.5](https://haxe.org/download/version/4.1.5/) (Download 4.1.5 instead of 4.2.0 because 4.2.0 is broken and is not working with gits properly...)
+1. [Install Haxe](https://haxe.org/download/)
 2. [Install HaxeFlixel](https://haxeflixel.com/documentation/install-haxeflixel/) after downloading Haxe
 
 Other installations you'd need are the additional libraries, a fully updated list will be in `Project.xml` in the project root. Currently, these are all of the things you need to install:
@@ -70,15 +70,14 @@ class APIStuff
 	public static var API:String = "";
 	public static var EncKey:String = "";
 }
-
 ```
 
 and you should be good to go there.
 
 ### Compiling game
 
-Once you have all those installed, its pretty easy to compile the game. You just need to run 'lime test html5 -debug' in the root of the project to build and run the HTML5 version. (command prompt navigation guide can be found here: [Command line basics](https://ninjamuffin99.newgrounds.com/news/post/1090480))
-To run it from your desktop (Windows, Mac, Linux) it can be a bit more involved. For Linux, you only need to open a terminal in the project directory and run 'lime test linux -debug' and then run the executable file in export/release/linux/bin. For Windows, you need to install Visual Studio Community 2019. While installing VSC, don't click on any of the options to install workloads. Instead, go to the individual components tab and choose the following:
+Once you have all those installed, its pretty easy to compile the game. You just need to run `lime test html5 -debug` in the root of the project to build and run the HTML5 version. (command prompt navigation guide can be found here: [Command line basics](https://ninjamuffin99.newgrounds.com/news/post/1090480))
+To run it from your desktop (Windows, Mac, Linux) it can be a bit more involved. For Linux, you only need to open a terminal in the project directory and run `lime test linux -debug` and then run the executable file in export/release/linux/bin. For Windows, you need to install Visual Studio Community 2019. While installing VSC, don't click on any of the options to install workloads. Instead, go to the individual components tab and choose the following:
 * MSVC v142 - VS 2019 C++ x64/x86 build tools
 * Windows SDK (10.0.17763.0)
 

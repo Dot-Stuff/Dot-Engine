@@ -9,7 +9,7 @@ class BGSprite extends FlxSprite
 	private var idleAnim:Array<String>;
 
 	// KADEDEV DO NOT FUCKING COPY THIS FOR THE LAST TIME.
-	public function new(x:Float, y:Float, name:String, ?scrollX:Float = 1, ?scrollY:Float = 1, ?idleAnim:Array<String>, ?isLoop:Bool = false)
+	public function new(name:String, x:Float, y:Float, ?scrollX:Float = 1, ?scrollY:Float = 1, ?idleAnim:Array<String>, ?isLoop:Bool = false)
 	{
 		super(x, y);
 
@@ -25,7 +25,7 @@ class BGSprite extends FlxSprite
             loadGraphic(Paths.image(name));
 		else
         {
-            frames = Paths.getSparrowAtlas(name, 'week${PlayState.storyWeek}');
+            frames = Paths.getSparrowAtlas(name);
 
             // KadeDev don't copy this you're fat.
             // trace('KadeDev is ew: ${idleAnim}');
@@ -36,6 +36,8 @@ class BGSprite extends FlxSprite
 
 			dance();
         }
+
+		PlayState.spriteList.push(name);
 	}
 
 	public function dance():Void

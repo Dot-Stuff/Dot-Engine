@@ -37,7 +37,7 @@ class DialogueBox extends FlxSpriteGroup
 
 		if (PlayState.isStoryMode)
 		{
-			switch (PlayState.SONG.stageDefault)
+			switch (PlayState.curStage)
 			{
 				case 'school-evil':
 					FlxG.sound.playMusic(Paths.music('LunchboxScary'), 0);
@@ -290,6 +290,6 @@ class DialogueBox extends FlxSpriteGroup
 
 	function atSchool():Bool
 	{
-		return PlayState.SONG.stageDefault.startsWith('school');
+		return PlayState.curStage.startsWith('school');
 	}
 }

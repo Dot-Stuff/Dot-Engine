@@ -15,16 +15,19 @@
 	<!-- ____________________________ Window Settings ___________________________ -->
 
 	<!--These window settings apply to all targets-->
-	<window width="1280" height="720" fps="60" background="#000000" hardware="true" vsync="false" />
+	<window width="1280" height="720" fps="" background="#000000" hardware="true" vsync="false" />
 
 	<!--HTML5-specific-->
-	<window if="html5" resizable="false" />
+	<window if="html5" resizable="true" />
 
 	<!--Desktop-specific-->
-	<window if="desktop" orientation="landscape" fullscreen="false" resizable="true" />
+	<window if="desktop" orientation="landscape" fullscreen="false" resizable="true" vsync="false" />
 
 	<!--Mobile-specific-->
-	<window if="mobile" orientation="landscape" fullscreen="true" width="0" height="0" />
+	<window if="mobile" orientation="landscape" fullscreen="true" width="0" height="0" resizable="false" />
+
+	<!--Switch-specific-->
+	<window if="switch" orientation="landscape" fullscreen="true" width="0" height="0" resizable="true" />
 
 	<!-- _____________________________ Path Settings ____________________________ -->
 
@@ -34,12 +37,15 @@
 
 	<classpath name="source" />
 
+	<assets path="assets/preload/music" include="*mp4" embed='false' />
+
 	<assets path="assets/preload" rename="assets" exclude="*.ogg" if="web"/>
 	<assets path="assets/preload" rename="assets" exclude="*.mp3" unless="web"/>
 	
 	<!-- <define name="PRELOAD_ALL" /> -->
 	<define name="PRELOAD_ALL" unless="web" />
 	<define name="NO_PRELOAD_ALL" unless="PRELOAD_ALL"/>
+	<define name="disord_rpc" unless="web hl"/>
 	
 	<section if="PRELOAD_ALL">
 		<library name="songs"    preload="true" />
@@ -116,8 +122,8 @@
 	<haxelib name="polymod" />
 	<haxelib name="colyseus" />
 	<haxelib name="colyseus-websocket" />
-	<haxelib name="discord_rpc" if="desktop" />
-	<haxelib name="hxcpp-debug-server" if="desktop debug"/>
+	<haxelib name="discord_rpc" unless="web hl" />
+	<!--<haxelib name="hxcpp-debug-server" if="desktop debug"/>-->
 
 	<!--<haxelib name="flixel-animate" />
 	<haxelib name="spine-hx" />-->

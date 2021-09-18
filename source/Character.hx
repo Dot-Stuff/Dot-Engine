@@ -8,7 +8,6 @@ using StringTools;
 class Character extends FlxSprite
 {
 	public var animOffsets:Map<String, Array<Dynamic>>;
-	public var debugMode:Bool = false;
 
 	public var isPlayer:Bool = false;
 	public var curCharacter:String = 'bf';
@@ -111,9 +110,9 @@ class Character extends FlxSprite
 
 				quickAnimAdd('idle', 'Dad Idle Dance');
 				quickAnimAdd('singUP', 'Dad Sing Note UP');
-				quickAnimAdd('singRIGHT', 'Dad Sing Note RIGHT');
+				quickAnimAdd('singRIGHT', 'Dad Sing Note LEFT');
 				quickAnimAdd('singDOWN', 'Dad Sing Note DOWN');
-				quickAnimAdd('singLEFT', 'Dad Sing Note LEFT');
+				quickAnimAdd('singLEFT', 'Dad Sing Note RIGHT');
 
 				loadOffsetFile(curCharacter);
 
@@ -479,17 +478,22 @@ class Character extends FlxSprite
 			// Doesn't flip for BF, since his are already in the right place???
 			if (!curCharacter.startsWith('bf'))
 			{
-				// var animArray
-				var oldRight = animation.getByName('singRIGHT').frames;
-				animation.getByName('singRIGHT').frames = animation.getByName('singLEFT').frames;
-				animation.getByName('singLEFT').frames = oldRight;
+				var left = animation.getByName('singLEFT');
+				var right = animation.getByName('singRIGHT');
+				var oldRight = right.frames;
+
+				right.frames = left.frames;
+				left.frames = oldRight;
 
 				// IF THEY HAVE MISS ANIMATIONS??
 				if (animation.getByName('singRIGHTmiss') != null)
 				{
-					var oldMiss = animation.getByName('singRIGHTmiss').frames;
-					animation.getByName('singRIGHTmiss').frames = animation.getByName('singLEFTmiss').frames;
-					animation.getByName('singLEFTmiss').frames = oldMiss;
+					var leftMiss = animation.getByName('singLEFTmiss');
+					var rightMiss = animation.getByName('singRIGHTmiss');
+					var oldMiss = rightMiss.frames;
+
+					rightMiss.frames = leftMiss.frames;
+					leftMiss.frames = oldMiss;
 				}
 			}
 		}
@@ -545,10 +549,8 @@ class Character extends FlxSprite
 				holdTimer += elapsed;
 			}
 
-			var dadVar:Float = 4;
+			var dadVar:Float = curCharacter == 'dad' ? 6.1 : 4;
 
-			if (curCharacter == 'dad')
-				dadVar = 6.1;
 			if (holdTimer >= Conductor.stepCrochet * dadVar * 0.001)
 			{
 				dance();
@@ -599,45 +601,19 @@ class Character extends FlxSprite
 
 	private var danced:Bool = false;
 
-	/**
-	 * FOR GF DANCING SHIT
-	 */
 	public function dance()
 	{
-		if (!debugMode)
+		if (animOffsets.exists('danceRight') && animOffsets.exists('danceLeft'))
 		{
-			switch (curCharacter)
+			if (!animation.curAnim.name.startsWith('hair'))
 			{
-				case 'gf' | 'gf-christmas' | 'gf-car' | 'gf-pixel' | 'gf-tankmen':
-					if (!animation.curAnim.name.startsWith('hair'))
-					{
-						danced = !danced;
+				danced = !danced;
 
-						if (danced)
-							playAnim('danceRight');
-						else
-							playAnim('danceLeft');
-					}
-
-				case 'pico-speaker':
-					// lol weed
-					// playAnim('shoot' + FlxG.random.int(1, 4), true);
-				case 'tankman':
-					if (!animation.curAnim.name.endsWith('DOWN-alt'))
-						playAnim('idle');
-
-				case 'spooky':
-					danced = !danced;
-
-					if (danced)
-						playAnim('danceRight');
-					else
-						playAnim('danceLeft');
-
-				default:
-					playAnim('idle');
+				danced ? playAnim('danceRight') : playAnim('danceLeft');
 			}
 		}
+		else if (animOffsets.exists('idle')|| !animation.curAnim.name.endsWith('DOWN-alt'))
+			playAnim('idle');
 	}
 
 	public function playAnim(animName:String, force:Bool = false, reversed:Bool = false, frame:Int = 0):Void
@@ -645,10 +621,8 @@ class Character extends FlxSprite
 		animation.play(animName, force, reversed, frame);
 
 		var daOffset = animOffsets.get(animName);
-		if (animOffsets.exists(animName))
-		{
+		if (daOffset != null)
 			offset.set(daOffset[0], daOffset[1]);
-		}
 		else
 			offset.set(0, 0);
 

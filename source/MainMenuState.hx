@@ -1,25 +1,28 @@
 package;
 
-import ui.MenuState;
-import flixel.tweens.FlxEase;
-import flixel.tweens.FlxTween;
-import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.FlxSprite;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.effects.FlxFlicker;
+import flixel.graphics.frames.FlxFramesCollection;
+import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.text.FlxText;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import lime.app.Application;
+import ui.MenuState;
 
 using StringTools;
+
 #if desktop
 import Discord.DiscordClient;
 #end
 
 class MainMenuState extends MenuState
 {
-	public var menuItems:FlxTypedGroup<FlxSprite>;
+	public var menuItems:FlxTypedGroup<MainMenuList>;
 
+	private var bg:FlxSprite;
 	private var magenta:FlxSprite;
 
 	override function create()
@@ -38,100 +41,83 @@ class MainMenuState extends MenuState
 		persistentUpdate = true;
 		persistentDraw = true;
 
-		var bg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('menuBG'));
-		bg.scrollFactor.x = 0;
-		bg.scrollFactor.y = 0.15;
-		bg.setGraphicSize(Std.int(bg.width * 1.1));
+		bg = new FlxSprite(-80).loadGraphic(Paths.image('menuBG'));
+		bg.scrollFactor.set(0, 0.17);
+		bg.setGraphicSize(Std.int(bg.width * 1.2));
 		bg.updateHitbox();
 		bg.screenCenter();
 		bg.antialiasing = true;
 		add(bg);
 
 		magenta = new FlxSprite(-80).loadGraphic(Paths.image('menuDesat'));
-		magenta.scrollFactor.x = 0;
-		magenta.scrollFactor.y = 0.15;
-		magenta.setGraphicSize(Std.int(magenta.width * 1.1));
+		magenta.scrollFactor.set(bg.scrollFactor.x, bg.scrollFactor.y);
+		magenta.setGraphicSize(Std.int(bg.width));
 		magenta.updateHitbox();
-		magenta.screenCenter();
+		magenta.setPosition(bg.x, bg.y);
 		magenta.visible = false;
 		magenta.antialiasing = true;
 		magenta.color = 0xFFfd719b;
 		add(magenta);
 
-		var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, "v" + Application.current.meta.get('version'), 12);
+		var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, "v" + Application.current.meta['version'] + "(Dot Engine)", 12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
 
 		super.create();
 
-		menuItems = new FlxTypedGroup<FlxSprite>();
+		menuItems = new FlxTypedGroup<MainMenuList>();
 		add(menuItems);
 
 		createItem('story mode', function()
 		{
-			selectedItem = true;
-
 			FlxG.switchState(new StoryMenuState());
-			trace("Story Menu Selected");
 		});
 
 		createItem('freeplay', function()
 		{
-			selectedItem = true;
-
 			FlxG.switchState(new FreeplayState());
-			trace("Freeplay Menu Selected");
 		});
 
-		createItem('donate', function()
-		{
-			selectedItem = false;
-
-			#if linux
-			Sys.command('/usr/bin/xdg-open', ["https://ninja-muffin24.itch.io/funkin", "&"]);
-			#else
-			FlxG.openURL('https://ninja-muffin24.itch.io/funkin');
-			#end
-		});
+		createItem('donate', selectDonate, true);
 
 		createItem('options', function()
 		{
-			selectedItem = true;
-
-			/*FlxG.switchState(new ui.OptionsState());
-			trace("Options Menu Selected");*/
-
-			FlxG.switchState(new ui.MultiplayerMenu());
+			FlxG.switchState(new ui.OptionsState());
 		});
 
 		for (i in 0...items.length)
 		{
-			var menuItem:FlxSprite = new FlxSprite(0, 60 + (i * 160));
-			menuItem.frames = Paths.getSparrowAtlas('FNF_main_menu_assets');
-			menuItem.animation.addByPrefix('idle', '${items[i].name} basic', 24);
-			menuItem.animation.addByPrefix('selected', '${items[i].name} white', 24);
-			menuItem.animation.play('idle');
+			var menuItem:MainMenuList = new MainMenuList(0, 60 + (i * 160), items[i].name);
+			menuItem.idle();
 			menuItem.ID = i;
 			menuItem.screenCenter(X);
 			menuItems.add(menuItem);
 			menuItem.scrollFactor.set();
-			menuItem.antialiasing = true;
 		}
 
 		changeItem();
 	}
 
+	function selectDonate()
+	{
+		#if linux
+		Sys.command('/usr/bin/xdg-open', ["https://ninja-muffin24.itch.io/funkin", "&"]);
+		#else
+		FlxG.openURL('https://ninja-muffin24.itch.io/funkin');
+		#end
+	}
+
 	override function update(elapsed:Float)
 	{
+		FlxG.camera.followLerp = CoolUtil.camLerpShit(0.6);
+
 		if (FlxG.sound.music.volume < 0.8)
-		{
 			FlxG.sound.music.volume += 0.5 * FlxG.elapsed;
-		}
 
 		super.update(elapsed);
 
-		menuItems.forEach(function(spr:FlxSprite)
+		menuItems.forEach(function(spr:MainMenuList)
 		{
 			spr.screenCenter(X);
 		});
@@ -143,20 +129,18 @@ class MainMenuState extends MenuState
 
 		if (curSelected >= menuItems.length)
 			curSelected = 0;
-		if (curSelected < 0)
+		else if (curSelected < 0)
 			curSelected = menuItems.length - 1;
 
-		menuItems.forEach(function(spr:FlxSprite)
+		menuItems.forEach(function(spr:MainMenuList)
 		{
-			spr.animation.play('idle');
+			spr.idle();
 
 			if (spr.ID == curSelected)
 			{
-				spr.animation.play('selected');
+				spr.select();
 				camFollow.setPosition(spr.getGraphicMidpoint().x, spr.getGraphicMidpoint().y);
 			}
-
-			spr.updateHitbox();
 		});
 	}
 
@@ -164,9 +148,9 @@ class MainMenuState extends MenuState
 	{
 		super.acceptItem();
 
-		FlxFlicker.flicker(magenta, 1.1, 0.15, false);
+		FlxFlicker.flicker(magenta, 1.1, 0.15, false, true);
 
-		menuItems.forEach(function(spr:FlxSprite)
+		menuItems.forEach(function(spr:MainMenuList)
 		{
 			if (curSelected != spr.ID)
 			{
@@ -188,3 +172,52 @@ class MainMenuState extends MenuState
 		});
 	}
 }
+
+class MainMenuList extends FlxSprite
+{
+	var atlas:FlxFramesCollection;
+
+	public function new(x:Float, y:Float, name:String):Void
+	{
+		super(x, y);
+
+		frames = atlas = Paths.getSparrowAtlas('main_menu');
+		animation.addByPrefix('idle', '$name idle', 24);
+		animation.addByPrefix('selected', '$name selected', 24);
+
+		antialiasing = true;
+	}
+
+	public override function destroy():Void
+	{
+		super.destroy();
+
+		atlas = null;
+	}
+
+	function changeAnim(name:String)
+	{
+		animation.play(name);
+		updateHitbox();
+	}
+
+	public function idle()
+	{
+		changeAnim("idle");
+	}
+
+	public function select()
+	{
+		changeAnim("selected");
+	}
+
+	/*public function createItem(a, b, c, d, e):Void
+	{
+		if (e == null)
+		{
+			if (b == null)
+			{
+				a.ID = length;
+			}
+		}
+}*/}

@@ -605,7 +605,7 @@ class ChartingState extends MusicBeatState
 					FlxG.sound.music.pause();
 					vocals.pause();
 
-					var daTime:Float = 700 * FlxG.elapsed;
+					var daTime:Float = 700 * elapsed;
 
 					if (FlxG.keys.pressed.W)
 					{
@@ -783,13 +783,13 @@ class ChartingState extends MusicBeatState
 	{
 		if (check_mustHitSection.checked)
 		{
-			leftIcon.animation.play('bf');
-			rightIcon.animation.play('dad');
+			leftIcon.changeIcon(_song.player1);
+			rightIcon.changeIcon(_song.player2);
 		}
 		else
 		{
-			leftIcon.animation.play('dad');
-			rightIcon.animation.play('bf');
+			leftIcon.changeIcon(_song.player2);
+			rightIcon.changeIcon(_song.player1);
 		}
 	}
 

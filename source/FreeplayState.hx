@@ -1,13 +1,15 @@
 package;
 
 import flixel.FlxSprite;
+import flixel.FlxState;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
+import openfl.Assets;
 
 using StringTools;
 
-#if desktop
+#if discord_rpc
 import Discord.DiscordClient;
 #end
 
@@ -31,13 +33,22 @@ class FreeplayState extends MusicBeatState
 
 	private var iconArray:Array<HealthIcon> = [];
 
-	private var coolColors:Array<FlxColor> = [FlxColor.RED, FlxColor.RED, FlxColor.BLUE, FlxColor.YELLOW, FlxColor.PINK, FlxColor.ORANGE, FlxColor.GREEN, FlxColor.LIME];
+	private var coolColors:Array<FlxColor> = [
+		FlxColor.BLUE,
+		FlxColor.RED,
+		FlxColor.BLUE,
+		FlxColor.YELLOW,
+		FlxColor.PINK,
+		FlxColor.ORANGE,
+		FlxColor.PINK,
+		FlxColor.ORANGE
+	];
 
 	override function create()
 	{
-		#if desktop
+		#if discord_rpc
 		// Updating Discord Rich Presence
-		DiscordClient.changePresence("In the Menus", null);
+		DiscordClient.changePresence("In the Freeplay Menu", null);
 		#end
 
 		var isDebug:Bool = false;
@@ -158,17 +169,13 @@ class FreeplayState extends MusicBeatState
 		{
 			if (FlxG.sound.music.volume < 0.7)
 			{
-				FlxG.sound.music.volume += 0.5 * FlxG.elapsed;
+				FlxG.sound.music.volume += 0.5 * elapsed;
 			}
 		}
 
 		lerpScore = CoolUtil.coolLerp(lerpScore, intendedScore, 0.5);
 
 		bg.color = coolColors[songs[curSelected].week % coolColors.length];
-		for (song in songs)
-		{
-			// CoolUtil.camLerpShit(0.045);
-		}
 
 		if (Math.abs(lerpScore - intendedScore) <= 10)
 			lerpScore = intendedScore;
@@ -193,7 +200,7 @@ class FreeplayState extends MusicBeatState
 		if (controls.BACK)
 		{
 			FlxG.sound.play(Paths.sound('cancelMenu'));
-			FlxG.sound.music.fadeOut();
+			FlxG.sound.music.stop();
 			FlxG.switchState(new MainMenuState());
 		}
 
@@ -209,11 +216,11 @@ class FreeplayState extends MusicBeatState
 		}
 	}
 
-	/*override function switchTo(nextState:FlxState):Bool
+	override function switchTo(nextState:FlxState):Bool
 	{
 		clearDaCache(songs[curSelected].songName);
-		return super.switchTo(newState);
-	}*/
+		return super.switchTo(nextState);
+	}
 
 	function changeDiff(change:Int = 0)
 	{
@@ -238,9 +245,21 @@ class FreeplayState extends MusicBeatState
 		scoreText.x = FlxG.width - scoreText.width - 6;
 		scoreBG.scale.x = FlxG.width - scoreText.x + 6;
 		scoreBG.x = FlxG.width - scoreBG.scale.x / 2;
-		diffText.x = scoreBG.x + scoreBG.width / 2;
+	}
 
-		diffText.x = diffText.x - diffText.width / 2;
+	function clearDaCache(songName:String)
+	{
+		for (song in songs)
+		{
+			var songNameFat = song.songName;
+
+			if (songName != songNameFat)
+			{
+				trace('trying to remove: $songNameFat');
+				Assets.cache.clear(Paths.inst(songNameFat));
+				Assets.cache.clear(Paths.voices(songNameFat));
+			}
+		}
 	}
 
 	function changeSelection(change:Int = 0)

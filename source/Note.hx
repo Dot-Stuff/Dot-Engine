@@ -42,16 +42,16 @@ class Note extends FlxSprite
 		this.prevNote = prevNote;
 		isSustainNote = sustainNote;
 
-		x += 50;
+		x += PlayState.notesX;
 		// MAKE SURE ITS DEFINITELY OFF SCREEN?
 		y -= 2000;
 		this.strumTime = strumTime;
 
 		this.noteData = noteData;
 
-		if (PlayState.SONG.stageDefault.startsWith('school'))
+		if (PlayState.curStage.startsWith('school'))
 		{
-			loadGraphic(Paths.image('weeb/pixelUI/arrows-pixels'), true, 17, 17);
+			loadGraphic(Paths.image('pixelUI/arrows-pixels'), true, 17, 17);
 
 			animation.add('greenScroll', [6]);
 			animation.add('redScroll', [7]);
@@ -60,7 +60,7 @@ class Note extends FlxSprite
 
 			if (isSustainNote)
 			{
-				loadGraphic(Paths.image('weeb/pixelUI/arrowEnds'), true, 7, 6);
+				loadGraphic(Paths.image('pixelUI/arrowEnds'), true, 7, 6);
 
 				animation.add('purpleholdend', [4]);
 				animation.add('greenholdend', [6]);
@@ -118,7 +118,7 @@ class Note extends FlxSprite
 
 			x -= width / 2;
 
-			if (PlayState.SONG.stageDefault.startsWith('school'))
+			if (PlayState.curStage.startsWith('school'))
 				x += 30;
 
 			if (prevNote.isSustainNote)

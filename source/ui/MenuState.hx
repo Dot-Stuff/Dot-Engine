@@ -56,8 +56,10 @@ class MenuState extends MusicBeatState
 		super.update(elapsed);
 	}
 
-	public function createItem(name:String, onAccept:Void->Void)
+	public function createItem(name:String, onAccept:Void->Void, selectedItem:Bool = false)
 	{
+		this.selectedItem = selectedItem;
+
 		items.push(new MenuMetadata(name, onAccept));
 	}
 

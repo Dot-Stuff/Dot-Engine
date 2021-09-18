@@ -72,12 +72,14 @@ class SwagCamera extends FlxCamera
 				_lastTargetPosition.y = target.y;
 			}
 
-			if (followLerp >= 60 / FlxG.updateFramerate)
+			//var fpsShit = FlxG.updateFramerate / FlxG.updateFramerate;
+
+			if (followLerp >= 1)
 				scroll.copyFrom(_scrollTarget); // no easing
 			else
 			{
-				scroll.x += (_scrollTarget.x - scroll.x) * followLerp * FlxG.updateFramerate / 60;
-				scroll.y += (_scrollTarget.y - scroll.y) * followLerp * FlxG.updateFramerate / 60;
+				scroll.x += (_scrollTarget.x - scroll.x) * followLerp;
+				scroll.y += (_scrollTarget.y - scroll.y) * followLerp;
 			}
 		}
 	}

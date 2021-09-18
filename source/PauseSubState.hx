@@ -90,7 +90,7 @@ class PauseSubState extends MenuSubState
 
 		if (curSelected >= menuItems.length)
 			curSelected = 0;
-		if (curSelected < 0)
+		else if (curSelected < 0)
 			curSelected = menuItems.length - 1;
 
 		var bullShit:Int = 0;
@@ -171,7 +171,6 @@ class PauseSubState extends MenuSubState
 
 	function pauseOG()
 	{
-		menuItems.clear();
 		curSelected = 0;
 
 		createItem('Resume', function()
@@ -179,20 +178,22 @@ class PauseSubState extends MenuSubState
 			close();
 		});
 
-		createItem('Toggle Practice Mode', function()
+		createItem('Restart Song', function()
 		{
-			PlayState.practiceMode = !PlayState.practiceMode;
-			practiceText.visible = PlayState.practiceMode;
+			FlxG.resetState();
 		});
 
 		createItem('Change Difficulty', function()
 		{
 			difficultyChoices();
+
+			menuItems.clear();
 		});
 
-		createItem('Restart Song', function()
+		createItem('Toggle Practice Mode', function()
 		{
-			FlxG.resetState();
+			PlayState.practiceMode = !PlayState.practiceMode;
+			practiceText.visible = PlayState.practiceMode;
 		});
 
 		createItem('Exit to menu', function()
