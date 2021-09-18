@@ -33,10 +33,7 @@ class LoadingState extends MusicBeatState
 
 	override function create()
 	{
-		funkay = new FlxSprite(FlxG.width, FlxG.height);
-		funkay.frames = Paths.getSparrowAtlas('funkay');
-		funkay.animation.addByPrefix('bump', 'logo bumpin', 24);
-		funkay.animation.play('bump');
+		funkay = new FlxSprite(FlxG.width, FlxG.height).loadGraphic(Paths.image('funkay'), false, FlxG.width, FlxG.height);
 		funkay.setGraphicSize(0, FlxG.height);
 		funkay.updateHitbox();
 		funkay.antialiasing = true;

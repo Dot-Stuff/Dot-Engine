@@ -95,6 +95,9 @@ class TitleState extends MusicBeatState
 		FlxG.switchState(new ChartingState());
 		#elseif NETTEST
 		FlxG.switchState(new netTest.NetTest());
+		#elseif VIDTEST
+		var video = new VideoState();
+		openSubState(video);
 		#elseif ANIMDEBUG
 		FlxG.switchState(new AnimationDebug());
 		#elseif CUTSCENE

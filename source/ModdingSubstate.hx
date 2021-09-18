@@ -8,7 +8,7 @@ import flixel.FlxSubState;
 import sys.FileSystem;
 #end
 
-class ModdingSubstate extends FlxSubState
+class ModdingSubstate extends MusicBeatSubstate
 {
 	var grpMods:FlxTypedGroup<ModMenuItem>;
 	var modFolders:Array<String>;
@@ -27,7 +27,20 @@ class ModdingSubstate extends FlxSubState
 
 	public override function update(elapsed:Float)
 	{
-		if (FlxG.keys.justPressed.X && curSelected < grpMods.members.length - 1)
+		if (FlxG.keys.justPressed.R)
+			refreshModList();
+
+		selections();
+
+		if (controls.UI_UP_P)
+			selections(-1);
+		else if (controls.UI_DOWN_P)
+			selections(1);
+
+		if (FlxG.keys.justPressed.SPACE)
+			grpMods.members[curSelected].modEnabled = !grpMods.members[curSelected].modEnabled;
+
+		if (FlxG.keys.justPressed.I && curSelected != 0)
 		{
 			var oldOne = grpMods.members[curSelected - 1];
 			grpMods.members[curSelected - 1] = grpMods.members[curSelected];

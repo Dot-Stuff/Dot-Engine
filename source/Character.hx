@@ -612,7 +612,7 @@ class Character extends FlxSprite
 				danced ? playAnim('danceRight') : playAnim('danceLeft');
 			}
 		}
-		else if (animOffsets.exists('idle')|| !animation.curAnim.name.endsWith('DOWN-alt'))
+		else if (animOffsets.exists('idle') && (!animation.curAnim.name.endsWith('DOWN-alt') && curCharacter == 'tankman'))
 			playAnim('idle');
 	}
 

@@ -3,6 +3,7 @@ package;
 import flixel.FlxObject;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
+import ui.PreferencesMenu;
 
 using StringTools;
 
@@ -48,7 +49,9 @@ class GameOverSubstate extends MusicBeatSubstate
 		FlxG.camera.target = null;
 
 		bf.playAnim('firstDeath');
-		randomGameover = FlxG.random.int(1, 24, [1, 3, 8, 13, 17, 21]);
+
+		if (PreferencesMenu.getPref("censor-naughty"))
+			randomGameover = FlxG.random.int(1, 24, [1, 3, 8, 13, 17, 21]);
 	}
 
 	override function update(elapsed:Float)
@@ -79,7 +82,7 @@ class GameOverSubstate extends MusicBeatSubstate
 				coolStartDeath();
 
 				if (PlayState.storyWeek == 7)
-					FlxG.sound.play(Paths.sound('jeffGameover/jeffGameover-$randomGameover'));
+					FlxG.sound.play(Paths.sound('jeffGameover/jeffGameover-' + randomGameover));
 			}
 		}
 
