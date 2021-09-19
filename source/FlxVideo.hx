@@ -1,5 +1,6 @@
 package;
 
+import openfl.Lib;
 import openfl.events.MouseEvent;
 import openfl.events.AsyncErrorEvent;
 import openfl.events.NetStatusEvent;
@@ -31,6 +32,7 @@ class FlxVideo extends Sprite
 		video = new Video();
 		addChild(video);
 
+		netStream.close();
 		netStream.play(Paths.video(name));
 	}
 

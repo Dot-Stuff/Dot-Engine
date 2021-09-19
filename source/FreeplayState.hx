@@ -173,7 +173,7 @@ class FreeplayState extends MusicBeatState
 			}
 		}
 
-		lerpScore = CoolUtil.coolLerp(lerpScore, intendedScore, 0.5);
+		lerpScore = CoolUtil.coolLerp(lerpScore, intendedScore, 0.4);
 
 		bg.color = coolColors[songs[curSelected].week % coolColors.length];
 

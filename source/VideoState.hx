@@ -7,9 +7,8 @@ import openfl.display.Sprite;
 import openfl.events.AsyncErrorEvent;
 import openfl.net.NetStream;
 import openfl.media.Video;
-import flixel.FlxSubState;
 
-class VideoState extends FlxSubState
+class VideoState extends MusicBeatSubstate
 {
 	var video:Video;
 	var netStream:NetStream;
@@ -33,7 +32,7 @@ class VideoState extends FlxSubState
 			trace('penis');
 		}
 
-		/*video = new Video();
+		video = new Video();
 		//addChild(video);
 
 		var netConnection = new NetConnection();
@@ -50,12 +49,12 @@ class VideoState extends FlxSubState
         overlay.graphics.beginFill(0, 0.5);
 		overlay.graphics.drawRect(0, 0, 1280, 720);
 		overlay.addEventListener(MouseEvent.MOUSE_DOWN, overlay_onMouseDown);
-		overlay.buttonMode = true;*/
+		overlay.buttonMode = true;
 	}
 
-	/*public override function update(elapsed:Float)
+	public override function update(elapsed:Float)
 	{
-		if (PlayerSettings.player1.controls.ACCEPT)
+		if (controls.ACCEPT)
 			finishVid();
 
 		super.update(elapsed);
@@ -97,5 +96,5 @@ class VideoState extends FlxSubState
     private function overlay_onMouseDown(event:MouseEvent):Void
     {
         video.clear();
-    }*/
+    }
 }

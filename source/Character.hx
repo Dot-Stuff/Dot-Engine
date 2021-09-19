@@ -499,7 +499,7 @@ class Character extends FlxSprite
 		}
 	}
 
-	public function loadMappedAnims() 
+	public function loadMappedAnims()
 	{
 		var swagShit = Song.loadFromJson('pico-speaker');
 
@@ -532,7 +532,7 @@ class Character extends FlxSprite
 	private function loadOffsetFile(offsetCharacter:String)
 	{
 		var daFile:Array<String> = CoolUtil.coolTextFile(Paths.file('images/characters/${offsetCharacter}Offsets.txt', TEXT));
-		
+
 		for (i in daFile)
 		{
 			var splitWords:Array<String> = i.split(" ");
@@ -603,24 +603,31 @@ class Character extends FlxSprite
 
 	public function dance()
 	{
-		if (animOffsets.exists('danceRight') && animOffsets.exists('danceLeft'))
+		switch (curCharacter)
 		{
-			if (!animation.curAnim.name.startsWith('hair'))
-			{
-				danced = !danced;
+			case 'tankman':
+				if (!animation.curAnim.name.endsWith('DOWN-alt'))
+					playAnim('idle');
+			default:
+				if (animOffsets.exists('danceRight') && animOffsets.exists('danceLeft'))
+				{
+					if (!animation.curAnim.name.startsWith('hair'))
+					{
+						danced = !danced;
 
-				danced ? playAnim('danceRight') : playAnim('danceLeft');
-			}
+						playAnim(danced ? 'danceRight' : 'danceLeft');
+					}
+				}
+				else if (animOffsets.exists('idle'))
+					playAnim('idle');
 		}
-		else if (animOffsets.exists('idle') && (!animation.curAnim.name.endsWith('DOWN-alt') && curCharacter == 'tankman'))
-			playAnim('idle');
 	}
 
 	public function playAnim(animName:String, force:Bool = false, reversed:Bool = false, frame:Int = 0):Void
 	{
 		animation.play(animName, force, reversed, frame);
 
-		var daOffset = animOffsets.get(animName);
+		var daOffset = animOffsets[animName];
 		if (daOffset != null)
 			offset.set(daOffset[0], daOffset[1]);
 		else

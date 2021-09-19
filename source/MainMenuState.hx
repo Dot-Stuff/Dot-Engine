@@ -14,7 +14,7 @@ import ui.MenuState;
 
 using StringTools;
 
-#if desktop
+#if discord_rpc
 import Discord.DiscordClient;
 #end
 
@@ -27,7 +27,7 @@ class MainMenuState extends MenuState
 
 	override function create()
 	{
-		#if desktop
+		#if discord_rpc
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
 		#end
