@@ -466,6 +466,19 @@ class Character extends FlxSprite
 				playAnim('idle');
 
 				flipX = true;
+			default:
+				// You can easyly place something lik trickman
+				frames = Paths.getSparrowAtlas('characters/$curCharacter');
+
+				quickAnimAdd('idle', "Idle");
+				quickAnimAdd('singUP', 'Sing Up');
+				quickAnimAdd('singDOWN', 'Sing Down');
+				quickAnimAdd('singLEFT', 'Sing Left');
+				quickAnimAdd('singRIGHT', 'Sing Right');
+
+				loadOffsetFile(curCharacter);
+
+				playAnim('idle');
 		}
 
 		dance();

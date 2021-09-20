@@ -1,24 +1,26 @@
 package;
 
+import flixel.system.FlxSound;
 import flixel.FlxSprite;
-import flixel.graphics.frames.FlxAtlasFrames;
 
-class GitarooPause extends MusicBeatState
+class GitarooPause extends MusicBeatSubstate
 {
 	var replayButton:FlxSprite;
 	var cancelButton:FlxSprite;
 
 	var replaySelect:Bool = false;
 
+	var trollMusic:FlxSound;
+
 	public function new():Void
 	{
 		super();
-	}
 
-	override function create()
-	{
-		if (FlxG.sound.music != null)
-			FlxG.sound.music.stop();
+		trollMusic = new FlxSound().loadEmbedded(Paths.music('breakfast'), true, true);
+		trollMusic.volume = 0;
+		trollMusic.play(false, FlxG.random.int(0, Std.int(trollMusic.length / 2)));
+
+		FlxG.sound.list.add(trollMusic);
 
 		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('pauseAlt/pauseBG'));
 		add(bg);
@@ -56,13 +58,18 @@ class GitarooPause extends MusicBeatState
 
 		if (controls.ACCEPT)
 		{
+			FlxG.sound.music.stop();
+
 			if (replaySelect)
 			{
-				FlxG.switchState(new PlayState());
+				LoadingState.loadAndSwitchState(new PlayState());
 			}
 			else
 			{
-				FlxG.switchState(new MainMenuState());
+				if (PlayState.isStoryMode)
+					FlxG.switchState(new StoryMenuState());
+				else
+					FlxG.switchState(new FreeplayState());
 			}
 		}
 

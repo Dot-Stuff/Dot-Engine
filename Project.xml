@@ -184,7 +184,7 @@
 	<haxedef name="NG_LOGIN" if="newgrounds" />
 	<haxedef name="CAN_CHEAT" if="switch debug" />
 
-	<section>
+	<section unless='web switch'>
 		<!-- Compiles tool for old song conversion shit -->
 		<postbuild command='haxe -main art/SongConverter.hx --cs export/songShit' />
 		<postbuild command='ren export/songShit/tools' />

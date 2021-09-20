@@ -1,15 +1,12 @@
 package;
 
-import openfl.Lib;
-import openfl.events.MouseEvent;
-import openfl.events.AsyncErrorEvent;
+import flixel.FlxBasic;
 import openfl.events.NetStatusEvent;
-import openfl.display.Sprite;
 import openfl.media.Video;
 import openfl.net.NetConnection;
 import openfl.net.NetStream;
 
-class FlxVideo extends Sprite
+class FlxVideo extends FlxBasic
 {
 	public var finishCutscene:Void->Void;
 	public var finishCallback:Void->Void;
@@ -21,18 +18,18 @@ class FlxVideo extends Sprite
 	{
 		super();
 
+		video = new Video();
+		video.x = 0;
+		video.y = 0;
+		FlxG.addChildBelowMouse(video);
+
 		var netConnection = new NetConnection();
 		netConnection.connect(null);
 		netConnection.addEventListener(NetStatusEvent.NET_STATUS, netConnection_onNetStatus);
 
 		netStream = new NetStream(netConnection);
 		netStream.client = {onMetaData: client_onMetaData};
-		netStream.addEventListener(AsyncErrorEvent.ASYNC_ERROR, netStream_onAsyncError);
 
-		video = new Video();
-		addChild(video);
-
-		netStream.close();
 		netStream.play(Paths.video(name));
 	}
 
@@ -40,9 +37,9 @@ class FlxVideo extends Sprite
 	{
 		netStream.dispose();
 
-		if (contains(video))
+		if (FlxG.game.contains(video))
 		{
-			removeChild(video);
+			FlxG.game.removeChild(video);
 
 			if (finishCallback != null)
 				finishCallback();
@@ -55,11 +52,6 @@ class FlxVideo extends Sprite
 
 		video.width = video.videoWidth;
 		video.height = video.videoHeight;
-	}
-
-	private function netStream_onAsyncError(event:AsyncErrorEvent):Void
-	{
-		trace("Error loading video: " + event.toString());
 	}
 
 	private function netConnection_onNetStatus(event:NetStatusEvent):Void

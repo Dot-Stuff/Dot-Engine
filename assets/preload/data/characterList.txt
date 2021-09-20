@@ -16,5 +16,5 @@ senpai
 senpai-angry
 spirit
 tankman
-gf-tankmen
+pico-speaker
 bf-holding-gf

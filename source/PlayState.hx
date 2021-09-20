@@ -186,10 +186,10 @@ class PlayState extends MusicBeatState
 				}
 			case 'philly':
 				{
-					var bg:BGSprite = new BGSprite('philly/sky', -100, 0, 0.1, 0.1);
+					var bg:BGSprite = new BGSprite('sky', -100, 0, 0.1, 0.1);
 					add(bg);
 
-					var city:BGSprite = new BGSprite('philly/city', -10, 0, 0.3, 0.3);
+					var city:BGSprite = new BGSprite('city', -10, 0, 0.3, 0.3);
 					city.setGraphicSize(Std.int(city.width * 0.85));
 					city.updateHitbox();
 					add(city);
@@ -198,7 +198,7 @@ class PlayState extends MusicBeatState
 
 					for (i in 0...5)
 					{
-						var light:BGSprite = new BGSprite('philly/win$i', city.x, 0, 0.3, 0.3);
+						var light:BGSprite = new BGSprite('win$i', city.x, 0, 0.3, 0.3);
 						light.visible = false;
 						light.setGraphicSize(Std.int(light.width * 0.85));
 						light.updateHitbox();
@@ -207,24 +207,24 @@ class PlayState extends MusicBeatState
 
 					add(phillyCityLights);
 
-					var streetBehind:BGSprite = new BGSprite('philly/behindTrain', -40, 50);
+					var streetBehind:BGSprite = new BGSprite('behindTrain', -40, 50);
 					add(streetBehind);
 
-					phillyTrain = new BGSprite('philly/train', 2000, 360);
+					phillyTrain = new BGSprite('train', 2000, 360);
 					add(phillyTrain);
 
 					trainSound = new FlxSound().loadEmbedded(Paths.sound('train_passes'));
 					FlxG.sound.list.add(trainSound);
 
-					var street:BGSprite = new BGSprite('philly/street', -40, streetBehind.y);
+					var street:BGSprite = new BGSprite('street', -40, streetBehind.y);
 					add(street);
 				}
 			case 'limo':
 				{
-					var skyBG:BGSprite = new BGSprite('limo/limoSunset', -120, -50, 0.1, 0.1);
+					var skyBG:BGSprite = new BGSprite('limoSunset', -120, -50, 0.1, 0.1);
 					add(skyBG);
 
-					var bgLimo:BGSprite = new BGSprite('limo/bgLimo', -200, 480, 0.4, 0.4, ['background limo pink']);
+					var bgLimo:BGSprite = new BGSprite('bgLimo', -200, 480, 0.4, 0.4, ['background limo pink']);
 					add(bgLimo);
 
 					grpLimoDancers = new FlxTypedGroup<BackgroundDancer>();
@@ -238,11 +238,11 @@ class PlayState extends MusicBeatState
 
 					add(grpLimoDancers);
 
-					limo = new BGSprite('limo/limoDrive', -120, 550, 1, 1, ['Limo stage']);
+					limo = new BGSprite('limoDrive', -120, 550, 1, 1, ['Limo stage']);
 
-					fastCar = new BGSprite('limo/fastCarLol', -300, 160);
+					fastCar = new BGSprite('fastCarLol', -300, 160);
 
-					overlayShit = new BGSprite('limo/limoOverlay', -500, -600);
+					overlayShit = new BGSprite('limoOverlay', -500, -600);
 					overlayShit.alpha = 0.5;
 					overlayShit.visible = false;
 					overlayShit.cameras = [camHUD];
@@ -408,11 +408,11 @@ class PlayState extends MusicBeatState
 				}
 			case 'tank':
 				{
-					// loadStage('tank');
+					loadStage('tank');
 					// defaultCamZoom = 0.9;
 
-					var tankSky:BGSprite = new BGSprite('tankSky', -400, -400, 0, 0);
-					add(tankSky);
+					/*var tankSky:BGSprite = new BGSprite('tankSky', -400, -400, 0, 0);
+						add(tankSky); */
 
 					// this goes after tankSky and before tankMountains in stage file
 					// need to accomodate for the velocity thing!
@@ -435,28 +435,28 @@ class PlayState extends MusicBeatState
 					tankGround.updateHitbox();
 					add(tankGround);
 
-					var tankMountains:BGSprite = new BGSprite('tankMountains', -300, 70, 0.2, 0.2);
-					tankMountains.setGraphicSize(Std.int(tankMountains.width * 1.21));
-					tankMountains.updateHitbox();
-					add(tankMountains);
-
-					var tankBuildings:BGSprite = new BGSprite('tankBuildings', -200, 6, 0.30, 0.30);
-					tankBuildings.setGraphicSize(Std.int(tankBuildings.width * 1.2));
-					tankBuildings.updateHitbox();
-					add(tankBuildings);
-
-					var tankRuins:BGSprite = new BGSprite('tankRuins', -200, 0, 0.35, 0.35);
-					tankRuins.setGraphicSize(Std.int(tankRuins.width * 1.1));
-					tankRuins.updateHitbox();
-					add(tankRuins);
-
-					var smokeLeft:BGSprite = new BGSprite('smokeLeft', -200, -100, 0.4, 0.4, ['SmokeBlurLeft'], true);
-					add(smokeLeft);
-
-					var smokeRight:BGSprite = new BGSprite('smokeRight', 1100, -100, 0.4, 0.4, ['SmokeRight'], true);
-					add(smokeRight);
-
 					moveTank();
+
+					/*var tankMountains:BGSprite = new BGSprite('tankMountains', -300, 70, 0.2, 0.2);
+						tankMountains.setGraphicSize(Std.int(tankMountains.width * 1.21));
+						tankMountains.updateHitbox();
+						add(tankMountains);
+
+						var tankBuildings:BGSprite = new BGSprite('tankBuildings', -200, 6, 0.30, 0.30);
+						tankBuildings.setGraphicSize(Std.int(tankBuildings.width * 1.2));
+						tankBuildings.updateHitbox();
+						add(tankBuildings);
+
+						var tankRuins:BGSprite = new BGSprite('tankRuins', -200, 0, 0.35, 0.35);
+						tankRuins.setGraphicSize(Std.int(tankRuins.width * 1.1));
+						tankRuins.updateHitbox();
+						add(tankRuins);
+
+						var smokeLeft:BGSprite = new BGSprite('smokeLeft', -200, -100, 0.4, 0.4, ['SmokeBlurLeft'], true);
+						add(smokeLeft);
+
+						var smokeRight:BGSprite = new BGSprite('smokeRight', 1100, -100, 0.4, 0.4, ['SmokeRight'], true);
+						add(smokeRight); */
 
 					var fgTank0:BGSprite = new BGSprite('tank0', -500, 650, 1.7, 1.5, ['fg']);
 					foregroundSprites.add(fgTank0);
@@ -1284,6 +1284,10 @@ class PlayState extends MusicBeatState
 		}
 	}
 
+	function loadStage(name:String)
+	{
+	}
+
 	function tweenCamIn():Void
 	{
 		FlxTween.tween(FlxG.camera, {zoom: 1.3}, (Conductor.stepCrochet * 4 / 1000), {ease: FlxEase.elasticInOut});
@@ -1445,21 +1449,11 @@ class PlayState extends MusicBeatState
 			persistentDraw = true;
 			paused = true;
 
-			// 1 / 1000 chance for Gitaroo Man easter egg
-			// can this please move to dying it's kinda fucked up that pausing has 1/1000 chance ur forced to restart
-			if (FlxG.random.bool(0.1))
-			{
-				// gitaroo man easter egg
-				switchTo(new GitarooPause());
-			}
-			else
-			{
-				var boyfriendPos = boyfriend.getScreenPosition();
-				var pauseSubState = new PauseSubState(boyfriendPos.x, boyfriendPos.y);
-				openSubState(pauseSubState);
-				pauseSubState.camera = camHUD;
-				boyfriendPos.put();
-			}
+			var boyfriendPos = boyfriend.getScreenPosition();
+			var pauseSubState = new PauseSubState(boyfriendPos.x, boyfriendPos.y);
+			openSubState(pauseSubState);
+			pauseSubState.camera = camHUD;
+			boyfriendPos.put();
 
 			#if discord_rpc
 			DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")", iconRPC);
@@ -1584,9 +1578,14 @@ class PlayState extends MusicBeatState
 
 				deathCounter++;
 
-				openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
-
-				// switchTo(new GameOverState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+				// 1 / 1000 chance for Gitaroo Man easter egg
+				//if (FlxG.random.bool(0.1))
+				{
+					// gitaroo man easter egg
+					openSubState(new GitarooPause());
+				}
+				/*else
+					openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));*/
 
 				#if discord_rpc
 				// Game Over doesn't get his own variable because it's only used here

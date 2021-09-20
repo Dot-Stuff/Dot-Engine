@@ -1,5 +1,6 @@
 package;
 
+import openfl.display.Stage;
 import flixel.FlxGame;
 import flixel.FlxState;
 import openfl.Lib;
@@ -22,6 +23,11 @@ class Main extends Sprite
 
 	public static function main():Void
 	{
+		#if commonjs
+		var stage = new Stage(550, 400, 0xFFFFFF, Main);
+		Lib.current.addChild(stage);
+		#end
+
 		Lib.current.addChild(new Main());
 	}
 
@@ -45,22 +51,6 @@ class Main extends Sprite
 
 	private function setupGame():Void
 	{
-		var stageWidth:Int = Lib.current.stage.stageWidth;
-		var stageHeight:Int = Lib.current.stage.stageHeight;
-
-		/*if (zoom == -1)
-		{
-			var ratioX:Float = stageWidth / gameWidth;
-			var ratioY:Float = stageHeight / gameHeight;
-			zoom = Math.min(ratioX, ratioY);
-			gameWidth = Math.ceil(stageWidth / zoom);
-			gameHeight = Math.ceil(stageHeight / zoom);
-		}*/
-
-		#if !debug
-		initialState = TitleState;
-		#end
-
 		addChild(new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen));
 
 		#if !mobile
