@@ -71,7 +71,7 @@ class Paths
 
 	inline static public function video(key:String, ?library:String)
 	{
-		return getPath('music/$key.mp4', TEXT, library);
+		return getPath('$key.mp4', TEXT, library);
 	}
 
 	static public function sound(key:String, ?library:String)

@@ -9,7 +9,6 @@ import openfl.net.NetStream;
 class FlxVideo extends FlxBasic
 {
 	public var finishCutscene:Void->Void;
-	public var finishCallback:Void->Void;
 
 	var video:Video;
 	var netStream:NetStream;
@@ -21,7 +20,7 @@ class FlxVideo extends FlxBasic
 		video = new Video();
 		video.x = 0;
 		video.y = 0;
-		FlxG.addChildBelowMouse(video);
+		FlxG.game.addChild(video);
 
 		var netConnection = new NetConnection();
 		netConnection.connect(null);
@@ -41,8 +40,8 @@ class FlxVideo extends FlxBasic
 		{
 			FlxG.game.removeChild(video);
 
-			if (finishCallback != null)
-				finishCallback();
+			if (finishCutscene != null)
+				finishCutscene();
 		}
 	}
 
@@ -58,7 +57,7 @@ class FlxVideo extends FlxBasic
 	{
 		if (event.info.code == "NetStream.Play.Complete")
 		{
-			finishCutscene();
+			finishVideo();
 		}
 	}
 }

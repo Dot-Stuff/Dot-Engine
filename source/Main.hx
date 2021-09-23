@@ -16,18 +16,13 @@ class Main extends Sprite
 	var zoom:Float = 1; // If -1, zoom is automatically calculated to fit the window dimensions.
 	var framerate:Int = #if web 60 #else 144 #end; // How many frames per second the game should run at.
 	var skipSplash:Bool = true; // Whether to skip the flixel splash screen that appears in release mode.
-	var startFullscreen:Bool = #if desktop true #else false #end; // Whether to start the game in fullscreen on desktop targets
+	var startFullscreen:Bool = false; // Whether to start the game in fullscreen on desktop targets
 	public static var seenCutscene:Bool = false;
 
 	// You can pretty much ignore everything from here on - your code should go in your states.
 
 	public static function main():Void
 	{
-		#if commonjs
-		var stage = new Stage(550, 400, 0xFFFFFF, Main);
-		Lib.current.addChild(stage);
-		#end
-
 		Lib.current.addChild(new Main());
 	}
 

@@ -6,6 +6,11 @@ class BuildingMover
 {
     public var shader(default, null):BuildingShaders = new BuildingShaders();
 
+    public function new():Void
+    {
+        shader.alphaShit.value = [0];
+    }
+
     public function update(elapsed:Float):Void
     {
         shader.alphaShit.value[0] += elapsed;

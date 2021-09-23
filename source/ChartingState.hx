@@ -233,6 +233,13 @@ class ChartingState extends MusicBeatState
 			updateHeads();
 		});
 
+		var stages:Array<String> = CoolUtil.coolTextFile(Paths.txt('stageList'));
+
+		var stageDropDown = new FlxUIDropDownMenu(10, 140, FlxUIDropDownMenu.makeStrIdLabelArray(stages, true), function(stage:String)
+		{
+			_song.stageDefault = stages[Std.parseInt(stage)];
+		});
+
 		player2DropDown.selectedLabel = _song.player2;
 
 		var tab_group_song = new FlxUI(null, UI_box);
@@ -249,6 +256,7 @@ class ChartingState extends MusicBeatState
 		tab_group_song.add(stepperSpeed);
 		tab_group_song.add(player1DropDown);
 		tab_group_song.add(player2DropDown);
+		tab_group_song.add(stageDropDown);
 
 		UI_box.addGroup(tab_group_song);
 		UI_box.scrollFactor.set();
