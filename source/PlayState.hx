@@ -500,7 +500,33 @@ class PlayState extends MusicBeatState
 		gf = new Character(400, 130, SONG.gf);
 		gf.scrollFactor.set(0.95, 0.95);
 
-		// tankmenRun.add();
+		if (SONG.gf.toLowerCase() == 'pico-speaker')
+		{
+			gf.x -= 50;
+			gf.y -= 200;
+
+			var c:TankmenBG = new TankmenBG(20, 500);
+			c.strumTime = 10;
+			c.resetShit(20, 600, true);
+			tankmenRun.add(c);
+
+			for (i in 0...TankmenBG.animationNotes.length)
+			{
+				var f = 16;
+
+				if (f == null)
+					f = 50;
+
+				if (FlxG.random.float(0, 100) < f)
+				{
+					var pc:TankmenBG = tankmenRun.recycle(TankmenBG);
+
+					pc.strumTime = TankmenBG.animationNotes[i][0];
+					pc.resetShit(500, 200 + FlxG.random.int(50, 100), TankmenBG.animationNotes[i][1] < 2);
+					tankmenRun.add(pc);
+				}
+			}
+		}
 
 		dad = new Character(100, 100, SONG.player2);
 
@@ -589,12 +615,6 @@ class PlayState extends MusicBeatState
 		}
 
 		add(gf);
-
-		if (SONG.gf.toLowerCase() == 'pico-speaker')
-		{
-			gf.x -= 50;
-			gf.y -= 200;
-		}
 
 		gfCutsceneLayer = new FlxGroup();
 		add(gfCutsceneLayer);
@@ -1605,6 +1625,7 @@ class PlayState extends MusicBeatState
 					vocals.volume = 0;
 			}
 		}
+
 		// better streaming of shit
 
 		if (!inCutscene && !_exiting)

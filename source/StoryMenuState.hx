@@ -245,9 +245,7 @@ class StoryMenuState extends MusicBeatState
 			}
 
 			if (controls.ACCEPT)
-			{
 				selectWeek();
-			}
 		}
 
 		if (controls.BACK && !movedBack && !selectedWeek)
