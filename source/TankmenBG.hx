@@ -11,7 +11,7 @@ class TankmenBG extends FlxSprite
 	var tankSpeed:Float;
 	public var strumTime:Int;
 
-	public function new(x:Int, y:Int)
+	public function new(x:Int, y:Int, popo:Bool)
 	{
 		super(x, y);
 
@@ -39,8 +39,7 @@ class TankmenBG extends FlxSprite
 		endingOffset = FlxG.random.float(50, 200);
 		tankSpeed = FlxG.random.float(.6, 1);
 
-		if (goingRight)
-			flipX = true;
+		flipX = goingRight;
 	}
 
 	public override function update(elapsed:Float)

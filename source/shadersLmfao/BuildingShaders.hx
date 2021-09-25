@@ -2,12 +2,14 @@ package shadersLmfao;
 
 import flixel.system.FlxAssets.FlxShader;
 
-class BuildingMover
+class BuildingShaders
 {
-    public var shader(default, null):BuildingShaders = new BuildingShaders();
+    public var shader(default, null):BuildingShader;
+    public var daAlpha:Float = 1;
 
     public function new():Void
     {
+        shader = new BuildingShader();
         shader.alphaShit.value = [0];
     }
 
@@ -22,7 +24,7 @@ class BuildingMover
     }
 }
 
-class BuildingShaders extends FlxShader
+class BuildingShader extends FlxShader
 {
 	@:glFragmentSource('
         #pragma header

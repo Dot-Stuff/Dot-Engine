@@ -88,7 +88,7 @@ class PlayState extends MusicBeatState
 
 	var halloweenBG:FlxSprite;
 
-	var lightFadeShader:BuildingMover = new BuildingMover();
+	var lightFadeShader:BuildingShaders = new BuildingShaders();
 	var phillyCityLights:FlxTypedGroup<BGSprite>;
 	var phillyTrain:FlxSprite;
 	var trainSound:FlxSound;
@@ -505,19 +505,19 @@ class PlayState extends MusicBeatState
 			gf.x -= 50;
 			gf.y -= 200;
 
-			var c:TankmenBG = new TankmenBG(20, 500);
-			c.strumTime = 10;
-			c.resetShit(20, 600, true);
-			tankmenRun.add(c);
+			var tankman:TankmenBG = new TankmenBG(20, 500, true);
+			tankman.strumTime = 10;
+			tankman.resetShit(20, 600, true);
+			tankmenRun.add(tankman);
 
 			for (i in 0...TankmenBG.animationNotes.length)
 			{
-				var f = 16;
+				var curTank:Int = 16;
 
-				if (f == null)
-					f = 50;
+				if (tankmenRun.countLiving() == null)
+					curTank = 50;
 
-				if (FlxG.random.float(0, 100) < f)
+				if (curTank > FlxG.random.float(0, 100))
 				{
 					var pc:TankmenBG = tankmenRun.recycle(TankmenBG);
 
@@ -1657,13 +1657,10 @@ class PlayState extends MusicBeatState
 				deathCounter++;
 
 				// 1 / 1000 chance for Gitaroo Man easter egg
-				// if (FlxG.random.bool(0.1))
-				{
-					// gitaroo man easter egg
+				if (FlxG.random.bool(0.1))
 					openSubState(new GitarooPause());
-				}
-				/*else
-					openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y)); */
+				else
+					openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 
 				#if discord_rpc
 				// Game Over doesn't get his own variable because it's only used here
@@ -2158,9 +2155,9 @@ class PlayState extends MusicBeatState
 
 	private function keyShit():Void
 	{
-		var holdArray:Array<Bool> = [controls.UI_LEFT, controls.UI_DOWN, controls.UI_UP, controls.UI_RIGHT];
-		var pressArray:Array<Bool> = [controls.UI_LEFT_P, controls.UI_DOWN_P, controls.UI_UP_P, controls.UI_RIGHT_P];
-		var releaseArray:Array<Bool> = [controls.UI_LEFT_R, controls.UI_DOWN_R, controls.UI_UP_R, controls.UI_RIGHT_R];
+		var holdArray:Array<Bool> = [controls.NOTE_LEFT, controls.NOTE_DOWN, controls.NOTE_UP, controls.NOTE_RIGHT];
+		var pressArray:Array<Bool> = [controls.NOTE_LEFT_P, controls.NOTE_DOWN_P, controls.NOTE_UP_P, controls.NOTE_RIGHT_P];
+		var releaseArray:Array<Bool> = [controls.NOTE_LEFT_R, controls.NOTE_DOWN_R, controls.NOTE_UP_R, controls.NOTE_RIGHT_R];
 
 		// HOLDS, check for sustain notes.
 		if (holdArray.contains(true) && generatedMusic)
@@ -2497,25 +2494,33 @@ class PlayState extends MusicBeatState
 		// HARDCODING FOR MILF ZOOMS!
 
 		// if (PreferencesMenu.getPref('camera-zoom'))
-		// {
-		if (curSong.toLowerCase() == 'milf' && curBeat >= 168 && curBeat < 200 && camZooming && FlxG.camera.zoom < 1.35)
 		{
-			FlxG.camera.zoom += 0.015 * FlxCamera.defaultZoom;
-			camHUD.zoom += 0.03;
-		}
+			if (curSong.toLowerCase() == 'milf' && curBeat >= 168 && curBeat < 200 && camZooming && FlxG.camera.zoom < 1.35)
+			{
+				FlxG.camera.zoom += 0.015 * FlxCamera.defaultZoom;
+				camHUD.zoom += 0.03;
+			}
 
-		if (camZooming && FlxG.camera.zoom < (1.35 * FlxCamera.defaultZoom) && curBeat % 4 == 0)
-		{
-			FlxG.camera.zoom += 0.015 * FlxCamera.defaultZoom;
-			camHUD.zoom += 0.03;
+			if (camZooming && FlxG.camera.zoom < (1.35 * FlxCamera.defaultZoom) && curBeat % 4 == 0)
+			{
+				FlxG.camera.zoom += 0.015 * FlxCamera.defaultZoom;
+				camHUD.zoom += 0.03;
+			}
 		}
-		// }
 
 		iconP1.setGraphicSize(Std.int(iconP1.width + 30));
 		iconP2.setGraphicSize(Std.int(iconP2.width + 30));
 
 		iconP1.updateHitbox();
 		iconP2.updateHitbox();
+
+		/*if (curBeat % 8 == 7
+			&& SONG.notes[storyDifficulty][Math.floor(curStep / 16)].mustHitSection
+			&& combo > 5
+			&& !SONG.notes[storyDifficulty][Math.floor(curStep / 16) + 1].mustHitSection)
+		{
+			trace('6 note combo!!');
+		}*/
 
 		if (curBeat % gfSpeed == 0)
 			gf.dance();
