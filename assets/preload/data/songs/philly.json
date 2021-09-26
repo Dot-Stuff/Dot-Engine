@@ -5893,7 +5893,7 @@
         ],
         "needsVoices": true,
         "song": "Philly",
-        "bpm": 175,
+        "bpm": 175.0,
         "stageDefault": "philly",
         "speed": [
             1.3,

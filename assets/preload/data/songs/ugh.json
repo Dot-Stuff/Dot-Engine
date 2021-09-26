@@ -7483,7 +7483,7 @@
         ],
         "needsVoices": true,
         "song": "Ugh",
-        "bpm": 160,
+        "bpm": 160.0,
         "stageDefault": "tank",
         "speed": [
             1.8,

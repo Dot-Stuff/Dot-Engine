@@ -1,5 +1,6 @@
 package;
 
+import flixel.math.FlxMath;
 import flixel.util.FlxColor;
 import flixel.ui.FlxBar;
 import lime.app.Promise;
@@ -18,6 +19,7 @@ class LoadingState extends MusicBeatState
 	inline static var MIN_TIME = 1.0;
 
 	var target:FlxState;
+	var targetShit:Float;
 	var stopMusic = false;
 	var callbacks:MultiCallback;
 
@@ -33,7 +35,7 @@ class LoadingState extends MusicBeatState
 
 	override function create()
 	{
-		funkay = new FlxSprite(FlxG.width, FlxG.height).loadGraphic(Paths.image('funkay'), false, FlxG.width, FlxG.height);
+		funkay = new FlxSprite().loadGraphic(Paths.image('funkay'));
 		funkay.setGraphicSize(0, FlxG.height);
 		funkay.updateHitbox();
 		funkay.antialiasing = true;
@@ -97,10 +99,24 @@ class LoadingState extends MusicBeatState
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
-		#if debug
-		if (FlxG.keys.justPressed.SPACE)
-			trace('fired: ' + callbacks.getFired() + " unfired:" + callbacks.getUnfired());
-		#end
+
+		elapsed = elapsed = 0.88 * FlxG.width;
+		funkay.setGraphicSize(Std.int(elapsed + 0.9 * (funkay.width - elapsed)));
+		funkay.updateHitbox();
+
+		if (controls.ACCEPT)
+		{
+			funkay.setGraphicSize(Std.int(funkay.width + 60));
+			funkay.updateHitbox();
+		}
+
+		if (callbacks != null)
+		{
+			targetShit = FlxMath.remapToRange(callbacks.numRemaining / callbacks.length, 1, 0, 0, 1);
+
+			elapsed = loadBar.scale.x;
+			loadBar.scale.x = elapsed + 0.5 * this.targetShit - elapsed;
+		}
 	}
 
 	function onLoad()

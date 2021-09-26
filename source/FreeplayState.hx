@@ -1,5 +1,7 @@
 package;
 
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.group.FlxGroup.FlxTypedGroup;
@@ -33,16 +35,7 @@ class FreeplayState extends MusicBeatState
 
 	private var iconArray:Array<HealthIcon> = [];
 
-	private var coolColors:Array<FlxColor> = [
-		FlxColor.BLUE,
-		FlxColor.RED,
-		FlxColor.BLUE,
-		FlxColor.YELLOW,
-		FlxColor.PINK,
-		FlxColor.ORANGE,
-		FlxColor.PINK,
-		FlxColor.ORANGE
-	];
+	private var coolColors:Array<FlxColor> = [-7179779, -7179779, -14535868, -7072173, -223529, -6237697, -34625, -608764];
 
 	override function create()
 	{
@@ -116,17 +109,13 @@ class FreeplayState extends MusicBeatState
 			// using a FlxGroup is too much fuss!
 			iconArray.push(icon);
 			add(icon);
-
-			// songText.x += 40;
-			// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
-			// songText.screenCenter(X);
 		}
 
 		scoreText = new FlxText(FlxG.width * 0.7, 5, 0, "", 32);
 		// scoreText.autoSize = false;
 		scoreText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
 
-		scoreBG = new FlxSprite(scoreText.x - 6, 0).makeGraphic(Std.int(FlxG.width * 0.35), 66, 0xFF000000);
+		scoreBG = new FlxSprite(scoreText.x - 6, 0).makeGraphic(1, 66, 0xFF000000);
 		scoreBG.alpha = 0.6;
 		add(scoreBG);
 
@@ -177,6 +166,7 @@ class FreeplayState extends MusicBeatState
 		lerpScore = CoolUtil.coolLerp(lerpScore, intendedScore, 0.4);
 
 		bg.color = coolColors[songs[curSelected].week % coolColors.length];
+		var lerpColor = CoolUtil.camLerpShit(0.045);
 
 		if (Math.abs(lerpScore - intendedScore) <= 10)
 			lerpScore = intendedScore;
@@ -201,7 +191,9 @@ class FreeplayState extends MusicBeatState
 		if (controls.BACK)
 		{
 			FlxG.sound.play(Paths.sound('cancelMenu'));
+			#if NO_PRELOAD_ALL
 			FlxG.sound.music.stop();
+			#end
 			FlxG.switchState(new MainMenuState());
 		}
 
@@ -216,7 +208,6 @@ class FreeplayState extends MusicBeatState
 			LoadingState.loadAndSwitchState(new PlayState());
 		}
 	}
-
 	override function switchTo(nextState:FlxState):Bool
 	{
 		clearDaCache(songs[curSelected].songName);
@@ -246,6 +237,8 @@ class FreeplayState extends MusicBeatState
 		scoreText.x = FlxG.width - scoreText.width - 6;
 		scoreBG.scale.x = FlxG.width - scoreText.x + 6;
 		scoreBG.x = FlxG.width - scoreBG.scale.x / 2;
+		diffText.x = scoreBG.x + Std.int(scoreBG.width / 2);
+		diffText.x -= diffText.width / 2;
 	}
 
 	function clearDaCache(songName:String)

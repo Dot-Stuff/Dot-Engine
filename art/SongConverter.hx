@@ -1,8 +1,5 @@
-#if !interp
-// Needs this to be run by interp, just for me lol. :D
 package;
 
-#end
 import haxe.Json;
 import sys.io.File;
 import sys.FileSystem;
@@ -11,12 +8,12 @@ class SongConverter
 {
 	static function main()
     {
-		Sys.stdout().writeString('Please type directory you want to convert: ');
+		/*Sys.stdout().writeString('Please type directory you want to convert: ');
 		Sys.stdout().flush();
 		final input = Sys.stdin().readLine();
-		trace('Hello ${input}!');
+		trace('Hello ${input}!');*/
 
-		for (fileThing in FileSystem.readDirectory('${input}/.'))
+		for (fileThing in FileSystem.readDirectory('./.'))
 		{
 			if (FileSystem.isDirectory(fileThing) && fileThing != 'songs')
 			{
@@ -67,8 +64,9 @@ class SongConverter
 		fileNormal.song.speed.push(daOgSpeed);
 		fileNormal.song.speed.push(fileEasy.song.speed);
 
-		fileNormal.curStage = getStage(songName);
+		fileNormal.song.stageDefault = getStage(songName);
 		fileNormal.song.gf = getGF(songName);
+		fileNormal.song.bpm += '.0';
 
 		if (!FileSystem.exists('songs'))
 			FileSystem.createDirectory('songs');

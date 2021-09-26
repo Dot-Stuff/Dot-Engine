@@ -1380,13 +1380,12 @@
         ],
         "needsVoices": false,
         "song": "Tutorial",
-        "bpm": 100,
+        "bpm": 100.0,
         "stageDefault": "stage",
         "speed": [
             1,
             1,
             1
         ]
-    },
-    "bpm": 100
+    }
 }

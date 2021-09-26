@@ -6765,7 +6765,7 @@
         ],
         "needsVoices": true,
         "song": "High",
-        "bpm": 125,
+        "bpm": 125.0,
         "stageDefault": "limo",
         "speed": [
             1.8,

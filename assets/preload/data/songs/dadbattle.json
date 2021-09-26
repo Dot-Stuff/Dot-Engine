@@ -5128,7 +5128,7 @@
         ],
         "needsVoices": true,
         "song": "Dadbattle",
-        "bpm": 180,
+        "bpm": 180.0,
         "stageDefault": "stage",
         "speed": [
             1.5,

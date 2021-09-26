@@ -345,7 +345,7 @@ class PlayState extends MusicBeatState
 					fgTrees.scrollFactor.set(0.9, 0.9);
 					add(fgTrees);
 
-					var bgTrees:FlxSprite = new FlxSprite(repositionShit - 380, -800);
+					var bgTrees:FlxSprite = new FlxSprite(repositionShit - 378, -800);
 					var treetex = Paths.getPackerAtlas('weebTrees');
 					bgTrees.frames = treetex;
 					bgTrees.animation.add('treeLoop', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], 12);
@@ -481,6 +481,8 @@ class PlayState extends MusicBeatState
 			case 'stage':
 				{
 					defaultCamZoom = 0.9;
+
+					loadStage('stage');
 
 					var bg:BGSprite = new BGSprite('stageback', -600, -200, 0.9, 0.9);
 					add(bg);
@@ -784,7 +786,7 @@ class PlayState extends MusicBeatState
 	{
 		inCutscene = true;
 
-		var background:FlxSprite = new FlxSprite(-200, -200).makeGraphic(2 * FlxG.width, 2 * FlxG.height, FlxColor.BLACK);
+		/*var background:FlxSprite = new FlxSprite(-200, -200).makeGraphic(2 * FlxG.width, 2 * FlxG.height, FlxColor.BLACK);
 		background.scrollFactor.set();
 		add(background);
 
@@ -799,9 +801,9 @@ class PlayState extends MusicBeatState
 
 		FlxG.camera.zoom *= 1.2;
 		camFollow.x += 100;
-		camFollow.y += 100;
+		camFollow.y += 100;*/
 
-		/*FlxG.camera.zoom = defaultCamZoom * 1.2;
+		FlxG.camera.zoom = defaultCamZoom * 1.2;
 
 			// Pandemic Express - Zombie Escape
 			FlxG.sound.playMusic(Paths.music('DISTORTO'), 0);
@@ -809,11 +811,6 @@ class PlayState extends MusicBeatState
 
 			dad.visible = false;
 			var tankCutscene:CutsceneCharacter = new CutsceneCharacter(-20, 320);
-			tankCutscene.frames = FlxAtlasFrames.fromTexturePackerJson('assets/images/tightBars/spritemap1.png', 'assets/images/tightBars/spritemap1.json');
-			tankCutscene.animation.frameName = "tankman_fnf_lip_sync_back_ta_dave.png";
-			tankCutscene.animation.addByPrefix('wellWellWell', 'TANK TALK 1 P1', 24, false);
-			tankCutscene.animation.addByPrefix('killYou', 'TANK TALK 1 P2', 24, false);
-			tankCutscene.animation.play('wellWellWell');
 			add(tankCutscene);
 			gfCutsceneLayer.add(tankCutscene);
 
@@ -822,7 +819,7 @@ class PlayState extends MusicBeatState
 			FlxG.camera.zoom *= 1.2;
 			camFollow.y += 100;
 
-			// tankCutscene.startSyncAudio = FlxG.sound.load(Paths.sound('wellWellWell'));
+			tankCutscene.startSyncAudio = FlxG.sound.load(Paths.sound('wellWellWell'));
 
 			new FlxTimer().start(3, function(tmr:FlxTimer)
 			{
@@ -865,7 +862,7 @@ class PlayState extends MusicBeatState
 						camHUD.visible = true;
 					});
 				});
-		});*/
+		});
 	}
 
 	function gunsIntro():Void
@@ -1348,8 +1345,9 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	function loadStage(name:String)
+	function loadStage(stage:String)
 	{
+		// This
 	}
 
 	function tweenCamIn():Void
@@ -2156,8 +2154,18 @@ class PlayState extends MusicBeatState
 	private function keyShit():Void
 	{
 		var holdArray:Array<Bool> = [controls.NOTE_LEFT, controls.NOTE_DOWN, controls.NOTE_UP, controls.NOTE_RIGHT];
-		var pressArray:Array<Bool> = [controls.NOTE_LEFT_P, controls.NOTE_DOWN_P, controls.NOTE_UP_P, controls.NOTE_RIGHT_P];
-		var releaseArray:Array<Bool> = [controls.NOTE_LEFT_R, controls.NOTE_DOWN_R, controls.NOTE_UP_R, controls.NOTE_RIGHT_R];
+		var pressArray:Array<Bool> = [
+			controls.NOTE_LEFT_P,
+			controls.NOTE_DOWN_P,
+			controls.NOTE_UP_P,
+			controls.NOTE_RIGHT_P
+		];
+		var releaseArray:Array<Bool> = [
+			controls.NOTE_LEFT_R,
+			controls.NOTE_DOWN_R,
+			controls.NOTE_UP_R,
+			controls.NOTE_RIGHT_R
+		];
 
 		// HOLDS, check for sustain notes.
 		if (holdArray.contains(true) && generatedMusic)
@@ -2515,11 +2523,11 @@ class PlayState extends MusicBeatState
 		iconP2.updateHitbox();
 
 		/*if (curBeat % 8 == 7
-			&& SONG.notes[storyDifficulty][Math.floor(curStep / 16)].mustHitSection
-			&& combo > 5
-			&& !SONG.notes[storyDifficulty][Math.floor(curStep / 16) + 1].mustHitSection)
-		{
-			trace('6 note combo!!');
+				&& SONG.notes[storyDifficulty][Math.floor(curStep / 16)].mustHitSection
+				&& combo > 5
+				&& !SONG.notes[storyDifficulty][Math.floor(curStep / 16) + 1].mustHitSection)
+			{
+				trace('6 note combo!!');
 		}*/
 
 		if (curBeat % gfSpeed == 0)

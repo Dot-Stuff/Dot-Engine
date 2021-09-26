@@ -5826,7 +5826,7 @@
         ],
         "needsVoices": true,
         "song": "Cocoa",
-        "bpm": 100,
+        "bpm": 100.0,
         "stageDefault": "mall",
         "speed": [
             1.3,

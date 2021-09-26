@@ -6970,7 +6970,7 @@
         ],
         "needsVoices": true,
         "song": "Winter-Horrorland",
-        "bpm": 159,
+        "bpm": 159.0,
         "stageDefault": "mall-evil",
         "speed": [
             1.1,

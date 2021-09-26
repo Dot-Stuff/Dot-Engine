@@ -7695,7 +7695,7 @@
         ],
         "needsVoices": true,
         "song": "Thorns",
-        "bpm": 190,
+        "bpm": 190.0,
         "stageDefault": "school-evil",
         "speed": [
             1.3,

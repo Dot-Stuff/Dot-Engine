@@ -6082,7 +6082,7 @@
         ],
         "needsVoices": true,
         "song": "Roses",
-        "bpm": 120,
+        "bpm": 120.0,
         "stageDefault": "school",
         "speed": [
             1.3,

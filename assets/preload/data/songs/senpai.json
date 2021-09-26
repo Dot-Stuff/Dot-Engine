@@ -6116,7 +6116,7 @@
         ],
         "needsVoices": true,
         "song": "Senpai",
-        "bpm": 144,
+        "bpm": 144.0,
         "stageDefault": "school",
         "speed": [
             1.2,

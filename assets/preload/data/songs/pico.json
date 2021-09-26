@@ -4622,7 +4622,7 @@
         ],
         "needsVoices": true,
         "song": "Pico",
-        "bpm": 150,
+        "bpm": 150.0,
         "stageDefault": "philly",
         "speed": [
             1.4,

@@ -156,29 +156,6 @@ class MultiplayerMenu extends MenuState
 
 		if (connectedToServer)
 		{
-			#if debug
-			// Get Available Rooms
-			if (FlxG.keys.justPressed.U)
-			{
-				client.getAvailableRooms("my_room", function(err, rooms)
-				{
-					if (err != null)
-					{
-						trace(err);
-						return;
-					}
-
-					for (room in rooms)
-					{
-						trace(room.roomId);
-						trace(room.clients);
-						trace(room.maxClients);
-						trace(room.metadata);
-					}
-				});
-			}
-			#end
-
 			if (FlxG.keys.justPressed.W)
 				moveShit({y: -1});
 			if (FlxG.keys.justPressed.S)

@@ -4240,7 +4240,7 @@
         ],
         "needsVoices": true,
         "song": "Fresh",
-        "bpm": 120,
+        "bpm": 120.0,
         "stageDefault": "stage",
         "speed": [
             1.3,

@@ -5391,7 +5391,7 @@
         ],
         "needsVoices": true,
         "song": "Blammed",
-        "bpm": 165,
+        "bpm": 165.0,
         "stageDefault": "philly",
         "speed": [
             1.5,

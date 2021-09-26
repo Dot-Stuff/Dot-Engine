@@ -12270,7 +12270,7 @@
         ],
         "needsVoices": true,
         "song": "Stress",
-        "bpm": 178,
+        "bpm": 178.0,
         "stageDefault": "tank",
         "speed": [
             2.2,

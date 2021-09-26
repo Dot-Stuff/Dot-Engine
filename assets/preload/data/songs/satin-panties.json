@@ -6971,7 +6971,7 @@
         ],
         "needsVoices": true,
         "song": "Satin-Panties",
-        "bpm": 110,
+        "bpm": 110.0,
         "stageDefault": "limo",
         "speed": [
             1.6,

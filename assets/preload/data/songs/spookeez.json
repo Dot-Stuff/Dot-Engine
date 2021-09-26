@@ -6336,7 +6336,7 @@
         ],
         "needsVoices": true,
         "song": "Spookeez",
-        "bpm": 150,
+        "bpm": 150.0,
         "stageDefault": "spooky",
         "speed": [
             1.7,

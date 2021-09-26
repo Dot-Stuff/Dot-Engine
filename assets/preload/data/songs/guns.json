@@ -12410,7 +12410,7 @@
         ],
         "needsVoices": true,
         "song": "Guns",
-        "bpm": 185,
+        "bpm": 185.0,
         "stageDefault": "tank",
         "speed": [
             2,

@@ -392,7 +392,7 @@
                         ]
                     ],
                     "changeBPM": true,
-                    "bpm": 127,
+                    "bpm": 127.0,
                     "lengthInSteps": 16,
                     "mustHitSection": false
                 },
@@ -430,7 +430,7 @@
                         ]
                     ],
                     "changeBPM": true,
-                    "bpm": 95,
+                    "bpm": 95.0,
                     "lengthInSteps": 16,
                     "mustHitSection": true
                 },
@@ -458,7 +458,7 @@
                         ]
                     ],
                     "changeBPM": true,
-                    "bpm": 127,
+                    "bpm": 127.0,
                     "lengthInSteps": 16,
                     "mustHitSection": true
                 },
@@ -501,7 +501,7 @@
                         ]
                     ],
                     "changeBPM": true,
-                    "bpm": 105,
+                    "bpm": 105.0,
                     "lengthInSteps": 16,
                     "mustHitSection": false
                 },
@@ -1104,7 +1104,7 @@
                         ]
                     ],
                     "changeBPM": true,
-                    "bpm": 95,
+                    "bpm": 95.0,
                     "lengthInSteps": 16,
                     "mustHitSection": false
                 },
@@ -1583,7 +1583,7 @@
                         ]
                     ],
                     "changeBPM": true,
-                    "bpm": 132,
+                    "bpm": 132.0,
                     "lengthInSteps": 16,
                     "mustHitSection": false
                 },
@@ -2828,7 +2828,7 @@
                         ]
                     ],
                     "changeBPM": true,
-                    "bpm": 127,
+                    "bpm": 127.0,
                     "lengthInSteps": 16,
                     "mustHitSection": false
                 },
@@ -2861,7 +2861,7 @@
                         ]
                     ],
                     "changeBPM": true,
-                    "bpm": 95,
+                    "bpm": 95.0,
                     "lengthInSteps": 16,
                     "mustHitSection": true
                 },
@@ -2889,7 +2889,7 @@
                         ]
                     ],
                     "changeBPM": true,
-                    "bpm": 127,
+                    "bpm": 127.0,
                     "lengthInSteps": 16,
                     "mustHitSection": true
                 },
@@ -2932,7 +2932,7 @@
                         ]
                     ],
                     "changeBPM": true,
-                    "bpm": 105,
+                    "bpm": 105.0,
                     "lengthInSteps": 16,
                     "mustHitSection": false
                 },
@@ -3445,7 +3445,7 @@
                         ]
                     ],
                     "changeBPM": true,
-                    "bpm": 95,
+                    "bpm": 95.0,
                     "lengthInSteps": 16,
                     "mustHitSection": false
                 },
@@ -3884,7 +3884,7 @@
                         ]
                     ],
                     "changeBPM": true,
-                    "bpm": 132,
+                    "bpm": 132.0,
                     "lengthInSteps": 16,
                     "mustHitSection": false
                 },
@@ -5064,7 +5064,7 @@
                         ]
                     ],
                     "changeBPM": true,
-                    "bpm": 127,
+                    "bpm": 127.0,
                     "lengthInSteps": 16,
                     "mustHitSection": false
                 },
@@ -5112,7 +5112,7 @@
                         ]
                     ],
                     "changeBPM": true,
-                    "bpm": 95,
+                    "bpm": 95.0,
                     "lengthInSteps": 16,
                     "mustHitSection": true
                 },
@@ -5145,7 +5145,7 @@
                         ]
                     ],
                     "changeBPM": true,
-                    "bpm": 127,
+                    "bpm": 127.0,
                     "lengthInSteps": 16,
                     "mustHitSection": true
                 },
@@ -5203,7 +5203,7 @@
                         ]
                     ],
                     "changeBPM": true,
-                    "bpm": 105,
+                    "bpm": 105.0,
                     "lengthInSteps": 16,
                     "mustHitSection": false
                 },
@@ -5881,7 +5881,7 @@
                         ]
                     ],
                     "changeBPM": true,
-                    "bpm": 95,
+                    "bpm": 95.0,
                     "lengthInSteps": 16,
                     "mustHitSection": false
                 },
@@ -6360,7 +6360,7 @@
                         ]
                     ],
                     "changeBPM": true,
-                    "bpm": 132,
+                    "bpm": 132.0,
                     "lengthInSteps": 16,
                     "mustHitSection": false
                 },
@@ -7285,7 +7285,7 @@
         ],
         "needsVoices": true,
         "song": "Monster",
-        "bpm": 95,
+        "bpm": 95.0,
         "stageDefault": "spooky",
         "speed": [
             1.3,

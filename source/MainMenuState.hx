@@ -83,7 +83,7 @@ class MainMenuState extends MenuState
 
 		createItem('options', function()
 		{
-			FlxG.switchState(new ui.OptionsState());
+			FlxG.switchState(new ui.MultiplayerMenu());
 		});
 
 		for (i in 0...items.length)

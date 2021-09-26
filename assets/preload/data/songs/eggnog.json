@@ -6815,7 +6815,7 @@
         ],
         "needsVoices": true,
         "song": "Eggnog",
-        "bpm": 150,
+        "bpm": 150.0,
         "stageDefault": "mall",
         "speed": [
             1.6,

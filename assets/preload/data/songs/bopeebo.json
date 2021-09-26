@@ -2371,7 +2371,7 @@
         ],
         "needsVoices": true,
         "song": "Bopeebo",
-        "bpm": 100,
+        "bpm": 100.0,
         "stageDefault": "stage",
         "speed": [
             1,

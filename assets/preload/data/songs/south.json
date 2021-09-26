@@ -5627,7 +5627,7 @@
         ],
         "needsVoices": true,
         "song": "South",
-        "bpm": 165,
+        "bpm": 165.0,
         "stageDefault": "spooky",
         "speed": [
             1.5,
