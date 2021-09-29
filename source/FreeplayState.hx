@@ -8,6 +8,7 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import openfl.Assets;
+import flixel.util.FlxTimer;
 
 using StringTools;
 
@@ -26,6 +27,8 @@ class FreeplayState extends MusicBeatState
 	var diffText:FlxText;
 	var lerpScore:Float = 0;
 	var intendedScore:Int = 0;
+
+	var songWait:FlxTimer = new FlxTimer();
 
 	var bg:FlxSprite;
 	var scoreBG:FlxSprite;
@@ -176,7 +179,20 @@ class FreeplayState extends MusicBeatState
 		positionHighscore();
 
 		if (FlxG.mouse.wheel != 0)
-			changeSelection(-Math.round(FlxG.mouse.wheel / 4));
+		{
+			//Cleanup.
+			// Due to edge or chrome not liking mouseWheel / 4 it goes to 0
+
+			var whelSpop;
+
+			#if !desktop
+			whelSpop = -Math.round(FlxG.mouse.wheel / 4);
+			#else
+			whelSpop = -Math.round(FlxG.mouse.wheel);
+			#end
+			trace('wheel Spop: ' + whelSpop);
+			changeSelection(whelSpop);
+		}
 
 		if (controls.UI_UP_P)
 			changeSelection(-1);
@@ -272,7 +288,11 @@ class FreeplayState extends MusicBeatState
 		#end
 
 		#if PRELOAD_ALL
-		FlxG.sound.playMusic(Paths.inst(songs[curSelected].songName), 0);
+		FlxG.sound.music.stop();
+		songWait.cancel();
+		songWait.start(1, function(tmr:FlxTimer) {
+			FlxG.sound.playMusic(Paths.inst(songs[curSelected].songName), 0);
+		});
 		#end
 
 		var bullShit:Int = 0;

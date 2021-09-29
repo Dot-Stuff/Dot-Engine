@@ -13,11 +13,11 @@ class TankmenBG extends FlxSprite
 
 	public function new(x:Int, y:Int, popo:Bool)
 	{
-		super(x, y);
-
 		tankSpeed = 0.7;
 		goingRight = false;
 		strumTime = 0;
+
+		super(x, y);
 
 		frames = Paths.getSparrowAtlas('tankmanKilled1');
 		antialiasing = true;
@@ -27,7 +27,7 @@ class TankmenBG extends FlxSprite
 		animation.curAnim.curFrame = FlxG.random.int(0, animation.curAnim.frames.length - 1);
 
 		updateHitbox();
-		setGraphicSize(Std.int(0.8 * width));
+		setGraphicSize(Std.int(width * 0.8));
 		updateHitbox();
 	}
 
@@ -37,7 +37,7 @@ class TankmenBG extends FlxSprite
 
 		this.goingRight = goingRight;
 		endingOffset = FlxG.random.float(50, 200);
-		tankSpeed = FlxG.random.float(.6, 1);
+		tankSpeed = FlxG.random.float(0.6, 1);
 
 		flipX = goingRight;
 	}
@@ -50,15 +50,15 @@ class TankmenBG extends FlxSprite
 
 		if (animation.curAnim.name == "run")
 		{
-			elapsed = 0.74 * FlxG.width + endingOffset;
+			var joe = 0.74 * FlxG.width + endingOffset;
 
 			if (goingRight)
 			{
-				elapsed = 0.02 * FlxG.width - endingOffset;
-                x = elapsed + (Conductor.songPosition - strumTime) * tankSpeed;
+				joe = 0.02 * FlxG.width - endingOffset;
+                x = joe + (Conductor.songPosition - strumTime) * tankSpeed;
 			}
             else
-                x = elapsed - (Conductor.songPosition - strumTime) * tankSpeed;
+                x = joe - (Conductor.songPosition - strumTime) * tankSpeed;
 
             if (strumTime < Conductor.songPosition)
             {
