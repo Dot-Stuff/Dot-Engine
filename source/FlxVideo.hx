@@ -18,7 +18,9 @@ class FlxVideo extends FlxBasic
 		super();
 
 		video = new Video();
-		FlxG.game.addChild(video);
+		video.x = 0;
+		video.y = 0;
+		FlxG.addChildBelowMouse(video);
 
 		var netConnection = new NetConnection();
 		netConnection.connect(null);

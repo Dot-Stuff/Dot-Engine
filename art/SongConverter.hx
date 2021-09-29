@@ -1,4 +1,4 @@
-package;
+package art;
 
 import haxe.Json;
 import sys.io.File;

@@ -7670,27 +7670,27 @@
             {
                 "isPlayer1": true,
                 "angry": false,
-                "dialogue": "Direct contact with real humans, after being trapped in here for so long..."
+                "line": "Direct contact with real humans, after being trapped in here for so long..."
             },
             {
                 "isPlayer1": true,
                 "angry": false,
-                "dialogue": "and HER of all people."
+                "line": "and HER of all people."
             },
             {
                 "isPlayer1": true,
                 "angry": false,
-                "dialogue": "I'll make her father pay for what he's done to me and all the others...."
+                "line": "I'll make her father pay for what he's done to me and all the others...."
             },
             {
                 "isPlayer1": true,
                 "angry": false,
-                "dialogue": "I'll beat you and make you take my place."
+                "line": "I'll beat you and make you take my place."
             },
             {
                 "isPlayer1": true,
                 "angry": false,
-                "dialogue": "You don't mind your bodies being borrowed right? It's only fair..."
+                "line": "You don't mind your bodies being borrowed right? It's only fair..."
             }
         ],
         "needsVoices": true,

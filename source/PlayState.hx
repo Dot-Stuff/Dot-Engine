@@ -516,7 +516,7 @@ class PlayState extends MusicBeatState
 			{
 				var curTank:Int = 16;
 
-				if (tankmenRun.countLiving() == null)
+				if (tankmenRun.countLiving() == -1)
 					curTank = 50;
 
 				if (curTank > FlxG.random.float(0, 100))
@@ -786,7 +786,7 @@ class PlayState extends MusicBeatState
 	{
 		inCutscene = true;
 
-		/*var background:FlxSprite = new FlxSprite(-200, -200).makeGraphic(2 * FlxG.width, 2 * FlxG.height, FlxColor.BLACK);
+		var background:FlxSprite = new FlxSprite(-200, -200).makeGraphic(2 * FlxG.width, 2 * FlxG.height, FlxColor.BLACK);
 		background.scrollFactor.set();
 		add(background);
 
@@ -801,9 +801,9 @@ class PlayState extends MusicBeatState
 
 		FlxG.camera.zoom *= 1.2;
 		camFollow.x += 100;
-		camFollow.y += 100;*/
+		camFollow.y += 100;
 
-		FlxG.camera.zoom = defaultCamZoom * 1.2;
+		/*FlxG.camera.zoom = defaultCamZoom * 1.2;
 
 			// Pandemic Express - Zombie Escape
 			FlxG.sound.playMusic(Paths.music('DISTORTO'), 0);
@@ -862,7 +862,7 @@ class PlayState extends MusicBeatState
 						camHUD.visible = true;
 					});
 				});
-		});
+		});*/
 	}
 
 	function gunsIntro():Void
@@ -881,10 +881,6 @@ class PlayState extends MusicBeatState
 			startCountdown();
 			cameraMovement();
 		}
-
-		FlxG.camera.zoom *= 1.2;
-		camFollow.x += 100;
-		camFollow.y += 100;
 
 		/*camFollow.setPosition(camPos.x, camPos.y);
 
@@ -940,10 +936,6 @@ class PlayState extends MusicBeatState
 			startCountdown();
 			cameraMovement();
 		}
-
-		FlxG.camera.zoom *= 1.2;
-		camFollow.x += 100;
-		camFollow.y += 100;
 	}
 
 	function initDiscord():Void
@@ -2112,28 +2104,7 @@ class PlayState extends MusicBeatState
 
 	function cameraMovement()
 	{
-		if (cameraRightSide)
-		{
-			if (camFollow.x != boyfriend.getMidpoint().x - 100)
-			{
-				camFollow.setPosition(boyfriend.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
-
-				switch (curStage.toLowerCase())
-				{
-					case 'limo':
-						camFollow.x = boyfriend.getMidpoint().x - 300;
-					case 'mall':
-						camFollow.y = boyfriend.getMidpoint().y - 200;
-					case 'school' | 'school-evil':
-						camFollow.x = boyfriend.getMidpoint().x - 200;
-						camFollow.y = boyfriend.getMidpoint().y - 200;
-				}
-
-				if (SONG.song.toLowerCase() == 'tutorial')
-					FlxTween.tween(FlxG.camera, {zoom: 1}, (Conductor.stepCrochet * 4 / 1000), {ease: FlxEase.elasticInOut});
-			}
-		}
-		else if (camFollow.x != dad.getMidpoint().x + 150)
+		if (camFollow.x != dad.getMidpoint().x + 150 && !cameraRightSide)
 		{
 			camFollow.setPosition(dad.getMidpoint().x + 150, dad.getMidpoint().y - 100);
 
@@ -2144,6 +2115,25 @@ class PlayState extends MusicBeatState
 				case 'senpai' | 'senpai-angry':
 					camFollow.y = dad.getMidpoint().y - 430;
 					camFollow.x = dad.getMidpoint().x - 100;
+			}
+
+			if (SONG.song.toLowerCase() == 'tutorial')
+				FlxTween.tween(FlxG.camera, {zoom: 1}, (Conductor.stepCrochet * 4 / 1000), {ease: FlxEase.elasticInOut});
+		}
+
+		if (cameraRightSide && camFollow.x != boyfriend.getMidpoint().x - 100)
+		{
+			camFollow.setPosition(boyfriend.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
+
+			switch (curStage.toLowerCase())
+			{
+				case 'limo':
+					camFollow.x = boyfriend.getMidpoint().x - 300;
+				case 'mall':
+					camFollow.y = boyfriend.getMidpoint().y - 200;
+				case 'school' | 'school-evil':
+					camFollow.x = boyfriend.getMidpoint().x - 200;
+					camFollow.y = boyfriend.getMidpoint().y - 200;
 			}
 
 			if (SONG.song.toLowerCase() == 'tutorial')

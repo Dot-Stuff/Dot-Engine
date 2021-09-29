@@ -230,6 +230,7 @@ class ChartingState extends MusicBeatState
 			_song.player2 = characters[Std.parseInt(character)];
 			updateHeads();
 		});
+		player2DropDown.selectedLabel = _song.player2;
 
 		var stages:Array<String> = CoolUtil.coolTextFile(Paths.txt('stageList'));
 
@@ -237,8 +238,7 @@ class ChartingState extends MusicBeatState
 		{
 			_song.stageDefault = stages[Std.parseInt(stage)];
 		});
-
-		player2DropDown.selectedLabel = _song.player2;
+		stageDropDown.selectedLabel = _song.stageDefault;
 
 		var tab_group_song = new FlxUI(null, UI_box);
 		tab_group_song.name = "Song";
@@ -276,7 +276,7 @@ class ChartingState extends MusicBeatState
 		stepperLength = new FlxUINumericStepper(10, 10, 4, _song.notes[PlayState.storyDifficulty][curSection].lengthInSteps, 0, 999, 0);
 		stepperLength.name = "section_length";
 
-		stepperSectionBPM = new FlxUINumericStepper(10, 80, 1, Conductor.bpm, 0, 999, 0);
+		stepperSectionBPM = new FlxUINumericStepper(10, 80, 0.1, Conductor.bpm, -999, 999, 1);
 		stepperSectionBPM.name = 'section_bpm';
 
 		var stepperCopy:FlxUINumericStepper = new FlxUINumericStepper(110, 130, 0.1, 1, -999, 999, 1);
@@ -539,7 +539,7 @@ class ChartingState extends MusicBeatState
 			PlayState.SONG = _song;
 			FlxG.sound.music.stop();
 			vocals.stop();
-			FlxG.switchState(new PlayState());
+			LoadingState.loadAndSwitchState(new PlayState());
 		}
 
 		if (FlxG.keys.justPressed.E)

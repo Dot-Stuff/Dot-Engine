@@ -1,5 +1,6 @@
 package;
 
+import shadersLmfao.ColorSwap;
 import ui.PreferencesMenu;
 import flixel.FlxSprite;
 
@@ -31,6 +32,9 @@ class Note extends FlxSprite
 	public static var RED_NOTE:Int = 3;
 
 	private var noteColors:Array<String> = ["purple", "blue", "green", "red"];
+	private var arrowColors:Array<Int> = [1, 1, 1, 1];
+
+	private var colorSwap:ColorSwap = new ColorSwap();
 
 	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false)
 	{
@@ -100,6 +104,9 @@ class Note extends FlxSprite
 			antialiasing = true;
 		}
 
+		/*shader = colorSwap.shader;
+		updateColors();*/
+
 		x += swagWidth * noteData;
 		animation.play('${noteColors[noteData]}Scroll');
 
@@ -136,6 +143,11 @@ class Note extends FlxSprite
 		prevNote = null;
 
 		super.destroy();
+	}
+
+	function updateColors()
+	{
+		colorSwap.update(arrowColors[noteData]);
 	}
 
 	override function update(elapsed:Float)

@@ -15,7 +15,7 @@ typedef DialogueSection =
 {
 	var isPlayer1:Bool;
 	var angry:Bool;
-	var dialogue:String;
+	var line:String;
 }
 
 class Section

@@ -295,12 +295,12 @@ class DialogueBox extends FlxSpriteGroup
 	{
 		if (atSchool())
 		{
-			swagDialogue.resetText(dialogueList[0].dialogue);
+			swagDialogue.resetText(dialogueList[0].line);
 			swagDialogue.start(0.04);
 		}
 		else
 		{
-			var theDialog:Alphabet = new Alphabet(0, 70, dialogueList[0].dialogue, false, true);
+			var theDialog:Alphabet = new Alphabet(0, 70, dialogueList[0].line, false, true);
 			if (dialogueList[0].isPlayer1)
 				theDialog.personTalking = PlayState.SONG.player1.toUpperCase();
 			else
