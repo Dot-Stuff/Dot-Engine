@@ -41,6 +41,7 @@ hscript
 newgrounds
 colyseus
 colyseus-websocket
+hxcs
 ```
 So for each of those type `haxelib install [library]` so shit like `haxelib install newgrounds`
 
@@ -83,6 +84,9 @@ To run it from your desktop (Windows, Mac, Linux) it can be a bit more involved.
 
 Once that is done you can open up a command line in the project's directory and run `lime test windows -debug`. Once that command finishes (it takes forever even on a higher end PC), you can run FNF from the .exe file under export\release\windows\bin
 As for Mac, `lime test mac -debug` should work, if not the internet surely has a guide on how to compile Haxe stuff for Mac.
+
+### Compiling Song Conveter
+Make sure you have **hxcs** installed. Run `haxe -main art/SongConverter.hx --cs export/songShit` in command prompt in "Dot-Engine/art".
 
 ### Additional guides
 
