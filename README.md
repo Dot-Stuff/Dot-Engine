@@ -1,4 +1,5 @@
 ![dot-engine-image](https://raw.githubusercontent.com/the-rebellion-hideout/Dot-Engine/net-test/art/preloaderArt.png)
+[Join our Discord](https://www.discord.gg/u9B7qkkhtM)
 
 This is the repository for Friday Night Funkin, a game originally made for Ludum Dare 47 "Stuck In a Loop".
 
