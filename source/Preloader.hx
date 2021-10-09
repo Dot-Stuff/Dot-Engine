@@ -10,10 +10,12 @@ import flixel.system.FlxBasePreloader;
 
 class Preloader extends FlxBasePreloader
 {
-	public function new(MinDisplayTime:Float = 3)
+	public function new(MinDisplayTime:Float = 3, ?AllowedURLs:Array<String>)
 	{
-		super(3);
+		super(MinDisplayTime, AllowedURLs);
 	}
+
+	var logo:Sprite;
 
 	override function create():Void
 	{
@@ -22,7 +24,7 @@ class Preloader extends FlxBasePreloader
 
 		var ratio:Float = this._width / 2560; // This allows us to scale assets depending on the size of the screen.
 
-		var logo:Sprite = new Sprite();
+		logo = new Sprite();
 		logo.addChild(new Bitmap(new LogoImage(0, 0))); // Sets the graphic of the sprite to a Bitmap object, which uses our embedded BitmapData class.
 		logo.scaleX = logo.scaleY = ratio;
 		logo.x = ((this._width) / 2) - ((logo.width) / 2);

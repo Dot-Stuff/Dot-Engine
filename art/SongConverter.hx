@@ -1,4 +1,8 @@
-package art;
+#if !interp
+// Needs this to be run by interp, just for me lol. :D
+package;
+
+#end
 
 import haxe.Json;
 import sys.io.File;

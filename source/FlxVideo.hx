@@ -6,6 +6,10 @@ import openfl.media.Video;
 import openfl.net.NetConnection;
 import openfl.net.NetStream;
 
+/**
+ * The video sounds in https://github.com/ninjamuffin99/Funkin/issues/1463
+ * Add subtitles for the videos (YOU IDIOT IT WILL BE A OPTION)
+ */
 class FlxVideo extends FlxBasic
 {
 	public var finishCutscene:Void->Void;
@@ -30,6 +34,11 @@ class FlxVideo extends FlxBasic
 		netStream.client = {onMetaData: client_onMetaData};
 
 		netStream.play(Paths.video(name));
+	}
+
+	public function play()
+	{
+		
 	}
 
 	public function finishVideo()

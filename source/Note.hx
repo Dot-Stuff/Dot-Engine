@@ -34,7 +34,7 @@ class Note extends FlxSprite
 	private var noteColors:Array<String> = ["purple", "blue", "green", "red"];
 	private var arrowColors:Array<Int> = [1, 1, 1, 1];
 
-	private var colorSwap:ColorSwap = new ColorSwap();
+	private var colorSwap:ColorSwap;
 
 	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false)
 	{
@@ -104,7 +104,8 @@ class Note extends FlxSprite
 			antialiasing = true;
 		}
 
-		/*shader = colorSwap.shader;
+		/*colorSwap = new ColorSwap();
+		shader = colorSwap.shader;
 		updateColors();*/
 
 		x += swagWidth * noteData;

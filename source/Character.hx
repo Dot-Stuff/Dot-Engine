@@ -542,6 +542,11 @@ class Character extends FlxSprite
 		animation.addByPrefix(name, prefix, 24, false);
 	}
 
+	public function hasRightAndLeft():Bool
+	{
+		return animOffsets.exists('danceRight') && animOffsets.exists('danceLeft');
+	}
+
 	private function loadOffsetFile(offsetCharacter:String)
 	{
 		var daFile:Array<String> = CoolUtil.coolTextFile(Paths.file('images/characters/${offsetCharacter}Offsets.txt', TEXT));
@@ -622,7 +627,7 @@ class Character extends FlxSprite
 				if (!animation.curAnim.name.endsWith('DOWN-alt'))
 					playAnim('idle');
 			default:
-				if (animOffsets.exists('danceRight') && animOffsets.exists('danceLeft'))
+				if (hasRightAndLeft())
 				{
 					if (!animation.curAnim.name.startsWith('hair'))
 					{

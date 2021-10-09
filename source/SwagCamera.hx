@@ -85,14 +85,16 @@ class SwagCamera extends FlxCamera
 				_lastTargetPosition.y = target.y;
 			}
 
-			if (followLerp >= 60 / FlxG.updateFramerate)
+			var framerate:Float = FlxG.game.focusLostFramerate;
+
+			if (followLerp >= 60 / framerate)
 			{
 				scroll.copyFrom(_scrollTarget); // no easing
 			}
 			else
 			{
-				scroll.x += (_scrollTarget.x - scroll.x) * followLerp * FlxG.updateFramerate / 60;
-				scroll.y += (_scrollTarget.y - scroll.y) * followLerp * FlxG.updateFramerate / 60;
+				scroll.x += (_scrollTarget.x - scroll.x) * followLerp * framerate / 60;
+				scroll.y += (_scrollTarget.y - scroll.y) * followLerp * framerate / 60;
 			}
 		}
 	}

@@ -1082,7 +1082,7 @@ class PlayState extends MusicBeatState
 				if (!dad.animation.curAnim.name.startsWith("sing"))
 					dad.dance();
 			}
-			else if (dad.curCharacter == 'spooky' && !dad.animation.curAnim.name.startsWith("sing"))
+			else if (dad.hasRightAndLeft() && !dad.animation.curAnim.name.startsWith("sing"))
 				dad.dance();
 			if (generatedMusic)
 				notes.sort(sortNotes, FlxSort.DESCENDING);
@@ -1529,7 +1529,7 @@ class PlayState extends MusicBeatState
 
 		if (FlxG.keys.justPressed.SEVEN)
 		{
-			switchTo(new ChartingState());
+			FlxG.switchState(new ChartingState());
 
 			#if discord_rpc
 			DiscordClient.changePresence("Chart Editor", null, null, true);
@@ -1839,6 +1839,7 @@ class PlayState extends MusicBeatState
 	function endSong():Void
 	{
 		seenCutscene = false;
+		deathCounter = 0;
 		canPause = false;
 		FlxG.sound.music.volume = 0;
 		vocals.volume = 0;
@@ -2491,7 +2492,7 @@ class PlayState extends MusicBeatState
 
 		// HARDCODING FOR MILF ZOOMS!
 
-		// if (PreferencesMenu.getPref('camera-zoom'))
+		if (PreferencesMenu.getPref('camera-zoom'))
 		{
 			if (curSong.toLowerCase() == 'milf' && curBeat >= 168 && curBeat < 200 && camZooming && FlxG.camera.zoom < 1.35)
 			{

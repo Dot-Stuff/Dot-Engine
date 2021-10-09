@@ -2,13 +2,19 @@ package;
 
 import flixel.FlxSprite;
 
+using StringTools;
+
 class NoteSplash extends FlxSprite
 {
 	public function new(x:Float, y:Float, noteData:Int)
 	{
 		super(x, y);
 
-		frames = Paths.getSparrowAtlas('noteSplashes');
+		// Da Name Reference. Dont try and find it on scratch??? :troll:
+		if (PlayState.curStage.startsWith('school'))
+			frames = Paths.getSparrowAtlas('pixelUI/noteSplashes-pixels');
+		else
+			frames = Paths.getSparrowAtlas('noteSplashes');
 
 		animation.addByPrefix("note1-0", "note impact 1  blue", 24, false);
 		animation.addByPrefix("note2-0", "note impact 1 green", 24, false);

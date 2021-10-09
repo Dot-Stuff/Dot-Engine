@@ -1,5 +1,6 @@
 package;
 
+import ui.PreferencesMenu;
 import flixel.FlxSprite;
 import flixel.addons.transition.FlxTransitionSprite.GraphicTransTileDiamond;
 import flixel.addons.transition.FlxTransitionableState;
@@ -46,15 +47,12 @@ class TitleState extends MusicBeatState
 		startedIntro = false;
 
 		FlxG.game.focusLostFramerate = 60;
-		FlxG.autoPause = false;
 
 		FlxG.sound.muteKeys = [ZERO, NUMPADZERO];
 
 		#if polymod
 		polymod.Polymod.init({modRoot: "mods", dirs: ['introMod'], framework: OPENFL});
 		#end
-
-		PlayerSettings.init();
 
 		curWacky = FlxG.random.getObject(getIntroTextShit());
 
@@ -72,6 +70,10 @@ class TitleState extends MusicBeatState
 		#end
 
 		FlxG.save.bind('funkin', 'ninjamuffin99');
+
+		PreferencesMenu.initPrefs();
+
+		PlayerSettings.init();
 
 		Highscore.load();
 
