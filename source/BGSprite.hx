@@ -36,8 +36,6 @@ class BGSprite extends FlxSprite
 
 			dance();
         }
-
-		PlayState.spriteList.push(name);
 	}
 
 	public function dance():Void

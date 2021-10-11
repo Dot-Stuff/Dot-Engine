@@ -1,5 +1,6 @@
 package;
 
+import ui.PreferencesMenu;
 import flixel.FlxSprite;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.effects.FlxFlicker;
@@ -83,7 +84,7 @@ class MainMenuState extends MenuState
 
 		createItem('options', function()
 		{
-			FlxG.switchState(new ui.MultiplayerMenu());
+			FlxG.switchState(new ui.PreferencesMenu());
 		});
 
 		for (i in 0...items.length)

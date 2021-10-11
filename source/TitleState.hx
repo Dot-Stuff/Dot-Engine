@@ -62,9 +62,9 @@ class TitleState extends MusicBeatState
 
 		super.create();
 
+		#if newgrounds
 		NGio.noLogin(APIStuff.API);
 
-		#if ng
 		var ng:NGio = new NGio(APIStuff.API, APIStuff.EncKey);
 		trace('NEWGROUNDS LOL');
 		#end
@@ -274,11 +274,13 @@ class TitleState extends MusicBeatState
 
 		if (pressedEnter && !transitioning && skippedIntro)
 		{
+			#if newgrounds
 			NGio.unlockMedal(60960);
 
 			// If it's Friday according to da clock
 			if (Date.now().getDay() == 5)
 				NGio.unlockMedal(61034);
+			#end
 
 			if (titleText != null)
 				titleText.animation.play('press');
@@ -291,6 +293,7 @@ class TitleState extends MusicBeatState
 			Assets.cache.clear(Paths.image('logoBumpin'));
 			Assets.cache.clear(Paths.image('titleEnter'));
 
+			#if newgrounds
 			new FlxTimer().start(2, function(tmr:FlxTimer)
 			{
 				// Check if version is outdated
@@ -311,7 +314,9 @@ class TitleState extends MusicBeatState
 					FlxG.switchState(new MainMenuState());
 				}
 			});
-			// FlxG.sound.play(Paths.music('titleShoot'), 0.7);
+			#else
+			FlxG.switchState(new MainMenuState());
+			#end
 		}
 
 		if (pressedEnter && !skippedIntro && initialized)

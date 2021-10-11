@@ -139,7 +139,8 @@ class PlayState extends MusicBeatState
 
 	var camPos:FlxPoint;
 
-	public static var spriteList:Array<String> = [];
+	// TODO: Remake the spiteList unloading system. IT WAS TOO BUGGY.
+	// We might want to make it unload the week folder.
 
 	override public function create()
 	{
@@ -254,7 +255,7 @@ class PlayState extends MusicBeatState
 				{
 					defaultCamZoom = 0.80;
 
-					var bg:FlxSprite = new FlxSprite(-1000, -500).loadGraphic(Paths.image('christmas/bgWalls'));
+					var bg:FlxSprite = new FlxSprite(-1000, -500).loadGraphic(Paths.image('bgWalls'));
 					bg.antialiasing = true;
 					bg.scrollFactor.set(0.2, 0.2);
 					bg.active = false;
@@ -263,7 +264,7 @@ class PlayState extends MusicBeatState
 					add(bg);
 
 					upperBoppers = new FlxSprite(-240, -90);
-					upperBoppers.frames = Paths.getSparrowAtlas('christmas/upperBop');
+					upperBoppers.frames = Paths.getSparrowAtlas('upperBop');
 					upperBoppers.animation.addByPrefix('bop', "Upper Crowd Bob", 24, false);
 					upperBoppers.antialiasing = true;
 					upperBoppers.scrollFactor.set(0.33, 0.33);
@@ -271,7 +272,7 @@ class PlayState extends MusicBeatState
 					upperBoppers.updateHitbox();
 					add(upperBoppers);
 
-					var bgEscalator:FlxSprite = new FlxSprite(-1100, -600).loadGraphic(Paths.image('christmas/bgEscalator'));
+					var bgEscalator:FlxSprite = new FlxSprite(-1100, -600).loadGraphic(Paths.image('bgEscalator'));
 					bgEscalator.antialiasing = true;
 					bgEscalator.scrollFactor.set(0.3, 0.3);
 					bgEscalator.active = false;
@@ -279,13 +280,13 @@ class PlayState extends MusicBeatState
 					bgEscalator.updateHitbox();
 					add(bgEscalator);
 
-					var tree:FlxSprite = new FlxSprite(370, -250).loadGraphic(Paths.image('christmas/christmasTree'));
+					var tree:FlxSprite = new FlxSprite(370, -250).loadGraphic(Paths.image('christmasTree'));
 					tree.antialiasing = true;
 					tree.scrollFactor.set(0.40, 0.40);
 					add(tree);
 
 					bottomBoppers = new FlxSprite(-300, 140);
-					bottomBoppers.frames = Paths.getSparrowAtlas('christmas/bottomBop');
+					bottomBoppers.frames = Paths.getSparrowAtlas('bottomBop');
 					bottomBoppers.animation.addByPrefix('bop', 'Bottom Level Boppers', 24, false);
 					bottomBoppers.antialiasing = true;
 					bottomBoppers.scrollFactor.set(0.9, 0.9);
@@ -293,13 +294,13 @@ class PlayState extends MusicBeatState
 					bottomBoppers.updateHitbox();
 					add(bottomBoppers);
 
-					var fgSnow:FlxSprite = new FlxSprite(-600, 700).loadGraphic(Paths.image('christmas/fgSnow'));
+					var fgSnow:FlxSprite = new FlxSprite(-600, 700).loadGraphic(Paths.image('fgSnow'));
 					fgSnow.active = false;
 					fgSnow.antialiasing = true;
 					add(fgSnow);
 
 					santa = new FlxSprite(-840, 150);
-					santa.frames = Paths.getSparrowAtlas('christmas/santa');
+					santa.frames = Paths.getSparrowAtlas('santa');
 					santa.animation.addByPrefix('idle', 'santa idle in fear', 24, false);
 					santa.antialiasing = true;
 					add(santa);
@@ -308,7 +309,7 @@ class PlayState extends MusicBeatState
 				{
 					loadStage('mall-evil');
 
-					var bg:FlxSprite = new FlxSprite(-400, -500).loadGraphic(Paths.image('christmas/evilBG'));
+					var bg:FlxSprite = new FlxSprite(-400, -500).loadGraphic(Paths.image('evilBG'));
 					bg.antialiasing = true;
 					bg.scrollFactor.set(0.2, 0.2);
 					bg.active = false;
@@ -316,12 +317,12 @@ class PlayState extends MusicBeatState
 					bg.updateHitbox();
 					add(bg);
 
-					var evilTree:FlxSprite = new FlxSprite(300, -300).loadGraphic(Paths.image('christmas/evilTree'));
+					var evilTree:FlxSprite = new FlxSprite(300, -300).loadGraphic(Paths.image('evilTree'));
 					evilTree.antialiasing = true;
 					evilTree.scrollFactor.set(0.2, 0.2);
 					add(evilTree);
 
-					var evilSnow:FlxSprite = new FlxSprite(-200, 700).loadGraphic(Paths.image("christmas/evilSnow"));
+					var evilSnow:FlxSprite = new FlxSprite(-200, 700).loadGraphic(Paths.image("evilSnow"));
 					evilSnow.antialiasing = true;
 					add(evilSnow);
 				}
@@ -1866,7 +1867,9 @@ class PlayState extends MusicBeatState
 
 				if (SONG.validScore)
 				{
+					#if newgrounds
 					NGio.unlockMedal(60961);
+					#end
 					Highscore.saveWeekScore(storyWeek, campaignScore, storyDifficulty);
 				}
 
@@ -2271,17 +2274,8 @@ class PlayState extends MusicBeatState
 
 	public override function switchTo(nextState:FlxState):Bool
 	{
-		// HAHA FAT. DON'T COPY KADEDEV.
-		if (spriteList != null)
-		{
-			Assets.cache.clear(Paths.inst(PlayState.SONG.song));
-			Assets.cache.clear(Paths.voices(PlayState.SONG.song));
-
-			for (i in 0...spriteList.length)
-			{
-				Assets.cache.clear(Paths.image(spriteList[i]));
-			}
-		}
+		Assets.cache.clear(Paths.inst(PlayState.SONG.song));
+		Assets.cache.clear(Paths.voices(PlayState.SONG.song));
 
 		return super.switchTo(nextState);
 	}

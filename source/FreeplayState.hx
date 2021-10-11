@@ -283,7 +283,7 @@ class FreeplayState extends MusicBeatState
 		if (curSelected >= songs.length)
 			curSelected = 0;
 
-		#if !switch
+		#if newgrounds
 		intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
 		#end
 

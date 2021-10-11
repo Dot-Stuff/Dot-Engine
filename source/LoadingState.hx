@@ -35,6 +35,9 @@ class LoadingState extends MusicBeatState
 
 	override function create()
 	{
+		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, -3473587);
+		add(bg);
+
 		funkay = new FlxSprite().loadGraphic(Paths.image('funkay'));
 		funkay.setGraphicSize(0, FlxG.height);
 		funkay.updateHitbox();
@@ -44,7 +47,7 @@ class LoadingState extends MusicBeatState
 		funkay.screenCenter();
 
 		loadBar = new FlxBar(0, FlxG.height - 20);
-		loadBar.makeGraphic(FlxG.width, 10, FlxColor.RED);
+		loadBar.makeGraphic(FlxG.width, 10, -59694);
 		loadBar.screenCenter(X);
 		add(loadBar);
 
@@ -139,16 +142,8 @@ class LoadingState extends MusicBeatState
 
 	inline static public function loadAndSwitchState(target:FlxState, stopMusic = false)
 	{
-		if (PlayState.SONG != null && PlayState.spriteList != null)
-		{
-			Assets.cache.clear(Paths.inst(PlayState.SONG.song));
-			Assets.cache.clear(Paths.voices(PlayState.SONG.song));
-
-			for (i in 0...PlayState.spriteList.length)
-			{
-				Assets.cache.clear(Paths.image(PlayState.spriteList[i]));
-			}
-		}
+		Assets.cache.clear(Paths.inst(PlayState.SONG.song));
+		Assets.cache.clear(Paths.voices(PlayState.SONG.song));
 
 		FlxG.switchState(getNextState(target, stopMusic));
 	}

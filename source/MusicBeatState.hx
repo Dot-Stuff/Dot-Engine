@@ -1,10 +1,7 @@
 package;
 
 import Conductor.BPMChangeEvent;
-import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.ui.FlxUIState;
-import flixel.math.FlxRect;
-import flixel.util.FlxTimer;
 
 class MusicBeatState extends FlxUIState
 {
@@ -28,7 +25,6 @@ class MusicBeatState extends FlxUIState
 
 	override function update(elapsed:Float)
 	{
-		//everyStep();
 		var oldStep:Int = curStep;
 
 		updateCurStep();
@@ -69,6 +65,6 @@ class MusicBeatState extends FlxUIState
 
 	public function beatHit():Void
 	{
-		//do literally nothing dumbass
+		// do literally nothing dumbass
 	}
 }

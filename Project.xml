@@ -119,12 +119,12 @@
 
 	<!--In case you want to use the ui package-->
 	<haxelib name="flixel-ui" />
-	<haxelib name="newgrounds" unless='switch' />
+	<haxelib name="newgrounds" unless='hl' />
 	<haxelib name="faxe" if='switch' />
 	<haxelib name="polymod" />
 	<haxelib name="colyseus" />
 	<haxelib name="colyseus-websocket" />
-	<haxelib name="discord_rpc" if="desktop" unless="hl" />
+	<haxelib name="discord_rpc" if="cpp" />
 	<!--<haxelib name="hxcpp-debug-server" if="desktop debug"/>-->
 
 	<!--<haxelib name="flixel-animate" />
@@ -184,7 +184,7 @@
 	<haxedef name="NG_LOGIN" if="newgrounds" />
 	<haxedef name="CAN_CHEAT" if="switch debug" />
 
-	<section unless='web switch'>
+	<section unless='hl'>
 		<!-- Compiles tool for old song conversion shit -->
 		<postbuild command='haxe -main art/SongConverter.hx --cs export/songShit' />
 		<postbuild command='ren export/songShit/tools' />

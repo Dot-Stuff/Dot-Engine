@@ -50,9 +50,6 @@ You'll also need to install a couple things that involve Gits. To do this, you n
 
 You should have everything ready for compiling the game! Follow the guide below to continue!
 
-At the moment, you can optionally fix the debug screen.
-- Run `haxelib git openfl https://github.com/openfl/openfl` in the terminal/command-prompt.
-
 ### Ignored files
 
 I gitignore the API keys for the game, so that no one can nab them and post fake high scores on the leaderboards. But because of that the game
