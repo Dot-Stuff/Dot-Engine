@@ -201,7 +201,7 @@ class StoryMenuState extends MusicBeatState
 		add(scoreText);
 		add(txtWeekTitle);
 
-		updateText();
+		changeWeek();
 
 		trace("Line 165");
 
@@ -231,9 +231,17 @@ class StoryMenuState extends MusicBeatState
 			if (!selectedWeek)
 			{
 				if (controls.UI_UP_P)
+				{
+					FlxG.sound.play(Paths.sound('scrollMenu'));
+
 					changeWeek(-1);
+				}
 				else if (controls.UI_DOWN_P)
+				{
+					FlxG.sound.play(Paths.sound('scrollMenu'));
+
 					changeWeek(1);
+				}
 
 				rightArrow.animation.play(controls.UI_RIGHT ? 'press' : 'idle');
 				leftArrow.animation.play(controls.UI_LEFT ? 'press' : 'idle');
@@ -349,8 +357,6 @@ class StoryMenuState extends MusicBeatState
 			i++;
 		}
 
-		FlxG.sound.play(Paths.sound('scrollMenu'));
-
 		updateText();
 	}
 
@@ -359,7 +365,7 @@ class StoryMenuState extends MusicBeatState
 		for (i in 0...2)
 			grpWeekCharacters.members[i].animation.play(weekCharacters[curWeek][i]);
 		
-		txtTracklist.text = "Tracks\n";
+		txtTracklist.text = "Tracks\n\n";
 
 		var member0 = grpWeekCharacters.members[0];
 
@@ -393,7 +399,7 @@ class StoryMenuState extends MusicBeatState
 		var stringThing:Array<String> = weekData[curWeek];
 
 		for (i in stringThing)
-			txtTracklist.text += '\n$i';
+			txtTracklist.text += '$i\n';
 
 		txtTracklist.text = txtTracklist.text.toUpperCase();
 

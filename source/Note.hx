@@ -32,7 +32,7 @@ class Note extends FlxSprite
 	public static var RED_NOTE:Int = 3;
 
 	private var noteColors:Array<String> = ["purple", "blue", "green", "red"];
-	private var arrowColors:Array<Int> = [1, 1, 1, 1];
+	private var arrowColors:Array<Float> = [2.8, 2.8, 2.8, 2.8];
 
 	private var colorSwap:ColorSwap;
 
@@ -104,9 +104,9 @@ class Note extends FlxSprite
 			antialiasing = true;
 		}
 
-		/*colorSwap = new ColorSwap();
+		colorSwap = new ColorSwap();
 		shader = colorSwap.shader;
-		updateColors();*/
+		updateColors();
 
 		x += swagWidth * noteData;
 		animation.play('${noteColors[noteData]}Scroll');

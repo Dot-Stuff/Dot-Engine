@@ -1,7 +1,6 @@
 package;
 
 import flixel.math.FlxMath;
-import flixel.util.FlxColor;
 import flixel.ui.FlxBar;
 import lime.app.Promise;
 import lime.app.Future;
@@ -142,9 +141,6 @@ class LoadingState extends MusicBeatState
 
 	inline static public function loadAndSwitchState(target:FlxState, stopMusic = false)
 	{
-		Assets.cache.clear(Paths.inst(PlayState.SONG.song));
-		Assets.cache.clear(Paths.voices(PlayState.SONG.song));
-
 		FlxG.switchState(getNextState(target, stopMusic));
 	}
 

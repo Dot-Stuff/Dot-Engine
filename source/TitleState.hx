@@ -1,5 +1,6 @@
 package;
 
+import shadersLmfao.ColorSwap;
 import ui.PreferencesMenu;
 import flixel.FlxSprite;
 import flixel.addons.transition.FlxTransitionSprite.GraphicTransTileDiamond;
@@ -14,7 +15,6 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
-import lime.app.Application;
 import openfl.Assets;
 #if ANIMDEBUG
 import ui.AnimationDebug;
@@ -42,11 +42,15 @@ class TitleState extends MusicBeatState
 
 	var wackyImage:FlxSprite;
 
+	var swagShader:ColorSwap;
+
 	override public function create():Void
 	{
 		startedIntro = false;
 
 		FlxG.game.focusLostFramerate = 60;
+
+		swagShader = new ColorSwap();
 
 		FlxG.sound.muteKeys = [ZERO, NUMPADZERO];
 
@@ -62,13 +66,6 @@ class TitleState extends MusicBeatState
 
 		super.create();
 
-		#if newgrounds
-		NGio.noLogin(APIStuff.API);
-
-		var ng:NGio = new NGio(APIStuff.API, APIStuff.EncKey);
-		trace('NEWGROUNDS LOL');
-		#end
-
 		FlxG.save.bind('funkin', 'ninjamuffin99');
 
 		PreferencesMenu.initPrefs();
@@ -76,6 +73,8 @@ class TitleState extends MusicBeatState
 		PlayerSettings.init();
 
 		Highscore.load();
+
+		NGio.init();
 
 		if (FlxG.save.data.weekUnlocked != null)
 		{
@@ -166,6 +165,7 @@ class TitleState extends MusicBeatState
 		logoBl.animation.addByPrefix('bump', 'logo bumpin', 24);
 		logoBl.animation.play('bump');
 		logoBl.updateHitbox();
+		logoBl.shader = swagShader.shader;
 		// logoBl.screenCenter();
 		// logoBl.color = FlxColor.BLACK;
 
@@ -175,6 +175,7 @@ class TitleState extends MusicBeatState
 		gfDance.animation.addByIndices('danceRight', 'gfDance', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
 		gfDance.antialiasing = true;
 		add(gfDance);
+		gfDance.shader = swagShader.shader;
 		add(logoBl);
 
 		titleText = new FlxSprite(100, FlxG.height * 0.8);
@@ -294,25 +295,12 @@ class TitleState extends MusicBeatState
 			Assets.cache.clear(Paths.image('titleEnter'));
 
 			#if newgrounds
-			new FlxTimer().start(2, function(tmr:FlxTimer)
+			NGio.checkVersion(function(ver:String)
 			{
-				// Check if version is outdated
-
-				var version:String = "v" + Application.current.meta.get('version');
-
-				if (version.trim() != NGio.GAME_VER.trim() && !OutdatedSubState.leftState)
-				{
-					FlxG.switchState(new OutdatedSubState());
+				if (ver.split(" ")[0].trim() != ver.trim())
 					trace('OLD VERSION!');
-					trace('old ver');
-					trace(version.trim());
-					trace('cur ver');
-					trace(NGio.GAME_VER.trim());
-				}
-				else
-				{
-					FlxG.switchState(new MainMenuState());
-				}
+
+				FlxG.switchState(new MainMenuState());
 			});
 			#else
 			FlxG.switchState(new MainMenuState());
@@ -321,6 +309,11 @@ class TitleState extends MusicBeatState
 
 		if (pressedEnter && !skippedIntro && initialized)
 			skipIntro();
+
+		if (controls.UI_LEFT)
+			swagShader.update(0.1 * -elapsed);
+		else if (controls.UI_RIGHT)
+			swagShader.update(0.1 * -elapsed);
 
 		super.update(elapsed);
 	}

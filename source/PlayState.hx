@@ -508,25 +508,19 @@ class PlayState extends MusicBeatState
 			gf.x -= 50;
 			gf.y -= 200;
 
-			var tankman:TankmenBG = new TankmenBG(20, 500, true);
-			tankman.strumTime = 10;
-			tankman.resetShit(20, 600, true);
-			tankmenRun.add(tankman);
+			var tankmanRun = new TankmenBG(20, 500, true);
+			tankmanRun.strumTime = 0;
+			tankmanRun.resetShit(20, 600, true);
+			tankmenRun.add(tankmanRun);
 
-			for (i in 0...TankmenBG.animationNotes.length)
+			for (i in 15...TankmenBG.animationNotes.length)
 			{
-				var curTank:Int = 16;
-
-				if (tankmenRun.countLiving() == -1)
-					curTank = 50;
-
-				if (curTank > FlxG.random.float(0, 100))
+				if (FlxG.random.float(0, 100) < i)
 				{
-					var pc:TankmenBG = tankmenRun.recycle(TankmenBG);
-
-					pc.strumTime = TankmenBG.animationNotes[i][0];
-					pc.resetShit(500, 200 + FlxG.random.int(50, 100), TankmenBG.animationNotes[i][1] < 2);
-					tankmenRun.add(pc);
+					var tankman:TankmenBG = tankmenRun.recycle(TankmenBG);
+					tankman.strumTime = TankmenBG.animationNotes[i][0];
+					tankman.resetShit(500, 200 + FlxG.random.int(50, 100), TankmenBG.animationNotes[i][1] < 2);
+					tankmenRun.add(tankman);
 				}
 			}
 		}
@@ -806,7 +800,6 @@ class PlayState extends MusicBeatState
 
 		/*FlxG.camera.zoom = defaultCamZoom * 1.2;
 
-			// Pandemic Express - Zombie Escape
 			FlxG.sound.playMusic(Paths.music('DISTORTO'), 0);
 			FlxG.sound.music.fadeIn(5, 0, 0.5);
 
@@ -843,7 +836,7 @@ class PlayState extends MusicBeatState
 					camFollow.x -= 800;
 					camFollow.y -= 100;
 					FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom * 1.2}, 0.5, {ease: FlxEase.quadInOut});
-					// tankCutscene.animation.play('killYou');
+					tankCutscene.animation.play('killYou');
 					FlxG.sound.play(Paths.sound('killYou'));
 					new FlxTimer().start(6.1, function(swagasdga:FlxTimer)
 					{
@@ -854,7 +847,7 @@ class PlayState extends MusicBeatState
 						new FlxTimer().start((Conductor.crochet / 1000) * 5, function(money:FlxTimer)
 						{
 							dad.visible = true;
-							// gfCutsceneLayer.remove(tankCutscene);
+							gfCutsceneLayer.remove(tankCutscene);
 						});
 
 						cameraMovement();
@@ -1252,10 +1245,6 @@ class PlayState extends MusicBeatState
 			if (curStage.toLowerCase().startsWith('school'))
 			{
 				babyArrow.loadGraphic(Paths.image('pixelUI/arrows-pixels'), true, 17, 17);
-				babyArrow.animation.add('green', [6]);
-				babyArrow.animation.add('red', [7]);
-				babyArrow.animation.add('blue', [5]);
-				babyArrow.animation.add('purplel', [4]);
 
 				babyArrow.setGraphicSize(Std.int(babyArrow.width * daPixelZoom));
 				babyArrow.updateHitbox();
@@ -1285,11 +1274,6 @@ class PlayState extends MusicBeatState
 			else
 			{
 				babyArrow.frames = Paths.getSparrowAtlas('NOTE_assets');
-
-				babyArrow.animation.addByPrefix('green', 'arrowUP');
-				babyArrow.animation.addByPrefix('blue', 'arrowDOWN');
-				babyArrow.animation.addByPrefix('purple', 'arrowLEFT');
-				babyArrow.animation.addByPrefix('red', 'arrowRIGHT');
 
 				babyArrow.antialiasing = true;
 				babyArrow.setGraphicSize(Std.int(babyArrow.width * 0.7));

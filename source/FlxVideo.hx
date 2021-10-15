@@ -36,11 +36,6 @@ class FlxVideo extends FlxBasic
 		netStream.play(Paths.video(name));
 	}
 
-	public function play()
-	{
-		
-	}
-
 	public function finishVideo()
 	{
 		netStream.dispose();

@@ -2,6 +2,7 @@ package;
 
 import flixel.system.FlxSound;
 import flixel.FlxSprite;
+import lime.utils.Assets;
 
 using StringTools;
 
@@ -11,27 +12,10 @@ class CutsceneCharacter
 
 	function parseOffsets()
 	{
-		for (var a = CoolUtil.coolTextFile(Paths.file('images/cutsceneStuff/${imageShit}CutsceneOffsets.txt', TEXT))
+		for (i in CoolUtil.coolTextFile(Assets.getPath(Paths.image('${imageShit}CutsceneOffsets'))))
 		{
-			b = 0;
-			b < a.length;
+			var e:String = ''.trim(''.split('---')[1]).split(" ");
 		}
-	)
-		{
-			var c = a[b];
-			++b;
-			var d = X._pool.get().set(0, 0);
-			d._inPool = !1;
-			var e = L.trim(c.split("---")[1]).split(" ");
-			trace("cool split: " + c.split("---")[1]);
-			trace(e);
-			d.set(parseFloat(e[0]), parseFloat(e[1]));
-			e = this.animShit;
-			var f = L.trim(c.split("---")[0]);
-			e.h[f] = d;
-			this.arrayLMFAOOOO.push(L.trim(c.split("---")[0]))
-		}
-		trace(animShit == null ? "null" : ba.stringify(this.animShit.h));
 	}
 
 	function createCutscene(a)

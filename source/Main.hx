@@ -1,6 +1,5 @@
 package;
 
-import openfl.display.Stage;
 import flixel.FlxGame;
 import flixel.FlxState;
 import openfl.Lib;

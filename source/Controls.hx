@@ -8,78 +8,38 @@ import flixel.input.actions.FlxActionSet;
 import flixel.input.gamepad.FlxGamepadInputID;
 import flixel.input.keyboard.FlxKey;
 
-#if (haxe >= "4.0.0")
 enum abstract Action(String) to String from String
 {
-	var UI_UP = "up";
-	var UI_LEFT = "left";
-	var UI_RIGHT = "right";
-	var UI_DOWN = "down";
-	var UI_UP_P = "up-press";
-	var UI_LEFT_P = "left-press";
-	var UI_RIGHT_P = "right-press";
-	var UI_DOWN_P = "down-press";
-	var UI_UP_R = "up-release";
-	var UI_LEFT_R = "left-release";
-	var UI_RIGHT_R = "right-release";
-	var UI_DOWN_R = "down-release";
-
-	var NOTE_UP = "up";
-	var NOTE_LEFT = "left";
-	var NOTE_RIGHT = "right";
-	var NOTE_DOWN = "down";
-	var NOTE_UP_P = "up-press";
-	var NOTE_LEFT_P = "left-press";
-	var NOTE_RIGHT_P = "right-press";
-	var NOTE_DOWN_P = "down-press";
-	var NOTE_UP_R = "up-release";
-	var NOTE_LEFT_R = "left-release";
-	var NOTE_RIGHT_R = "right-release";
-	var NOTE_DOWN_R = "down-release";
-
+	var UI_UP = "ui_up";
+	var UI_LEFT = "ui_left";
+	var UI_RIGHT = "ui_right";
+	var UI_DOWN = "ui_down";
+	var UI_UP_P = "ui_up-press";
+	var UI_LEFT_P = "ui_left-press";
+	var UI_RIGHT_P = "ui_right-press";
+	var UI_DOWN_P = "ui_down-press";
+	var UI_UP_R = "ui_up-release";
+	var UI_LEFT_R = "ui_left-release";
+	var UI_RIGHT_R = "ui_right-release";
+	var UI_DOWN_R = "ui_down-release";
+	var NOTE_UP = "note_up";
+	var NOTE_LEFT = "note_left";
+	var NOTE_RIGHT = "note_right";
+	var NOTE_DOWN = "note_down";
+	var NOTE_UP_P = "note_up-press";
+	var NOTE_LEFT_P = "note_left-press";
+	var NOTE_RIGHT_P = "note_right-press";
+	var NOTE_DOWN_P = "note_down-press";
+	var NOTE_UP_R = "note_up-release";
+	var NOTE_LEFT_R = "note_left-release";
+	var NOTE_RIGHT_R = "note_right-release";
+	var NOTE_DOWN_R = "note_down-release";
 	var ACCEPT = "accept";
 	var BACK = "back";
 	var PAUSE = "pause";
 	var RESET = "reset";
 	var CHEAT = "cheat";
 }
-#else
-@:enum
-abstract Action(String) to String from String
-{
-	var UI_UP = "up";
-	var UI_LEFT = "left";
-	var UI_RIGHT = "right";
-	var UI_DOWN = "down";
-	var UI_UP_P = "up-press";
-	var UI_LEFT_P = "left-press";
-	var UI_RIGHT_P = "right-press";
-	var UI_DOWN_P = "down-press";
-	var UI_UP_R = "up-release";
-	var UI_LEFT_R = "left-release";
-	var UI_RIGHT_R = "right-release";
-	var UI_DOWN_R = "down-release";
-
-	var NOTE_UP = "up";
-	var NOTE_LEFT = "left";
-	var NOTE_RIGHT = "right";
-	var NOTE_DOWN = "down";
-	var NOTE_UP_P = "up-press";
-	var NOTE_LEFT_P = "left-press";
-	var NOTE_RIGHT_P = "right-press";
-	var NOTE_DOWN_P = "down-press";
-	var NOTE_UP_R = "up-release";
-	var NOTE_LEFT_R = "left-release";
-	var NOTE_RIGHT_R = "right-release";
-	var NOTE_DOWN_R = "down-release";
-
-	var ACCEPT = "accept";
-	var BACK = "back";
-	var PAUSE = "pause";
-	var RESET = "reset";
-	var CHEAT = "cheat";
-}
-#end
 
 enum Device
 {
@@ -155,17 +115,12 @@ class Controls extends FlxActionSet
 	var _reset = new FlxActionDigital(Action.RESET);
 	var _cheat = new FlxActionDigital(Action.CHEAT);
 
-	#if (haxe >= "4.0.0")
-	var byName:Map<String, FlxActionDigital> = [];
-	#else
 	var byName:Map<String, FlxActionDigital> = new Map<String, FlxActionDigital>();
-	#end
 
 	public var gamepadsAdded:Array<Int> = [];
 	public var keyboardScheme = KeyboardScheme.None;
 
 	// UI
-
 	public var UI_UP(get, never):Bool;
 
 	inline function get_UI_UP()
@@ -227,7 +182,6 @@ class Controls extends FlxActionSet
 		return _uidownR.check();
 
 	// Note
-
 	public var NOTE_UP(get, never):Bool;
 
 	inline function get_NOTE_UP()
@@ -289,7 +243,6 @@ class Controls extends FlxActionSet
 		return _notedownR.check();
 
 	// Etc
-
 	public var ACCEPT(get, never):Bool;
 
 	inline function get_ACCEPT()
@@ -315,7 +268,6 @@ class Controls extends FlxActionSet
 	inline function get_CHEAT()
 		return _cheat.check();
 
-	#if (haxe >= "4.0.0")
 	public function new(name, scheme = None)
 	{
 		super(name);
@@ -357,77 +309,36 @@ class Controls extends FlxActionSet
 
 		setKeyboardScheme(scheme, false);
 	}
-	#else
-	public function new(name, scheme:KeyboardScheme = null)
-	{
-		super(name);
-
-		add(_uiup);
-		add(_uileft);
-		add(_uiright);
-		add(_uidown);
-		add(_uiupP);
-		add(_uileftP);
-		add(_uirightP);
-		add(_uidownP);
-		add(_uiupR);
-		add(_uileftR);
-		add(_uirightR);
-		add(_uidownR);
-
-		add(_noteup);
-		add(_noteleft);
-		add(_noteright);
-		add(_notedown);
-		add(_noteupP);
-		add(_noteleftP);
-		add(_noterightP);
-		add(_notedownP);
-		add(_noteupR);
-		add(_noteleftR);
-		add(_noterightR);
-		add(_notedownR);
-
-		add(_accept);
-		add(_back);
-		add(_pause);
-		add(_reset);
-		add(_cheat);
-
-		for (action in digitalActions)
-			byName[action.name] = action;
-			
-		if (scheme == null)
-			scheme = None;
-		setKeyboardScheme(scheme, false);
-	}
-	#end
-
-	override function update()
-	{
-		super.update();
-	}
 
 	public function fromSaveData(keyData:Dynamic, keys:Device)
 	{
-		/*for (var c = 0, d = va.__empty_constructs__.slice(); c < d.length;)
+		for (i in Control.getConstructors())
 		{
-			var e = d[c];
-			++c;
-			var f = ja.field(a, v[e.__enum__].__constructs__[e._hx_index]);
-			if (null != f)
-			switch (b._hx_index)
+			var thing = Reflect.field(keyData, i);
+			if (thing != null)
 			{
-				case 0: this.bindKeys(e,
-					f.slice()); break; case 1: this.bindButtons(e, b.id, f.slice())
+				/*switch (keys)
+					{
+						case Keys:
+							bindKeys(i, thing.slice());
+						case Gamepad(id):
+							bindButtons(i, id, thing.slice());
+				}*/
 			}
-		}*/
+		}
+	}
 
-		/*switch (keys.getIndex())
-		{
-			case 0:
-				bindKeys(keyData, keys);
-		}*/
+	public function createSaveData(device:Device)
+	{
+		/*var powerMilk;
+
+			for (i in Control.getConstructors())
+			{
+				var dirtyHarry = getInputsFor(i, device);
+				powerMilk = dirtyHarry;
+			}
+
+			return b ? null : powerMilk; */
 	}
 
 	// inline
@@ -576,7 +487,7 @@ class Controls extends FlxActionSet
 			for (input in action.inputs)
 			{
 				if (device == null || isDevice(input, device))
-				byName[name].add(cast input);
+					byName[name].add(cast input);
 			}
 		}
 		#end
@@ -592,7 +503,7 @@ class Controls extends FlxActionSet
 				#else
 				for (gamepad in controls.gamepadsAdded)
 					if (gamepadsAdded.indexOf(gamepad) == -1)
-					  gamepadsAdded.push(gamepad);
+						gamepadsAdded.push(gamepad);
 				#end
 
 				mergeKeyboardScheme(controls.keyboardScheme);
@@ -672,8 +583,7 @@ class Controls extends FlxActionSet
 			removeKeyboard();
 
 		keyboardScheme = scheme;
-		
-		#if (haxe >= "4.0.0")
+
 		switch (scheme)
 		{
 			case Solo:
@@ -718,52 +628,6 @@ class Controls extends FlxActionSet
 			case None: // nothing
 			case Custom: // nothing
 		}
-		#else
-		switch (scheme)
-		{
-			case Solo:
-				bindKeys(Control.UI_UP, [W, FlxKey.UP]);
-				bindKeys(Control.UI_DOWN, [S, FlxKey.DOWN]);
-				bindKeys(Control.UI_LEFT, [A, FlxKey.LEFT]);
-				bindKeys(Control.UI_RIGHT, [D, FlxKey.RIGHT]);
-				bindKeys(Control.NOTE_UP, [W, FlxKey.UP]);
-				bindKeys(Control.NOTE_DOWN, [S, FlxKey.DOWN]);
-				bindKeys(Control.NOTE_LEFT, [A, FlxKey.LEFT]);
-				bindKeys(Control.NOTE_RIGHT, [D, FlxKey.RIGHT]);
-				bindKeys(Control.ACCEPT, [Z, SPACE, ENTER]);
-				bindKeys(Control.BACK, [BACKSPACE, ESCAPE]);
-				bindKeys(Control.PAUSE, [P, ENTER, ESCAPE]);
-				bindKeys(Control.RESET, [R]);
-			case Duo(true):
-				bindKeys(Control.UI_UP, [W]);
-				bindKeys(Control.UI_DOWN, [S]);
-				bindKeys(Control.UI_LEFT, [A]);
-				bindKeys(Control.UI_RIGHT, [D]);
-				bindKeys(Control.NOTE_UP, [W]);
-				bindKeys(Control.NOTE_DOWN, [S]);
-				bindKeys(Control.NOTE_LEFT, [A]);
-				bindKeys(Control.NOTE_RIGHT, [D]);
-				bindKeys(Control.ACCEPT, [G, Z]);
-				bindKeys(Control.BACK, [H, X]);
-				bindKeys(Control.PAUSE, [ONE]);
-				bindKeys(Control.RESET, [R]);
-			case Duo(false):
-				bindKeys(Control.UI_UP, [FlxKey.UP]);
-				bindKeys(Control.UI_DOWN, [FlxKey.DOWN]);
-				bindKeys(Control.UI_LEFT, [FlxKey.LEFT]);
-				bindKeys(Control.UI_RIGHT, [FlxKey.RIGHT]);
-				bindKeys(Control.NOTE_UP, [FlxKey.UP]);
-				bindKeys(Control.NOTE_DOWN, [FlxKey.DOWN]);
-				bindKeys(Control.NOTE_LEFT, [FlxKey.LEFT]);
-				bindKeys(Control.NOTE_RIGHT, [FlxKey.RIGHT]);
-				bindKeys(Control.ACCEPT, [O]);
-				bindKeys(Control.BACK, [P]);
-				bindKeys(Control.PAUSE, [ENTER]);
-				bindKeys(Control.RESET, [BACKSPACE]);
-			case None: // nothing
-			case Custom: // nothing
-		}
-		#end
 	}
 
 	function removeKeyboard()
@@ -783,27 +647,17 @@ class Controls extends FlxActionSet
 	public function addGamepad(id:Int, ?buttonMap:Map<Control, Array<FlxGamepadInputID>>):Void
 	{
 		gamepadsAdded.push(id);
-		
-		#if (haxe >= "4.0.0")
+
 		for (control => buttons in buttonMap)
 			inline bindButtons(control, id, buttons);
-		#else
-		for (control in buttonMap.keys())
-			bindButtons(control, id, buttonMap[control]);
-		#end
 	}
 
 	inline function addGamepadLiteral(id:Int, ?buttonMap:Map<Control, Array<FlxGamepadInputID>>):Void
 	{
 		gamepadsAdded.push(id);
 
-		#if (haxe >= "4.0.0")
 		for (control => buttons in buttonMap)
 			inline bindButtons(control, id, buttons);
-		#else
-		for (control in buttonMap.keys())
-			bindButtons(control, id, buttonMap[control]);
-		#end
 	}
 
 	public function removeGamepad(deviceID:Int = FlxInputDeviceID.ALL):Void
@@ -822,42 +676,21 @@ class Controls extends FlxActionSet
 		gamepadsAdded.remove(deviceID);
 	}
 
+	public function addGamepadWithSaveData(id:Int, keys:Device)
+	{
+		gamepadsAdded.push(id);
+		fromSaveData(keys, Device.Gamepad(id));
+	}
+
 	public function addDefaultGamepad(id):Void
 	{
-		#if !switch
 		addGamepadLiteral(id, [
-			Control.ACCEPT => [A],
-			Control.BACK => [B],
-			Control.UI_UP => [DPAD_UP, LEFT_STICK_DIGITAL_UP],
-			Control.UI_DOWN => [DPAD_DOWN, LEFT_STICK_DIGITAL_DOWN],
-			Control.UI_LEFT => [DPAD_LEFT, LEFT_STICK_DIGITAL_LEFT],
-			Control.UI_RIGHT => [DPAD_RIGHT, LEFT_STICK_DIGITAL_RIGHT],
-			Control.NOTE_UP => [DPAD_UP, LEFT_STICK_DIGITAL_UP],
-			Control.NOTE_DOWN => [DPAD_DOWN, LEFT_STICK_DIGITAL_DOWN],
-			Control.NOTE_LEFT => [DPAD_LEFT, LEFT_STICK_DIGITAL_LEFT],
-			Control.NOTE_RIGHT => [DPAD_RIGHT, LEFT_STICK_DIGITAL_RIGHT],
-			Control.PAUSE => [START],
-			Control.RESET => [Y]
-		]);
-		#else
-		addGamepadLiteral(id, [
-			//Swap A and B for switch
-			Control.ACCEPT => [B],
-			Control.BACK => [A],
-			Control.UI_UP => [DPAD_UP, LEFT_STICK_DIGITAL_UP, RIGHT_STICK_DIGITAL_UP],
-			Control.UI_DOWN => [DPAD_DOWN, LEFT_STICK_DIGITAL_DOWN, RIGHT_STICK_DIGITAL_DOWN],
-			Control.UI_LEFT => [DPAD_LEFT, LEFT_STICK_DIGITAL_LEFT, RIGHT_STICK_DIGITAL_LEFT],
-			Control.UI_RIGHT => [DPAD_RIGHT, LEFT_STICK_DIGITAL_RIGHT, RIGHT_STICK_DIGITAL_RIGHT],
-			Control.NOTE_UP => [DPAD_UP, LEFT_STICK_DIGITAL_UP, RIGHT_STICK_DIGITAL_UP],
-			Control.NOTE_DOWN => [DPAD_DOWN, LEFT_STICK_DIGITAL_DOWN, RIGHT_STICK_DIGITAL_DOWN],
-			Control.NOTE_LEFT => [DPAD_LEFT, LEFT_STICK_DIGITAL_LEFT, RIGHT_STICK_DIGITAL_LEFT],
-			Control.NOTE_RIGHT => [DPAD_RIGHT, LEFT_STICK_DIGITAL_RIGHT, RIGHT_STICK_DIGITAL_RIGHT],
-			Control.PAUSE => [START],
-			//Swap Y and X for switch
-			Control.RESET => [Y],
-			Control.CHEAT => [X]
-		]);
-		#end
+			Control.ACCEPT => [A], Control.BACK => [B, FlxGamepadInputID.BACK], Control.UI_UP => [DPAD_UP, LEFT_STICK_DIGITAL_UP],
+			Control.UI_DOWN => [DPAD_DOWN, LEFT_STICK_DIGITAL_DOWN], Control.UI_LEFT => [DPAD_LEFT, LEFT_STICK_DIGITAL_LEFT],
+			Control.UI_RIGHT => [DPAD_RIGHT, LEFT_STICK_DIGITAL_RIGHT], Control.NOTE_UP => [DPAD_UP, Y, LEFT_STICK_DIGITAL_UP, RIGHT_STICK_DIGITAL_UP],
+			Control.NOTE_DOWN => [DPAD_DOWN, A, LEFT_STICK_DIGITAL_DOWN, RIGHT_STICK_DIGITAL_DOWN],
+			Control.NOTE_LEFT => [DPAD_LEFT, X, LEFT_STICK_DIGITAL_LEFT, RIGHT_STICK_DIGITAL_LEFT],
+			Control.NOTE_RIGHT => [DPAD_RIGHT, B, LEFT_STICK_DIGITAL_RIGHT, RIGHT_STICK_DIGITAL_RIGHT], Control.PAUSE => [START], Control.RESET => [Y]]);
 	}
 
 	/**
@@ -866,11 +699,7 @@ class Controls extends FlxActionSet
 	 */
 	public function bindButtons(control:Control, id, buttons)
 	{
-		#if (haxe >= "4.0.0")
 		inline forEachBound(control, (action, state) -> addButtons(action, buttons, state, id));
-		#else
-		forEachBound(control, function(action, state) addButtons(action, buttons, state, id));
-		#end
 	}
 
 	/**
@@ -879,11 +708,7 @@ class Controls extends FlxActionSet
 	 */
 	public function unbindButtons(control:Control, gamepadID:Int, buttons)
 	{
-		#if (haxe >= "4.0.0")
 		inline forEachBound(control, (action, _) -> removeButtons(action, gamepadID, buttons));
-		#else
-		forEachBound(control, function(action, _) removeButtons(action, gamepadID, buttons));
-		#end
 	}
 
 	inline static function addButtons(action:FlxActionDigital, buttons:Array<FlxGamepadInputID>, state, id)

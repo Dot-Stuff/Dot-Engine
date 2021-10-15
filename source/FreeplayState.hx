@@ -1,6 +1,5 @@
 package;
 
-import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.FlxSprite;
 import flixel.FlxState;
@@ -9,6 +8,7 @@ import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import openfl.Assets;
 import flixel.util.FlxTimer;
+import flixel.util.FlxColorTransformUtil;
 
 using StringTools;
 

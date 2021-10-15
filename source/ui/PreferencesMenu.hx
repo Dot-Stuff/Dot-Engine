@@ -1,5 +1,6 @@
 package ui;
 
+import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import haxe.ds.StringMap;
 import flixel.FlxObject;
@@ -23,7 +24,7 @@ class PreferencesMenu extends ui.OptionsState.Page
         menuCamera.bgColor = 0;
         set_camera(this.menuCamera);
 
-        items = new TextMenuList(0, 0);
+        items = new TextMenuList();
         add(items);
 
         createPrefItem("naughtyness", "censor-naughty", true);
@@ -40,9 +41,9 @@ class PreferencesMenu extends ui.OptionsState.Page
 
         menuCamera.follow(camFollow, null, 0.06);
         menuCamera.minScrollY = 0;
-        items.onChange.add(function()
+        items.onChange.add(function(listener:FlxSprite)
         {
-            
+            camFollow.y = listener.y;
         });
     }
 

@@ -72,6 +72,7 @@ class DialogueBox extends FlxSpriteGroup
 		this.dialogueList = dialogueList;
 
 		// TODO: REMAKE THE WEEK1 DIALOGUE ITSSSS BROKENNNNNN!!! FUCK YEAAA
+		// TODO: Unhardcode this please
 		if (atSchool())
 		{
 			// CHANGE THIS TO STAGES
