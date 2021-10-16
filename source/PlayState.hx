@@ -1295,11 +1295,11 @@ class PlayState extends MusicBeatState
 						babyArrow.animation.addByPrefix('pressed', 'down press', 24, false);
 						babyArrow.animation.addByPrefix('confirm', 'down confirm', 24, false);
 					case 2:
-						babyArrow.animation.addByPrefix('static', 'arrow static instance 3');
+						babyArrow.animation.addByPrefix('static', 'arrow static instance 4');
 						babyArrow.animation.addByPrefix('pressed', 'up press', 24, false);
 						babyArrow.animation.addByPrefix('confirm', 'up confirm', 24, false);
 					case 3:
-						babyArrow.animation.addByPrefix('static', 'arrow static instance 4');
+						babyArrow.animation.addByPrefix('static', 'arrow static instance 3');
 						babyArrow.animation.addByPrefix('pressed', 'right press', 24, false);
 						babyArrow.animation.addByPrefix('confirm', 'right confirm', 24, false);
 				}
