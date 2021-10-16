@@ -18,7 +18,7 @@ class MenuTypedList extends FlxTypedGroup<ui.MenuItem>
 	public var selectedIndex:Int = 0;
 	public var navControls:NavControls = NavControls.Vertical;
 
-	public function new(?navControl:NavControls = NavControls.Vertical, ?wrapMode:WrapMode = null)
+	public function new(?navControl:NavControls = NavControls.Vertical, ?wrapMode:WrapMode)
 	{
 		if (wrapMode != null)
 			this.wrapMode = wrapMode;
@@ -73,14 +73,31 @@ class MenuTypedList extends FlxTypedGroup<ui.MenuItem>
 		{
 			var controls = PlayerSettings.player1.controls;
 
-			var wrap:Bool = false;
-			if (wrapMode.getIndex() == 2)
-				wrap = true;
+			var wrap:Bool = wrapMode.getIndex() == 2;
 
-			var up = controls.UI_UP_P;
-			var down = controls.UI_DOWN_P;
-            var navIndex:Int = navAxis(selectedIndex, length, up, down, wrap);
-			//var navShit:Int = navControls.getIndex();
+            var navIndex:Int = 0;
+			var navShit:Int = navControls.getIndex();
+
+			var leftP = controls.UI_LEFT_P;
+			var rightP = controls.UI_RIGHT_P;
+			var upP = controls.UI_UP_P;
+			var downP = controls.UI_DOWN_P;
+
+			switch (navShit)
+			{
+				case 0:
+					navIndex = navAxis(selectedIndex, length, leftP, rightP, wrap);
+				case 1:
+					navIndex = navAxis(selectedIndex, length, upP, downP, wrap);
+				case 2:
+					var leftUpP = controls.UI_LEFT_P || controls.UI_UP_P;
+					var rightDownP = controls.UI_RIGHT_P || controls.UI_DOWN_P;
+					navIndex = navAxis(selectedIndex, length, leftUpP, rightDownP, wrapMode.getIndex() != 3);
+				case 3:
+					navIndex = navGrid(navShit, leftP, rightP, wrap, upP, downP, wrap);
+				case 4:
+					navIndex = navGrid(navShit, upP, downP, wrap, leftP, rightP, wrap);
+			}
 
 			if (selectedIndex != navIndex)
 			{
@@ -93,15 +110,27 @@ class MenuTypedList extends FlxTypedGroup<ui.MenuItem>
 		}
 	}
 
-	function navAxis(a, b, c, d, e)
+	function navAxis(change:Int, dir1:Int, direction1:Bool, direction2:Bool, wrap:Bool)
 	{
-		if (c == d)
-			return a;
+		if (direction2 == direction1)
+			return change;
 
-		b += 1;
-		a = b;
+		if (direction1)
+		{
+			if (change > 0)
+				change--;
+			else if (wrap)
+				change = dir1 - 1;
+		}
+		else
+		{
+			if (dir1 - 1 > change)
+				change++;
+			else if (wrap)
+				change = 0;
+		}
 
-		return a;
+		return change;
 	}
 
 	function navGrid(a, b, c, d, e, f, h)

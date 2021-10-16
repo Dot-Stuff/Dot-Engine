@@ -1,5 +1,6 @@
 package shadersLmfao;
 
-class OverlayBlend {
+class OverlayBlend
+{
     
 }

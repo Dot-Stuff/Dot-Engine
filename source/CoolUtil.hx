@@ -19,6 +19,7 @@ class CoolUtil
 
 		var swagArray:Array<String> = Assets.getText(path).trim().split('\n');
 
+		// TODO: Fix dupilcations
 		for (item in swagArray)
 		{
 			// Comment support in the quick lil text formats??? using //

@@ -1,5 +1,6 @@
 package ui;
 
+import MainMenuState.MainMenuList;
 import netTest.Dad;
 import netTest.schemaShit.Player;
 import flixel.util.FlxColor;
@@ -9,10 +10,8 @@ import io.colyseus.Room;
 import io.colyseus.Client;
 import netTest.schemaShit.MyRoomState;
 
-class MultiplayerMenu extends MenuState
+class MultiplayerMenu extends MusicBeatState
 {
-	private var menuItems:FlxTypedGroup<Alphabet>;
-
 	private var client:Client;
 	private var room:Room<MyRoomState>;
 
@@ -21,6 +20,8 @@ class MultiplayerMenu extends MenuState
 	public static var dads:Map<String, Dad> = new Map();
 
 	public static var clientID:String = "";
+
+	var menuItems:MainMenuList;
 
 	public override function create()
 	{
@@ -33,16 +34,18 @@ class MultiplayerMenu extends MenuState
 		bg.scrollFactor.set(0, 0);
 		add(bg);
 
-		menuItems = new FlxTypedGroup<Alphabet>();
-		add(menuItems);
-
 		#if LOCALSHIT
 		client = new Client('ws://localhost:2567');
 		#else
 		client = new Client('ws://71.188.110.159:2567');
 		#end
 
-		createItem('Quick Play', function()
+		menuItems = new MainMenuList();
+		add(menuItems);
+
+		menuItems.enabled = false;
+
+		menuItems.createItem('quick play', function()
 		{
 			client.joinOrCreate("my_room", [], MyRoomState, function(err, room)
 			{
@@ -120,29 +123,14 @@ class MultiplayerMenu extends MenuState
 			});
 		});
 
-		createItem('BACK', function()
+		var crap = (FlxG.height - 160 * (menuItems.length - 1)) / 2;
+		for (i in 0...menuItems.length)
 		{
-			FlxG.switchState(new MainMenuState());
-
-			if (connectedToServer)
-			{
-				// consented leave
-				room.leave();
-
-				// unconsented leave
-				room.leave(false);
-			}
-		});
-
-		for (i in 0...items.length)
-		{
-			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, items[i].name, true, false);
-			songText.isMenuItem = true;
-			songText.targetY = i;
-			menuItems.add(songText);
+			var member = menuItems.members[i];
+			
+			member.x = FlxG.width / 2;
+			member.y = crap + 160 * i;
 		}
-
-		changeItem();
 	}
 
 	function funnySync():Void
@@ -174,39 +162,25 @@ class MultiplayerMenu extends MenuState
 			if (FlxG.keys.justReleased.A)
 				moveShit({x: 0});
 		}
+
+		if (controls.BACK && menuItems.enabled && !menuItems.busy)
+		{
+			FlxG.switchState(new MainMenuState());
+
+			if (connectedToServer)
+			{
+				// consented leave
+				room.leave();
+
+				// unconsented leave
+				room.leave(false);
+			}
+		}
 	}
 
 	function getMainPlayer():Dad
 	{
 		return dads[room.sessionId];
-	}
-
-	public override function changeItem(change:Int = 0)
-	{
-		super.changeItem(change);
-
-		if (curSelected >= menuItems.length)
-			curSelected = 0;
-		if (curSelected < 0)
-			curSelected = menuItems.length - 1;
-
-		var bullShit:Int = 0;
-
-		for (item in menuItems.members)
-		{
-			item.targetY = bullShit - curSelected;
-			bullShit++;
-
-			item.alpha = 0.6;
-
-			if (item.targetY == 0)
-				item.alpha = 1;
-		}
-	}
-
-	public override function acceptItem()
-	{
-		items[curSelected].onAccept();
 	}
 
 	private function moveShit(dirShit:Dynamic)

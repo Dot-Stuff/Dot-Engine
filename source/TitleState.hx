@@ -15,6 +15,7 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
+import lime.app.Application;
 import openfl.Assets;
 #if ANIMDEBUG
 import ui.AnimationDebug;
@@ -120,7 +121,7 @@ class TitleState extends MusicBeatState
 		#end
 	}
 
-	var logoBl:FlxSprite;
+	var logo:FlxSprite;
 	var gfDance:FlxSprite;
 	var danceLeft:Bool = false;
 	var titleText:FlxSprite;
@@ -159,15 +160,15 @@ class TitleState extends MusicBeatState
 		// bg.updateHitbox();
 		add(bg);
 
-		logoBl = new FlxSprite(-150, -100);
-		logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
-		logoBl.antialiasing = true;
-		logoBl.animation.addByPrefix('bump', 'logo bumpin', 24);
-		logoBl.animation.play('bump');
-		logoBl.updateHitbox();
-		logoBl.shader = swagShader.shader;
-		// logoBl.screenCenter();
-		// logoBl.color = FlxColor.BLACK;
+		logo = new FlxSprite(-150, -100);
+		logo.frames = Paths.getSparrowAtlas('logoBumpin');
+		logo.antialiasing = true;
+		logo.animation.addByPrefix('bump', 'logo bumpin', 24);
+		logo.animation.play('bump');
+		logo.updateHitbox();
+		logo.shader = swagShader.shader;
+		// logo.screenCenter();
+		// logo.color = FlxColor.BLACK;
 
 		gfDance = new FlxSprite(FlxG.width * 0.4, FlxG.height * 0.07);
 		gfDance.frames = Paths.getSparrowAtlas('gfDanceTitle');
@@ -176,7 +177,7 @@ class TitleState extends MusicBeatState
 		gfDance.antialiasing = true;
 		add(gfDance);
 		gfDance.shader = swagShader.shader;
-		add(logoBl);
+		add(logo);
 
 		titleText = new FlxSprite(100, FlxG.height * 0.8);
 		titleText.frames = Paths.getSparrowAtlas('titleEnter');
@@ -311,9 +312,9 @@ class TitleState extends MusicBeatState
 			skipIntro();
 
 		if (controls.UI_LEFT)
-			swagShader.update(0.1 * -elapsed);
+			swagShader.update(-elapsed * 0.1);
 		else if (controls.UI_RIGHT)
-			swagShader.update(0.1 * -elapsed);
+			swagShader.update(elapsed * 0.1);
 
 		super.update(elapsed);
 	}
@@ -352,7 +353,9 @@ class TitleState extends MusicBeatState
 	{
 		super.beatHit();
 
-		logoBl.animation.play('bump');
+		if (logo != null)
+			logo.animation.play('bump');
+
 		danceLeft = !danceLeft;
 
 		if (danceLeft)

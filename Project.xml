@@ -119,7 +119,7 @@
 
 	<!--In case you want to use the ui package-->
 	<haxelib name="flixel-ui" />
-	<haxelib name="newgrounds" unless='switch|hl' />
+	<haxelib name="newgrounds" unless='switch' />
 	<haxelib name="faxe" if='switch' />
 	<haxelib name="polymod" />
 	<haxelib name="colyseus" />

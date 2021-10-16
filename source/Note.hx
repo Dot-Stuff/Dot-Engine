@@ -32,7 +32,7 @@ class Note extends FlxSprite
 	public static var RED_NOTE:Int = 3;
 
 	private var noteColors:Array<String> = ["purple", "blue", "green", "red"];
-	private var arrowColors:Array<Float> = [2.8, 2.8, 2.8, 2.8];
+	public var arrowColors:Array<Float> = [1.0, 1.0, 1.0, 1.0];
 
 	private var colorSwap:ColorSwap;
 

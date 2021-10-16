@@ -58,6 +58,9 @@ class MainMenuState extends MusicBeatState
 		bg.antialiasing = true;
 		add(bg);
 
+		camFollow = new FlxObject(0, 0, 1, 1);
+		add(camFollow);
+
 		magenta = new FlxSprite(-80).loadGraphic(Paths.image('menuDesat'));
 		magenta.scrollFactor.set(bg.scrollFactor.x, bg.scrollFactor.y);
 		magenta.setGraphicSize(Std.int(bg.width));
@@ -79,19 +82,19 @@ class MainMenuState extends MusicBeatState
 
 		menuItems.enabled = false;
 
-		menuItems.createItem(null, null, 'story mode', function()
+		menuItems.createItem('story mode', function()
 		{
 			startExitState(new StoryMenuState());
 		});
 
-		menuItems.createItem(null, null, 'freeplay', function()
+		menuItems.createItem('freeplay', function()
 		{
 			startExitState(new FreeplayState());
 		});
 
-		menuItems.createItem(null, null, 'donate', selectDonate, true);
+		menuItems.createItem('donate', selectDonate, true);
 
-		menuItems.createItem(null, null, 'options', function()
+		menuItems.createItem('options', function()
 		{
 			startExitState(new ui.PreferencesMenu());
 		});
@@ -171,7 +174,7 @@ class MainMenuList extends MenuTypedList
 {
 	var atlas:FlxFramesCollection = Paths.getSparrowAtlas('main_menu');
 
-	public function createItem(x:Float, y:Float, name:String, callback:Void->Void, ?fireInstantly:Bool):FlxSprite
+	public function createItem(?x:Float, ?y:Float, name:String, callback:Void->Void, ?fireInstantly:Bool):FlxSprite
 	{
 		var menuItem = new MainMenuItem(x, y, name, atlas, callback);
 		menuItem.fireInstantly = fireInstantly;
@@ -199,10 +202,10 @@ class MainMenuItem extends AtlasMenuItem
 	{
 		super.changeAnim(animName);
 
-		origin.set(0.5 * frameWidth, 0.5 * frameHeight);
+		origin.set(frameWidth * 0.5, frameHeight * 0.5);
 
-		origin.x += origin.x;
-		origin.y += origin.y;
+		offset.x = origin.x;
+		offset.y = origin.y;
 
 		origin.putWeak();
 	}
