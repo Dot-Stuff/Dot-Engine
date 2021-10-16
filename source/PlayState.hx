@@ -1,5 +1,6 @@
 package;
 
+import shadersLmfao.ColorSwap;
 import Section.SwagSection;
 import Song.SwagSong;
 import flixel.FlxCamera;
@@ -1242,6 +1243,10 @@ class PlayState extends MusicBeatState
 		{
 			var babyArrow:FlxSprite = new FlxSprite(0, strumLine.y);
 
+			var colorSwap:ColorSwap = new ColorSwap();
+			babyArrow.shader = colorSwap.shader;
+			colorSwap.update(Note.arrowColors[i]);
+
 			if (curStage.toLowerCase().startsWith('school'))
 			{
 				babyArrow.loadGraphic(Paths.image('pixelUI/arrows-pixels'), true, 17, 17);
@@ -1290,11 +1295,11 @@ class PlayState extends MusicBeatState
 						babyArrow.animation.addByPrefix('pressed', 'down press', 24, false);
 						babyArrow.animation.addByPrefix('confirm', 'down confirm', 24, false);
 					case 2:
-						babyArrow.animation.addByPrefix('static', 'arrow static instance 4');
+						babyArrow.animation.addByPrefix('static', 'arrow static instance 3');
 						babyArrow.animation.addByPrefix('pressed', 'up press', 24, false);
 						babyArrow.animation.addByPrefix('confirm', 'up confirm', 24, false);
 					case 3:
-						babyArrow.animation.addByPrefix('static', 'arrow static instance 3');
+						babyArrow.animation.addByPrefix('static', 'arrow static instance 4');
 						babyArrow.animation.addByPrefix('pressed', 'right press', 24, false);
 						babyArrow.animation.addByPrefix('confirm', 'right confirm', 24, false);
 				}
