@@ -1,12 +1,13 @@
 package ui;
 
+import Type.ValueType;
+import ui.TextMenuList.TextMenuItem;
 import flixel.FlxSprite;
-import flixel.group.FlxGroup.FlxTypedGroup;
 import haxe.ds.StringMap;
 import flixel.FlxObject;
 import flixel.FlxCamera;
 
-class PreferencesMenu extends ui.OptionsState.Page
+class PreferencesMenu extends ui.Page
 {
     public static var preferences:StringMap<Bool> = new StringMap<Bool>();
     public static var checkboxes:Array<CheckboxThingie> = [];
@@ -22,7 +23,7 @@ class PreferencesMenu extends ui.OptionsState.Page
         menuCamera = new FlxCamera();
         FlxG.cameras.add(menuCamera, false);
         menuCamera.bgColor = 0;
-        set_camera(this.menuCamera);
+        camera = menuCamera;
 
         items = new TextMenuList();
         add(items);
@@ -36,11 +37,12 @@ class PreferencesMenu extends ui.OptionsState.Page
 
         camFollow = new FlxObject(FlxG.width / 2, 0, 140, 70);
 
-        /*if (items != null)
-            camFollow.y = items.members[items.selectedIndex].y;*/
+        if (items != null)
+            camFollow.y = items.members[items.selectedIndex].y;
 
         menuCamera.follow(camFollow, null, 0.06);
         menuCamera.minScrollY = 0;
+
         items.onChange.add(function(listener:FlxSprite)
         {
             camFollow.y = listener.y;
@@ -60,6 +62,7 @@ class PreferencesMenu extends ui.OptionsState.Page
         preferenceCheck("camera-zoom", true);
         preferenceCheck("fps-counter", true);
         preferenceCheck("auto-pause", true);
+        preferenceCheck("master-volume", 1);
 
         if (getPref("fps-counter"))
             FlxG.stage.removeChild(Main.fpsCounter);
@@ -67,7 +70,7 @@ class PreferencesMenu extends ui.OptionsState.Page
         FlxG.autoPause = getPref("auto-pause");
     }
 
-    public static function preferenceCheck(name:String, defaultValue:Bool)
+    public static function preferenceCheck(name:String, defaultValue:Dynamic)
     {
         if (preferences.get(name) == null)
         {
@@ -80,16 +83,32 @@ class PreferencesMenu extends ui.OptionsState.Page
         }
     }
 
-    public function createPrefItem(name:String, pref:String, defaultVal:Bool)
+    public function createPrefItem(name:String, pref:Dynamic, defaultVal:Dynamic)
     {
-        
+        var thing = Type.typeof(defaultVal);
 
-        trace('swag');
+        items.createItem(120, 120 * items.length + 30, name,Bold, function() {
+            preferenceCheck(pref, defaultVal);
+
+            if (thing == ValueType.TBool)
+                prefToggle(pref);
+            else
+                trace('swag');
+        });
+
+        if (thing == ValueType.TBool)
+            createCheckbox(pref);
+        else
+            trace('swag');
+
+        trace(thing);
     }
 
-    public function createCheckbox()
+    public function createCheckbox(name:String)
     {
-        
+        var checkbox:CheckboxThingie = new CheckboxThingie(0, 120 * (items.length - 1), PreferencesMenu.preferences.get(name));
+        checkboxes.push(checkbox);
+        add(checkbox);
     }
 
     public static function prefToggle(pref:String):Void
@@ -97,7 +116,7 @@ class PreferencesMenu extends ui.OptionsState.Page
         var getPref = preferences.get(pref);
         getPref = !getPref;
         preferences.set(pref, getPref);
-        checkboxes[items.selectedIndex].set_daValue(getPref);
+        checkboxes[items.selectedIndex].daValue = getPref;
         trace("toggled? " + Std.string(preferences.get(pref)));
 
         switch (pref)
@@ -117,9 +136,9 @@ class PreferencesMenu extends ui.OptionsState.Page
         super.update(elapsed);
 
         menuCamera.followLerp = CoolUtil.camLerpShit(0.05);
-        /*items.forEach(function(item:TextMenuList)
+        items.forEach(function(item:FlxSprite)
         {
-            items.members[items.selectedIndex] == item ? item.x = 150 : item.x = 120;
-        });*/
+            item == items.members[items.selectedIndex] ? item.x = 150 : item.x = 120;
+        });
     }
 }

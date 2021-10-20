@@ -13,7 +13,7 @@ using StringTools;
 enum ConnectionResult
 {
 	Success;
-	Fail(y:Int);
+	Fail(msg:String);
 	Cancelled;
 }
 
@@ -80,6 +80,41 @@ class NGio
 
 			NG.core.onLogin.add(onNGLogin);
 		}
+	}
+
+	public static function login(a:Dynamic, b:ConnectionResult->Void)
+	{
+		trace('Logging in manually');
+
+		var onPending:Void->Void = null;
+		var onSuccess:Void->Void = onNGLogin;
+		var onFail:Error->Void = null;
+		var onCancel:Void->Void = null;
+
+		if (a != null)
+		{
+			onPending = function() {
+				a(NG.core.openPassportUrl);
+			}
+		}
+
+		if (b != null)
+		{
+			onSuccess = function() {
+				onNGLogin();
+				b(Success);
+			}
+
+			onFail = function(fail) {
+				b(Fail(fail.message));
+			}
+
+			onCancel = function() {
+				b(Cancelled);
+			}
+		}
+
+		NG.core.requestLogin(onSuccess, onPending, onFail, onCancel);
 	}
 
 	static function onNGLogin():Void

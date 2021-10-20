@@ -1,20 +1,19 @@
 package ui;
 
 import flixel.effects.FlxFlicker;
-import flixel.util.FlxDestroyUtil;
 import flixel.group.FlxGroup;
 import haxe.ds.StringMap;
-import flixel.FlxSprite;
 import flixel.util.FlxSignal.FlxTypedSignal;
+import ui.MenuItem;
 
-class MenuTypedList extends FlxTypedGroup<ui.MenuItem>
+class MenuTypedList<T:MenuItem> extends FlxTypedGroup<T>
 {
 	public var busy:Bool = false;
-	public var byName:StringMap<Dynamic> = new StringMap<Dynamic>(); // ?? This is not a string it's some class
+	public var byName:StringMap<Dynamic> = new StringMap<Dynamic>();
 	public var wrapMode:WrapMode = WrapMode.Both;
 	public var enabled:Bool = true;
-	public var onAcceptPress:FlxTypedSignal<FlxSprite->Void> = new FlxTypedSignal<FlxSprite->Void>();
-	public var onChange:FlxTypedSignal<FlxSprite->Void> = new FlxTypedSignal<FlxSprite->Void>();
+	public var onAcceptPress:FlxTypedSignal<T->Void> = new FlxTypedSignal<T->Void>();
+	public var onChange:FlxTypedSignal<T->Void> = new FlxTypedSignal<T->Void>();
 	public var selectedIndex:Int = 0;
 	public var navControls:NavControls = NavControls.Vertical;
 
@@ -24,7 +23,7 @@ class MenuTypedList extends FlxTypedGroup<ui.MenuItem>
 			this.wrapMode = wrapMode;
 		else
 		{
-			var wrapConvert:WrapMode = WrapMode.None;
+			var wrapConvert:WrapMode = WrapMode.Both;
 			switch (navControl.getIndex())
 			{
 				case 0:
@@ -41,7 +40,7 @@ class MenuTypedList extends FlxTypedGroup<ui.MenuItem>
 		super();
 	}
 
-	function addItem(name:String, menuItem:AtlasMenuItem)
+	function addItem(name:String, menuItem:T):T
 	{
 		if (selectedIndex == length)
 			menuItem.select();
@@ -50,21 +49,15 @@ class MenuTypedList extends FlxTypedGroup<ui.MenuItem>
 		return add(menuItem);
 	}
 
-	/*function resetItem(a, b, c)
-		{
-			if (!Object.prototype.hasOwnProperty.call(byName.h, a))
-				throw Exception.thrown("No item named:" + a);
+	public function resetItem(a:String, b:String, c:Void->Void)
+	{
+		var d = byName.get(a);
 
-			var d = byName.get(a);
-			var e = byName;
+		byName.set(b, d);
+		d.setItem(b, c);
+		return d;
+	}
 
-			if (Object.prototype.hasOwnProperty.call(byName.h, a))
-				byName.get(a);
-
-			byName.set(b, d);
-			d.setItem(b, c);
-			return d;
-	}*/
 	public override function update(elapsed:Float)
 	{
 		super.update(elapsed);
@@ -174,21 +167,93 @@ class MenuTypedList extends FlxTypedGroup<ui.MenuItem>
 		onChange.dispatch(index);
 	}
 
-	function has(field:String)
+	public function has(field:String)
 	{
 		return Reflect.hasField(byName, field);
 	}
 
-	function getItem(item:String)
+	public function getItem(item:String):MenuItem
 	{
 		return byName.get(item);
 	}
+}
 
-	public override function destroy()
-	{
-		super.destroy();
+class MenuTypedItem extends ui.MenuItem
+{
+    var label:AtlasText;
 
-		/*FlxDestroyUtil.destroyArray(onChange.handlers);
-		FlxDestroyUtil.destroyArray(onAcceptPress.handlers);*/
-	}
+    public function new(x:Float, y:Float, atlasText:AtlasText, newName:String, newCallback:Void->Void)
+    {
+        super(x, y, newName, newCallback);
+        set_label(atlasText);
+    }
+
+    public function setEmptyBackground()
+    {
+        makeGraphic(1, 1, 0);
+    }
+
+    public function set_label(name:AtlasText)
+    {
+        if (name != null)
+        {
+            name.x = x;
+            name.y = y;
+            name.alpha = alpha;
+        }
+
+        return label = name;
+    }
+
+    public override function update(elapsed:Float)
+    {
+        super.update(elapsed);
+
+        if (label != null)
+            label.update(elapsed);
+    }
+
+    public override function draw()
+    {
+        super.draw();
+
+        if (label != null)
+        {
+            label.cameras = cameras;
+            label.scrollFactor.x = scrollFactor.x;
+            label.scrollFactor.y = scrollFactor.y;
+            scrollFactor.putWeak();
+            label.draw();
+        }
+    }
+
+    public override function set_alpha(Alpha:Float)
+    {
+        if (label != null)
+        {
+            label.set_alpha(Alpha);
+        }
+
+        return super.set_alpha(Alpha);
+    }
+
+    public override function set_x(X:Float)
+    {
+        if (label != null)
+        {
+            label.set_x(X);
+        }
+
+        return super.set_x(X);
+    }
+
+    public override function set_y(Y:Float)
+    {
+        if (label != null)
+        {
+            label.set_y(Y);
+        }
+
+        return super.set_y(Y);
+    }
 }

@@ -1,5 +1,8 @@
 package;
 
+import ui.NgPrompt;
+import io.newgrounds.NG;
+import flixel.FlxSubState;
 import ui.NavControls;
 import ui.WrapMode;
 import flixel.util.FlxTimer;
@@ -96,7 +99,7 @@ class MainMenuState extends MusicBeatState
 
 		menuItems.createItem('options', function()
 		{
-			startExitState(new ui.PreferencesMenu());
+			startExitState(new ui.OptionsState());
 		});
 
 		var crap = (FlxG.height - 160 * (menuItems.length - 1)) / 2;
@@ -139,6 +142,58 @@ class MainMenuState extends MusicBeatState
 		#end
 	}
 
+	public function selectLogin()
+	{
+		openNgPrompt(NgPrompt.showLogin());
+	}
+
+	public function selectLogout()
+	{
+		openNgPrompt(NgPrompt.showLogin());
+	}
+
+	public function openNgPrompt(target:FlxSubState, ?openCallback:Void->Void)
+	{
+		var whatever:Void->Void = checkLoginStatus;
+
+		if (openCallback != null)
+		{
+			whatever = function() {
+				checkLoginStatus();
+				openCallback();
+			}
+		}
+
+		openPrompt(target, openCallback);
+	}
+
+	public function checkLoginStatus()
+	{
+		var logout = menuItems.has('logout');
+
+		if (!logout && NG.core != null)
+		{
+			if (!logout && NG.core.loggedIn && NG.core != null)
+				menuItems.resetItem('logout', 'login', selectLogin);
+			else
+				menuItems.resetItem('login', 'logout', selectLogout);
+		}
+	}
+
+	public function openPrompt(target:FlxSubState, ?openCallback:Void->Void)
+	{
+		menuItems.enabled = false;
+		target.closeCallback = function()
+		{
+			menuItems.enabled = true;
+
+			if (openCallback != null)
+				openCallback();
+		}
+
+		openSubState(target);
+	}
+
 	public function startExitState(target:FlxState)
 	{
 		menuItems.enabled = false;
@@ -170,22 +225,16 @@ class MainMenuState extends MusicBeatState
 	}
 }
 
-class MainMenuList extends MenuTypedList
+class MainMenuList extends MenuTypedList<ui.MenuItem>
 {
 	var atlas:FlxFramesCollection = Paths.getSparrowAtlas('main_menu');
 
-	public function createItem(?x:Float, ?y:Float, name:String, callback:Void->Void, ?fireInstantly:Bool):FlxSprite
+	public function createItem(?x:Float, ?y:Float, name:String, callback:Void->Void, ?fireInstantly:Bool)
 	{
 		var menuItem = new MainMenuItem(x, y, name, atlas, callback);
 		menuItem.fireInstantly = fireInstantly;
 		menuItem.ID = length;
 		return addItem(name, menuItem);
-	}
-
-	public override function destroy()
-	{
-		super.destroy();
-		atlas = null;
 	}
 }
 

@@ -2,7 +2,7 @@ package ui;
 
 import Controls.Control;
 
-class ControlsMenu extends ui.OptionsState.Page
+class ControlsMenu extends ui.Page
 {
     inline static public var COLUMNS = 2;
     static var controlList = Control.createAll();
@@ -13,4 +13,6 @@ class ControlsMenu extends ui.OptionsState.Page
     ];
 
     //var itemGroups:Array<Array<InputItem>> = [for (i in 0...controlGroups.length)];
+
+    
 }

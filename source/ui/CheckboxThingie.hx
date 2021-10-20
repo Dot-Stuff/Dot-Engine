@@ -4,6 +4,8 @@ import flixel.FlxSprite;
 
 class CheckboxThingie extends FlxSprite
 {
+    public var daValue:Bool = false;
+
     public function new(x:Float, y:Float, checked:Bool)
     {
         super();

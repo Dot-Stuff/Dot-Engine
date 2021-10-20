@@ -4,6 +4,6 @@ enum ButtonStyle
 {
     Ok;
     Yes_No;
-    Custom(yes:Bool, no:Bool);
+    Custom(yes:String, no:String);
     None;
 }
