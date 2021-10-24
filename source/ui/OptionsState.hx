@@ -34,7 +34,7 @@ class OptionsState extends MusicBeatState
 		bg.scrollFactor.set(0, 0);
 		add(bg);
 
-		var optionsPage = addPage(Options, new OptionsMenu());
+		var optionsPage = addPage(Options, new OptionsMenu(false));
 		var prefsPage = addPage(Preferences, new PreferencesMenu());
 		var controlsPage = addPage(Controls, new ControlsMenu());
 
@@ -52,7 +52,7 @@ class OptionsState extends MusicBeatState
 		}
 		else
 		{
-			optionsPage.onExit.add(exitToMainMenu);
+			controlsPage.onExit.add(exitToMainMenu);
 			setPage(Controls);
 		}
 		
@@ -105,7 +105,7 @@ class OptionsMenu extends Page
 {
 	public var items:TextMenuList;
 
-	public function new()
+	public function new(canDonate:Bool)
 	{
 		super();
 
@@ -119,7 +119,15 @@ class OptionsMenu extends Page
 			onSwitch.dispatch(Controls);
 		});
 
-		createItem('donate', selectDonate, true);
+		if (canDonate)
+			createItem('donate', selectDonate, true);
+
+		if (NG.core != null && NG.core.loggedIn)
+			createItem("logout", selectLogout);
+		else
+			createItem("login", selectLogin);
+
+		createItem("exit", exit);
 	}
 
 	public function createItem(name:String, callback:Void->Void, ?fireInstantly:Bool)

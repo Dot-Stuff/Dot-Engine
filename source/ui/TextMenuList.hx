@@ -28,7 +28,7 @@ class TextTypedMenuItem extends MenuTypedItem
     {
         if (label != null)
         {
-            label.set_text(itemName);
+            label.text = itemName;
             label.set_alpha(alpha);
             width = label.width;
             height = label.height;

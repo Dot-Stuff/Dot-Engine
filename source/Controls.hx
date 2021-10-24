@@ -312,23 +312,23 @@ class Controls extends FlxActionSet
 
 	public function fromSaveData(keyData:Dynamic, keys:Device)
 	{
-		for (i in Control.getConstructors())
+		/*for (i in Control.getConstructors())
 		{
 			var thing = Reflect.field(keyData, i);
 			if (thing != null)
 			{
-				/*switch (keys)
-					{
-						case Keys:
-							bindKeys(i, thing.slice());
-						case Gamepad(id):
-							bindButtons(i, id, thing.slice());
-				}*/
+				switch (keys)
+				{
+					case Keys:
+						bindKeys(i, thing.slice());
+					case Gamepad(id):
+						bindButtons(i, id, thing.slice());
+				}
 			}
-		}
+		}*/
 	}
 
-	public function createSaveData(device:Device)
+	public function createSaveData(device:Device):Dynamic
 	{
 		/*var powerMilk;
 
@@ -339,6 +339,8 @@ class Controls extends FlxActionSet
 			}
 
 			return b ? null : powerMilk; */
+
+		return null;
 	}
 
 	// inline

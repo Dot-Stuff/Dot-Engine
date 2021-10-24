@@ -79,10 +79,7 @@ class Alphabet extends FlxSpriteGroup
 
 				var letter:AlphaCharacter = new AlphaCharacter(xPos, 0);
 
-				if (isBold)
-					letter.createBold(character);
-				else
-					letter.createLetter(character);
+				isBold ? letter.createBold(character) : letter.createLetter(character);
 
 				add(letter);
 
@@ -205,8 +202,7 @@ class AlphaCharacter extends FlxSprite
 	public function new(x:Float, y:Float)
 	{
 		super(x, y);
-		var tex = Paths.getSparrowAtlas('alphabet');
-		frames = tex;
+		frames = Paths.getSparrowAtlas('alphabet');
 
 		antialiasing = true;
 	}
@@ -255,7 +251,6 @@ class AlphaCharacter extends FlxSprite
 			case "'":
 				animation.addByPrefix(letter, 'apostraphie', 24);
 				animation.play(letter);
-				y -= 0;
 			case "?":
 				animation.addByPrefix(letter, 'question mark', 24);
 				animation.play(letter);

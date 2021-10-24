@@ -327,7 +327,6 @@ class StoryMenuState extends MusicBeatState
 
 		// USING THESE WEIRD VALUES SO THAT IT DOESNT FLOAT UP
 		sprDifficulty.y = leftArrow.y - 15;
-		intendedScore = Highscore.getWeekScore(curWeek, curDifficulty);
 
 		#if newgrounds
 		intendedScore = Highscore.getWeekScore(curWeek, curDifficulty);
@@ -381,7 +380,6 @@ class StoryMenuState extends MusicBeatState
 
 			case 'tankman':
 				member0.offset.set(60, -20);
-				member0.setGraphicSize(Std.int(member0.width));
 
 			case 'mom':
 				member0.offset.set(100, 210);

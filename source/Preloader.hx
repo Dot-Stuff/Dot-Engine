@@ -10,7 +10,7 @@ import flixel.system.FlxBasePreloader;
 
 class Preloader extends FlxBasePreloader
 {
-	public function new(MinDisplayTime:Float = 3, ?AllowedURLs:Array<String>)
+	public function new(MinDisplayTime:Float = 2.5, ?AllowedURLs:Array<String>)
 	{
 		super(MinDisplayTime, AllowedURLs);
 	}

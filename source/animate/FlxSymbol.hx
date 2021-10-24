@@ -150,6 +150,49 @@ class FlxSymbol extends FlxSprite
 		return awesomeMap;
 	}
 
+	override function drawComplex(camera:FlxCamera):Void
+	{
+		super.drawComplex(camera);
+
+		var isXFliped = frame.flipX != flipX;
+		var isYFliped = frame.flipY != flipY;
+
+		frame.prepareMatrix(_matrix, 0,
+			animation.curAnim != null ? isXFliped != animation.curAnim.flipX : isXFliped,
+			animation.curAnim != null ? animation.curAnim.flipY != isYFliped : isYFliped);
+
+		_matrix.translate(-origin.x, -origin.y);
+		_matrix.scale(scale.x, scale.y);
+
+		if (matrixExposed)
+		{
+			_matrix.concat(transformMatrix);
+		}
+		else
+		{
+			if (bakedRotationAngle <= 0 && _angleChanged)
+			{
+				var whatEver = Math.PI / 180 * angle;
+
+				_sinAngle = Math.sin(whatEver);
+				_cosAngle = Math.cos(whatEver);
+				_angleChanged = false;
+			}
+		}
+
+		_point.addPoint(origin);
+
+		if (isPixelPerfectRender(camera))
+		{
+			_point.x = Math.floor(_point.x);
+			_point.y = Math.floor(_point.y);
+
+			_matrix.translate(_point.x, _point.y);
+
+			camera.drawPixels(_frame, framePixels, _matrix, colorTransform, blend, antialiasing);
+		}
+	}
+
 	public var daFrame:Int;
 	public var matrixExposed:Bool;
 

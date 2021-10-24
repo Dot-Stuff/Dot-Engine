@@ -626,11 +626,9 @@ class PlayState extends MusicBeatState
 
 		add(foregroundSprites);
 
-		var doof:DialogueBox = new DialogueBox();
-		if (!curStage.startsWith('school'))
-			doof.y = FlxG.height * 0.5;
-
-		doof.scrollFactor.set();
+		var doof:DialogueBox = new DialogueBox(camPos.x, camPos.y);
+		/*if (!curStage.startsWith('school'))
+			doof.y = FlxG.height * 0.5;*/
 		doof.finishThing = startCountdown;
 
 		Conductor.songPosition = -5000;
@@ -1617,7 +1615,7 @@ class PlayState extends MusicBeatState
 				trace("RESET = True");
 			}
 
-			#if CAN_CHAEAT // CHEAT = brandon's a pussy
+			#if CAN_CHEAT // CHEAT = brandon's a pussy
 			if (controls.CHEAT)
 			{
 				health += 1;
@@ -1638,7 +1636,7 @@ class PlayState extends MusicBeatState
 
 				// 1 / 1000 chance for Gitaroo Man easter egg
 				if (FlxG.random.bool(0.1))
-					openSubState(new GitarooPause());
+					openSubState(new GitarooPause(camPos.x, camPos.y));
 				else
 					openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 
@@ -2109,6 +2107,9 @@ class PlayState extends MusicBeatState
 					camFollow.y = dad.getMidpoint().y - 430;
 					camFollow.x = dad.getMidpoint().x - 100;
 			}
+
+			if (dad.curCharacter == 'mom')
+				vocals.volume = 1;
 
 			if (SONG.song.toLowerCase() == 'tutorial')
 				FlxTween.tween(FlxG.camera, {zoom: 1}, (Conductor.stepCrochet * 4 / 1000), {ease: FlxEase.elasticInOut});

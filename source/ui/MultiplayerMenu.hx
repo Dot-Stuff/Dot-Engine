@@ -10,6 +10,7 @@ import io.colyseus.Room;
 import io.colyseus.Client;
 import netTest.schemaShit.MyRoomState;
 
+// How about multiplayer in v2.0
 class MultiplayerMenu extends MusicBeatState
 {
 	private var client:Client;

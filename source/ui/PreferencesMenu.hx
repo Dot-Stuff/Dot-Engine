@@ -1,7 +1,6 @@
 package ui;
 
 import Type.ValueType;
-import ui.TextMenuList.TextMenuItem;
 import flixel.FlxSprite;
 import haxe.ds.StringMap;
 import flixel.FlxObject;

@@ -82,6 +82,7 @@ class NGio
 		}
 	}
 
+	// Add check if we have a API
 	public static function login(a:Dynamic, b:ConnectionResult->Void)
 	{
 		trace('Logging in manually');
@@ -92,11 +93,9 @@ class NGio
 		var onCancel:Void->Void = null;
 
 		if (a != null)
-		{
 			onPending = function() {
 				a(NG.core.openPassportUrl);
 			}
-		}
 
 		if (b != null)
 		{

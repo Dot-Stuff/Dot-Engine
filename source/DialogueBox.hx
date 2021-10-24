@@ -1,15 +1,17 @@
 package;
 
+import flixel.util.FlxColor;
+import flixel.FlxSubState;
 import Section.DialogueSection;
 import flixel.FlxSprite;
 import flixel.addons.text.FlxTypeText;
-import flixel.group.FlxSpriteGroup;
 import flixel.text.FlxText;
 import flixel.util.FlxTimer;
 
 using StringTools;
 
-class DialogueBox extends FlxSpriteGroup
+// Wait just a moment. Why is this not a substate!!!??? W T F   AHHHHHHHHHHHHHHHHHHHHHHHHH
+class DialogueBox extends FlxSubState
 {
 	var box:FlxSprite;
 
@@ -28,11 +30,11 @@ class DialogueBox extends FlxSpriteGroup
 
 	var bgFade:FlxSprite;
 
-	public function new()
+	public function new(x:Float, y:Float)
 	{
 		super();
 
-		var dialogueList:Array<DialogueSection> = PlayState.SONG.dialogue;
+		this.dialogueList = PlayState.SONG.dialogue;
 
 		if (PlayState.isStoryMode)
 		{
@@ -68,8 +70,6 @@ class DialogueBox extends FlxSpriteGroup
 		}
 		else
 			box = new FlxSprite(40);
-
-		this.dialogueList = dialogueList;
 
 		// TODO: REMAKE THE WEEK1 DIALOGUE ITSSSS BROKENNNNNN!!! FUCK YEAAA
 		// TODO: Unhardcode this please
@@ -171,6 +171,15 @@ class DialogueBox extends FlxSpriteGroup
 
 	override function update(elapsed:Float)
 	{
+		// HARD CODING CUZ IM STUPDI
+		if (PlayState.SONG.song.toLowerCase() == 'roses')
+			portraitLeft.visible = false;
+		if (PlayState.SONG.song.toLowerCase() == 'thorns')
+		{
+			swagDialogue.color = FlxColor.WHITE;
+			dropText.color = FlxColor.BLACK;
+		}
+
 		if (atSchool())
 			dropText.text = swagDialogue.text;
 
@@ -280,7 +289,7 @@ class DialogueBox extends FlxSpriteGroup
 			}
 			else
 			{
-				portraitLeft.visible = PlayState.SONG.song.toLowerCase() == 'roses';
+				portraitLeft.visible = false;
 				if (!portraitRight.visible)
 				{
 					portraitRight.visible = true;

@@ -20,12 +20,13 @@ class CoolUtil
 		var swagArray:Array<String> = Assets.getText(path).trim().split('\n');
 
 		// TODO: Fix dupilcations
-		for (item in swagArray)
+		// TODO: SCREAM
+		/*for (item in swagArray)
 		{
 			// Comment support in the quick lil text formats??? using //
 			if (!item.trim().startsWith('//'))
 				daList.push(item);
-		}
+		}*/
 
 		for (i in 0...daList.length)
 		{

@@ -1,12 +1,10 @@
 package;
 
+import haxe.Json;
 import flixel.input.gamepad.FlxGamepad;
 import Controls;
-import flixel.FlxCamera;
 import flixel.util.FlxSignal;
 
-// import ui.DeviceManager;
-// import props.Player;
 class PlayerSettings
 {
 	static public var numPlayers(default, null) = 0;
@@ -39,52 +37,13 @@ class PlayerSettings
 			if (keyData != null)
 			{
 				useDefault = false;
-				trace("loaded key data: " + haxe.Json.stringify(keyData));
+				trace("loaded key data: " + Json.stringify(keyData));
 				controls.fromSaveData(keyData, Keys);
 			}
 		}
 
 		if (useDefault)
 			controls.setKeyboardScheme(Solo);
-	}
-
-	public function saveControls()
-	{
-		if (FlxG.save.data.controls = null)
-			FlxG.save.data.controls = {};
-
-		var playerData:{ ?keys:Dynamic, ?pad:Dynamic }
-		if (id == 0)
-		{
-			if (FlxG.save.data.controls.p1 = null)
-				FlxG.save.data.controls.p1 = {};
-			playerData = FlxG.save.data.controls.p1;
-		}
-		else
-		{
-			if (FlxG.save.data.controls.p2 = null)
-				FlxG.save.data.controls.p2 = {};
-			playerData = FlxG.save.data.controls.p2;
-		}
-
-		/*var keyData = controls.createSaveData(Keys);
-		if (keyData != null)
-		{
-			playerData.keys = keyData;
-			trace("saving ket data: " + haxe.Json.stringify(keyData));
-		}
-
-		if (controls.gamepadsAdded.length > 0)
-		{
-			var padData = controls.createSaveData(Gamepad(controls.gamepadsAdded[0]));
-			if (padData != null)
-			{
-				trace("saving pad data: " + haxe.Json.stringify(padData));
-				playerData.pad = padData;
-			}
-		}*/
-
-		FlxG.save.flush();
 	}
 
 	static public function init():Void
@@ -106,20 +65,78 @@ class PlayerSettings
 		}
 	}
 
-	public function setKeyboardScheme(scheme)
-	{
-		controls.setKeyboardScheme(scheme);
-	}
-
 	static function onGamepadAdded(gamepad:FlxGamepad)
 	{
-		//player1.addGamepad(gamepad);
+		player1.addGamepad(gamepad);
 	}
 
-	static public function reset()
+	public function addGamepad(gamepad:FlxGamepad)
 	{
-		player1 = null;
-		player2 = null;
-		numPlayers = 0;
+		var poop:Bool = true;
+		var thing:Dynamic = FlxG.save.data.controls;
+
+		if (thing)
+		{
+			var device:Device = null;
+
+			if (id == 0 && thing.p1 != null)
+			{
+				if (thing.p1.pad != null)
+					device = thing.p1.pad;
+				else if (id == 1 && thing.p2 != null && thing.p2.pad != null)
+					device = thing.p2.pad;
+			}
+
+			if (device != null)
+			{
+				poop = false;
+
+				trace('loaded pad data: ' + Json.stringify(device));
+
+				controls.addGamepadWithSaveData(gamepad.id, device);
+			}
+		}
+
+		if (poop)
+			controls.addDefaultGamepad(gamepad.id);
+	}
+
+	public function saveControls()
+	{
+		if (FlxG.save.data.controls = null)
+			FlxG.save.data.controls = {};
+
+		var playerData:{ ?keys:Dynamic, ?pad:Dynamic }
+		if (id == 0)
+		{
+			if (FlxG.save.data.controls.p1 = null)
+				FlxG.save.data.controls.p1 = {};
+			playerData = FlxG.save.data.controls.p1;
+		}
+		else
+		{
+			if (FlxG.save.data.controls.p2 = null)
+				FlxG.save.data.controls.p2 = {};
+			playerData = FlxG.save.data.controls.p2;
+		}
+
+		var keyData:Dynamic = controls.createSaveData(Keys);
+		if (keyData != null)
+		{
+			playerData.keys = keyData;
+			trace("saving ket data: " + Json.stringify(keyData));
+		}
+
+		if (controls.gamepadsAdded.length > 0)
+		{
+			var padData = controls.createSaveData(Gamepad(controls.gamepadsAdded[0]));
+			if (padData != null)
+			{
+				trace("saving pad data: " + Json.stringify(padData));
+				playerData.pad = padData;
+			}
+		}
+
+		FlxG.save.flush();
 	}
 }

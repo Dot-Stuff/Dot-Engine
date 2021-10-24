@@ -25,7 +25,7 @@ class NgPrompt extends Prompt
     {
         var b = new NgPrompt("Talking to server...", None);
 
-        var c:Dynamic = function(c) {
+        var whatever:Dynamic = function(c) {
             var d = show ? "Login to Newgrounds?" : "Your session has expired.\n Please login again.";
             if (d != null)
             {
@@ -76,7 +76,7 @@ class NgPrompt extends Prompt
         }
 
         b.openCallback = function() {
-            NGio.login(c, d);
+            NGio.login(whatever, d);
         }
 
         return b;
@@ -189,7 +189,7 @@ class Prompt extends FlxSubState
 
     public function setText(a)
     {
-        field.set_text(a);
+        field.text = a;
         field.screenCenter(X);
     }
 }
