@@ -6,7 +6,7 @@ import haxe.ds.StringMap;
 import flixel.FlxObject;
 import flixel.FlxCamera;
 
-class PreferencesMenu extends ui.Page
+class PreferencesMenu extends ui.OptionsState.Page
 {
     public static var preferences:StringMap<Bool> = new StringMap<Bool>();
     public static var checkboxes:Array<CheckboxThingie> = [];

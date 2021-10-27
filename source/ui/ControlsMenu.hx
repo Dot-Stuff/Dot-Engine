@@ -2,7 +2,7 @@ package ui;
 
 import Controls.Control;
 
-class ControlsMenu extends ui.Page
+class ControlsMenu extends ui.OptionsState.Page
 {
     inline static public var COLUMNS = 2;
     static var controlList = Control.createAll();

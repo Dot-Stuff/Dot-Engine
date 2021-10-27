@@ -85,6 +85,11 @@ class MainMenuState extends MusicBeatState
 
 		menuItems.enabled = false;
 
+		/*menuItems.createItem('multiplayer', function()
+		{
+			startExitState(new netTest.MultiplayerMenu());
+		});*/
+
 		menuItems.createItem('story mode', function()
 		{
 			startExitState(new StoryMenuState());
