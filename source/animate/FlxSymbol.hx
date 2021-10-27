@@ -47,71 +47,77 @@ class FlxSymbol extends FlxSprite
 			if (FlxG.keys.justPressed.TWO)
 				trace(layer.LN);
 
-			var newFrameNum:Int = daFrame;
+			/*var newFrameNum:Int = daFrame;
 
-			switch (daLoopType)
-			{
-				case LOOP:
-					//var tempFrame = layer.FR[newFrameNum + firstFrame % layer.FR];
-					newFrameNum += 0;
-				case PLAY_ONCE:
-					newFrameNum += 0;
-				case SINGLE_FRAME:
-					newFrameNum = firstFrame;
-			}
-
-			var swagFrame:Frame = layer.FR[newFrameNum % layer.FR.length];
-
-			for (element in swagFrame.E)
-			{
-				if (Reflect.hasField(element, 'ASI'))
+				switch (daLoopType)
 				{
-					var m3d = element.ASI.M3D;
-					var dumbassMatrix:Matrix = new Matrix(m3d[0], m3d[1], m3d[4]);
-
-					var spr:FlxSymbol = new FlxSymbol(0, 0, coolParsed);
-					matrixExposed = true;
-					spr.frames = frames;
-					spr.frame = spr.frames.getByName(element.ASI.N);
-
-					dumbassMatrix.concat(_matrix);
-					spr.matrixExposed = true;
-					spr.transformMatrix.concat(dumbassMatrix);
-
-					spr.origin.set();
-
-					spr.antialiasing = true;
-					spr.draw();
-
-					if (FlxG.keys.justPressed.ONE)
-					{
-						trace("ASI - " + layer.LN + ": " + element.ASI.N);
-					}
+					case LOOP:
+						// var tempFrame = layer.FR[newFrameNum + firstFrame % layer.FR];
+						newFrameNum += 0;
+					case PLAY_ONCE:
+						newFrameNum += 0;
+					case SINGLE_FRAME:
+						newFrameNum = firstFrame;
 				}
-				else
+
+				var swagFrame:Frame = layer.FR[newFrameNum % layer.FR.length]; */
+
+			for (frame in layer.FR)
+			{
+				if (frame.I <= daFrame)
 				{
-					var nestedSymbol = symbolMap.get(element.SI.SN);
-					var nestedShit:FlxSymbol = new FlxSymbol(0, 0, coolParse);
-					nestedShit.frames = frames;
-
-					var swagMatrix:FlxMatrix = new FlxMatrix(element.SI.M3D[0], element.SI.M3D[13]);
-
-					swagMatrix.concat(_matrix);
-
-					nestedShit._matrix.concat(swagMatrix);
-					nestedShit.origin.set(element.SI.TRP.x, element.SI.TRP.y);
-
-					if (FlxG.keys.justPressed.ONE)
+					for (element in frame.E)
 					{
-						trace("SI - " + layer.LN + ": " + element.SI.SN + " - LO");
+						if (Reflect.hasField(element, 'ASI'))
+						{
+							var m3d = element.ASI.M3D;
+							var dumbassMatrix:Matrix = new Matrix(m3d[0], m3d[1], m3d[4]);
+
+							var spr:FlxSymbol = new FlxSymbol(0, 0, coolParsed);
+							matrixExposed = true;
+							spr.frames = frames;
+							spr.frame = spr.frames.getByName(element.ASI.N);
+
+							dumbassMatrix.concat(_matrix);
+							spr.matrixExposed = true;
+							spr.transformMatrix.concat(dumbassMatrix);
+
+							spr.origin.set();
+
+							spr.antialiasing = true;
+							spr.draw();
+
+							if (FlxG.keys.justPressed.ONE)
+							{
+								trace("ASI - " + layer.LN + ": " + element.ASI.N);
+							}
+						}
+						else
+						{
+							var nestedSymbol = symbolMap.get(element.SI.SN);
+							var nestedShit:FlxSymbol = new FlxSymbol(0, 0, coolParse);
+							nestedShit.frames = frames;
+
+							var swagMatrix:FlxMatrix = new FlxMatrix(element.SI.M3D[0], element.SI.M3D[13]);
+
+							swagMatrix.concat(_matrix);
+
+							nestedShit._matrix.concat(swagMatrix);
+							nestedShit.origin.set(element.SI.TRP.x, element.SI.TRP.y);
+
+							if (FlxG.keys.justPressed.ONE)
+							{
+								trace("SI - " + layer.LN + ": " + element.SI.SN + " - LO");
+							}
+
+							nestedShit.firstFrame = element.SI.FFP;
+
+							nestedShit.daLoopType = element.SI.LP;
+							nestedShit.daFrame = daFrame;
+							nestedShit.scrollFactor.set(1, 1);
+							nestedShit.renderFrame(nestedSymbol.TL, coolParsed);
+						}
 					}
-
-					nestedShit.firstFrame = element.SI.FFP;
-
-					nestedShit.daLoopType = element.SI.LP;
-					nestedShit.daFrame = daFrame;
-					nestedShit.scrollFactor.set(1, 1);
-					nestedShit.renderFrame(nestedSymbol.TL, coolParsed);
 				}
 			}
 		}
@@ -152,32 +158,20 @@ class FlxSymbol extends FlxSprite
 
 	override function drawComplex(camera:FlxCamera):Void
 	{
-		super.drawComplex(camera);
-
-		var isXFliped = frame.flipX != flipX;
-		var isYFliped = frame.flipY != flipY;
-
-		frame.prepareMatrix(_matrix, 0,
-			animation.curAnim != null ? isXFliped != animation.curAnim.flipX : isXFliped,
-			animation.curAnim != null ? animation.curAnim.flipY != isYFliped : isYFliped);
-
+		_frame.prepareMatrix(_matrix, FlxFrameAngle.ANGLE_0, checkFlipX(), checkFlipY());
 		_matrix.translate(-origin.x, -origin.y);
 		_matrix.scale(scale.x, scale.y);
 
 		if (matrixExposed)
-		{
 			_matrix.concat(transformMatrix);
-		}
-		else
+		else if (bakedRotationAngle <= 0)
 		{
-			if (bakedRotationAngle <= 0 && _angleChanged)
-			{
-				var whatEver = Math.PI / 180 * angle;
+			updateTrig();
 
-				_sinAngle = Math.sin(whatEver);
-				_cosAngle = Math.cos(whatEver);
-				_angleChanged = false;
-			}
+			if (angle != 0)
+				_matrix.rotateWithTrig(_cosAngle, _sinAngle);
+
+			_matrix.concat(_skewMatrix);
 		}
 
 		_point.addPoint(origin);
@@ -186,15 +180,16 @@ class FlxSymbol extends FlxSprite
 		{
 			_point.x = Math.floor(_point.x);
 			_point.y = Math.floor(_point.y);
-
-			_matrix.translate(_point.x, _point.y);
-
-			camera.drawPixels(_frame, framePixels, _matrix, colorTransform, blend, antialiasing);
 		}
+
+		_matrix.translate(_point.x, _point.y);
+
+		camera.drawPixels(_frame, framePixels, _matrix, colorTransform, blend, antialiasing, shader);
 	}
 
 	public var daFrame:Int;
 	public var matrixExposed:Bool;
+	public var _skewMatrix:Matrix = new Matrix();
 
 	function changeFrame(frameChange:Int = 0):Void
 	{
@@ -255,8 +250,7 @@ typedef SymbolInstance =
 	var ST:String;
 
 	var FFP:Int;
-    var LP:String;
-
+	var LP:String;
 	var TRP:TransformationPoint;
 	var M3D:Array<Float>;
 }

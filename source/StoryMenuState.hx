@@ -380,6 +380,7 @@ class StoryMenuState extends MusicBeatState
 
 			case 'tankman':
 				member0.offset.set(60, -20);
+				member0.setGraphicSize(Std.int(member0.width));
 
 			case 'mom':
 				member0.offset.set(100, 210);

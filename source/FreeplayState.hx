@@ -167,8 +167,13 @@ class FreeplayState extends MusicBeatState
 
 		lerpScore = CoolUtil.coolLerp(lerpScore, intendedScore, 0.4);
 
+		var bgColor = bg.color;
 		bg.color = coolColors[songs[curSelected].week % coolColors.length];
 		var lerpColor = CoolUtil.camLerpShit(0.045);
+
+		var rgff = FlxColorTransformUtil;
+
+		bg.color = bgColor;
 
 		if (Math.abs(lerpScore - intendedScore) <= 10)
 			lerpScore = intendedScore;

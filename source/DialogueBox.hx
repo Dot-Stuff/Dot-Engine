@@ -30,7 +30,7 @@ class DialogueBox extends FlxSubState
 
 	var bgFade:FlxSprite;
 
-	public function new(x:Float, y:Float)
+	public function new()
 	{
 		super();
 
@@ -81,13 +81,13 @@ class DialogueBox extends FlxSubState
 				default:
 					box.frames = Paths.getSparrowAtlas('dialogue/speech_bubble_talking');
 					box.animation.addByPrefix('intro', 'Speech Bubble Normal Open', 24, false);
-					box.animation.addByPrefix('introAngry', 'AHH speech bubble', 24, false);
+					box.animation.addByPrefix('intro-angry', 'AHH speech bubble', 24, false);
 					box.animation.addByPrefix('idle', 'speech bubble normal', 24, true);
 					box.animation.addByPrefix('idleAngry', 'speech bubble loud open', 24, true);
 				case 'school':
 					box.frames = Paths.getSparrowAtlas('dialogue/dialogueBox-pixel');
 					box.animation.addByPrefix('intro', 'Normal Dialogue Intro', 24, false);
-					box.animation.addByPrefix('introAngry', 'Impact Dialogue Intro', 24, false);
+					box.animation.addByPrefix('intro-angry', 'Impact Dialogue Intro', 24, false);
 					box.animation.addByPrefix('idle', 'Normal Dialogue Idle', 24, true);
 					box.animation.addByPrefix('complete', 'Normal Dialogue Complete', 24, false);
 					box.animation.addByPrefix('confirm', 'Normal Dialogue Confirm', 24, false);
@@ -106,8 +106,7 @@ class DialogueBox extends FlxSubState
 			portraitLeft.updateHitbox();
 			portraitLeft.scrollFactor.set();
 			add(portraitLeft);
-			if (PlayState.SONG.song.toLowerCase() != 'roses')
-				portraitLeft.visible = false;
+			portraitLeft.visible = false;
 
 			portraitRight = new FlxSprite(0, 40);
 			portraitRight.frames = Paths.getSparrowAtlas('dialogue/${PlayState.SONG.player1}Portrait');
@@ -118,11 +117,8 @@ class DialogueBox extends FlxSubState
 			add(portraitRight);
 			portraitRight.visible = false;
 
-			// Is the first dialogue angry??
-			if (dialogueList[0].angry || PlayState.SONG.song.toLowerCase() == 'roses')
-				box.animation.play('introAngry');
-			else
-				box.animation.play('intro');
+			var angryShit:String = dialogueList[0].angry ? '-angry' : '';
+			box.animation.play('intro$angryShit');
 
 			box.setGraphicSize(Std.int(box.width * PlayState.daPixelZoom * 0.9));
 

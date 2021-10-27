@@ -7,81 +7,113 @@ import flixel.math.FlxRect;
 import haxe.Json;
 import openfl.geom.Rectangle;
 import openfl.utils.Assets;
+import haxe.ds.IntMap;
 
 using StringTools;
 
 class FlxAnimate extends FlxSymbol
 {
-    var frameTickTypeShit:Float;
-    var playingAnim:Bool;
+	var nestedShit:IntMap<FlxSymbol> = new IntMap<FlxSymbol>();
 
-    public function new(x:Float, y:Float)
-    {
-        coolParse = Json.parse(Assets.getText(Paths.file('images/tightBars/Animation.json', TEXT)));
-        coolParse.AN.TL.L.reverse();
+	var frameTickTypeShit:Float;
+	var playingAnim:Bool;
 
-        super(x, y, coolParse);
+	public function new(x:Float, y:Float)
+	{
+		coolParse = Json.parse(Assets.getText(Paths.file('images/tightBars/Animation.json', TEXT)));
+		coolParse.AN.TL.L.reverse();
 
-        frames = fromAnimate(Paths.image('tightBars/spritemap1'), Paths.json('tightBars/spritemap1'));
-    }
+		super(x, y, coolParse);
 
-    function fromAnimate(rawImg:String, rawJson:String):FlxAtlasFrames
-    {
-        var bitmapImg:FlxGraphic = FlxG.bitmap.add(rawImg);
-        var bitmapResult:FlxAtlasFrames = FlxAtlasFrames.findFrame(bitmapImg);
-        bitmapResult = new FlxAtlasFrames(bitmapImg);
-        trace(bitmapImg);
+		// DOES NOT WORK WITH ROTATE EXPORT
+		frames = fromAnimate(Paths.image('tightBars/spritemap1'), Paths.file('images/tightBars/spritemap1.json', TEXT));
+	}
 
-        if (Assets.exists(rawJson))
+	function fromAnimate(rawImg:String, rawJson:String):FlxAtlasFrames
+	{
+		var bitmapImg:FlxGraphic = FlxG.bitmap.add(rawImg);
+		var bitmapResult:FlxAtlasFrames = FlxAtlasFrames.findFrame(bitmapImg);
+		bitmapResult = new FlxAtlasFrames(bitmapImg);
+
+		trace(rawJson);
+        var parsedJson:AnimateAtlas = cast Json.parse(Assets.getText(rawJson));
+
+        for (i in parsedJson.ATLAS.SPRITES)
         {
-            var hmm = Assets.getText(rawJson.toLowerCase()).trim();
-            var ppMoreLikePoop:Dynamic = cast Json.parse(hmm);
-            var fuck:Array<Dynamic> = ppMoreLikePoop.ATLAS.SPRITES;
+            var data:AnimateSpriteData = i.SPRITE;
 
-            for (i in fuck)
-            {
-                var spriteFrame:FlxRect = new FlxRect(i.x, i.y, i.width, i.height);
-                var spriteSize:FlxPoint = new FlxPoint(0, 0);
+            var frame:FlxRect = FlxRect.get(data.x, data.y, data.w, data.h);
+            var rectangleSize:Rectangle = new Rectangle(0, 0, frame.width, frame.height);
 
-                bitmapResult.addAtlasFrame(spriteFrame, spriteSize, i.SPRITE.x, i.name);
-            }
+            var offset:FlxPoint = FlxPoint.get(-rectangleSize.left, -rectangleSize.top);
+            var sourceSize:FlxPoint = FlxPoint.get(rectangleSize.width, rectangleSize.height);
+
+            bitmapResult.addAtlasFrame(frame, sourceSize, offset, data.name);
         }
 
-        return bitmapResult;
-    }
+		return bitmapResult;
+	}
 
-    public override function draw()
-    {
-        super.draw();
+	public override function draw()
+	{
+		super.draw();
 
-        renderFrame(coolParse.AN.TL, coolParse, true);
+		renderFrame(coolParse.AN.TL, coolParse, true);
 
-        if (FlxG.keys.justPressed.ENTER)
-        {
-        }
-    }
+		if (FlxG.keys.justPressed.E)
+		{
+			if (nestedShit.keys().hasNext())
+			{
+				var nextShit = nestedShit.keys().next();
+				nestedShit.get(nextShit).draw();
+			}
 
-    public override function update(elapsed:Float)
-    {
-        super.update(elapsed);
+			nestedShit.clear();
+		}
+	}
 
-        if (FlxG.keys.justPressed.E)
-            playingAnim = !playingAnim;
+	public override function update(elapsed:Float)
+	{
+		super.update(elapsed);
 
-        if (playingAnim)
-        {
-            frameTickTypeShit += elapsed;
-            
-            if (frameTickTypeShit >= 0.041666666666666664)
-            {
-                changeFrame(1);
-                frameTickTypeShit = 0;
-            }
-        }
+		if (FlxG.keys.justPressed.SPACE)
+			playingAnim = !playingAnim;
 
-        if (FlxG.keys.justPressed.A)
-            changeFrame(1);
-        else if (FlxG.keys.justPressed.D)
-            changeFrame(-1);
-    }
+		if (playingAnim)
+		{
+			frameTickTypeShit += elapsed;
+
+			if (frameTickTypeShit >= 0.041666666666666664)
+			{
+				changeFrame(1);
+				frameTickTypeShit = 0;
+			}
+		}
+
+		if (FlxG.keys.justPressed.RIGHT)
+			changeFrame(1);
+		if (FlxG.keys.justPressed.LEFT)
+			changeFrame(-1);
+	}
 }
+
+typedef AnimateAtlas = {
+    var ATLAS:AnimateSprites;
+};
+
+typedef AnimateSprites = {
+    var SPRITES:Array<AnimateSprite>;
+};
+
+typedef AnimateSprite = {
+    var SPRITE:AnimateSpriteData;
+};
+
+typedef AnimateSpriteData = {
+    var name:String;
+    var x:Float;
+    var y:Float;
+    var w:Float;
+    var h:Float;
+	var rotated:Bool;
+};

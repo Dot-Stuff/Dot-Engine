@@ -128,6 +128,7 @@ class PlayState extends MusicBeatState
 	public static var daPixelZoom:Float = 6;
 
 	var inCutscene:Bool = false;
+	var dialogueBox:DialogueBox;
 
 	#if discord_rpc
 	// Discord RPC variables
@@ -140,13 +141,12 @@ class PlayState extends MusicBeatState
 
 	var camPos:FlxPoint;
 
-	// TODO: Remake the spiteList unloading system. IT WAS TOO BUGGY.
-	// We might want to make it unload the week folder.
-
 	override public function create()
 	{
 		if (FlxG.sound.music != null)
 			FlxG.sound.music.stop();
+
+		FlxG.bitmap.add(Paths.image("noteSplashes"));
 
 		FlxG.sound.cache(Paths.inst(PlayState.SONG.song));
 		FlxG.sound.cache(Paths.voices(PlayState.SONG.song));
@@ -626,10 +626,10 @@ class PlayState extends MusicBeatState
 
 		add(foregroundSprites);
 
-		var doof:DialogueBox = new DialogueBox(camPos.x, camPos.y);
+		dialogueBox = new DialogueBox();
 		/*if (!curStage.startsWith('school'))
-			doof.y = FlxG.height * 0.5;*/
-		doof.finishThing = startCountdown;
+			dialogueBox.y = FlxG.height * 0.5;*/
+		dialogueBox.finishThing = startCountdown;
 
 		Conductor.songPosition = -5000;
 
@@ -644,11 +644,6 @@ class PlayState extends MusicBeatState
 		add(strumLineNotes);
 
 		grpNoteSplashes = new FlxTypedGroup<NoteSplash>();
-
-		var noteSplash:NoteSplash = new NoteSplash(100, 100, 0);
-		grpNoteSplashes.add(noteSplash);
-		noteSplash.alpha = 0.1;
-
 		add(grpNoteSplashes);
 
 		playerStrums = new FlxTypedGroup<FlxSprite>();
@@ -712,7 +707,7 @@ class PlayState extends MusicBeatState
 		iconP1.cameras = [camHUD];
 		iconP2.cameras = [camHUD];
 		scoreTxt.cameras = [camHUD];
-		doof.cameras = [camHUD];
+		dialogueBox.cameras = [camHUD];
 
 		startingSong = true;
 
@@ -745,13 +740,13 @@ class PlayState extends MusicBeatState
 								ease: FlxEase.quadInOut,
 								onComplete: function(twn:FlxTween)
 								{
-									dialogueCheck(doof);
+									dialogueCheck();
 								}
 							});
 						});
 					});
 				case 'senpai' | 'roses' | 'thorns':
-					schoolIntro(doof);
+					schoolIntro();
 				case 'ugh':
 					ughIntro();
 				case 'stress':
@@ -759,7 +754,7 @@ class PlayState extends MusicBeatState
 				case 'guns':
 					gunsIntro();
 				default:
-					dialogueCheck(doof);
+					dialogueCheck();
 			}
 		}
 		else
@@ -768,12 +763,12 @@ class PlayState extends MusicBeatState
 		super.create();
 	}
 
-	function dialogueCheck(?dialogueBox:DialogueBox):Void
+	function dialogueCheck():Void
 	{
-		if (SONG.dialogue != null)
-			add(dialogueBox);
-		else
+		if (SONG.dialogue == null && SONG.dialogue.length == 0)
 			startCountdown();
+		else
+			add(dialogueBox);
 	}
 
 	function ughIntro():Void
@@ -960,7 +955,7 @@ class PlayState extends MusicBeatState
 		#end
 	}
 
-	function schoolIntro(?dialogueBox:DialogueBox):Void
+	function schoolIntro():Void
 	{
 		var black:FlxSprite = new FlxSprite(-100, -100).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
 		black.scrollFactor.set();
