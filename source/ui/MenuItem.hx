@@ -5,8 +5,9 @@ import flixel.FlxSprite;
 class MenuItem extends FlxSprite
 {
     public var fireInstantly:Bool = false;
+	public var selected(get, never):Bool;
 
-    var name:String;
+    public var name:String;
     public var callback:Void->Void;
 
     public function new(x:Float, y:Float, newName:String, newCallback:Void->Void):Void
@@ -18,7 +19,7 @@ class MenuItem extends FlxSprite
         idle();
     }
 
-	public function get_selected():Bool
+	function get_selected():Bool
 	{
 		return alpha == 1;
 	}
@@ -34,7 +35,7 @@ class MenuItem extends FlxSprite
 	public function setItem(itemName:String, itemCallback:Void->Void):Void
 	{
 		setData(itemName, itemCallback);
-		get_selected() ? select() : idle();
+		selected ? select() : idle();
 	}
 
 	public function idle():Void

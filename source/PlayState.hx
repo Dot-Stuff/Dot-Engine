@@ -1631,7 +1631,11 @@ class PlayState extends MusicBeatState
 
 				// 1 / 1000 chance for Gitaroo Man easter egg
 				if (FlxG.random.bool(0.1))
-					openSubState(new GitarooPause(camPos.x, camPos.y));
+				{
+					var gitaro = new GitarooPause();
+					openSubState(gitaro);
+					gitaro.cameras = [camHUD];
+				}
 				else
 					openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 

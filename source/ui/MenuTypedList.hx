@@ -1,19 +1,22 @@
 package ui;
 
+import flixel.FlxSprite;
 import flixel.effects.FlxFlicker;
 import flixel.group.FlxGroup;
 import haxe.ds.StringMap;
 import flixel.util.FlxSignal.FlxTypedSignal;
 import ui.MenuItem;
 
-class MenuTypedList<T:MenuItem> extends FlxTypedGroup<T>
+class MenuTypedList extends FlxTypedGroup<MenuItem>
 {
 	public var busy:Bool = false;
 	public var byName:StringMap<Dynamic> = new StringMap<Dynamic>();
 	public var wrapMode:WrapMode = WrapMode.Both;
 	public var enabled:Bool = true;
-	public var onAcceptPress:FlxTypedSignal<T->Void> = new FlxTypedSignal<T->Void>();
-	public var onChange:FlxTypedSignal<T->Void> = new FlxTypedSignal<T->Void>();
+
+	public var onAcceptPress:FlxTypedSignal<FlxSprite->Void> = new FlxTypedSignal<FlxSprite->Void>();
+	public var onChange:FlxTypedSignal<FlxSprite->Void> = new FlxTypedSignal<FlxSprite->Void>();
+
 	public var selectedIndex:Int = 0;
 	public var navControls:NavControls = NavControls.Vertical;
 
@@ -22,25 +25,17 @@ class MenuTypedList<T:MenuItem> extends FlxTypedGroup<T>
 		if (wrapMode != null)
 			this.wrapMode = wrapMode;
 		else
-		{
-			var wrapConvert:WrapMode = WrapMode.Both;
-			switch (navControl.getIndex())
+			wrapMode = switch (navControl)
 			{
-				case 0:
-					wrapConvert = WrapMode.Horizontal;
-				case 1:
-					wrapConvert = WrapMode.Vertical;
-				default:
-					wrapConvert = WrapMode.Both;
+				case Horizontal: WrapMode.Horizontal;
+				case Vertical: WrapMode.Vertical;
+				default: WrapMode.Both;
 			}
-
-			wrapMode = wrapConvert;
-		}
 
 		super();
 	}
 
-	function addItem(name:String, menuItem:T):T
+	public function addItem(name:String, menuItem:MenuItem):FlxSprite
 	{
 		if (selectedIndex == length)
 			menuItem.select();
@@ -180,12 +175,12 @@ class MenuTypedList<T:MenuItem> extends FlxTypedGroup<T>
 
 class MenuTypedItem extends ui.MenuItem
 {
-    var label:AtlasText;
+    public var label(default, set):AtlasText;
 
     public function new(x:Float, y:Float, atlasText:AtlasText, newName:String, newCallback:Void->Void)
     {
         super(x, y, newName, newCallback);
-        set_label(atlasText);
+        label = atlasText;
     }
 
     public function setEmptyBackground()
@@ -193,7 +188,7 @@ class MenuTypedItem extends ui.MenuItem
         makeGraphic(1, 1, 0);
     }
 
-    public function set_label(name:AtlasText)
+    function set_label(name:AtlasText)
     {
         if (name != null)
         {

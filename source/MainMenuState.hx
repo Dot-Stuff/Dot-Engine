@@ -1,6 +1,6 @@
 package;
 
-import ui.NgPrompt;
+import ui.Prompt;
 import io.newgrounds.NG;
 import flixel.FlxSubState;
 import ui.NavControls;
@@ -230,7 +230,7 @@ class MainMenuState extends MusicBeatState
 	}
 }
 
-class MainMenuList extends MenuTypedList<ui.MenuItem>
+class MainMenuList extends MenuTypedList
 {
 	var atlas:FlxFramesCollection = Paths.getSparrowAtlas('main_menu');
 

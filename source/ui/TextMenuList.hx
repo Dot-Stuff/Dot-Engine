@@ -3,7 +3,7 @@ package ui;
 import ui.MenuTypedList.MenuTypedItem;
 import ui.AtlasText.AtlasFont;
 
-class TextMenuList extends MenuTypedList<TextMenuItem>
+class TextMenuList extends MenuTypedList
 {
     public function createItem(?x:Float, ?y:Float, name:String, font:AtlasFont = Bold, newCallback:Void->Void, ?fireInstantly:Bool):Dynamic
     {
@@ -19,6 +19,8 @@ class TextMenuItem extends TextTypedMenuItem
     public function new(x:Float, y:Float, newName:String, font:AtlasFont, newCallback:Void->Void):Void
     {
         super(x, y, new AtlasText(0, 0, newName, font), newName, newCallback);
+
+        setEmptyBackground();
     }
 }
 
@@ -29,7 +31,7 @@ class TextTypedMenuItem extends MenuTypedItem
         if (label != null)
         {
             label.text = itemName;
-            label.set_alpha(alpha);
+            label.alpha = alpha;
             width = label.width;
             height = label.height;
         }
@@ -37,7 +39,7 @@ class TextTypedMenuItem extends MenuTypedItem
         super.setItem(itemName, itemCallback);
     }
 
-    public override function set_label(atlasName:AtlasText):AtlasText
+    override function set_label(atlasName:AtlasText):AtlasText
     {
         setItem(name, callback);
 

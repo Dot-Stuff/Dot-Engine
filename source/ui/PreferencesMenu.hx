@@ -40,9 +40,13 @@ class PreferencesMenu extends ui.OptionsState.Page
             camFollow.y = items.members[items.selectedIndex].y;
 
         menuCamera.follow(camFollow, null, 0.06);
+
+        menuCamera.deadzone.setPosition(0, 160);
+        menuCamera.deadzone.setSize(menuCamera.width, 40);
+
         menuCamera.minScrollY = 0;
 
-        items.onChange.add(function(listener:FlxSprite)
+        items.onChange.add(function(listener)
         {
             camFollow.y = listener.y;
         });

@@ -1,12 +1,12 @@
 package ui;
 
-import netTest.MultiplayerMenu;
+import flixel.group.FlxGroup;
+import ui.Prompt.NgPrompt;
 import io.newgrounds.NG;
 import flixel.util.FlxAxes;
 import ui.TextMenuList.TextMenuItem;
 import flixel.FlxSubState;
 import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.FlxState;
 import flixel.FlxSprite;
 import haxe.ds.EnumValueMap;
 import flixel.util.FlxSignal.FlxTypedSignal;
@@ -25,28 +25,22 @@ enum PageName
  */
 class OptionsState extends MusicBeatState
 {
-	var currentName:PageName = PageName.Options;
+	var currentName:PageName = Options;
 	var pages:EnumValueMap<PageName, Page> = new EnumValueMap<PageName, Page>();
-
-	function get_currentPage()
-	{
-		return pages.get(currentName);
-	}
 
 	public override function create()
 	{
-		var bg:FlxSprite = new FlxSprite();
-		bg.loadGraphic(Paths.image('menuDesat'));
-		bg.color = -1412611;
+		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
+		bg.color = 0xFFEA71FD;
 		bg.setGraphicSize(Std.int(bg.width * 1.1));
 		bg.updateHitbox();
 		bg.screenCenter();
 		bg.scrollFactor.set(0, 0);
 		add(bg);
 
-		var optionsPage = addPage(Options, new OptionsMenu(false));
-		var prefsPage = addPage(Preferences, new PreferencesMenu());
-		var controlsPage = addPage(Controls, new ControlsMenu());
+		var optionsPage:OptionsMenu = cast addPage(Options, new OptionsMenu(false));
+		var prefsPage:PreferencesMenu = cast addPage(Preferences, new PreferencesMenu());
+		var controlsPage:ControlsMenu = cast addPage(Controls, new ControlsMenu());
 
 		if (optionsPage.hasMultipleOptions())
 		{
@@ -63,20 +57,23 @@ class OptionsState extends MusicBeatState
 		else
 		{
 			controlsPage.onExit.add(exitToMainMenu);
+
 			setPage(Controls);
 		}
-		
+
 		pages.get(currentName).enabled = false;
 
 		super.create();
 	}
 
-	public function addPage<T:Page>(pageName:PageName, page:T):T
+	public function addPage(pageName:PageName, page:Page):Page
 	{
 		page.onSwitch.add(switchPage);
 
 		pages.set(pageName, page);
 		add(page);
+
+		page.exists = pageName == currentName;
 
 		return page;
 	}
@@ -84,17 +81,18 @@ class OptionsState extends MusicBeatState
 	public function setPage(name:PageName)
 	{
 		if (pages.exists(currentName))
-			pages.get(currentName).enabled = false;
+			pages.get(currentName).exists = false;
 
 		currentName = name;
 
 		if (pages.exists(currentName))
-			pages.get(currentName).enabled = true;
+			pages.get(currentName).exists = true;
 	}
 
 	public override function finishTransIn()
 	{
 		super.finishTransIn();
+
 		pages.get(currentName).enabled = true;
 	}
 
@@ -111,9 +109,9 @@ class OptionsState extends MusicBeatState
 	}
 }
 
-class Page extends FlxTypedGroup<Dynamic>
+class Page extends FlxGroup
 {
-	public var enabled:Bool = true;
+	public var enabled(default, set):Bool = true;
 	public var canExit:Bool = true;
 	public var onExit:FlxTypedSignal<Void->Void> = new FlxTypedSignal<Void->Void>();
 	public var onSwitch:FlxTypedSignal<PageName->Void> = new FlxTypedSignal<PageName->Void>();
@@ -133,7 +131,7 @@ class Page extends FlxTypedGroup<Dynamic>
 
 	public function updateEnabled(elapsed:Float)
 	{
-		if (PlayerSettings.player1.controls.BACK && canExit)
+		if (canExit && PlayerSettings.player1.controls.BACK)
 		{
 			FlxG.sound.play(Paths.sound("cancelMenu"));
 			onExit.dispatch();

@@ -1,6 +1,8 @@
 package ui;
 
-import flixel.group.FlxSpriteGroup;
+import flixel.util.FlxStringUtil;
+import flixel.util.FlxStringUtil.LabelValuePair;
+import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
 import flixel.graphics.frames.FlxFramesCollection;
 import flixel.FlxSprite;
 import haxe.ds.EnumValueMap;
@@ -20,100 +22,113 @@ enum Case
 	Lower;
 }
 
-class AtlasText extends FlxSpriteGroup
+class AtlasText extends FlxTypedSpriteGroup<AtlasChar>
 {
-	public var text:String = '';
-
-	public var font:AtlasFontData;
+	public var text(default, set):String = '';
 
 	public var fonts:EnumValueMap<AtlasFont, AtlasFontData> = new EnumValueMap<AtlasFont, AtlasFontData>();
+	public var font:AtlasFontData;
 
 	public function new(x:Float, y:Float, name:String, atlasFont:AtlasFont = Default)
 	{
 		if (!fonts.exists(atlasFont))
-			fonts.set(atlasFont, new AtlasFontData(atlasFont.getName()));
+			fonts.set(atlasFont, new AtlasFontData(atlasFont));
+
+		font = fonts.get(atlasFont);
 
 		super(x, y);
 
 		text = name;
 	}
 
-	public function set_text(name:String)
+	function set_text(name:String)
 	{
-		var b = restrictCase(name);
-		var c = restrictCase(text);
+		var nameCase = restrictCase(name);
+		var textCase = restrictCase(text);
 
 		text = name;
 
-		if (b == c)
-			return name;
-		/*if (b.indexOf(c) == 0)
-			return appendTextCased(b.substr(c.length)).text;
-		name = b;
-		group.kill();
-		if (name == "")
+		if (nameCase == textCase)
+			return text;
+		if (nameCase.indexOf(textCase) == 0)
 			return text;
 
-		appendTextCased(b);*/
+		text = nameCase;
+
+		group.kill();
+
+		if (text == "")
+			return text;
+
+		appendTextCased(nameCase);
 
 		return text;
 	}
 
-	function restrictCase(textShit:String)
+	function restrictCase(textShit:String):String
 	{
-		switch (font.caseAllowed)
+		return switch (font.caseAllowed)
 		{
-			case Both:
-				return textShit;
-			case Upper:
-				return textShit.toUpperCase();
-			case Lower:
-				return textShit.toLowerCase();
+			case Both: textShit;
+			case Upper: textShit.toUpperCase();
+			case Lower: textShit.toLowerCase();
 		}
 	}
 
-	function appendTextCased(a:Array<String>)
+	function appendTextCased(name:String)
 	{
-		var living = group.countLiving();
-		var c:Float;
-		var d:Float;
-		/*if (living == -1)
-				living = 0
-			else if (living > 0)
-				d = group.members[living - 1]; */
-		/*c = d.x + d.width - x;
-			d = d.y + d.height - font.maxHeight - y; */
-		/*a = a.split("");
+		var living:Int = group.countLiving();
+		var c:Float = 0;
+		var d:Float = 0;
 
-			for (i in 0...a.length)
+		if (living == -1)
+			living = 0;
+		else if (living > 0)
+		{
+			var thing = group.members[living - 1];
+			c = thing.x + thing.width - x;
+			d = thing.y + thing.height - font.maxHeight - y;
+		}
+
+		for (i in name.split(""))
+		{
+			switch (i)
 			{
-				switch (i)
-				{
-					case '\n':
-						c = 0;
-						d += font.maxHeight;
-						break;
-					case ' ':
-						c += 40;
-					default:
-						var k:AtlasChar;
+				case "\n":
+					c = 0;
+					d += font.maxHeight;
+				case " ":
+					c += 40;
+				default:
+					var char:AtlasChar;
 
-						if (living >= group.members.length)
-							k = new AtlasChar(null, null, font.atlas, i);
-						else
-						{
-							k = group.members[living];
-							k.revive();
-							k.char = i;
-							k.alpha = 1;
-						}
+					if (living >= group.members.length)
+						char = new AtlasChar(0, 0, font.atlas, i);
+					else
+					{
+						char = group.members[living];
+						char.revive();
+						char.char = i;
+						char.alpha = 1;
+						char.x = c;
+						char.y = d + font.maxHeight + char.height;
+					}
 
-						k.x = c;
-						k.y = d + font.maxHeight - k.height;
-						add(k);
-						c += k.width;
+					add(char);
+					c += char.height;
+
+					living++;
 			}
-		}*/
+		}
+	}
+
+	public override function toString():String
+	{
+		return "InputItem, " + FlxStringUtil.getDebugString([
+			LabelValuePair.weak("x", x),
+			LabelValuePair.weak("y", y),
+			LabelValuePair.weak("text", text),
+		]);
 	}
 }
 
@@ -127,28 +142,31 @@ class AtlasFontData
 	var upperChar:EReg = new EReg("^[A-Z]\\d+$", "");
 	var lowerChar:EReg = new EReg("^[A-Z]\\d+$", "");
 
-	public function new(font:String)
+	public function new(font:AtlasFont)
 	{
-		atlas = Paths.getSparrowAtlas('fonts/${font.toLowerCase()}');
+		atlas = Paths.getSparrowAtlas('fonts/${font.getName().toLowerCase()}');
 		atlas.parent.destroyOnNoUse = false;
 		atlas.parent.persist = true;
+
+		var upperName:Bool = false;
+		var lowerName:Bool = false;
 
 		for (i in atlas.frames)
 		{
 			maxHeight = Math.max(maxHeight, i.frame.height);
 
-			var upperName = upperChar.match(i.name);
-			var lowerName = lowerChar.match(i.name);
-
-			if (lowerName != upperName)
-				caseAllowed = upperName ? Upper : Lower;
+			upperName = upperChar.match(i.name);
+			lowerName = lowerChar.match(i.name);
 		}
+
+		if (lowerName != upperName)
+			caseAllowed = upperName ? Upper : Lower;
 	}
 }
 
 class AtlasChar extends FlxSprite
 {
-	public var char:String;
+	public var char(default, set):String;
 
 	public function new(x:Float, y:Float, atlas:FlxFramesCollection, newChar:String)
 	{

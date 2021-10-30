@@ -1,127 +1,88 @@
 package;
 
+import Controls.Device;
 import flixel.input.keyboard.FlxKeyList;
 
 using StringTools;
 
 class InputFormatter
 {
-    public var dirReg:EReg;
+    public static var dirReg:EReg = new EReg("^(l|r).?-(left|right|down|up)$", "");
 
-    public function format(a, b)
+    public static function format(keyId:Int, device:Device):String
     {
-        switch (b._hx_index)
+        return switch (device)
         {
-            case 0:
-                return getKeyName(a);
-            case 1:
-                return a = FlxG.gamepads.activeGamepads[b.id].mapping.getInputLabel(a),
-                shortenButtonName(a);
+            case Keys:
+                getKeyName(keyId);
+            case Gamepad(id):
+                shortenButtonName(FlxG.gamepads.getByID(keyId).mapping.getInputLabel(id));
         }
     }
 
-    public function getKeyName(a)
+    static function getKeyName(id:Int):String
     {
-        switch (a)
+        return switch (id)
         {
-            case 8:
-                return "BckSpc";
-            case 17:
-                return "Ctrl";
-            case 18:
-                return "Alt";
-            case 20:
-                return "Caps";
-            case 33:
-                return "PgUp";
-            case 34:
-                return "PgDown";
-            case 48:
-                return "0";
-            case 49:
-                return "1";
-            case 50:
-                return "2";
-            case 51:
-                return "3";
-            case 52:
-                return "4";
-            case 53:
-                return "5";
-            case 54:
-                return "6";
-            case 55:
-                return "7";
-            case 56:
-                return "8";
-            case 57:
-                return "9";
-            case 96:
-                return "#0";
-            case 97:
-                return "#1";
-            case 98:
-                return "#2";
-            case 99:
-                return "#3";
-            case 100:
-                return "#4";
-            case 101:
-                return "#5";
-            case 102:
-                return "#6";
-            case 103:
-                return "#7";
-            case 104:
-                return "#8";
-            case 105:
-                return "#9";
-            case 106:
-                return "#*";
-            case 107:
-                return "#+";
-            case 109:
-                return "#-";
-            case 110:
-                return "#.";
-            case 186:
-                return ";";
-            case 188:
-                return ",";
-            case 190:
-                return ".";
-            case 191:
-                return "/";
-            case 192:
-                return "`";
-            case 219:
-                return "[";
-            case 220:
-                return "\\";
-            case 221:
-                return "]";
-            case 222:
-                return "'";
-            case 301:
-                return "PrtScrn";
-            default:
-                return a = FlxKeyList.toStringMap.get(a);
-                a.charAt(0).toUpperCase() + T.substr(a, 1, null).toLowerCase();
+            case 8: "BckSpc";
+            case 17: "Ctrl";
+            case 18: "Alt";
+            case 20: "Caps";
+            case 33: "PgUp";
+            case 34: "PgDown";
+            case 48: "0";
+            case 49: "1";
+            case 50: "2";
+            case 51: "3";
+            case 52: "4";
+            case 53: "5";
+            case 54: "6";
+            case 55: "7";
+            case 56: "8";
+            case 57: "9";
+            case 96: "#0";
+            case 97: "#1";
+            case 98: "#2";
+            case 99: "#3";
+            case 100: "#4";
+            case 101: "#5";
+            case 102: "#6";
+            case 103: "#7";
+            case 104: "#8";
+            case 105: "#9";
+            case 106: "#*";
+            case 107: "#+";
+            case 109: "#-";
+            case 110: "#.";
+            case 186: ";";
+            case 188: ",";
+            case 190: ".";
+            case 191: "/";
+            case 192: "`";
+            case 219: "[";
+            case 220: "\\";
+            case 221: "]";
+            case 222: "'";
+            case 301: "PrtScrn";
+            default: ''; // Fix
         }
     }
 
-    public function shortenButtonName(buttonName:String)
+    static function shortenButtonName(btnName:String):String
     {
-        buttonName = buttonName == null ? "" : buttonName.toLowerCase();
-        if (buttonName == '')
+        var name = btnName == null ? '' : btnName.toLowerCase();
+
+        if (name == '')
             return '[?]';
 
-        if (dirReg.match(buttonName))
+        if (dirReg.match(name))
         {
-            buttonName = dirReg.matched(1).toUpperCase() + ' ';
+            name = '${dirReg.matched(1).toUpperCase()} ';
             var b = dirReg.matched(2);
-            return a + (b.charAt(0).toUpperCase() + T.substr(b, 1, null).toLowerCase());
+
+            return name + (b.charAt(0).toUpperCase() + b.substr(1).toLowerCase());
         }
-        return a.charAt(0).toUpperCase() + T.substr(a, 1, null).toLowerCase();
+
+        return name.charAt(0).toUpperCase() + name.substr(1).toLowerCase();
     }
 }

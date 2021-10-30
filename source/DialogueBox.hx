@@ -83,7 +83,7 @@ class DialogueBox extends FlxSubState
 					box.animation.addByPrefix('intro', 'Speech Bubble Normal Open', 24, false);
 					box.animation.addByPrefix('intro-angry', 'AHH speech bubble', 24, false);
 					box.animation.addByPrefix('idle', 'speech bubble normal', 24, true);
-					box.animation.addByPrefix('idleAngry', 'speech bubble loud open', 24, true);
+					box.animation.addByPrefix('idle-angry', 'speech bubble loud open', 24, true);
 				case 'school':
 					box.frames = Paths.getSparrowAtlas('dialogue/dialogueBox-pixel');
 					box.animation.addByPrefix('intro', 'Normal Dialogue Intro', 24, false);

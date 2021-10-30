@@ -12,7 +12,7 @@ class GitarooPause extends MusicBeatSubstate
 
 	var trollMusic:FlxSound;
 
-	public function new(x:Float, y:Float):Void
+	public function new():Void
 	{
 		super();
 

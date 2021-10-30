@@ -4,7 +4,7 @@ import flixel.FlxSprite;
 
 class CheckboxThingie extends FlxSprite
 {
-    public var daValue:Bool = false;
+    public var daValue(default, set):Bool = false;
 
     public function new(x:Float, y:Float, checked:Bool)
     {
@@ -20,22 +20,25 @@ class CheckboxThingie extends FlxSprite
         setGraphicSize(Std.int(width * 0.7));
         updateHitbox();
 
-        set_daValue(checked);
+        daValue = checked;
     }
 
     public override function update(elapsed:Float)
     {
         super.update(elapsed);
 
-        if (animation.curAnim.name == 'checked')
-            offset.set(17, 70);
-        else if (animation.curAnim.name == 'static')
-            offset.set();
+        switch (animation.curAnim.name)
+        {
+            case 'checked':
+                offset.set(17, 70);
+            case 'static':
+                offset.set();
+        }
     }
 
-    public function set_daValue(checked:Bool):Bool
+    function set_daValue(val:Bool):Bool
     {
-        checked ? animation.play('checked', true) : animation.play('static');
-        return checked;
+        val ? animation.play('checked', true) : animation.play('static');
+        return val;
     }
 }
