@@ -24,7 +24,7 @@ class CutsceneAnimTestState extends FlxState
 		debugTxt.color = -16776961;
 		add(debugTxt);
 
-		char = new FlxAnimate(600, 200);
+		char = new FlxAnimate(600, 200, 'tightBars');
 		add(char);
 	}
 }

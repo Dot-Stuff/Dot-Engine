@@ -1,5 +1,6 @@
 package;
 
+import animate.FlxAnimate;
 import shadersLmfao.ColorSwap;
 import Section.SwagSection;
 import Song.SwagSong;
@@ -775,7 +776,7 @@ class PlayState extends MusicBeatState
 	{
 		inCutscene = true;
 
-		var background:FlxSprite = new FlxSprite(-200, -200).makeGraphic(2 * FlxG.width, 2 * FlxG.height, FlxColor.BLACK);
+		/*var background:FlxSprite = new FlxSprite(-200, -200).makeGraphic(2 * FlxG.width, 2 * FlxG.height, FlxColor.BLACK);
 		background.scrollFactor.set();
 		add(background);
 
@@ -790,67 +791,67 @@ class PlayState extends MusicBeatState
 
 		FlxG.camera.zoom *= 1.2;
 		camFollow.x += 100;
+		camFollow.y += 100;*/
+
+		FlxG.camera.zoom = defaultCamZoom * 1.2;
+
+		FlxG.sound.playMusic(Paths.music('DISTORTO'), 0);
+		FlxG.sound.music.fadeIn(5, 0, 0.5);
+
+		dad.visible = false;
+		var tankCutscene:FlxAnimate = new FlxAnimate(-20, 320, 'tightBars');
+		add(tankCutscene);
+		gfCutsceneLayer.add(tankCutscene);
+
+		camHUD.visible = false;
+
+		FlxG.camera.zoom *= 1.2;
 		camFollow.y += 100;
 
-		/*FlxG.camera.zoom = defaultCamZoom * 1.2;
+		//tankCutscene.startSyncAudio = FlxG.sound.load(Paths.sound('wellWellWell'));
 
-			FlxG.sound.playMusic(Paths.music('DISTORTO'), 0);
-			FlxG.sound.music.fadeIn(5, 0, 0.5);
-
-			dad.visible = false;
-			var tankCutscene:CutsceneCharacter = new CutsceneCharacter(-20, 320);
-			add(tankCutscene);
-			gfCutsceneLayer.add(tankCutscene);
-
-			camHUD.visible = false;
-
-			FlxG.camera.zoom *= 1.2;
+		new FlxTimer().start(3, function(tmr:FlxTimer)
+		{
+			camFollow.x += 800;
 			camFollow.y += 100;
+			FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom * 1.2}, 0.27, {ease: FlxEase.quadInOut});
 
-			tankCutscene.startSyncAudio = FlxG.sound.load(Paths.sound('wellWellWell'));
-
-			new FlxTimer().start(3, function(tmr:FlxTimer)
+			new FlxTimer().start(1.5, function(bep:FlxTimer)
 			{
-				camFollow.x += 800;
-				camFollow.y += 100;
-				FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom * 1.2}, 0.27, {ease: FlxEase.quadInOut});
-
-				new FlxTimer().start(1.5, function(bep:FlxTimer)
+				boyfriend.playAnim('singUP');
+				// Play Sound.
+				FlxG.sound.play(Paths.sound('bfBeep'), function()
 				{
-					boyfriend.playAnim('singUP');
-					// Play Sound.
-					FlxG.sound.play(Paths.sound('bfBeep'), function()
-					{
-						boyfriend.playAnim('idle');
-					});
+					boyfriend.playAnim('idle');
 				});
+			});
 
-				new FlxTimer().start(3, function(swaggy:FlxTimer)
+			new FlxTimer().start(3, function(swaggy:FlxTimer)
+			{
+				camFollow.x -= 800;
+				camFollow.y -= 100;
+				FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom * 1.2}, 0.5, {ease: FlxEase.quadInOut});
+				tankCutscene.animation.play('killYou');
+				FlxG.sound.play(Paths.sound('killYou'));
+				new FlxTimer().start(6.1, function(swagasdga:FlxTimer)
 				{
-					camFollow.x -= 800;
-					camFollow.y -= 100;
-					FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom * 1.2}, 0.5, {ease: FlxEase.quadInOut});
-					tankCutscene.animation.play('killYou');
-					FlxG.sound.play(Paths.sound('killYou'));
-					new FlxTimer().start(6.1, function(swagasdga:FlxTimer)
+					FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, (Conductor.crochet / 1000) * 5, {ease: FlxEase.quadInOut});
+
+					FlxG.sound.music.fadeOut((Conductor.crochet / 1000) * 5, 0);
+
+					new FlxTimer().start((Conductor.crochet / 1000) * 5, function(money:FlxTimer)
 					{
-						FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, (Conductor.crochet / 1000) * 5, {ease: FlxEase.quadInOut});
-
-						FlxG.sound.music.fadeOut((Conductor.crochet / 1000) * 5, 0);
-
-						new FlxTimer().start((Conductor.crochet / 1000) * 5, function(money:FlxTimer)
-						{
-							dad.visible = true;
-							gfCutsceneLayer.remove(tankCutscene);
-						});
-
-						cameraMovement();
-
-						dialogueCheck();
-						camHUD.visible = true;
+						dad.visible = true;
+						gfCutsceneLayer.remove(tankCutscene);
 					});
+
+					cameraMovement();
+
+					dialogueCheck();
+					camHUD.visible = true;
 				});
-		});*/
+			});
+		});
 	}
 
 	function gunsIntro():Void
