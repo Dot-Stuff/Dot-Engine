@@ -312,20 +312,21 @@ class Controls extends FlxActionSet
 
 	public function fromSaveData(keyData:Dynamic, keys:Device)
 	{
-		/*for (i in Control.getConstructors())
+		for (con in Control.getConstructors())
 		{
-			var thing = Reflect.field(keyData, i);
-			if (thing != null)
+			var key = Reflect.field(keyData, con);
+
+			if (key != null)
 			{
 				switch (keys)
 				{
 					case Keys:
-						bindKeys(i, thing.slice());
+						//bindKeys(con, key.slice());
 					case Gamepad(id):
-						bindButtons(i, id, thing.slice());
+						//bindButtons(con, id, key.slice());
 				}
 			}
-		}*/
+		}
 	}
 
 	public function createSaveData(device:Device):Dynamic

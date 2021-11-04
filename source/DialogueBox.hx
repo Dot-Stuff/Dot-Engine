@@ -82,19 +82,16 @@ class DialogueBox extends FlxSubState
 					box.frames = Paths.getSparrowAtlas('dialogue/speech_bubble_talking');
 					box.animation.addByPrefix('intro', 'Speech Bubble Normal Open', 24, false);
 					box.animation.addByPrefix('intro-angry', 'AHH speech bubble', 24, false);
-					box.animation.addByPrefix('idle', 'speech bubble normal', 24, true);
 					box.animation.addByPrefix('idle-angry', 'speech bubble loud open', 24, true);
 				case 'school':
 					box.frames = Paths.getSparrowAtlas('dialogue/dialogueBox-pixel');
 					box.animation.addByPrefix('intro', 'Normal Dialogue Intro', 24, false);
 					box.animation.addByPrefix('intro-angry', 'Impact Dialogue Intro', 24, false);
-					box.animation.addByPrefix('idle', 'Normal Dialogue Idle', 24, true);
 					box.animation.addByPrefix('complete', 'Normal Dialogue Complete', 24, false);
 					box.animation.addByPrefix('confirm', 'Normal Dialogue Confirm', 24, false);
 				case 'school-evil':
 					box.frames = Paths.getSparrowAtlas('dialogue/dialogueBox-evil');
 					box.animation.addByPrefix('intro', 'Spirit Dialogue Intro', 24, false);
-					box.animation.addByIndices('idle', 'Spirit Dialogue Intro', [11], "", 24);
 					box.animation.addByIndices('complete', 'Spirit Dialogue Complete', [0], "", 24);
 					box.animation.addByIndices('confirm', 'Spirit Dialogue Confirm', [0], "", 24);
 			}
@@ -182,10 +179,7 @@ class DialogueBox extends FlxSubState
 		if (box.animation.curAnim != null)
 		{
 			if (box.animation.curAnim.name.startsWith('intro') && box.animation.curAnim.finished)
-			{
-				box.animation.play('idle');
 				dialogueOpened = true;
-			}
 		}
 
 		if (dialogueOpened && !dialogueStarted)

@@ -131,7 +131,7 @@ class ColorSwapShader extends FlxShader
 		
 			if (awesomeOutline)
 			{
-					// Outline bullshit?
+				// Outline bullshit?
 				vec2 size = vec2(3, 3);
 		
 				if (color.a <= 0.5) {
@@ -144,15 +144,10 @@ class ColorSwapShader extends FlxShader
 					|| flixel_texture2D(bitmap, vec2(openfl_TextureCoordv.x, openfl_TextureCoordv.y - h)).a != 0.)
 						color = vec4(1.0, 1.0, 1.0, 1.0);
 				}
-		
-		
 			}
-		
-			
-			
+
 			gl_FragColor = color;
-			
-			
+
 			/* 
 			if (color.a > 0.5)
 				gl_FragColor = color;

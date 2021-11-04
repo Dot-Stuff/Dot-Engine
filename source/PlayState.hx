@@ -199,9 +199,12 @@ class PlayState extends MusicBeatState
 
 					phillyCityLights = new FlxTypedGroup<BGSprite>();
 
-					for (i in 0...5)
+					var lightColors:Array<FlxColor> = [0x31A2FD, 0x31FD8C, 0xFB33F5, 0xFD4531, 0xFBA633];
+
+					for (lightColor in lightColors)
 					{
-						var light:BGSprite = new BGSprite('win$i', city.x, 0, 0.3, 0.3);
+						var light:BGSprite = new BGSprite('win', city.x, 0, city.scrollFactor.x, city.scrollFactor.y);
+						light.color = lightColor;
 						light.visible = false;
 						light.setGraphicSize(Std.int(light.width * 0.85));
 						light.updateHitbox();
@@ -741,7 +744,7 @@ class PlayState extends MusicBeatState
 								ease: FlxEase.quadInOut,
 								onComplete: function(twn:FlxTween)
 								{
-									dialogueCheck();
+									startCountdown();
 								}
 							});
 						});
@@ -755,7 +758,7 @@ class PlayState extends MusicBeatState
 				case 'guns':
 					gunsIntro();
 				default:
-					dialogueCheck();
+					startCountdown();
 			}
 		}
 		else
@@ -831,7 +834,7 @@ class PlayState extends MusicBeatState
 				camFollow.x -= 800;
 				camFollow.y -= 100;
 				FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom * 1.2}, 0.5, {ease: FlxEase.quadInOut});
-				tankCutscene.animation.play('killYou');
+				//tankCutscene.animation.play('killYou');
 				FlxG.sound.play(Paths.sound('killYou'));
 				new FlxTimer().start(6.1, function(swagasdga:FlxTimer)
 				{
@@ -847,7 +850,7 @@ class PlayState extends MusicBeatState
 
 					cameraMovement();
 
-					dialogueCheck();
+					startCountdown();
 					camHUD.visible = true;
 				});
 			});
@@ -2560,6 +2563,8 @@ class PlayState extends MusicBeatState
 
 				if (curBeat % 4 == 0)
 				{
+					lightFadeShader.reset();
+
 					phillyCityLights.forEach(function(light:FlxSprite)
 					{
 						light.visible = false;

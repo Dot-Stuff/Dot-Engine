@@ -8,8 +8,8 @@ import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import openfl.Assets;
 import flixel.util.FlxTimer;
-import flixel.util.FlxColorTransformUtil;
 
+using flixel.util.FlxColorTransformUtil;
 using StringTools;
 
 #if discord_rpc
@@ -61,11 +61,13 @@ class FreeplayState extends MusicBeatState
 			songs.push(new SongMetadata(initSonglist[i], 1, 'gf'));
 		}
 
+		#if NO_PRELOAD_ALL
 		if (FlxG.sound.music != null)
 		{
 			if (!FlxG.sound.music.playing)
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 		}
+		#end
 
 		if (StoryMenuState.weekUnlocked[2] || isDebug)
 			addWeek(['Bopeebo', 'Fresh', 'Dadbattle'], 1, ['dad']);
@@ -168,12 +170,10 @@ class FreeplayState extends MusicBeatState
 		lerpScore = CoolUtil.coolLerp(lerpScore, intendedScore, 0.4);
 
 		var bgColor = bg.color;
-		bg.color = coolColors[songs[curSelected].week % coolColors.length];
+		var coolerColoir = coolColors[coolColors.length % songs[curSelected].week];
 		var lerpColor = CoolUtil.camLerpShit(0.045);
 
-		var rgff = FlxColorTransformUtil;
-
-		bg.color = bgColor;
+		//bg.color = bgColor;
 
 		if (Math.abs(lerpScore - intendedScore) <= 10)
 			lerpScore = intendedScore;
@@ -228,6 +228,7 @@ class FreeplayState extends MusicBeatState
 			LoadingState.loadAndSwitchState(new PlayState());
 		}
 	}
+
 	override function switchTo(nextState:FlxState):Bool
 	{
 		clearDaCache(songs[curSelected].songName);
