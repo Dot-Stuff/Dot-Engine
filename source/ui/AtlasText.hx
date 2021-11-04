@@ -51,7 +51,10 @@ class AtlasText extends FlxTypedSpriteGroup<AtlasChar>
 		if (nameCase == textCase)
 			return text;
 		if (nameCase.indexOf(textCase) == 0)
+		{
+			appendTextCased(nameCase.substr(textCase.length));
 			return text;
+		}
 
 		text = nameCase;
 
@@ -78,27 +81,27 @@ class AtlasText extends FlxTypedSpriteGroup<AtlasChar>
 	function appendTextCased(name:String)
 	{
 		var living:Int = group.countLiving();
-		var c:Float = 0;
-		var d:Float = 0;
+		var offsetX:Float = 0;
+		var offsetY:Float = 0;
 
 		if (living == -1)
 			living = 0;
 		else if (living > 0)
 		{
 			var thing = group.members[living - 1];
-			c = thing.x + thing.width - x;
-			d = thing.y + thing.height - font.maxHeight - y;
+			offsetX = thing.x + thing.width - x;
+			offsetY = thing.y + thing.height - font.maxHeight - y;
 		}
 
-		for (i in name.split(""))
+		for (i in name.split(''))
 		{
 			switch (i)
 			{
 				case "\n":
-					c = 0;
-					d += font.maxHeight;
+					offsetX = 0;
+					offsetY += font.maxHeight;
 				case " ":
-					c += 40;
+					offsetX += 40;
 				default:
 					var char:AtlasChar;
 
@@ -110,12 +113,13 @@ class AtlasText extends FlxTypedSpriteGroup<AtlasChar>
 						char.revive();
 						char.char = i;
 						char.alpha = 1;
-						char.x = c;
-						char.y = d + font.maxHeight + char.height;
 					}
 
+					char.x = offsetX;
+					char.y = offsetY + font.maxHeight + char.height;
+
 					add(char);
-					c += char.height;
+					offsetX += char.width;
 
 					living++;
 			}
@@ -155,8 +159,11 @@ class AtlasFontData
 		{
 			maxHeight = Math.max(maxHeight, i.frame.height);
 
-			upperName = upperChar.match(i.name);
-			lowerName = lowerChar.match(i.name);
+			if (upperName)
+				upperName = upperChar.match(i.name);
+
+			if (lowerName)
+				lowerName = lowerChar.match(i.name);
 		}
 
 		if (lowerName != upperName)
@@ -179,9 +186,9 @@ class AtlasChar extends FlxSprite
 		antialiasing = true;
 	}
 
-	function set_char(char:String)
+	function set_char(char:String):String
 	{
-		if (char != this.char)
+		if (this.char != char)
 		{
 			animation.addByPrefix('anim', getAnimPrefix(char), 24);
 			animation.play('anim');
@@ -191,34 +198,22 @@ class AtlasChar extends FlxSprite
 		return this.char = char;
 	}
 
-	function getAnimPrefix(anim:String)
+	function getAnimPrefix(anim:String):String
 	{
-		switch (anim)
+		return switch (anim)
 		{
-			case "!":
-				return "-exclamation point-";
-			case "'":
-				return "-apostraphie-";
-			case "*":
-				return "-multiply x-";
-			case ",":
-				return "-comma-";
-			case "-":
-				return "-dash-";
-			case ".":
-				return "-period-";
-			case "/":
-				return "-forward slash-";
-			case "?":
-				return "-question mark-";
-			case "\\":
-				return "-back slash-";
-			case "\u201c":
-				return "-start quote-";
-			case "\u201d":
-				return "-end quote-";
-			default:
-				return anim;
+			case "!": "-exclamation point-";
+			case "'": "-apostraphie-";
+			case "*": "-multiply x-";
+			case ",": "-comma-";
+			case "-": "-dash-";
+			case ".": "-period-";
+			case "/": "-forward slash-";
+			case "?": "-question mark-";
+			case "\\": "-back slash-";
+			case "\u201c": "-start quote-";
+			case "\u201d": "-end quote-";
+			default: anim;
 		}
 	}
 }

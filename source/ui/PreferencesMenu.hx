@@ -42,6 +42,7 @@ class PreferencesMenu extends ui.OptionsState.Page
         menuCamera.follow(camFollow, null, 0.06);
 
         menuCamera.deadzone.setPosition(0, 160);
+        menuCamera.deadzone.setPosition(0, 160);
         menuCamera.deadzone.setSize(menuCamera.width, 40);
 
         menuCamera.minScrollY = 0;
@@ -90,7 +91,7 @@ class PreferencesMenu extends ui.OptionsState.Page
     {
         var thing = Type.typeof(defaultVal);
 
-        items.createItem(120, 120 * items.length + 30, name,Bold, function() {
+        items.createItem(120, 120 * items.length + 30, name, Bold, function() {
             preferenceCheck(pref, defaultVal);
 
             if (thing == ValueType.TBool)
@@ -109,8 +110,9 @@ class PreferencesMenu extends ui.OptionsState.Page
 
     public function createCheckbox(name:String)
     {
-        var checkbox:CheckboxThingie = new CheckboxThingie(0, 120 * (items.length - 1), PreferencesMenu.preferences.get(name));
+        var checkbox:CheckboxThingie = new CheckboxThingie(0, 120 * items.length - 1, PreferencesMenu.preferences.get(name));
         checkboxes.push(checkbox);
+
         add(checkbox);
     }
 

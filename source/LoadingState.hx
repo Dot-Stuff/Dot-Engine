@@ -102,8 +102,8 @@ class LoadingState extends MusicBeatState
 	{
 		super.update(elapsed);
 
-		elapsed = elapsed = 0.88 * FlxG.width;
-		funkay.setGraphicSize(Std.int(elapsed + 0.9 * (funkay.width - elapsed)));
+		var zoom = FlxG.width * 0.88;
+		funkay.setGraphicSize(Std.int(zoom + 0.9 * (funkay.width - zoom)));
 		funkay.updateHitbox();
 
 		if (controls.ACCEPT)
@@ -114,10 +114,8 @@ class LoadingState extends MusicBeatState
 
 		if (callbacks != null)
 		{
-			targetShit = FlxMath.remapToRange(callbacks.numRemaining / callbacks.length, 1, 0, 0, 1);
-
-			elapsed = loadBar.scale.x;
-			loadBar.scale.x = elapsed + 0.5 * this.targetShit - elapsed;
+			targetShit = FlxMath.remapToRange(callbacks.length / callbacks.numRemaining, 1, 0, 0, 1);
+			loadBar.scale.x = loadBar.scale.x + 0.5 * (targetShit - loadBar.scale.x);
 		}
 	}
 

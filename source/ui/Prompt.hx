@@ -67,27 +67,25 @@ class Prompt extends FlxSubState
     public function createButtons()
     {
         for (i in 0...buttons.members.length)
-        {
             buttons.remove(buttons.members[0], true).destroy();
 
-            switch (style)
-            {
-                case Ok:
-                    createButtonsHelper('ok');
-                case Yes_No:
-                    createButtonsHelper('yes', 'no');
-                case Custom(yes, no):
-                    createButtonsHelper(yes, no);
-                case None:
-                    buttons.exists = false;
-            }
+        switch (style)
+        {
+            case Ok:
+                createButtonsHelper('ok');
+            case Yes_No:
+                createButtonsHelper('yes', 'no');
+            case Custom(yes, no):
+                createButtonsHelper(yes, no);
+            case None:
+                buttons.exists = false;
         }
     }
 
-    public function createButtonsHelper(yes:String, ?no:String)
+    public function createButtonsHelper(option1:String, ?option2:String)
     {
         buttons.exists = true;
-        var yesBtn:ui.MenuItem = buttons.createItem(0, 0, yes, null, function()
+        var yesBtn:MenuItem = buttons.createItem(0, 0, option1, null, function()
         {
             onYes();
         });
@@ -96,10 +94,10 @@ class Prompt extends FlxSubState
         yesBtn.y = FlxG.height - yesBtn.height - 100;
         yesBtn.scrollFactor.set(0, 0);
 
-        if (no != null)
+        if (option2 != null)
         {
             yesBtn.x = FlxG.width - yesBtn.width - 100;
-            var noBtn:ui.MenuItem = buttons.createItem(0, 0, no, null, function()
+            var noBtn:MenuItem = buttons.createItem(0, 0, option2, null, function()
             {
                 onNo();
             });
@@ -110,9 +108,9 @@ class Prompt extends FlxSubState
         }
     }
 
-    public function setText(a)
+    public function setText(text:String)
     {
-        field.text = a;
+        field.text = text;
         field.screenCenter(X);
     }
 }
@@ -142,7 +140,7 @@ class NgPrompt extends Prompt
             {
                 ngPrompt.setText(d);
                 ngPrompt.setButtons(Yes_No);
-                //ngPrompt.buttons.getItem('yes').fireInstantly = true;
+                ngPrompt.buttons.getItem('yes').fireInstantly = true;
                 ngPrompt.onYes = function() {
                     ngPrompt.setText('Connecting...\n(check your popup blocker)');
                     ngPrompt.setButtons(None);

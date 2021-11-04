@@ -24,6 +24,9 @@ class GameOverSubstate extends MusicBeatSubstate
 
 		super();
 
+		FlxG.sound.cache(Paths.music('gameOver$stageSuffix'));
+		FlxG.sound.cache(Paths.music('gameOverEnd$stageSuffix'));
+
 		Conductor.songPosition = 0;
 
 		bf = new Boyfriend(x, y, daBf);
@@ -32,7 +35,7 @@ class GameOverSubstate extends MusicBeatSubstate
 		camFollow = new FlxObject(bf.getGraphicMidpoint().x, bf.getGraphicMidpoint().y, 1, 1);
 		add(camFollow);
 
-		FlxG.sound.play(Paths.sound('fnf_loss_sfx' + stageSuffix));
+		FlxG.sound.play(Paths.sound('fnf_loss_sfx$stageSuffix'));
 		Conductor.changeBPM(100);
 
 		FlxG.camera.scroll.set();

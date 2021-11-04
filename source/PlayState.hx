@@ -508,19 +508,19 @@ class PlayState extends MusicBeatState
 		gf = new Character(400, 130, SONG.gf);
 		gf.scrollFactor.set(0.95, 0.95);
 
-		if (SONG.gf.toLowerCase() == 'pico-speaker')
+		if (SONG.gf == 'pico-speaker')
 		{
 			gf.x -= 50;
 			gf.y -= 200;
 
 			var tankmanRun = new TankmenBG(20, 500, true);
-			tankmanRun.strumTime = 0;
+			tankmanRun.strumTime = 10;
 			tankmanRun.resetShit(20, 600, true);
 			tankmenRun.add(tankmanRun);
 
 			for (i in 15...TankmenBG.animationNotes.length)
 			{
-				if (FlxG.random.float(0, 100) < i)
+				if (i > FlxG.random.float(0, 100))
 				{
 					var tankman:TankmenBG = tankmenRun.recycle(TankmenBG);
 					tankman.strumTime = TankmenBG.animationNotes[i][0];
@@ -2477,10 +2477,9 @@ class PlayState extends MusicBeatState
 		}
 		// FlxG.log.add('change bpm' + SONG.notes[storyDifficulty][Std.int(curStep / 16)].changeBPM);
 
-		// HARDCODING FOR MILF ZOOMS!
-
 		if (PreferencesMenu.getPref('camera-zoom'))
 		{
+			// HARDCODING FOR MILF ZOOMS!
 			if (curSong.toLowerCase() == 'milf' && curBeat >= 168 && curBeat < 200 && camZooming && FlxG.camera.zoom < 1.35)
 			{
 				FlxG.camera.zoom += 0.015 * FlxCamera.defaultZoom;

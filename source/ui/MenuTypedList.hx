@@ -10,7 +10,7 @@ import ui.MenuItem;
 class MenuTypedList extends FlxTypedGroup<MenuItem>
 {
 	public var busy:Bool = false;
-	public var byName:StringMap<Dynamic> = new StringMap<Dynamic>();
+	public var byName:StringMap<MenuItem> = new StringMap<MenuItem>();
 	public var wrapMode:WrapMode = WrapMode.Both;
 	public var enabled:Bool = true;
 
@@ -20,12 +20,14 @@ class MenuTypedList extends FlxTypedGroup<MenuItem>
 	public var selectedIndex:Int = 0;
 	public var navControls:NavControls = NavControls.Vertical;
 
-	public function new(?navControl:NavControls = NavControls.Vertical, ?wrapMode:WrapMode)
+	public function new(?navControls:NavControls = NavControls.Vertical, ?wrapMode:WrapMode)
 	{
+		this.navControls = navControls;
+
 		if (wrapMode != null)
 			this.wrapMode = wrapMode;
 		else
-			wrapMode = switch (navControl)
+			wrapMode = switch (navControls)
 			{
 				case Horizontal: WrapMode.Horizontal;
 				case Vertical: WrapMode.Vertical;
@@ -46,7 +48,13 @@ class MenuTypedList extends FlxTypedGroup<MenuItem>
 
 	public function resetItem(a:String, b:String, c:Void->Void)
 	{
+		if (!Reflect.hasField(byName.toString(), a))
+			throw 'No item named: $a';
+
 		var d = byName.get(a);
+
+		if (Reflect.hasField(byName.toString(), a))
+			byName.remove(a);
 
 		byName.set(b, d);
 		d.setItem(b, c);
@@ -64,27 +72,26 @@ class MenuTypedList extends FlxTypedGroup<MenuItem>
 			var wrap:Bool = wrapMode.getIndex() == 2;
 
             var navIndex:Int = 0;
-			var navShit:Int = navControls.getIndex();
 
 			var leftP = controls.UI_LEFT_P;
 			var rightP = controls.UI_RIGHT_P;
 			var upP = controls.UI_UP_P;
 			var downP = controls.UI_DOWN_P;
 
-			switch (navShit)
+			switch (navControls)
 			{
-				case 0:
+				case Horizontal:
 					navIndex = navAxis(selectedIndex, length, leftP, rightP, wrap);
-				case 1:
+				case Vertical:
 					navIndex = navAxis(selectedIndex, length, upP, downP, wrap);
-				case 2:
+				case Both:
 					var leftUpP = controls.UI_LEFT_P || controls.UI_UP_P;
 					var rightDownP = controls.UI_RIGHT_P || controls.UI_DOWN_P;
 					navIndex = navAxis(selectedIndex, length, leftUpP, rightDownP, wrapMode.getIndex() != 3);
-				case 3:
-					navIndex = navGrid(navShit, leftP, rightP, wrap, upP, downP, wrap);
-				case 4:
-					navIndex = navGrid(navShit, upP, downP, wrap, leftP, rightP, wrap);
+				case Columns(colm):
+					navIndex = navGrid(colm, leftP, rightP, wrap, upP, downP, wrap);
+				case Rows(row):
+					navIndex = navGrid(row, upP, downP, wrap, leftP, rightP, wrap);
 			}
 
 			if (selectedIndex != navIndex)

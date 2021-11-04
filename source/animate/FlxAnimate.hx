@@ -1,13 +1,13 @@
 package animate;
 
-import flixel.math.FlxPoint;
 import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
+import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
 import haxe.Json;
-import openfl.geom.Rectangle;
-import openfl.utils.Assets;
 import haxe.ds.IntMap;
+import lime.utils.Assets;
+import openfl.geom.Rectangle;
 
 using StringTools;
 
@@ -36,7 +36,7 @@ class FlxAnimate extends FlxSymbol
 		bitmapResult = new FlxAtlasFrames(bitmapImg);
 
 		trace(rawJson);
-		var parsedJson:AnimateAtlas = Json.parse(Assets.getText(rawJson));
+		var parsedJson:AnimateAtlas = cast Json.parse(Assets.getText(rawJson));
 
         for (i in parsedJson.ATLAS.SPRITES)
         {

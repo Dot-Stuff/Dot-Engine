@@ -38,7 +38,9 @@ enum abstract Action(String) to String from String
 	var BACK = "back";
 	var PAUSE = "pause";
 	var RESET = "reset";
+	#if CAN_CHEAT
 	var CHEAT = "cheat";
+	#end
 }
 
 enum Device
@@ -54,19 +56,21 @@ enum Device
  */
 enum Control
 {
-	UI_UP;
-	UI_LEFT;
-	UI_RIGHT;
-	UI_DOWN;
 	NOTE_UP;
 	NOTE_LEFT;
 	NOTE_RIGHT;
 	NOTE_DOWN;
+	UI_UP;
+	UI_LEFT;
+	UI_RIGHT;
+	UI_DOWN;
 	RESET;
 	ACCEPT;
 	BACK;
 	PAUSE;
+	#if CAN_CHEAT
 	CHEAT;
+	#end
 }
 
 enum KeyboardScheme
@@ -113,7 +117,9 @@ class Controls extends FlxActionSet
 	var _back = new FlxActionDigital(Action.BACK);
 	var _pause = new FlxActionDigital(Action.PAUSE);
 	var _reset = new FlxActionDigital(Action.RESET);
+	#if CAN_CHEAT
 	var _cheat = new FlxActionDigital(Action.CHEAT);
+	#end
 
 	var byName:Map<String, FlxActionDigital> = new Map<String, FlxActionDigital>();
 
@@ -263,10 +269,12 @@ class Controls extends FlxActionSet
 	inline function get_RESET()
 		return _reset.check();
 
+	#if CAN_CHEAT
 	public var CHEAT(get, never):Bool;
 
 	inline function get_CHEAT()
 		return _cheat.check();
+	#end
 
 	public function new(name, scheme = None)
 	{
@@ -302,7 +310,9 @@ class Controls extends FlxActionSet
 		add(_back);
 		add(_pause);
 		add(_reset);
+		#if CAN_CHEAT
 		add(_cheat);
+		#end
 
 		for (action in digitalActions)
 			byName[action.name] = action;
@@ -312,18 +322,18 @@ class Controls extends FlxActionSet
 
 	public function fromSaveData(keyData:Dynamic, keys:Device)
 	{
-		for (con in Control.getConstructors())
+		for (i in Control.createAll())
 		{
-			var key = Reflect.field(keyData, con);
+			var key = Reflect.field(keyData, i.getName());
 
 			if (key != null)
 			{
 				switch (keys)
 				{
 					case Keys:
-						//bindKeys(con, key.slice());
+						bindKeys(i, key.slice());
 					case Gamepad(id):
-						//bindButtons(con, id, key.slice());
+						//bindButtons(i, id, key.slice());
 				}
 			}
 		}
@@ -331,27 +341,18 @@ class Controls extends FlxActionSet
 
 	public function createSaveData(device:Device):Dynamic
 	{
-		/*var powerMilk;
+		var b:Bool = true;
+		var c = {};
 
-			for (i in Control.getConstructors())
-			{
-				var dirtyHarry = getInputsFor(i, device);
-				powerMilk = dirtyHarry;
-			}
+		for (i in Control.createAll())
+		{
+			var h = getInputsFor(i, device);
 
-			return b ? null : powerMilk; */
+			b = b && h.length == 0;
+			c = h;
+		}
 
-		return null;
-	}
-
-	// inline
-	public function checkByName(name:Action):Bool
-	{
-		#if debug
-		if (!byName.exists(name))
-			throw 'Invalid name: $name';
-		#end
-		return byName[name].check();
+		return b ? null : c;
 	}
 
 	public function getDialogueName(action:FlxActionDigital):String
@@ -386,7 +387,9 @@ class Controls extends FlxActionSet
 			case BACK: _back;
 			case PAUSE: _pause;
 			case RESET: _reset;
+			#if CAN_CHEAT
 			case CHEAT: _cheat;
+			#end
 		}
 	}
 
@@ -446,8 +449,10 @@ class Controls extends FlxActionSet
 				func(_pause, JUST_PRESSED);
 			case RESET:
 				func(_reset, JUST_PRESSED);
+			#if CAN_CHEAT
 			case CHEAT:
 				func(_cheat, JUST_PRESSED);
+			#end
 		}
 	}
 
@@ -474,7 +479,6 @@ class Controls extends FlxActionSet
 
 	public function copyFrom(controls:Controls, ?device:Device)
 	{
-		#if (haxe >= "4.0.0")
 		for (name => action in controls.byName)
 		{
 			for (input in action.inputs)
@@ -483,31 +487,14 @@ class Controls extends FlxActionSet
 					byName[name].add(cast input);
 			}
 		}
-		#else
-		for (name in controls.byName.keys())
-		{
-			var action = controls.byName[name];
-			for (input in action.inputs)
-			{
-				if (device == null || isDevice(input, device))
-					byName[name].add(cast input);
-			}
-		}
-		#end
 
 		switch (device)
 		{
 			case null:
 				// add all
-				#if (haxe >= "4.0.0")
 				for (gamepad in controls.gamepadsAdded)
 					if (!gamepadsAdded.contains(gamepad))
 						gamepadsAdded.push(gamepad);
-				#else
-				for (gamepad in controls.gamepadsAdded)
-					if (gamepadsAdded.indexOf(gamepad) == -1)
-						gamepadsAdded.push(gamepad);
-				#end
 
 				mergeKeyboardScheme(controls.keyboardScheme);
 

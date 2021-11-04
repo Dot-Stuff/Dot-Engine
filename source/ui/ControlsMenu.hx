@@ -42,14 +42,14 @@ class ControlsMenu extends ui.OptionsState.Page
 		menuCamera = new FlxCamera();
 		FlxG.cameras.add(menuCamera, false);
 		menuCamera.bgColor = 0;
-		menuCamera.camera = menuCamera;
+		camera = menuCamera;
 
 		labels = new FlxTypedGroup<FlxSprite>();
-		var e = new FlxTypedGroup<AtlasText>();
+		var atlasTexts = new FlxTypedGroup<AtlasText>();
 
 		controlGrid = new MenuTypedList(Columns(2), Vertical);
 		add(labels);
-		add(e);
+		add(atlasTexts);
 		add(controlGrid);
 
 		if (FlxG.gamepads.numActiveGamepads > 0)
@@ -79,59 +79,59 @@ class ControlsMenu extends ui.OptionsState.Page
 			gamepadItem.x = FlxG.width / 2 + 30;
 			gamepadItem.y = (c.height - gamepadItem.height) / 2;
 		}
+
 		var posForStuff = deviceList == null ? 30 : 120;
-		var n = null;
+		var curName:String = null;
 
 		for (i in controlList)
 		{
 			var l:String = i.getName();
 			var atlasText;
 
-			if (n != 'UI_' && l.indexOf("UI_") == 0)
+			if (curName != 'UI_' && l.indexOf("UI_") == 0)
 			{
-				n = 'UI_';
+				curName = 'UI_';
 
 				atlasText = new AtlasText(0, posForStuff, "UI", Bold);
-				atlasText.screenCenter(X);
-				e.add(atlasText);
+				atlasTexts.add(atlasText).screenCenter(X);
 				posForStuff += 70;
 			}
-			else
+			else if (curName != "NOTE_" && l.indexOf("NOTE_") == 0)
 			{
-				if (n != "NOTE_" && l.indexOf("NOTE_") == 0)
-				{
-					n = "NOTE_";
+				curName = "NOTE_";
 
-					atlasText = new AtlasText(0, posForStuff, "NOTES", Bold);
-					atlasText.screenCenter(X);
-					e.add(atlasText);
-					posForStuff += 70;
-				}
-
-				if (n != null && i.getIndex() == 0)
-					l = l.substr(n.length);
+				atlasText = new AtlasText(0, posForStuff, "NOTES", Bold);
+				atlasTexts.add(atlasText).screenCenter(X);
+				posForStuff += 70;
 			}
 
-			/*var who = atlasText.add(new AtlasText(150, posForStuff, l, Bold));
-			who.alpha = 0.6;*/
+			if (curName != null && l.indexOf(curName) == 0)
+				l = l.substr(curName.length);
 
-			/*createItem(who.x + 400, posForStuff, i, 0);
-			createItem(who.x + 400 + 300, posForStuff, i, 1);*/
+			var textLabel = labels.add(new AtlasText(150, posForStuff, l, Bold));
+			textLabel.alpha = 0.6;
+
+			createItem(textLabel.x + 400, posForStuff, i, 0);
+			createItem(textLabel.x + 400 + 300, posForStuff, i, 1);
 			posForStuff += 70;
 		}
 
 		camFollow = new FlxObject(FlxG.width / 2, 0, 70, 70);
 
-		/*if (deviceList != null)
+		if (deviceList != null)
 		{
-			camFollow.y = e.members[e.selectedIndex].y;
-			e.members[e.selectedIndex].idle();
+			camFollow.y = deviceList.members[deviceList.selectedIndex].y;
+			deviceList.members[deviceList.selectedIndex].idle();
 			controlGrid.enabled = false;
 		}
 		else
-			camFollow.y = e.members[e.selectedIndex].y;*/
+			camFollow.y = controlGrid.members[controlGrid.selectedIndex].y;
 
+		menuCamera.follow(camFollow, null, 0.06);
+		menuCamera.deadzone.setPosition(0, 100);
+		menuCamera.deadzone.setSize(menuCamera.width, menuCamera.height - 200);
 		menuCamera.minScrollY = 0;
+
 		controlGrid.onChange.add(function(listener:FlxSprite)
 		{
 			camFollow.y = listener.y;
@@ -189,11 +189,30 @@ class ControlsMenu extends ui.OptionsState.Page
 
 			idk.updateDevice(currentDevice);
 		}
+
+		var b = selectedDevice == Keys ? 'Escape' : 'Back';
+		if (selectedDevice == Keys)
+			prompt.setText('\nPress any key to rebind\n\n\n\n		$b to cancel');
+		else
+			prompt.setText('\nPress any button\n   to rebind\n\n\n $b to cancel');
+
+		controlGrid.members[controlGrid.selectedIndex].select();
+		labels.members[Std.int(controlGrid.selectedIndex / 2)].alpha = 1;
+		controlGrid.enabled = true;
+		canExit = deviceListSelected = deviceList.enabled = false;
 	}
 
     public override function update(elapsed:Float)
     {
         super.update(elapsed);
+
+		var controls = PlayerSettings.player1.controls;
+
+		if (controlGrid.enabled
+			&& deviceList != null
+			&& !deviceListSelected
+			&& controls.BACK)
+			goToDeviceList();
 
         if (prompt.exists)
         {
@@ -209,20 +228,16 @@ class ControlsMenu extends ui.OptionsState.Page
                         closePrompt();
                     }
                 case Gamepad(id):
-                    /*var what = FlxG.gamepads.getByID(id);
+                    var what = FlxG.gamepads.getByID(id);
+					var what2 = what.mapping.getID(what.firstJustReleasedRawID());
 
-                    if (what)
-                    {
-                        what = what.mapping.getID(what.firstJustReleasedRawID());
+					if (what2 != -1)
+					{
+						if (what2 != 6)
+							onInputSelect(what2);
 
-                        if (what != -1)
-                        {
-                            if (what != 6)
-                                onInputSelect(what);
-    
-                            closePrompt();
-                        }
-                    }*/
+						closePrompt();
+					}
             }
         }
     }
@@ -268,6 +283,16 @@ class ControlsMenu extends ui.OptionsState.Page
 
         if (deviceList == null)
             canExit = true;
+	}
+
+	public override function destroy()
+	{
+		super.destroy();
+
+		itemGroups = null;
+
+		if (FlxG.cameras.list.indexOf(menuCamera) != -1)
+			FlxG.cameras.remove(menuCamera);
 	}
 
 	public override function set_enabled(val:Bool):Bool

@@ -173,6 +173,7 @@ class OptionsMenu extends Page
 		createItem('preferences', function() {
 			onSwitch.dispatch(Preferences);
 		});
+
 		createItem('controls', function() {
 			onSwitch.dispatch(Controls);
 		});
@@ -192,7 +193,7 @@ class OptionsMenu extends Page
 	{
 		var item:TextMenuItem = items.createItem(0, 100 + 100 * items.length, name, Bold, callback);
 		item.fireInstantly = fireInstantly;
-		item.screenCenter(FlxAxes.X);
+		item.screenCenter(X);
 
 		return item;
 	}

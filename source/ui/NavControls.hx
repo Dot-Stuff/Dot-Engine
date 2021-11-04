@@ -5,6 +5,6 @@ enum NavControls
     Horizontal;
     Vertical;
     Both;
-    Columns(idk:Int);
-    Rows;
+    Columns(colm:Int);
+    Rows(row:Int);
 }

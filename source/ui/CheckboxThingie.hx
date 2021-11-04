@@ -8,7 +8,7 @@ class CheckboxThingie extends FlxSprite
 
     public function new(x:Float, y:Float, checked:Bool)
     {
-        super();
+        super(x, y);
 
         frames = Paths.getSparrowAtlas('checkboxThingie');
 
@@ -36,9 +36,13 @@ class CheckboxThingie extends FlxSprite
         }
     }
 
-    function set_daValue(val:Bool):Bool
+    function set_daValue(daValue:Bool):Bool
     {
-        val ? animation.play('checked', true) : animation.play('static');
-        return val;
+        if (daValue)
+            animation.play('checked', true);
+        else
+            animation.play('static');
+        //daValue ? animation.play('checked', true) : animation.play('static');
+        return daValue;
     }
 }

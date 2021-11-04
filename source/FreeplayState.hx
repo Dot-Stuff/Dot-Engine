@@ -38,7 +38,7 @@ class FreeplayState extends MusicBeatState
 
 	private var iconArray:Array<HealthIcon> = [];
 
-	private var coolColors:Array<FlxColor> = [-7179779, -7179779, -14535868, -7072173, -223529, -6237697, -34625, -608764];
+	private var coolColors:Array<FlxColor> = [0xFF9271FD, 0xFF223344, 0xFF941653, 0xFFFC96D7, 0xFFA0D1FF, 0xFFFF78BF, 0xFFF6B604];
 
 	override function create()
 	{
