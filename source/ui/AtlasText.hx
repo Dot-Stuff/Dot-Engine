@@ -26,27 +26,27 @@ class AtlasText extends FlxTypedSpriteGroup<AtlasChar>
 {
 	public var text(default, set):String = '';
 
-	public var fonts:EnumValueMap<AtlasFont, AtlasFontData> = new EnumValueMap<AtlasFont, AtlasFontData>();
+	public static var fonts:EnumValueMap<AtlasFont, AtlasFontData> = new EnumValueMap<AtlasFont, AtlasFontData>();
 	public var font:AtlasFontData;
 
-	public function new(x:Float, y:Float, name:String, atlasFont:AtlasFont = Default)
+	public function new(x:Float, y:Float, text:String, atlasFont:AtlasFont = Default)
 	{
-		if (!fonts.exists(atlasFont))
-			fonts.set(atlasFont, new AtlasFontData(atlasFont));
+		if (!AtlasText.fonts.exists(atlasFont))
+			AtlasText.fonts.set(atlasFont, new AtlasFontData(atlasFont));
 
-		font = fonts.get(atlasFont);
+		font = AtlasText.fonts.get(atlasFont);
 
 		super(x, y);
 
-		text = name;
+		this.text = text;
 	}
 
-	function set_text(name:String)
+	function set_text(text:String)
 	{
-		var nameCase = restrictCase(name);
-		var textCase = restrictCase(text);
+		var nameCase = restrictCase(text);
+		var textCase = restrictCase(this.text);
 
-		text = name;
+		this.text = text;
 
 		if (nameCase == textCase)
 			return text;
@@ -56,16 +56,14 @@ class AtlasText extends FlxTypedSpriteGroup<AtlasChar>
 			return text;
 		}
 
-		text = nameCase;
-
 		group.kill();
 
-		if (text == "")
-			return text;
+		if (nameCase == '')
+			return this.text;
 
 		appendTextCased(nameCase);
 
-		return text;
+		return this.text;
 	}
 
 	function restrictCase(textShit:String):String
@@ -103,23 +101,23 @@ class AtlasText extends FlxTypedSpriteGroup<AtlasChar>
 				case " ":
 					offsetX += 40;
 				default:
-					var char:AtlasChar;
+					var atlasChar:AtlasChar;
 
 					if (living >= group.members.length)
-						char = new AtlasChar(0, 0, font.atlas, i);
+						atlasChar = new AtlasChar(0, 0, font.atlas, i);
 					else
 					{
-						char = group.members[living];
-						char.revive();
-						char.char = i;
-						char.alpha = 1;
+						atlasChar = group.members[living];
+						atlasChar.revive();
+						atlasChar.char = i;
+						atlasChar.alpha = 1;
 					}
 
-					char.x = offsetX;
-					char.y = offsetY + font.maxHeight + char.height;
+					atlasChar.x = offsetX;
+					atlasChar.y = offsetY + font.maxHeight + atlasChar.height;
 
-					add(char);
-					offsetX += char.width;
+					add(atlasChar);
+					offsetX += atlasChar.width;
 
 					living++;
 			}
@@ -143,8 +141,8 @@ class AtlasFontData
 
 	public var atlas:FlxFramesCollection;
 
-	var upperChar:EReg = new EReg("^[A-Z]\\d+$", "");
-	var lowerChar:EReg = new EReg("^[A-Z]\\d+$", "");
+	var upperChar:EReg = ~/^[A-Z]\\d+$/;
+	var lowerChar:EReg = ~/^[A-Z]\\d+$/;
 
 	public function new(font:AtlasFont)
 	{
@@ -180,15 +178,13 @@ class AtlasChar extends FlxSprite
 		super(x, y);
 
 		frames = atlas;
-
 		char = newChar;
-
 		antialiasing = true;
 	}
 
 	function set_char(char:String):String
 	{
-		if (this.char != char)
+		if (char != this.char)
 		{
 			animation.addByPrefix('anim', getAnimPrefix(char), 24);
 			animation.play('anim');

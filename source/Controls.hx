@@ -395,8 +395,7 @@ class Controls extends FlxActionSet
 
 	static function init():Void
 	{
-		var actions = new FlxActionManager();
-		FlxG.inputs.add(actions);
+		FlxG.inputs.add(new FlxActionManager());
 	}
 
 	/**
@@ -514,12 +513,10 @@ class Controls extends FlxActionSet
 	{
 		if (scheme != None)
 		{
-			switch (keyboardScheme)
+			keyboardScheme = switch (keyboardScheme)
 			{
-				case None:
-					keyboardScheme = scheme;
-				default:
-					keyboardScheme = Custom;
+				case None: scheme;
+				default: Custom;
 			}
 		}
 	}
@@ -615,8 +612,7 @@ class Controls extends FlxActionSet
 				inline bindKeys(Control.BACK, [P]);
 				inline bindKeys(Control.PAUSE, [ENTER]);
 				inline bindKeys(Control.RESET, [BACKSPACE]);
-			case None: // nothing
-			case Custom: // nothing
+			case None | Custom: // nothing
 		}
 	}
 

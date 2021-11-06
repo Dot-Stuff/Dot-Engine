@@ -10,9 +10,8 @@ class NoteSplash extends FlxSprite
 	{
 		super(x, y);
 
-		// Da Name Reference. Dont try and find it on scratch??? :troll:
 		if (PlayState.curStage.startsWith('school'))
-			frames = Paths.getSparrowAtlas('pixelUI/noteSplashes-pixels');
+			frames = Paths.getSparrowAtlas('pixelUI/noteSplashes-pixels'); // TODO: Remake
 		else
 			frames = Paths.getSparrowAtlas('noteSplashes');
 

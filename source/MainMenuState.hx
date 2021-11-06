@@ -100,12 +100,14 @@ class MainMenuState extends MusicBeatState
 			startExitState(new FreeplayState());
 		});
 
+		#if !switch
 		menuItems.createItem('donate', selectDonate, true);
 
 		menuItems.createItem('options', function()
 		{
 			startExitState(new ui.OptionsState());
 		});
+		#end
 
 		var crap = (FlxG.height - 160 * (menuItems.length - 1)) / 2;
 		for (i in 0...menuItems.length)

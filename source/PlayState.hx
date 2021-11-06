@@ -518,9 +518,11 @@ class PlayState extends MusicBeatState
 			tankmanRun.resetShit(20, 600, true);
 			tankmenRun.add(tankmanRun);
 
-			for (i in 15...TankmenBG.animationNotes.length)
+			for (i in TankmenBG.animationNotes)
 			{
-				if (i > FlxG.random.float(0, 100))
+				var f = i ? 16 : 50;
+
+				if (f > FlxG.random.float(0, 100))
 				{
 					var tankman:TankmenBG = tankmenRun.recycle(TankmenBG);
 					tankman.strumTime = TankmenBG.animationNotes[i][0];
@@ -783,7 +785,7 @@ class PlayState extends MusicBeatState
 		background.scrollFactor.set();
 		add(background);
 
-		var vid:FlxVideo = new FlxVideo('music/ughCutscene');
+		var vid:FlxVideo = new FlxVideo('ughCutscene');
 		vid.finishCutscene = function()
 		{
 			remove(background);
@@ -796,13 +798,14 @@ class PlayState extends MusicBeatState
 		camFollow.x += 100;
 		camFollow.y += 100;*/
 
+		// D
 		FlxG.camera.zoom = defaultCamZoom * 1.2;
 
 		FlxG.sound.playMusic(Paths.music('DISTORTO'), 0);
 		FlxG.sound.music.fadeIn(5, 0, 0.5);
 
 		dad.visible = false;
-		var tankCutscene:FlxAnimate = new FlxAnimate(-20, 320, 'tightBars');
+		var tankCutscene:CutsceneCharacter = new CutsceneCharacter(-20, 320, 'tightBars');
 		add(tankCutscene);
 		gfCutsceneLayer.add(tankCutscene);
 
@@ -865,7 +868,7 @@ class PlayState extends MusicBeatState
 		background.scrollFactor.set();
 		add(background);
 
-		var vid:FlxVideo = new FlxVideo('music/gunsCutscene');
+		var vid:FlxVideo = new FlxVideo('gunsCutscene');
 		vid.finishCutscene = function()
 		{
 			remove(background);
@@ -920,7 +923,7 @@ class PlayState extends MusicBeatState
 		background.scrollFactor.set();
 		add(background);
 
-		var vid:FlxVideo = new FlxVideo('music/stressCutscene');
+		var vid:FlxVideo = new FlxVideo('stressCutscene');
 		vid.finishCutscene = function()
 		{
 			remove(background);

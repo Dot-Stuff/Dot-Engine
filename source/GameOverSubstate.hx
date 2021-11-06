@@ -18,14 +18,16 @@ class GameOverSubstate extends MusicBeatSubstate
 
 	public function new(x:Float, y:Float)
 	{
+		super();
+
 		var daBf:String = PlayState.SONG.player1;
 		stageSuffix = daBf.contains('pixel') ? '-pixel' : '';
 		daBf != 'bf' ? daBf += '-dead' : daBf = 'bf';
 
-		super();
-
 		FlxG.sound.cache(Paths.music('gameOver$stageSuffix'));
 		FlxG.sound.cache(Paths.music('gameOverEnd$stageSuffix'));
+		
+		FlxG.sound.cache(Paths.sound('fnf_loss_sfx$stageSuffix'));
 
 		Conductor.songPosition = 0;
 

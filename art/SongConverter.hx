@@ -19,7 +19,7 @@ class SongConverter
 
 		for (fileThing in FileSystem.readDirectory('./.'))
 		{
-			if (FileSystem.isDirectory(fileThing) && fileThing != 'songs')
+			if (FileSystem.isDirectory(fileThing) && fileThing != 'songs' && fileThing != 'stages')
 			{
 				trace('Formatting $fileThing');
 				formatSong(fileThing);

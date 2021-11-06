@@ -583,35 +583,33 @@ class Character extends FlxSprite
 				playAnim('idleHair');
 		}
 
-		switch (curCharacter)
+		if (curCharacter == 'gf' && animation.curAnim.name == 'hairFall' && animation.curAnim.finished)
+			playAnim('danceRight');
+		else if (curCharacter == 'pico-speaker')
 		{
-			case 'gf':
-				if (animation.curAnim.name == 'hairFall' && animation.curAnim.finished)
-					playAnim('danceRight');
-			case 'pico-speaker':
-				// for pico??
-				if (animationNotes.length > 0)
+			// for pico??
+			if (animationNotes.length > 0)
+			{
+				if (Conductor.songPosition > animationNotes[0][0])
 				{
-					if (Conductor.songPosition > animationNotes[0][0])
-					{
-						trace('played shoot anim' + animationNotes[0][1]);
+					trace('played shoot anim' + animationNotes[0][1]);
 
-						var shootAnim:Int = 1;
+					var shootAnim:Int = 1;
 
-						if (animationNotes[0][1] >= 2)
-							shootAnim = 3;
+					if (animationNotes[0][1] >= 2)
+						shootAnim = 3;
 
-						shootAnim += FlxG.random.int(0, 1);
+					shootAnim += FlxG.random.int(0, 1);
 
-						playAnim('shoot$shootAnim', true);
-						animationNotes.shift();
-					}
+					playAnim('shoot$shootAnim', true);
+					animationNotes.shift();
 				}
+			}
 
-				if (animation.curAnim.finished)
-				{
-					playAnim(animation.curAnim.name, false, false, animation.curAnim.numFrames - 3);
-				}
+			if (animation.curAnim.finished)
+			{
+				playAnim(animation.curAnim.name, false, false, animation.curAnim.numFrames - 3);
+			}
 		}
 
 		super.update(elapsed);

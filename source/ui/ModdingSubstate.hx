@@ -1,4 +1,4 @@
-package;
+package ui;
 
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.text.FlxText;
@@ -8,10 +8,11 @@ import flixel.FlxSubState;
 import sys.FileSystem;
 #end
 
-class ModdingSubstate extends MusicBeatSubstate
+class ModdingSubstate extends ui.OptionsState.Page
 {
-	var grpMods:FlxTypedGroup<ModMenuItem>;
+    var grpMods:FlxTypedGroup<ModMenuItem>;
 	var modFolders:Array<String>;
+	var enabledMods:Array<String>;
 
 	var curSelected:Int = 0;
 
@@ -98,7 +99,7 @@ class ModdingSubstate extends MusicBeatSubstate
 
 		enabledMods = [];
 
-		modList = Polymod.scan('./mods');
+		modList = polymod.Polymod.scan('./mods');
 
 		trace(modList);
 
@@ -125,7 +126,7 @@ class ModdingSubstate extends MusicBeatSubstate
 
 class ModMenuItem extends FlxText
 {
-	public var modEnabled:Bool = false;
+    public var modEnabled:Bool = false;
 	public var daMod:String;
 
 	public function new(x:Float, y:Float, w:Float, str:String, size:Int)

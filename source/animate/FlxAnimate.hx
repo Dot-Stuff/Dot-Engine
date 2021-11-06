@@ -1,118 +1,91 @@
 package animate;
 
+import flixel.graphics.frames.FlxFrame.FlxFrameAngle;
+import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
 import haxe.Json;
-import haxe.ds.IntMap;
-import lime.utils.Assets;
+import openfl.Assets;
 import openfl.geom.Rectangle;
 
 using StringTools;
 
-class FlxAnimate extends FlxSymbol
+class FlxAnimate
 {
-	var nestedShit:IntMap<FlxSymbol> = new IntMap<FlxSymbol>();
-
-	var frameTickTypeShit:Float;
-	var playingAnim:Bool;
-
-	public function new(x:Float, y:Float, anim:String)
+	/**
+	 * Parsing method for Animate texture atlases
+	 * 
+	 * @param Source 		  The image source (can be `FlxGraphic`, `String` or `BitmapData`).
+	 * @param Description	  Contents of the JSON file with atlas description.
+	 *                        You can get it with `Assets.getText(path/to/description.json)`.
+	 *                        Or you can just pass a path to the JSON file in the assets directory.
+	 * @return  Newly created `FlxAtlasFrames` collection.
+	 */
+	public static function fromAnimate(Source:FlxGraphicAsset, Description:String):FlxAtlasFrames
 	{
-		coolParse = Json.parse(Assets.getText(Paths.file('images/$anim/Animation.json')));
-		coolParse.AN.TL.L.reverse();
+		var graphic:FlxGraphic = FlxG.bitmap.add(Source);
+		if (graphic == null)
+			return null;
 
-		super(x, y, coolParse);
+		// No need to parse data again
+		var frames:FlxAtlasFrames = FlxAtlasFrames.findFrame(graphic);
+		if (frames != null)
+			return frames;
 
-		// DOES NOT WORK WITH ROTATE EXPORT
-		frames = fromAnimate(Paths.image('$anim/spritemap1'), Paths.file('images/$anim/spritemap1.json'));
-	}
+		if (graphic == null || Description == null)
+			return null;
 
-	function fromAnimate(rawImg:String, rawJson:String):FlxAtlasFrames
-	{
-		var bitmapImg:FlxGraphic = FlxG.bitmap.add(rawImg);
-		var bitmapResult:FlxAtlasFrames = FlxAtlasFrames.findFrame(bitmapImg);
-		bitmapResult = new FlxAtlasFrames(bitmapImg);
+		frames = new FlxAtlasFrames(graphic);
 
-		trace(rawJson);
-		var parsedJson:AnimateAtlas = cast Json.parse(Assets.getText(rawJson));
+		trace(Description);
+		if (Assets.exists(Description))
+			Description = Assets.getText(Description);
 
-        for (i in parsedJson.ATLAS.SPRITES)
-        {
-            var data:AnimateSpriteData = i.SPRITE;
+		var data:AnimateAtlas = Json.parse(Description);
 
-            var frame:FlxRect = FlxRect.get(data.x, data.y, data.w, data.h);
-            var rectangleSize:Rectangle = new Rectangle(0, 0, frame.width, frame.height);
-
-            var offset:FlxPoint = FlxPoint.get(-rectangleSize.left, -rectangleSize.top);
-            var sourceSize:FlxPoint = FlxPoint.get(rectangleSize.width, rectangleSize.height);
-
-            bitmapResult.addAtlasFrame(frame, sourceSize, offset, data.name);
-        }
-
-		return bitmapResult;
-	}
-
-	public override function draw()
-	{
-		super.draw();
-
-		renderFrame(coolParse.AN.TL, coolParse, true);
-
-		if (FlxG.keys.justPressed.E)
+		for (sprites in data.ATLAS.SPRITES)
 		{
-			if (nestedShit.keys().hasNext())
-			{
-				var nextShit = nestedShit.keys().next();
-				nestedShit.get(nextShit).draw();
-			}
+			var name = sprites.SPRITE.name;
+			var rotated = sprites.SPRITE.rotated;
 
-			nestedShit.clear();
-		}
-	}
+			var rect:FlxRect = FlxRect.get(sprites.SPRITE.x, sprites.SPRITE.y, sprites.SPRITE.w, sprites.SPRITE.h);
+			var size:Rectangle = new Rectangle(0, 0, rect.width, rect.height);
 
-	public override function update(elapsed:Float)
-	{
-		super.update(elapsed);
+			var angle = rotated ? FlxFrameAngle.ANGLE_NEG_90 : FlxFrameAngle.ANGLE_0;
 
-		if (FlxG.keys.justPressed.SPACE)
-			playingAnim = !playingAnim;
+			var offset = FlxPoint.get(-size.left, -size.top);
+			var sourceSize = FlxPoint.get(size.width, size.height);
 
-		if (playingAnim)
-		{
-			frameTickTypeShit += elapsed;
-
-			if (frameTickTypeShit >= 0.041666666666666664)
-			{
-				changeFrame(1);
-				frameTickTypeShit = 0;
-			}
+			frames.addAtlasFrame(rect, sourceSize, offset, name, angle);
 		}
 
-		if (FlxG.keys.justPressed.RIGHT)
-			changeFrame(1);
-		if (FlxG.keys.justPressed.LEFT)
-			changeFrame(-1);
+		return frames;
 	}
 }
 
-typedef AnimateAtlas = {
-    var ATLAS:AnimateSprites;
+typedef AnimateAtlas =
+{
+	var ATLAS:AnimateSprites;
 };
 
-typedef AnimateSprites = {
-    var SPRITES:Array<AnimateSprite>;
+typedef AnimateSprites =
+{
+	var SPRITES:Array<AnimateSprite>;
 };
 
-typedef AnimateSprite = {
-    var SPRITE:AnimateSpriteData;
+typedef AnimateSprite =
+{
+	var SPRITE:AnimateSpriteData;
 };
 
-typedef AnimateSpriteData = {
-    var name:String;
-    var x:Float;
-    var y:Float;
-    var w:Float;
-    var h:Float;
+typedef AnimateSpriteData =
+{
+	var name:String;
+	var x:Float;
+	var y:Float;
+	var w:Float;
+	var h:Float;
+	var rotated:Bool;
 };

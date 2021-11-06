@@ -233,7 +233,7 @@ class MenuTypedItem extends ui.MenuItem
     {
         if (label != null)
         {
-            label.set_alpha(Alpha);
+            label.alpha = Alpha;
         }
 
         return super.set_alpha(Alpha);
@@ -243,7 +243,7 @@ class MenuTypedItem extends ui.MenuItem
     {
         if (label != null)
         {
-            label.set_x(X);
+            label.x = X;
         }
 
         return super.set_x(X);
@@ -253,7 +253,7 @@ class MenuTypedItem extends ui.MenuItem
     {
         if (label != null)
         {
-            label.set_y(Y);
+            label.y = Y;
         }
 
         return super.set_y(Y);

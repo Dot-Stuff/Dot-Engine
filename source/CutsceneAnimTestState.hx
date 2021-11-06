@@ -1,16 +1,11 @@
 package;
 
 import flixel.addons.display.FlxGridOverlay;
-import flixel.text.FlxText;
-import animate.FlxAnimate;
 import flixel.FlxState;
 
 class CutsceneAnimTestState extends FlxState
 {
-	var curSelected:Int;
-
-	var debugTxt:FlxText;
-	var char:FlxAnimate;
+	var char:CutsceneCharacter;
 
 	public function new()
 	{
@@ -20,11 +15,7 @@ class CutsceneAnimTestState extends FlxState
 		bg.scrollFactor.set(0.5, 0.5);
 		add(bg);
 
-		debugTxt = new FlxText(900, 20, 0, '', 20);
-		debugTxt.color = -16776961;
-		add(debugTxt);
-
-		char = new FlxAnimate(600, 200, 'tightBars');
+		char = new CutsceneCharacter(600, 200, 'tightBars');
 		add(char);
 	}
 }

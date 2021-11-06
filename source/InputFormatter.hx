@@ -64,9 +64,7 @@ class InputFormatter
             case RBRACKET: "]";
             case QUOTE: "'";
             case PRINTSCREEN: "PrtScrn";
-            default:
-                var existKey = FlxKey.toStringMap.get(key);
-                existKey.charAt(0).toUpperCase() + existKey.substr(1).toLowerCase();
+            default: FlxKey.toStringMap.get(key).charAt(0).toUpperCase() + FlxKey.toStringMap.get(key).substr(1).toLowerCase();
         }
     }
 

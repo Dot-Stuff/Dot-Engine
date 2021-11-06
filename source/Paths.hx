@@ -1,6 +1,5 @@
 package;
 
-import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.graphics.frames.FlxAtlasFrames;
 import openfl.utils.AssetType;
 import openfl.utils.Assets as OpenFlAssets;
@@ -72,7 +71,7 @@ class Paths
 
 	inline static public function video(key:String, ?library:String)
 	{
-		return getPath('$key.mp4', TEXT, library);
+		return getPath('music/$key.mp4', TEXT, library);
 	}
 
 	static public function sound(key:String, ?library:String)
@@ -118,5 +117,10 @@ class Paths
 	inline static public function getPackerAtlas(key:String, ?library:String)
 	{
 		return FlxAtlasFrames.fromSpriteSheetPacker(image(key, library), getPath('images/$key.txt', TEXT, library));
+	}
+
+	inline static public function getAnimateAtlas(key:String, ?library:String)
+	{
+		return animate.FlxAnimate.fromAnimate(image('$key/spritemap1', library), getPath('images/$key/spritemap1.json', TEXT, library));
 	}
 }

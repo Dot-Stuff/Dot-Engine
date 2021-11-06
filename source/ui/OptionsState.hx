@@ -1,15 +1,13 @@
 package ui;
 
-import flixel.group.FlxGroup;
-import ui.Prompt.NgPrompt;
-import io.newgrounds.NG;
-import flixel.util.FlxAxes;
-import ui.TextMenuList.TextMenuItem;
-import flixel.FlxSubState;
-import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.FlxSprite;
-import haxe.ds.EnumValueMap;
+import flixel.FlxSubState;
+import flixel.group.FlxGroup;
 import flixel.util.FlxSignal.FlxTypedSignal;
+import haxe.ds.EnumValueMap;
+import io.newgrounds.NG;
+import ui.Prompt.NgPrompt;
+import ui.TextMenuList.TextMenuItem;
 
 enum PageName
 {
@@ -41,6 +39,7 @@ class OptionsState extends MusicBeatState
 		var optionsPage:OptionsMenu = cast addPage(Options, new OptionsMenu(false));
 		var prefsPage:PreferencesMenu = cast addPage(Preferences, new PreferencesMenu());
 		var controlsPage:ControlsMenu = cast addPage(Controls, new ControlsMenu());
+		var moddingPage:ModdingSubstate = cast addPage(Mods, new ModdingSubstate());
 
 		if (optionsPage.hasMultipleOptions())
 		{
@@ -51,6 +50,10 @@ class OptionsState extends MusicBeatState
 			});
 
 			prefsPage.onExit.add(function() {
+				switchPage(Options);
+			});
+
+			moddingPage.onExit.add(function() {
 				switchPage(Options);
 			});
 		}
@@ -116,6 +119,11 @@ class Page extends FlxGroup
 	public var onExit:FlxTypedSignal<Void->Void> = new FlxTypedSignal<Void->Void>();
 	public var onSwitch:FlxTypedSignal<PageName->Void> = new FlxTypedSignal<PageName->Void>();
 
+	var controls(get, never):Controls;
+
+	inline function get_controls():Controls
+		return PlayerSettings.player1.controls;
+
 	public function exit()
 	{
 		onExit.dispatch();
@@ -131,7 +139,7 @@ class Page extends FlxGroup
 
 	public function updateEnabled(elapsed:Float)
 	{
-		if (canExit && PlayerSettings.player1.controls.BACK)
+		if (canExit && controls.BACK)
 		{
 			FlxG.sound.play(Paths.sound("cancelMenu"));
 			onExit.dispatch();
@@ -176,6 +184,10 @@ class OptionsMenu extends Page
 
 		createItem('controls', function() {
 			onSwitch.dispatch(Controls);
+		});
+
+		createItem('mods', function() {
+			onSwitch.dispatch(Mods);
 		});
 
 		if (canDonate)

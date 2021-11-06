@@ -206,8 +206,6 @@ class ControlsMenu extends ui.OptionsState.Page
     {
         super.update(elapsed);
 
-		var controls = PlayerSettings.player1.controls;
-
 		if (controlGrid.enabled
 			&& deviceList != null
 			&& !deviceListSelected
@@ -261,7 +259,7 @@ class ControlsMenu extends ui.OptionsState.Page
                     {
                         if (controlGridSelected != o && input == o.input)
                         {
-                            PlayerSettings.player1.controls.replaceBinding(o.control, currentDevice, controlGridSelected.input, o.input);
+                            controls.replaceBinding(o.control, currentDevice, controlGridSelected.input, o.input);
                             o.input = controlGridSelected.input;
                             o.label.text = controlGridSelected.label.text;
                         }
@@ -269,7 +267,7 @@ class ControlsMenu extends ui.OptionsState.Page
                 }
             }
 
-            PlayerSettings.player1.controls.replaceBinding(controlGridSelected.control, this.currentDevice, input, controlGridSelected.input);
+            controls.replaceBinding(controlGridSelected.control, this.currentDevice, input, controlGridSelected.input);
             controlGridSelected.input = input;
             controlGridSelected.label.text = controlGridSelected.getLabel(input);
             PlayerSettings.player1.saveControls();

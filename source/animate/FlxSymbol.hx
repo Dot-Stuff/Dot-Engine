@@ -153,7 +153,7 @@ class FlxSymbol extends FlxSprite
 		return awesomeMap;
 	}
 
-	/*override function drawComplex(camera:FlxCamera):Void
+	override function drawComplex(camera:FlxCamera):Void
 	{
 		_frame.prepareMatrix(_matrix, FlxFrameAngle.ANGLE_0, checkFlipX(), checkFlipY());
 		_matrix.translate(-origin.x, -origin.y);
@@ -180,7 +180,7 @@ class FlxSymbol extends FlxSprite
 		_matrix.translate(_point.x, _point.y);
 
 		camera.drawPixels(_frame, framePixels, _matrix, colorTransform, blend, antialiasing);
-	}*/
+	}
 
 	public var daFrame:Int;
 	public var matrixExposed:Bool;

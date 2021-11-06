@@ -87,12 +87,12 @@ class DialogueBox extends FlxSubState
 					box.frames = Paths.getSparrowAtlas('dialogue/dialogueBox-pixel');
 					box.animation.addByPrefix('intro', 'Normal Dialogue Intro', 24, false);
 					box.animation.addByPrefix('intro-angry', 'Impact Dialogue Intro', 24, false);
-					box.animation.addByPrefix('complete', 'Normal Dialogue Complete', 24, false);
+					box.animation.addByPrefix('complete', 'Normal Dialogue Complete', 24, true);
 					box.animation.addByPrefix('confirm', 'Normal Dialogue Confirm', 24, false);
 				case 'school-evil':
 					box.frames = Paths.getSparrowAtlas('dialogue/dialogueBox-evil');
 					box.animation.addByPrefix('intro', 'Spirit Dialogue Intro', 24, false);
-					box.animation.addByIndices('complete', 'Spirit Dialogue Complete', [0], "", 24);
+					box.animation.addByIndices('complete', 'Spirit Dialogue Complete', [0], "", 24, true);
 					box.animation.addByIndices('confirm', 'Spirit Dialogue Confirm', [0], "", 24);
 			}
 
@@ -164,13 +164,15 @@ class DialogueBox extends FlxSubState
 
 	override function update(elapsed:Float)
 	{
-		// HARD CODING CUZ IM STUPDI
-		if (PlayState.SONG.song.toLowerCase() == 'roses')
-			portraitLeft.visible = false;
-		if (PlayState.SONG.song.toLowerCase() == 'thorns')
+		var song = PlayState.SONG.song.toLowerCase();
+
+		switch (song)
 		{
-			swagDialogue.color = FlxColor.WHITE;
-			dropText.color = FlxColor.BLACK;
+			case 'roses':
+				portraitLeft.visible = false;
+			case 'thorns':
+				swagDialogue.color = FlxColor.WHITE;
+				dropText.color = FlxColor.BLACK;
 		}
 
 		if (atSchool())

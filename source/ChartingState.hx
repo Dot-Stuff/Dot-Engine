@@ -185,12 +185,7 @@ class ChartingState extends MusicBeatState
 		check_mute_inst.checked = false;
 		check_mute_inst.callback = function()
 		{
-			var vol:Float = 1;
-
-			if (check_mute_inst.checked)
-				vol = 0;
-
-			FlxG.sound.music.volume = vol;
+			FlxG.sound.music.volume = check_mute_inst.checked ? 0 : 1;
 		};
 
 		var saveButton:FlxButton = new FlxButton(110, 8, "Save", function()
@@ -290,11 +285,13 @@ class ChartingState extends MusicBeatState
 
 		var swapSection:FlxButton = new FlxButton(10, 170, "Swap section", function()
 		{
-			for (i in 0..._song.notes[PlayState.storyDifficulty][curSection].sectionNotes.length)
+			var sectionNotes:Array<Dynamic> = _song.notes[PlayState.storyDifficulty][curSection].sectionNotes;
+
+			for (i in 0...sectionNotes.length)
 			{
-				var note = _song.notes[PlayState.storyDifficulty][curSection].sectionNotes[i];
+				var note = sectionNotes[i];
 				note[1] = (note[1] + 4) % 8;
-				_song.notes[PlayState.storyDifficulty][curSection].sectionNotes[i] = note;
+				sectionNotes[i] = note;
 				updateGrid();
 			}
 		});
@@ -390,6 +387,8 @@ class ChartingState extends MusicBeatState
 
 	override function getEvent(id:String, sender:Dynamic, data:Dynamic, ?params:Array<Dynamic>)
 	{
+		var note:SwagSection = _song.notes[PlayState.storyDifficulty][curSection];
+
 		if (id == FlxUICheckBox.CLICK_EVENT)
 		{
 			var check:FlxUICheckBox = cast sender;
@@ -397,15 +396,15 @@ class ChartingState extends MusicBeatState
 			switch (label)
 			{
 				case 'Must hit section':
-					_song.notes[PlayState.storyDifficulty][curSection].mustHitSection = check.checked;
+					note.mustHitSection = check.checked;
 
 					updateHeads();
 
 				case 'Change BPM':
-					_song.notes[PlayState.storyDifficulty][curSection].changeBPM = check.checked;
+					note.changeBPM = check.checked;
 					FlxG.log.add('changed bpm shit');
 				case "Alt Animation":
-					_song.notes[PlayState.storyDifficulty][curSection].altAnim = check.checked;
+					note.altAnim = check.checked;
 			}
 		}
 		else if (id == FlxUINumericStepper.CHANGE_EVENT && (sender is FlxUINumericStepper))
@@ -416,10 +415,8 @@ class ChartingState extends MusicBeatState
 			switch (wname)
 			{
 				case 'section_length':
-					{
-						_song.notes[PlayState.storyDifficulty][curSection].lengthInSteps = Std.int(nums.value);
-						updateGrid();
-					}
+					note.lengthInSteps = Std.int(nums.value);
+					updateGrid();
 				case 'song_speed':
 					_song.speed[PlayState.storyDifficulty] = nums.value;
 				case 'song_bpm':
@@ -427,15 +424,11 @@ class ChartingState extends MusicBeatState
 					Conductor.mapBPMChanges(_song);
 					Conductor.changeBPM(nums.value);
 				case 'note_susLength':
-					{
-						curSelectedNote[2] = nums.value;
-						updateGrid();
-					}
+					curSelectedNote[2] = nums.value;
+					updateGrid();
 				case 'section_bpm':
-					{
-						_song.notes[PlayState.storyDifficulty][curSection].bpm = nums.value;
-						updateGrid();
-					}
+					note.bpm = nums.value;
+					updateGrid();
 			}
 		}
 
@@ -527,10 +520,7 @@ class ChartingState extends MusicBeatState
 			&& FlxG.mouse.y < gridBG.y + (GRID_SIZE * _song.notes[PlayState.storyDifficulty][curSection].lengthInSteps))
 		{
 			dummyArrow.x = Math.floor(FlxG.mouse.x / GRID_SIZE) * GRID_SIZE;
-			if (FlxG.keys.pressed.SHIFT)
-				dummyArrow.y = FlxG.mouse.y;
-			else
-				dummyArrow.y = Math.floor(FlxG.mouse.y / GRID_SIZE) * GRID_SIZE;
+			dummyArrow.y = FlxG.keys.pressed.SHIFT ? FlxG.mouse.y : Math.floor(FlxG.mouse.y / GRID_SIZE) * GRID_SIZE;
 		}
 
 		if (FlxG.keys.justPressed.ENTER)
@@ -611,9 +601,7 @@ class ChartingState extends MusicBeatState
 					var daTime:Float = 700 * elapsed;
 
 					if (FlxG.keys.pressed.W)
-					{
 						FlxG.sound.music.time -= daTime;
-					}
 					else
 						FlxG.sound.music.time += daTime;
 
@@ -630,9 +618,7 @@ class ChartingState extends MusicBeatState
 					var daTime:Float = Conductor.stepCrochet * 2;
 
 					if (FlxG.keys.justPressed.W)
-					{
 						FlxG.sound.music.time -= daTime;
-					}
 					else
 						FlxG.sound.music.time += daTime;
 
@@ -670,8 +656,7 @@ class ChartingState extends MusicBeatState
 		{
 			if (curSelectedNote[2] != null)
 			{
-				curSelectedNote[2] += value;
-				curSelectedNote[2] = Math.max(curSelectedNote[2], 0);
+				curSelectedNote[2] = Math.max(curSelectedNote[2] + value, 0);
 			}
 		}
 
@@ -938,15 +923,14 @@ class ChartingState extends MusicBeatState
 		var noteStrum = getStrumTime(dummyArrow.y) + sectionStartTime();
 		var noteData = Math.floor(FlxG.mouse.x / GRID_SIZE);
 		var noteSus = 0;
+		var note = _song.notes[PlayState.storyDifficulty][curSection];
 
-		_song.notes[PlayState.storyDifficulty][curSection].sectionNotes.push([noteStrum, noteData, noteSus]);
+		note.sectionNotes.push([noteStrum, noteData, noteSus]);
 
-		curSelectedNote = _song.notes[PlayState.storyDifficulty][curSection].sectionNotes[_song.notes[PlayState.storyDifficulty][curSection].sectionNotes.length - 1];
+		curSelectedNote = note.sectionNotes[note.sectionNotes.length - 1];
 
 		if (FlxG.keys.pressed.CONTROL)
-		{
-			_song.notes[PlayState.storyDifficulty][curSection].sectionNotes.push([noteStrum, (noteData + 4) % 8, noteSus]);
-		}
+			note.sectionNotes.push([noteStrum, (noteData + 4) % 8, noteSus]);
 
 		trace(noteStrum);
 		trace(curSection);

@@ -20,7 +20,7 @@ class Prompt extends FlxSubState
     {
         style = buttonStyle;
 
-        super(-2147483648);
+        super(0x80000000);
 
         buttons = new TextMenuList(Horizontal);
 
