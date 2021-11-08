@@ -1,7 +1,9 @@
 package ui;
 
 import NGio.ConnectionResult;
+#if newgrounds
 import io.newgrounds.NG;
+#end
 import flixel.FlxSprite;
 import flixel.util.FlxColor;
 import flixel.FlxSubState;
@@ -124,6 +126,18 @@ class NgPrompt extends Prompt
 
     public static function showLogin():FlxSubState {
         return showLoginPrompt(true);
+    }
+
+    public static function showLogout():NgPrompt {
+        var ngPrompt = new NgPrompt('Logout of ${NG.core.user.name}?', Yes_No);
+        ngPrompt.onYes = function()
+        {
+            NGio.logout();
+            ngPrompt.close();
+        };
+
+        ngPrompt.onNo = ngPrompt.close;
+        return ngPrompt;
     }
 
     public static function showSavedSessionFailed():FlxSubState {

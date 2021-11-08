@@ -6,30 +6,29 @@ class TankmenBG extends FlxSprite
 {
     public static var animationNotes:Array<Dynamic> = [];
 
-	var goingRight:Bool;
-	var endingOffset:Float;
-	var tankSpeed:Float;
-	public var strumTime:Int;
+	var tankSpeed:Float = 0.7;
+	var goingRight:Bool = false;
+	public var strumTime:Int = 0;
 
-	public function new(x:Int, y:Int, popo:Bool)
+	public function new(x:Int, y:Int)
 	{
-		tankSpeed = 0.7;
-		goingRight = false;
-		strumTime = 0;
-
 		super(x, y);
 
 		frames = Paths.getSparrowAtlas('tankmanKilled1');
 		antialiasing = true;
-		animation.addByPrefix("run", "tankman running", 24, true);
-		animation.addByPrefix("shot", "John Shot " + FlxG.random.int(1, 2), 24, false);
-		animation.play("run");
+
+		animation.addByPrefix('run', 'tankman running', 24, true);
+		animation.addByPrefix('shot', 'John Shot ${FlxG.random.int(1, 2)}', 24, false);
+		animation.play('run');
+
 		animation.curAnim.curFrame = FlxG.random.int(0, animation.curAnim.frames.length - 1);
 
 		updateHitbox();
 		setGraphicSize(Std.int(width * 0.8));
 		updateHitbox();
 	}
+
+	var endingOffset:Float;
 
 	public function resetShit(x:Int, y:Int, goingRight:Bool)
 	{
@@ -48,7 +47,7 @@ class TankmenBG extends FlxSprite
 
 		x >= 1.2 * FlxG.width || x <= -0.5 * FlxG.width ? visible = false : visible = true;
 
-		if (animation.curAnim.name == "run")
+		if (animation.curAnim.name == 'run')
 		{
 			var joe = 0.74 * FlxG.width + endingOffset;
 
@@ -62,14 +61,14 @@ class TankmenBG extends FlxSprite
 
             if (strumTime < Conductor.songPosition)
             {
-                animation.play("shot");
+                animation.play('shot');
 
                 if (goingRight)
                     offset.set(300, 200);
             }
 		}
 
-        if (animation.curAnim.name == "shot" && animation.curAnim.frames.length - 1 <= animation.curAnim.curFrame)
+        if (animation.curAnim.name == 'shot' && animation.curAnim.frames.length - 1 <= animation.curAnim.curFrame)
             kill();
 	}
 }

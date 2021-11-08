@@ -26,48 +26,44 @@ class AtlasText extends FlxTypedSpriteGroup<AtlasChar>
 {
 	public var text(default, set):String = '';
 
-	public static var fonts:EnumValueMap<AtlasFont, AtlasFontData> = new EnumValueMap<AtlasFont, AtlasFontData>();
-	public var font:AtlasFontData;
+	static var fonts:EnumValueMap<AtlasFont, AtlasFontData> = new EnumValueMap<AtlasFont, AtlasFontData>();
+	var font:AtlasFontData;
 
-	public function new(x:Float, y:Float, text:String, atlasFont:AtlasFont = Default)
+	public function new(x:Float, y:Float, text:String, font:AtlasFont = Default)
 	{
-		if (!AtlasText.fonts.exists(atlasFont))
-			AtlasText.fonts.set(atlasFont, new AtlasFontData(atlasFont));
+		if (!AtlasText.fonts.exists(font))
+			AtlasText.fonts.set(font, new AtlasFontData(font));
 
-		font = AtlasText.fonts.get(atlasFont);
+		this.font = AtlasText.fonts.get(font);
 
 		super(x, y);
 
 		this.text = text;
 	}
 
-	function set_text(text:String)
+	function set_text(?text:String):String
 	{
-		var nameCase = restrictCase(text);
-		var textCase = restrictCase(this.text);
-
+		var b = restrictCase(text);
+		var c = restrictCase(this.text);
 		this.text = text;
-
-		if (nameCase == textCase)
+		if (b == c)
 			return text;
-		if (nameCase.indexOf(textCase) == 0)
+		if (b.indexOf(c) == 0)
 		{
-			appendTextCased(nameCase.substr(textCase.length));
-			return text;
-		}
-
-		group.kill();
-
-		if (nameCase == '')
+			appendTextCased(b.substr(c.length));
 			return this.text;
-
-		appendTextCased(nameCase);
-
+		}
+		text = b;
+		group.kill();
+		if (text == '')
+			return this.text;
+		appendTextCased(b);
 		return this.text;
 	}
 
 	function restrictCase(textShit:String):String
 	{
+		trace('Text: ' + textShit + ' Case: ' + font.caseAllowed);
 		return switch (font.caseAllowed)
 		{
 			case Both: textShit;
@@ -84,7 +80,7 @@ class AtlasText extends FlxTypedSpriteGroup<AtlasChar>
 
 		if (living == -1)
 			living = 0;
-		else if (living > 0)
+		else if (0 < living)
 		{
 			var thing = group.members[living - 1];
 			offsetX = thing.x + thing.width - x;
@@ -141,8 +137,8 @@ class AtlasFontData
 
 	public var atlas:FlxFramesCollection;
 
-	var upperChar:EReg = ~/^[A-Z]\\d+$/;
-	var lowerChar:EReg = ~/^[A-Z]\\d+$/;
+	static var upperChar:EReg = ~/^[A-Z]\\d+$/;
+	static var lowerChar:EReg = ~/^[A-Z]\\d+$/;
 
 	public function new(font:AtlasFont)
 	{
@@ -153,15 +149,14 @@ class AtlasFontData
 		var upperName:Bool = false;
 		var lowerName:Bool = false;
 
-		for (i in atlas.frames)
+		for (atlasFrame in atlas.frames)
 		{
-			maxHeight = Math.max(maxHeight, i.frame.height);
+			maxHeight = Math.max(maxHeight, atlasFrame.frame.height);
 
 			if (upperName)
-				upperName = upperChar.match(i.name);
-
+				upperName = AtlasFontData.upperChar.match(atlasFrame.name);
 			if (lowerName)
-				lowerName = lowerChar.match(i.name);
+				lowerName = AtlasFontData.lowerChar.match(atlasFrame.name);
 		}
 
 		if (lowerName != upperName)
@@ -173,12 +168,12 @@ class AtlasChar extends FlxSprite
 {
 	public var char(default, set):String;
 
-	public function new(x:Float, y:Float, atlas:FlxFramesCollection, newChar:String)
+	public function new(x:Float, y:Float, atlas:FlxFramesCollection, char:String)
 	{
 		super(x, y);
 
 		frames = atlas;
-		char = newChar;
+		this.char = char;
 		antialiasing = true;
 	}
 
@@ -191,24 +186,24 @@ class AtlasChar extends FlxSprite
 			updateHitbox();
 		}
 
-		return this.char = char;
+		return char;
 	}
 
 	function getAnimPrefix(anim:String):String
 	{
 		return switch (anim)
 		{
-			case "!": "-exclamation point-";
-			case "'": "-apostraphie-";
-			case "*": "-multiply x-";
-			case ",": "-comma-";
-			case "-": "-dash-";
-			case ".": "-period-";
-			case "/": "-forward slash-";
-			case "?": "-question mark-";
-			case "\\": "-back slash-";
-			case "\u201c": "-start quote-";
-			case "\u201d": "-end quote-";
+			case '!': '-exclamation point-';
+			case "'": '-apostraphie-';
+			case '*': '-multiply x-';
+			case ',': '-comma-';
+			case '-': '-dash-';
+			case '.': '-period-';
+			case '/': '-forward slash-';
+			case '?': '-question mark-';
+			case '\\': '-back slash-';
+			case '\u201c': '-start quote-';
+			case '\u201d': '-end quote-';
 			default: anim;
 		}
 	}

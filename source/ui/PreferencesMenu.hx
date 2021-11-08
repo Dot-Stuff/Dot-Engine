@@ -27,6 +27,7 @@ class PreferencesMenu extends ui.OptionsState.Page
         items = new TextMenuList();
         add(items);
 
+        createPrefItem("cutscenes", "cutscenes", true);
         createPrefItem("naughtyness", "censor-naughty", true);
         createPrefItem("downscroll", "downscroll", false);
         createPrefItem("flashing menu", "flashing-menu", false);
@@ -60,6 +61,7 @@ class PreferencesMenu extends ui.OptionsState.Page
 
     public static function initPrefs()
     {
+        preferenceCheck("cutscenes", true);
         preferenceCheck("censor-naughty", true);
         preferenceCheck("downscroll", false);
         preferenceCheck("flashing-menu", true);

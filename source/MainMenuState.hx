@@ -1,22 +1,16 @@
 package;
 
 import ui.Prompt;
-import io.newgrounds.NG;
 import flixel.FlxSubState;
-import ui.NavControls;
-import ui.WrapMode;
 import flixel.util.FlxTimer;
 import flixel.FlxState;
-import flixel.graphics.frames.FlxAtlasFrames;
 import ui.AtlasMenuItem;
 import flixel.FlxObject;
 import ui.MenuTypedList;
-import ui.PreferencesMenu;
 import flixel.FlxSprite;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.effects.FlxFlicker;
 import flixel.graphics.frames.FlxFramesCollection;
-import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
@@ -24,6 +18,10 @@ import flixel.util.FlxColor;
 import lime.app.Application;
 
 using StringTools;
+
+#if newgrounds
+import io.newgrounds.NG;
+#end
 
 #if discord_rpc
 import Discord.DiscordClient;
@@ -143,7 +141,7 @@ class MainMenuState extends MusicBeatState
 	function selectDonate()
 	{
 		#if linux
-		Sys.command('/usr/bin/xdg-open', ["https://ninja-muffin24.itch.io/funkin", "&"]);
+		Sys.command('xdg-open', ["https://ninja-muffin24.itch.io/funkin"]);
 		#else
 		FlxG.openURL('https://ninja-muffin24.itch.io/funkin');
 		#end

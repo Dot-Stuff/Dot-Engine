@@ -156,7 +156,6 @@ class PlayState extends MusicBeatState
 		camHUD = new FlxCamera();
 		camHUD.bgColor.alpha = 0;
 
-		FlxG.cameras.reset(camGame);
 		FlxG.cameras.add(camHUD, false);
 
 		persistentUpdate = true;
@@ -513,20 +512,18 @@ class PlayState extends MusicBeatState
 			gf.x -= 50;
 			gf.y -= 200;
 
-			var tankmanRun = new TankmenBG(20, 500, true);
+			var tankmanRun = new TankmenBG(20, 500);
 			tankmanRun.strumTime = 10;
 			tankmanRun.resetShit(20, 600, true);
 			tankmenRun.add(tankmanRun);
 
-			for (i in TankmenBG.animationNotes)
+			for (animationNote in TankmenBG.animationNotes)
 			{
-				var f = i ? 16 : 50;
-
-				if (f > FlxG.random.float(0, 100))
+				if (FlxG.random.float(0, 100) < 50)
 				{
 					var tankman:TankmenBG = tankmenRun.recycle(TankmenBG);
-					tankman.strumTime = TankmenBG.animationNotes[i][0];
-					tankman.resetShit(500, 200 + FlxG.random.int(50, 100), TankmenBG.animationNotes[i][1] < 2);
+					tankman.strumTime = animationNote[0];
+					tankman.resetShit(500, 200 + FlxG.random.int(50, 100), animationNote[1] < 2);
 					tankmenRun.add(tankman);
 				}
 			}
@@ -633,8 +630,6 @@ class PlayState extends MusicBeatState
 		add(foregroundSprites);
 
 		dialogueBox = new DialogueBox();
-		/*if (!curStage.startsWith('school'))
-			dialogueBox.y = FlxG.height * 0.5;*/
 		dialogueBox.finishThing = startCountdown;
 
 		Conductor.songPosition = -5000;
@@ -717,7 +712,7 @@ class PlayState extends MusicBeatState
 
 		startingSong = true;
 
-		if (isStoryMode && !seenCutscene)
+		if (isStoryMode && !seenCutscene && PreferencesMenu.getPref('cutscenes'))
 		{
 			seenCutscene = true;
 
@@ -760,7 +755,7 @@ class PlayState extends MusicBeatState
 				case 'guns':
 					gunsIntro();
 				default:
-					startCountdown();
+					dialogueCheck();
 			}
 		}
 		else
@@ -771,7 +766,7 @@ class PlayState extends MusicBeatState
 
 	function dialogueCheck():Void
 	{
-		if (SONG.dialogue == null && SONG.dialogue.length == 0)
+		if (SONG.dialogue.length < 0)
 			startCountdown();
 		else
 			add(dialogueBox);
@@ -1895,7 +1890,7 @@ class PlayState extends MusicBeatState
 						LoadingState.loadAndSwitchState(new PlayState());
 					});
 				}
-				else if (SONG.song.toLowerCase() == 'roses')
+				else if (SONG.song.toLowerCase() == 'roses' && PreferencesMenu.getPref('cutscenes'))
 				{
 					camHUD.visible = false;
 					inCutscene = true;

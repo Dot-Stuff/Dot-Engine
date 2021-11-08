@@ -18,7 +18,7 @@ import flixel.FlxState;
 
 class DebugBoundingState extends FlxState
 {
-    /*var bg:FlxSprite;
+    var bg:FlxSprite;
     var fileIntro:FlxText;
 
     var txtGrp:FlxGroup;
@@ -120,5 +120,20 @@ class DebugBoundingState extends FlxState
     function generateOutlines(frameShit:Array<FlxFrame>):Void
     {
         
-    }*/
+    }
+
+	function addInfo(name:String, value:Dynamic)
+    {
+
+    }
+
+	function initOffsetView()
+    {
+        
+    }
+}
+
+enum ANIMDEBUGVIEW
+{
+    SPRITESHEET;
 }

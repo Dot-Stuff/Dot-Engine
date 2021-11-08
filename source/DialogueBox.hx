@@ -15,7 +15,7 @@ class DialogueBox extends FlxSubState
 {
 	var box:FlxSprite;
 
-	var dialogue:Alphabet;
+	var dialogue:DialogueText;
 	var dialogueList:Array<DialogueSection> = [];
 
 	// SECOND DIALOGUE FOR THE PIXEL SHIT INSTEAD???
@@ -36,20 +36,18 @@ class DialogueBox extends FlxSubState
 
 		this.dialogueList = PlayState.SONG.dialogue;
 
-		if (PlayState.isStoryMode)
+		if (ui.PreferencesMenu.getPref('cutscenes'))
 		{
-			switch (PlayState.curStage)
+			var dialogueMusic:String = switch (PlayState.curStage)
 			{
-				case 'school-evil':
-					FlxG.sound.playMusic(Paths.music('LunchboxScary'), 0);
-					FlxG.sound.music.fadeIn(1, 0, 0.8);
-				case 'school':
-					FlxG.sound.playMusic(Paths.music('Lunchbox'), 0);
-					FlxG.sound.music.fadeIn(1, 0, 0.8);
-				case 'stage':
-					FlxG.sound.playMusic(Paths.music('smileFace'), 0);
-					FlxG.sound.music.fadeIn(1, 0, 0.8);
+				case 'school-evil': 'LunchboxScary';
+				case 'school': 'Lunchbox';
+				case 'stage': 'smileFace';
+				default: 'giveALilBitBack';
 			}
+
+			FlxG.sound.playMusic(Paths.music(dialogueMusic), 0);
+			FlxG.sound.music.fadeIn(1, 0, 0.8);
 		}
 
 		if (atSchool())
@@ -67,35 +65,50 @@ class DialogueBox extends FlxSubState
 			}, 5);
 
 			box = new FlxSprite(-20, 45);
+
+			dropText = new FlxText(242, 502, Std.int(FlxG.width * 0.6), "", 32);
+			dropText.font = 'Pixel Arial 11 Bold';
+			dropText.color = 0xFFD89494;
+
+			swagDialogue = new FlxTypeText(240, 500, Std.int(FlxG.width * 0.6), "", 32);
+			swagDialogue.font = 'Pixel Arial 11 Bold';
+			swagDialogue.color = 0xFF3F2021;
+			swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
 		}
 		else
-			box = new FlxSprite(40);
+			box = new FlxSprite(40, FlxG.height * 0.5);
 
 		// TODO: REMAKE THE WEEK1 DIALOGUE ITSSSS BROKENNNNNN!!! FUCK YEAAA
 		// TODO: Unhardcode this please
+		switch (PlayState.curStage.toLowerCase())
+		{
+			default:
+				box.frames = Paths.getSparrowAtlas('speech_bubble_talking');
+				box.animation.addByPrefix('intro', 'Speech Bubble Normal Open', 24, false);
+				box.animation.addByPrefix('confirm', 'speech bubble normal', 24, true);
+
+				box.animation.addByPrefix('intro-angry', 'speech bubble loud open', 24, false);
+				box.animation.addByPrefix('confirm-angry', 'AHH speech bubble', 24, true);
+			case 'school':
+				box.frames = Paths.getSparrowAtlas('dialogue/dialogueBox-pixel');
+				box.animation.addByPrefix('intro', 'Normal Dialogue Intro', 24, false);
+				box.animation.addByPrefix('complete', 'Normal Dialogue Complete', 24, true);
+				box.animation.addByPrefix('confirm', 'Normal Dialogue Confirm', 24, false);
+
+				box.animation.addByPrefix('intro-angry', 'Impact Dialogue Intro', 24, false);
+				box.animation.addByPrefix('complete-angry', 'Normal Dialogue Complete', 24, true);
+			case 'school-evil':
+				box.frames = Paths.getSparrowAtlas('dialogue/dialogueBox-evil');
+				box.animation.addByPrefix('intro', 'Spirit Dialogue Intro', 24, false);
+				box.animation.addByIndices('complete', 'Spirit Dialogue Complete', [0], "", 24, true);
+				box.animation.addByIndices('confirm', 'Spirit Dialogue Confirm', [0], "", 24);
+
+				swagDialogue.color = FlxColor.WHITE;
+				dropText.color = FlxColor.BLACK;
+		}
+
 		if (atSchool())
 		{
-			// CHANGE THIS TO STAGES
-			switch (PlayState.curStage.toLowerCase())
-			{
-				default:
-					box.frames = Paths.getSparrowAtlas('dialogue/speech_bubble_talking');
-					box.animation.addByPrefix('intro', 'Speech Bubble Normal Open', 24, false);
-					box.animation.addByPrefix('intro-angry', 'AHH speech bubble', 24, false);
-					box.animation.addByPrefix('idle-angry', 'speech bubble loud open', 24, true);
-				case 'school':
-					box.frames = Paths.getSparrowAtlas('dialogue/dialogueBox-pixel');
-					box.animation.addByPrefix('intro', 'Normal Dialogue Intro', 24, false);
-					box.animation.addByPrefix('intro-angry', 'Impact Dialogue Intro', 24, false);
-					box.animation.addByPrefix('complete', 'Normal Dialogue Complete', 24, true);
-					box.animation.addByPrefix('confirm', 'Normal Dialogue Confirm', 24, false);
-				case 'school-evil':
-					box.frames = Paths.getSparrowAtlas('dialogue/dialogueBox-evil');
-					box.animation.addByPrefix('intro', 'Spirit Dialogue Intro', 24, false);
-					box.animation.addByIndices('complete', 'Spirit Dialogue Complete', [0], "", 24, true);
-					box.animation.addByIndices('confirm', 'Spirit Dialogue Confirm', [0], "", 24);
-			}
-
 			portraitLeft = new FlxSprite(-20, 40);
 			portraitLeft.frames = Paths.getSparrowAtlas('dialogue/${PlayState.SONG.player2}Portrait');
 			portraitLeft.animation.addByPrefix('enter', 'Portrait Enter', 24, false);
@@ -103,7 +116,7 @@ class DialogueBox extends FlxSubState
 			portraitLeft.updateHitbox();
 			portraitLeft.scrollFactor.set();
 			add(portraitLeft);
-			portraitLeft.visible = false;
+			portraitLeft.visible = PlayState.curStage.toLowerCase() != 'school-evil';
 
 			portraitRight = new FlxSprite(0, 40);
 			portraitRight.frames = Paths.getSparrowAtlas('dialogue/${PlayState.SONG.player1}Portrait');
@@ -114,47 +127,29 @@ class DialogueBox extends FlxSubState
 			add(portraitRight);
 			portraitRight.visible = false;
 
-			var angryShit:String = dialogueList[0].angry ? '-angry' : '';
-			box.animation.play('intro$angryShit');
-
 			box.setGraphicSize(Std.int(box.width * PlayState.daPixelZoom * 0.9));
+		}
+		else
+			box.setGraphicSize(Std.int(box.width * 0.9));
 
-			box.updateHitbox();
-			add(box);
+		var angryShit:String = dialogueList[0].angry ? '-angry' : '';
+		box.animation.play('intro$angryShit');
 
-			box.screenCenter(X);
+		box.updateHitbox();
+		add(box);
+
+		box.screenCenter(X);
+
+		if (atSchool())
+		{
 			portraitLeft.screenCenter(X);
 
-			dropText = new FlxText(242, 502, Std.int(FlxG.width * 0.6), "", 32);
-			dropText.font = 'Pixel Arial 11 Bold';
-			dropText.color = 0xFFD89494;
 			add(dropText);
-
-			swagDialogue = new FlxTypeText(240, 500, Std.int(FlxG.width * 0.6), "", 32);
-			swagDialogue.font = 'Pixel Arial 11 Bold';
-			swagDialogue.color = 0xFF3F2021;
-			swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
 			add(swagDialogue);
 		}
 		else
 		{
-			box.frames = Paths.getSparrowAtlas('dialogue/speech_bubble_talking');
-			box.animation.addByPrefix('normalOpen', 'Speech Bubble Normal Open', 24, false);
-			box.animation.addByPrefix('normal', 'speech bubble normal', 24, true);
-
-			box.animation.addByPrefix('normalOpenAngry', 'AHH speech bubble', 24, false);
-			box.animation.addByPrefix('normalAngry', 'speech bubble loud open', 24, true);
-
-			box.animation.play('normalOpen');
-
-			box.setGraphicSize(Std.int(box.width * 0.9));
-
-			box.updateHitbox();
-			add(box);
-
-			box.screenCenter(X);
-
-			dialogue = new Alphabet(0, 80, "", false, true);
+			dialogue = new DialogueText(0, 80, 'fucker', Default);
 			add(dialogue);
 		}
 	}
@@ -166,23 +161,10 @@ class DialogueBox extends FlxSubState
 	{
 		var song = PlayState.SONG.song.toLowerCase();
 
-		switch (song)
-		{
-			case 'roses':
-				portraitLeft.visible = false;
-			case 'thorns':
-				swagDialogue.color = FlxColor.WHITE;
-				dropText.color = FlxColor.BLACK;
-		}
-
 		if (atSchool())
 			dropText.text = swagDialogue.text;
 
-		if (box.animation.curAnim != null)
-		{
-			if (box.animation.curAnim.name.startsWith('intro') && box.animation.curAnim.finished)
-				dialogueOpened = true;
-		}
+		dialogueOpened = box.animation.curAnim != null && box.animation.curAnim.name.startsWith('intro') && box.animation.curAnim.finished;
 
 		if (dialogueOpened && !dialogueStarted)
 		{
@@ -192,14 +174,13 @@ class DialogueBox extends FlxSubState
 
 		if (FlxG.keys.justPressed.ANY)
 		{
-			box.animation.play('confirm');
+			var angryShit:String = dialogueList[0].angry ? '-angry' : '';
+			box.animation.play('confirm$angryShit');
 
 			if (dialogueEnded)
 			{
-				if (!atSchool())
-					remove(dialogue);
-
-				FlxG.sound.play(Paths.sound('clickText'), 0.8);
+				if (atSchool())
+					FlxG.sound.play(Paths.sound('clickText'), 0.8);
 
 				if (dialogueList[1] == null && dialogueList[0] != null)
 				{
@@ -221,19 +202,11 @@ class DialogueBox extends FlxSubState
 								dropText.alpha = swagDialogue.alpha;
 							}, 5);
 						}
-						else
-						{
-							new FlxTimer().start(0.2, function(tmr:FlxTimer)
-							{
-								box.alpha -= 1 / 5;
-								dialogue.alpha -= 1 / 5;
-							}, 5);
-						}
 
 						new FlxTimer().start(1.2, function(tmr:FlxTimer)
 						{
 							finishThing();
-							kill();
+							closeSubState();
 						});
 					}
 				}
@@ -243,7 +216,7 @@ class DialogueBox extends FlxSubState
 					startDialogue();
 				}
 			}
-			else if (dialogueStarted)
+			else if (dialogueStarted && atSchool())
 				swagDialogue.skip();
 		}
 
@@ -256,14 +229,6 @@ class DialogueBox extends FlxSubState
 	function startDialogue():Void
 	{
 		cleanDialog();
-
-		swagDialogue.completeCallback = function()
-		{
-			box.animation.play('complete');
-			trace('dialogue finish');
-
-			dialogueEnded = true;
-		};
 
 		dialogueEnded = false;
 
@@ -281,7 +246,7 @@ class DialogueBox extends FlxSubState
 			}
 			else
 			{
-				portraitLeft.visible = false;
+				portraitLeft.visible = PlayState.curStage.toLowerCase() != 'school-evil';
 				if (!portraitRight.visible)
 				{
 					portraitRight.visible = true;
@@ -299,16 +264,25 @@ class DialogueBox extends FlxSubState
 		{
 			swagDialogue.resetText(dialogueList[0].line);
 			swagDialogue.start(0.04);
+
+			swagDialogue.completeCallback = function()
+			{
+				box.animation.play('complete');
+				trace('dialogue finish');
+	
+				dialogueEnded = true;
+			};
 		}
 		else
 		{
-			var theDialog:Alphabet = new Alphabet(0, 70, dialogueList[0].line, false, true);
+			dialogue.text = dialogueList[0].line;
+			/*var theDialog:AtlasText = new AtlasText(0, 70, dialogueList[0].line, Default);
 			if (dialogueList[0].isPlayer1)
 				theDialog.personTalking = PlayState.SONG.player1.toUpperCase();
 			else
 				theDialog.personTalking = PlayState.SONG.player2.toUpperCase();
 			dialogue = theDialog;
-			add(theDialog);
+			add(theDialog);*/
 		}
 	}
 
@@ -317,4 +291,12 @@ class DialogueBox extends FlxSubState
 		// Simplify this later pls.
 		return PlayState.curStage.toLowerCase().startsWith('school');
 	}
+}
+
+/**
+ * Type Text
+ */
+class DialogueText extends ui.AtlasText
+{
+	
 }

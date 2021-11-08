@@ -69,7 +69,7 @@ class MenuTypedList extends FlxTypedGroup<MenuItem>
 		{
 			var controls = PlayerSettings.player1.controls;
 
-			var wrap:Bool = wrapMode.getIndex() == 2;
+			var wrap:Bool = wrapMode == Both;
 
             var navIndex:Int = 0;
 
@@ -85,9 +85,7 @@ class MenuTypedList extends FlxTypedGroup<MenuItem>
 				case Vertical:
 					navIndex = navAxis(selectedIndex, length, upP, downP, wrap);
 				case Both:
-					var leftUpP = controls.UI_LEFT_P || controls.UI_UP_P;
-					var rightDownP = controls.UI_RIGHT_P || controls.UI_DOWN_P;
-					navIndex = navAxis(selectedIndex, length, leftUpP, rightDownP, wrapMode.getIndex() != 3);
+					navIndex = navAxis(selectedIndex, length, leftP || upP, rightP || downP, wrapMode != None);
 				case Columns(colm):
 					navIndex = navGrid(colm, leftP, rightP, wrap, upP, downP, wrap);
 				case Rows(row):
@@ -128,14 +126,14 @@ class MenuTypedList extends FlxTypedGroup<MenuItem>
 		return change;
 	}
 
-	function navGrid(a, b, c, d, e, f, h)
+	function navGrid(a:Int, b:Bool, c:Bool, d:Bool, e:Bool, f:Bool, h:Bool)
 	{
 		var m = Math.ceil(length / a);
 		var n = Math.floor(selectedIndex / a);
 		var k = selectedIndex % a;
-
 		var kPoop = navAxis(k, a, b, c, d);
 		var nPoop = navAxis(n, m, e, f, h);
+
 		return Std.int(Math.min(length - 1, nPoop * a + kPoop));
 	}
 
@@ -195,6 +193,7 @@ class MenuTypedItem extends ui.MenuItem
         makeGraphic(1, 1, 0);
     }
 
+	@:noCompletion
     function set_label(name:AtlasText)
     {
         if (name != null)

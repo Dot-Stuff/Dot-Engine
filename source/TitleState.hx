@@ -1,5 +1,6 @@
 package;
 
+import ui.AtlasText;
 import haxe.Json;
 import shadersLmfao.ColorSwap;
 import ui.PreferencesMenu;
@@ -152,11 +153,12 @@ class TitleState extends MusicBeatState
 		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		add(bg);
 
-		logo = new FlxSprite(-150, -100);
+		logo = new FlxSprite(-150 + 160, -100 + 110);
 		logo.frames = Paths.getSparrowAtlas('logoBumpin');
 		logo.antialiasing = true;
 		logo.animation.addByPrefix('bump', 'logo bumpin', 24);
 		logo.animation.play('bump');
+		logo.setGraphicSize(Std.int(logo.width * 0.96));
 		logo.updateHitbox();
 		logo.shader = swagShader.shader;
 
@@ -233,9 +235,7 @@ class TitleState extends MusicBeatState
 	override function update(elapsed:Float)
 	{
 		if (FlxG.keys.justPressed.FIVE)
-		{
 			FlxG.switchState(new CutsceneAnimTestState());
-		}
 
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
@@ -310,25 +310,15 @@ class TitleState extends MusicBeatState
 		super.update(elapsed);
 	}
 
-	function createCoolText(textArray:Array<String>)
+	function createText(textArray:Array<String>)
 	{
-		for (i in 0...textArray.length)
+		for (text in textArray)
 		{
-			var money:Alphabet = new Alphabet(0, 0, textArray[i], true, false);
-			money.screenCenter(X);
-			money.y += (i * 60) + 200;
-			credGroup.add(money);
-			textGroup.add(money);
+			var coolText:AtlasText = new AtlasText(0, (textGroup.length * 60) + 200, text, Bold);
+			coolText.screenCenter(X);
+			credGroup.add(coolText);
+			textGroup.add(coolText);
 		}
-	}
-
-	function addMoreText(text:String)
-	{
-		var coolText:Alphabet = new Alphabet(0, 0, text, true, false);
-		coolText.screenCenter(X);
-		coolText.y += (textGroup.length * 60) + 200;
-		credGroup.add(coolText);
-		textGroup.add(coolText);
 	}
 
 	function deleteCoolText()
@@ -356,31 +346,31 @@ class TitleState extends MusicBeatState
 			switch (lastBeat)
 			{
 				case 1:
-					createCoolText(['ninjamuffin99', 'phantomArcade', 'kawaisprite', 'evilsk8er']);
+					createText(['ninjamuffin99', 'phantomArcade', 'kawaisprite', 'evilsk8er']);
 				case 3:
-					addMoreText('present');
+					createText(['present']);
 				case 4:
 					deleteCoolText();
 				case 5:
-					createCoolText(['In association', 'with']);
+					createText(['In association', 'with']);
 				case 7:
-					addMoreText('newgrounds');
+					createText(['newgrounds']);
 					ngSpr.visible = true;
 				case 8:
 					deleteCoolText();
 					ngSpr.visible = false;
 				case 9:
-					createCoolText([curWacky[0]]);
+					createText([curWacky[0]]);
 				case 11:
-					addMoreText(curWacky[1]);
+					createText([curWacky[1]]);
 				case 12:
 					deleteCoolText();
 				case 13:
-					addMoreText('Friday');
+					createText(['Friday']);
 				case 14:
-					addMoreText('Night');
+					createText(['Night']);
 				case 15:
-					addMoreText('Funkin');
+					createText(['Funkin']);
 				case 16:
 					skipIntro();
 			}

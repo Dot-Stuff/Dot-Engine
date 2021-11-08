@@ -36,6 +36,7 @@ class CheckboxThingie extends FlxSprite
         }
     }
 
+    @:noCompletion
     function set_daValue(daValue:Bool):Bool
     {
         if (daValue)

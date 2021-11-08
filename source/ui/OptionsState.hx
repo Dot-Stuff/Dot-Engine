@@ -5,9 +5,15 @@ import flixel.FlxSubState;
 import flixel.group.FlxGroup;
 import flixel.util.FlxSignal.FlxTypedSignal;
 import haxe.ds.EnumValueMap;
+#if newgrounds
 import io.newgrounds.NG;
+#end
 import ui.Prompt.NgPrompt;
 import ui.TextMenuList.TextMenuItem;
+
+#if discord_rpc
+import Discord.DiscordClient;
+#end
 
 enum PageName
 {
@@ -28,6 +34,11 @@ class OptionsState extends MusicBeatState
 
 	public override function create()
 	{
+		#if discord_rpc
+		// Updating Discord Rich Presence
+		DiscordClient.changePresence('In the Options Menu', null);
+		#end
+
 		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.color = 0xFFEA71FD;
 		bg.setGraphicSize(Std.int(bg.width * 1.1));
@@ -36,10 +47,10 @@ class OptionsState extends MusicBeatState
 		bg.scrollFactor.set(0, 0);
 		add(bg);
 
-		var optionsPage:OptionsMenu = cast addPage(Options, new OptionsMenu(false));
-		var prefsPage:PreferencesMenu = cast addPage(Preferences, new PreferencesMenu());
-		var controlsPage:ControlsMenu = cast addPage(Controls, new ControlsMenu());
-		var moddingPage:ModdingSubstate = cast addPage(Mods, new ModdingSubstate());
+		var optionsPage:OptionsMenu = addPage(Options, new OptionsMenu(false));
+		var prefsPage:PreferencesMenu = addPage(Preferences, new PreferencesMenu());
+		var controlsPage:ControlsMenu = addPage(Controls, new ControlsMenu());
+		var moddingPage:ModdingSubstate = addPage(Mods, new ModdingSubstate());
 
 		if (optionsPage.hasMultipleOptions())
 		{
@@ -69,7 +80,7 @@ class OptionsState extends MusicBeatState
 		super.create();
 	}
 
-	public function addPage(pageName:PageName, page:Page):Page
+	public function addPage<T:Page>(pageName:PageName, page:T):T
 	{
 		page.onSwitch.add(switchPage);
 
@@ -101,6 +112,11 @@ class OptionsState extends MusicBeatState
 
 	public function switchPage(page:PageName)
 	{
+		#if discord_rpc
+		// Updating Discord Rich Presence
+		DiscordClient.changePresence('In the ${page.getName()} Menu', null);
+		#end
+
 		setPage(page);
 	}
 
@@ -193,18 +209,25 @@ class OptionsMenu extends Page
 		if (canDonate)
 			createItem('donate', selectDonate, true);
 
+		#if newgrounds
 		if (NG.core != null && NG.core.loggedIn)
 			createItem("logout", selectLogout);
 		else
 			createItem("login", selectLogin);
+		#end
 
 		createItem("exit", exit);
 	}
 
+	public override function set_enabled(val:Bool):Bool
+	{
+		items.enabled = val;
+		return super.set_enabled(val);
+	}
+
 	public function createItem(name:String, callback:Void->Void, ?fireInstantly:Bool)
 	{
-		var item:TextMenuItem = items.createItem(0, 100 + 100 * items.length, name, Bold, callback);
-		item.fireInstantly = fireInstantly;
+		var item:TextMenuItem = items.createItem(0, 100 + 100 * items.length, name, Bold, callback, fireInstantly);
 		item.screenCenter(X);
 
 		return item;
@@ -218,12 +241,13 @@ class OptionsMenu extends Page
 	public function selectDonate()
 	{
 		#if linux
-		Sys.command('/usr/bin/xdg-open', ["https://ninja-muffin24.itch.io/funkin", "&"]);
+		Sys.command('xdg-open', ["https://ninja-muffin24.itch.io/funkin"]);
 		#else
 		FlxG.openURL('https://ninja-muffin24.itch.io/funkin');
 		#end
 	}
 
+	#if newgrounds
 	public function selectLogin()
 	{
 		openNgPrompt(NgPrompt.showLogin());
@@ -231,8 +255,9 @@ class OptionsMenu extends Page
 
 	public function selectLogout()
 	{
-		openNgPrompt(NgPrompt.showLogin());
+		openNgPrompt(NgPrompt.showLogout());
 	}
+	#end
 
 	public function openNgPrompt(target:FlxSubState, ?openCallback:Void->Void)
 	{

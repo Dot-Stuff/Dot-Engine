@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="dialogueBox-evil.png">
+	<!-- Created with Adobe Animate version 21.0.9.42677 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="Spirit Dialogue Complete0000" x="0" y="0" width="248" height="144"/>
+	<SubTexture name="Spirit Dialogue Confirm0000" x="248" y="0" width="248" height="144"/>
+	<SubTexture name="Spirit Dialogue Intro0000" x="496" y="0" width="248" height="144"/>
+	<SubTexture name="Spirit Dialogue Intro0001" x="496" y="0" width="248" height="144"/>
+	<SubTexture name="Spirit Dialogue Intro0002" x="744" y="0" width="248" height="144"/>
+	<SubTexture name="Spirit Dialogue Intro0003" x="744" y="0" width="248" height="144"/>
+	<SubTexture name="Spirit Dialogue Intro0004" x="0" y="144" width="248" height="144"/>
+	<SubTexture name="Spirit Dialogue Intro0005" x="0" y="144" width="248" height="144"/>
+	<SubTexture name="Spirit Dialogue Intro0006" x="248" y="144" width="248" height="144"/>
+	<SubTexture name="Spirit Dialogue Intro0007" x="248" y="144" width="248" height="144"/>
+	<SubTexture name="Spirit Dialogue Intro0008" x="496" y="144" width="248" height="144"/>
+	<SubTexture name="Spirit Dialogue Intro0009" x="496" y="144" width="248" height="144"/>
+	<SubTexture name="Spirit Dialogue Intro0010" x="744" y="144" width="248" height="144"/>
+	<SubTexture name="Spirit Dialogue Intro0011" x="744" y="144" width="248" height="144"/>
+</TextureAtlas>

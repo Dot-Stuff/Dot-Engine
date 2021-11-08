@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="senpai-angryPortrait.png">
+	<!-- Created with Adobe Animate version 21.0.9.42677 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="Senpai Angry Portrait0000" x="0" y="0" width="248" height="144"/>
+	<SubTexture name="Senpai Angry Portrait0001" x="248" y="0" width="248" height="144"/>
+	<SubTexture name="Senpai Angry Portrait0002" x="0" y="144" width="248" height="144"/>
+	<SubTexture name="Senpai Angry Portrait0003" x="248" y="144" width="248" height="144"/>
+	<SubTexture name="Senpai Angry Portrait0004" x="0" y="288" width="248" height="144"/>
+	<SubTexture name="Senpai Angry Portrait0005" x="0" y="288" width="248" height="144"/>
+	<SubTexture name="Senpai Angry Portrait0006" x="248" y="144" width="248" height="144"/>
+	<SubTexture name="Senpai Angry Portrait0007" x="248" y="288" width="248" height="144"/>
+</TextureAtlas>
