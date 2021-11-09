@@ -6063,23 +6063,26 @@
                 }
             ]
         ],
-        "dialogue": [
-            {
-                "isPlayer1": true,
-                "angry": true,
-                "line": "Not bad for an ugly worm."
-            },
-            {
-                "isPlayer1": true,
-                "angry": false,
-                "line": "But this time I'll rip your nuts off right after your girlfriend finishes gargling mine."
-            },
-            {
-                "isPlayer1": false,
-                "angry": false,
-                "line": "Bop beep be be skdoo bep"
-            }
-        ],
+        "dialogue": {
+            "music": "Lunchbox",
+            "data": [
+                {
+                    "isPlayer1": true,
+                    "angry": true,
+                    "line": "Not bad for an ugly worm."
+                },
+                {
+                    "isPlayer1": true,
+                    "angry": true,
+                    "line": "But this time I'll rip your nuts off right after your girlfriend finishes gargling mine."
+                },
+                {
+                    "isPlayer1": false,
+                    "angry": true,
+                    "line": "Bop beep be be skdoo bep"
+                }
+            ]
+        },
         "needsVoices": true,
         "song": "Roses",
         "bpm": 120.0,

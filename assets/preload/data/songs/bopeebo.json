@@ -2347,28 +2347,31 @@
                 }
             ]
         ],
-        "dialogue": [
-            {
-                "isPlayer1": true,
-                "dialogue": "HEY!",
-                "angry": true
-            },
-            {
-                "isPlayer1": true,
-                "dialogue": "You think you can just sing\nwith my daughter like that?",
-                "angry": false
-            },
-            {
-                "isPlayer1": true,
-                "dialogue": "If you want to date her...",
-                "angry": false
-            },
-            {
-                "isPlayer1": true,
-                "dialogue": "You're going to have to go\nthrough ME first!",
-                "angry": true
-            }
-        ],
+        "dialogue": {
+            "music": "giveALilBitBack",
+            "data": [
+                {
+                    "isPlayer1": true,
+                    "angry": true,
+                    "line": "HEY!"
+                },
+                {
+                    "isPlayer1": true,
+                    "angry": false,
+                    "line": "You think you can just sing\nwith my daughter like that?"
+                },
+                {
+                    "isPlayer1": true,
+                    "angry": false,
+                    "line": "If you want to date her..."
+                },
+                {
+                    "isPlayer1": true,
+                    "angry": true,
+                    "line": "You're going to have to go\nthrough ME first!"
+                }
+            ]
+        },
         "needsVoices": true,
         "song": "Bopeebo",
         "bpm": 100.0,

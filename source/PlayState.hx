@@ -624,13 +624,12 @@ class PlayState extends MusicBeatState
 		if (curStage.toLowerCase() == 'limo')
 			add(limo);
 
+		dialogueBox = addDialogue();
+
 		add(dad);
 		add(boyfriend);
 
 		add(foregroundSprites);
-
-		dialogueBox = new DialogueBox();
-		dialogueBox.finishThing = startCountdown;
 
 		Conductor.songPosition = -5000;
 
@@ -708,7 +707,6 @@ class PlayState extends MusicBeatState
 		iconP1.cameras = [camHUD];
 		iconP2.cameras = [camHUD];
 		scoreTxt.cameras = [camHUD];
-		dialogueBox.cameras = [camHUD];
 
 		startingSong = true;
 
@@ -755,7 +753,17 @@ class PlayState extends MusicBeatState
 				case 'guns':
 					gunsIntro();
 				default:
-					dialogueCheck();
+					if (dialogueBox != null)
+					{
+						inCutscene = true;
+
+						new FlxTimer().start(0.3, function(tmr:FlxTimer)
+						{
+							openSubState(dialogueBox);
+						});
+					}
+					else
+						startCountdown();
 			}
 		}
 		else
@@ -764,12 +772,18 @@ class PlayState extends MusicBeatState
 		super.create();
 	}
 
-	function dialogueCheck():Void
+	function addDialogue():DialogueBox
 	{
-		if (SONG.dialogue.length < 0)
-			startCountdown();
-		else
-			add(dialogueBox);
+		if (PreferencesMenu.getPref('cutscenes') && SONG.dialogue != null)
+		{
+			var doof = new DialogueBox();
+			doof.finishThing = startCountdown;
+			doof.camera = camHUD;
+
+			return doof;
+		}
+
+		return null;
 	}
 
 	function ughIntro():Void
@@ -1018,8 +1032,7 @@ class PlayState extends MusicBeatState
 									remove(red);
 									FlxG.camera.fade(FlxColor.WHITE, 0.01, true, function()
 									{
-										if (SONG.dialogue != null)
-											add(dialogueBox);
+										openSubState(dialogueBox);
 
 										camHUD.visible = true;
 									}, true);
@@ -1031,8 +1044,8 @@ class PlayState extends MusicBeatState
 							}
 						});
 					}
-					else if (SONG.dialogue != null)
-						add(dialogueBox);
+					else
+						openSubState(dialogueBox);
 				}
 				else
 					startCountdown();
@@ -1501,11 +1514,9 @@ class PlayState extends MusicBeatState
 			persistentDraw = true;
 			paused = true;
 
-			var boyfriendPos = boyfriend.getScreenPosition();
-			var pauseSubState = new PauseSubState(boyfriendPos.x, boyfriendPos.y);
+			var pauseSubState = new PauseSubState();
 			openSubState(pauseSubState);
 			pauseSubState.camera = camHUD;
-			boyfriendPos.put();
 
 			#if discord_rpc
 			DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")", iconRPC);

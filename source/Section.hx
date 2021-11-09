@@ -11,6 +11,12 @@ typedef SwagSection =
 	var altAnim:Bool;
 }
 
+typedef SwagDialogue =
+{
+	var music:String;
+	var data:Array<DialogueSection>;
+}
+
 typedef DialogueSection =
 {
 	var isPlayer1:Bool;

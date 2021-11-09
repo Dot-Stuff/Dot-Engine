@@ -1366,18 +1366,21 @@
                 }
             ]
         ],
-        "dialogue": [
-            {
-                "isPlayer1": true,
-                "dialogue": "Hey you're pretty cute.",
-                "angry": false
-            },
-            {
-                "isPlayer1": true,
-                "dialogue": "Use the arrow keys to keep up\nwith me singing.",
-                "angry": false
-            }
-        ],
+        "dialogue": {
+            "music": "smileFace",
+            "data": [
+                {
+                    "isPlayer1": true,
+                    "dialogue": "Hey you're pretty cute.",
+                    "angry": false
+                },
+                {
+                    "isPlayer1": true,
+                    "dialogue": "Use the arrow keys to keep up\nwith me singing.",
+                    "angry": false
+                }
+            ]
+        },
         "needsVoices": false,
         "song": "Tutorial",
         "bpm": 100.0,

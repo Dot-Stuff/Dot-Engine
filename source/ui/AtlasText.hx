@@ -2,18 +2,10 @@ package ui;
 
 import flixel.util.FlxStringUtil;
 import flixel.util.FlxStringUtil.LabelValuePair;
-import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
-import flixel.graphics.frames.FlxFramesCollection;
 import flixel.FlxSprite;
 import haxe.ds.EnumValueMap;
-
-using StringTools;
-
-enum AtlasFont
-{
-	Default;
-	Bold;
-}
+import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
+import flixel.graphics.frames.FlxFramesCollection;
 
 enum Case
 {
@@ -22,14 +14,20 @@ enum Case
 	Lower;
 }
 
+enum AtlasFont
+{
+	Default;
+	Bold;
+}
+
 class AtlasText extends FlxTypedSpriteGroup<AtlasChar>
 {
 	public var text(default, set):String = '';
 
-	static var fonts:EnumValueMap<AtlasFont, AtlasFontData> = new EnumValueMap<AtlasFont, AtlasFontData>();
-	var font:AtlasFontData;
+	public static var fonts:EnumValueMap<AtlasFont, AtlasFontData> = new EnumValueMap<AtlasFont, AtlasFontData>();
+	public var font:AtlasFontData;
 
-	public function new(x:Float, y:Float, text:String, font:AtlasFont = Default)
+	public function new(?x:Float, ?y:Float, text:String, ?font:AtlasFont = Default)
 	{
 		if (!AtlasText.fonts.exists(font))
 			AtlasText.fonts.set(font, new AtlasFontData(font));
@@ -41,53 +39,57 @@ class AtlasText extends FlxTypedSpriteGroup<AtlasChar>
 		this.text = text;
 	}
 
-	function set_text(?text:String):String
+	function set_text(value:String = ''):String
 	{
-		var b = restrictCase(text);
+		var b = restrictCase(value);
 		var c = restrictCase(this.text);
-		this.text = text;
+
+		this.text = value;
+
 		if (b == c)
-			return text;
+			return value;
 		if (b.indexOf(c) == 0)
 		{
 			appendTextCased(b.substr(c.length));
 			return this.text;
 		}
-		text = b;
+
 		group.kill();
-		if (text == '')
+
+		if (b == '')
 			return this.text;
+
 		appendTextCased(b);
+
 		return this.text;
 	}
 
-	function restrictCase(textShit:String):String
+	function restrictCase(text:String):String
 	{
-		trace('Text: ' + textShit + ' Case: ' + font.caseAllowed);
 		return switch (font.caseAllowed)
 		{
-			case Both: textShit;
-			case Upper: textShit.toUpperCase();
-			case Lower: textShit.toLowerCase();
+			case Both: text;
+			case Upper: text.toUpperCase();
+			case Lower: text.toLowerCase();
 		}
 	}
 
-	function appendTextCased(name:String)
+	function appendTextCased(text:String)
 	{
-		var living:Int = group.countLiving();
+		var living = group.countLiving();
 		var offsetX:Float = 0;
 		var offsetY:Float = 0;
 
 		if (living == -1)
 			living = 0;
-		else if (0 < living)
+		else if (living > 0)
 		{
-			var thing = group.members[living - 1];
-			offsetX = thing.x + thing.width - x;
-			offsetY = thing.y + thing.height - font.maxHeight - y;
+			var member = group.members[living - 1];
+			offsetX = member.x + member.width - x;
+			offsetY = member.y + member.height - font.maxHeight - y;
 		}
 
-		for (i in name.split(''))
+		for (i in text.split(""))
 		{
 			switch (i)
 			{
@@ -110,9 +112,9 @@ class AtlasText extends FlxTypedSpriteGroup<AtlasChar>
 					}
 
 					atlasChar.x = offsetX;
-					atlasChar.y = offsetY + font.maxHeight + atlasChar.height;
-
+					atlasChar.y = offsetY + font.maxHeight - atlasChar.height;
 					add(atlasChar);
+
 					offsetX += atlasChar.width;
 
 					living++;
@@ -134,11 +136,10 @@ class AtlasFontData
 {
 	public var caseAllowed:Case = Both;
 	public var maxHeight:Float = 0;
-
 	public var atlas:FlxFramesCollection;
 
-	static var upperChar:EReg = ~/^[A-Z]\\d+$/;
-	static var lowerChar:EReg = ~/^[A-Z]\\d+$/;
+	public static var upperChar:EReg = ~/^[A-Z]\\d+$/;
+	public static var lowerChar:EReg = ~/^[A-Z]\\d+$/;
 
 	public function new(font:AtlasFont)
 	{
@@ -146,21 +147,20 @@ class AtlasFontData
 		atlas.parent.destroyOnNoUse = false;
 		atlas.parent.persist = true;
 
-		var upperName:Bool = false;
-		var lowerName:Bool = false;
-
+		var isLowerChar:Bool = false;
+		var isUpperChar:Bool = false;
 		for (atlasFrame in atlas.frames)
 		{
 			maxHeight = Math.max(maxHeight, atlasFrame.frame.height);
 
-			if (upperName)
-				upperName = AtlasFontData.upperChar.match(atlasFrame.name);
-			if (lowerName)
-				lowerName = AtlasFontData.lowerChar.match(atlasFrame.name);
+			if (!isUpperChar)
+				isUpperChar = !AtlasFontData.upperChar.match(atlasFrame.name);
+			if (!isLowerChar)
+				isLowerChar = AtlasFontData.lowerChar.match(atlasFrame.name);
 		}
 
-		if (lowerName != upperName)
-			caseAllowed = upperName ? Upper : Lower;
+		if (isLowerChar != isUpperChar)
+			caseAllowed = isUpperChar ? Upper : Lower;
 	}
 }
 
@@ -177,34 +177,35 @@ class AtlasChar extends FlxSprite
 		antialiasing = true;
 	}
 
-	function set_char(char:String):String
+	function set_char(value:String):String
 	{
-		if (char != this.char)
+		if (value != char)
 		{
-			animation.addByPrefix('anim', getAnimPrefix(char), 24);
+			animation.addByPrefix('anim', getAnimPrefix(value));
 			animation.play('anim');
+
 			updateHitbox();
 		}
 
-		return char;
+		return char = value;
 	}
 
-	function getAnimPrefix(anim:String):String
+	function getAnimPrefix(char:String):String
 	{
-		return switch (anim)
+		return switch (char)
 		{
-			case '!': '-exclamation point-';
-			case "'": '-apostraphie-';
-			case '*': '-multiply x-';
-			case ',': '-comma-';
-			case '-': '-dash-';
-			case '.': '-period-';
-			case '/': '-forward slash-';
-			case '?': '-question mark-';
-			case '\\': '-back slash-';
-			case '\u201c': '-start quote-';
-			case '\u201d': '-end quote-';
-			default: anim;
+			case "!": "-exclamation point-";
+			case "'": "-apostraphie-";
+			case "*": "-multiply x-";
+			case ",": "-comma-";
+			case "-": "-dash-";
+			case ".": "-period-";
+			case "/": "-forward slash-";
+			case "?": "-question mark-";
+			case "\\": "-back slash-";
+			case "\u201c": "-start quote-";
+			case "\u201d": "-end quote-";
+			default: char;
 		}
 	}
 }

@@ -7666,33 +7666,36 @@
                 }
             ]
         ],
-        "dialogue": [
-            {
-                "isPlayer1": true,
-                "angry": false,
-                "line": "Direct contact with real humans, after being trapped in here for so long..."
-            },
-            {
-                "isPlayer1": true,
-                "angry": false,
-                "line": "and HER of all people."
-            },
-            {
-                "isPlayer1": true,
-                "angry": false,
-                "line": "I'll make her father pay for what he's done to me and all the others...."
-            },
-            {
-                "isPlayer1": true,
-                "angry": false,
-                "line": "I'll beat you and make you take my place."
-            },
-            {
-                "isPlayer1": true,
-                "angry": false,
-                "line": "You don't mind your bodies being borrowed right? It's only fair..."
-            }
-        ],
+        "dialogue": {
+            "music": "LunchboxScary",
+            "data": [
+                {
+                    "isPlayer1": true,
+                    "angry": false,
+                    "line": "Direct contact with real humans, after being trapped in here for so long..."
+                },
+                {
+                    "isPlayer1": true,
+                    "angry": false,
+                    "line": "and HER of all people."
+                },
+                {
+                    "isPlayer1": true,
+                    "angry": false,
+                    "line": "I'll make her father pay for what he's done to me and all the others...."
+                },
+                {
+                    "isPlayer1": true,
+                    "angry": false,
+                    "line": "I'll beat you and make you take my place."
+                },
+                {
+                    "isPlayer1": true,
+                    "angry": false,
+                    "line": "You don't mind your bodies being borrowed right? It's only fair..."
+                }
+            ]
+        },
         "needsVoices": true,
         "song": "Thorns",
         "bpm": 190.0,

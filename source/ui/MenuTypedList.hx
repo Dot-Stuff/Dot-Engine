@@ -190,7 +190,12 @@ class MenuTypedItem extends ui.MenuItem
 
     public function setEmptyBackground()
     {
+		var orgWidth = width;
+		var orgHeight = height;
+
         makeGraphic(1, 1, 0);
+		width = orgWidth;
+		height = orgHeight;
     }
 
 	@:noCompletion

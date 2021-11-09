@@ -4231,13 +4231,16 @@
                 }
             ]
         ],
-        "dialogue": [
-            {
-                "isPlayer1": true,
-                "dialogue": "Not too shabby boy.",
-                "angry": false
-            }
-        ],
+        "dialogue": {
+            "music": "smileFace",
+            "data": [
+                {
+                    "isPlayer1": true,
+                    "angry": false,
+                    "line": "Not too shabby boy."
+                }
+            ]
+        },
         "needsVoices": true,
         "song": "Fresh",
         "bpm": 120.0,

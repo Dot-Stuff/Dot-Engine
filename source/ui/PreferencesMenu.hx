@@ -33,7 +33,11 @@ class PreferencesMenu extends ui.OptionsState.Page
         createPrefItem("flashing menu", "flashing-menu", false);
         createPrefItem("Camera Zooming on Beat", "camera-zoom", false);
         createPrefItem("FPS Counter", "fps-counter", true);
-        createPrefItem("Auto Pause", "auto-pause", false);
+
+        if (FlxG.random.bool(0.01))
+            createPrefItem("Auto Penis", "auto-pause", false);
+        else
+            createPrefItem("Auto Pause", "auto-pause", false);
 
         camFollow = new FlxObject(FlxG.width / 2, 0, 140, 70);
 
@@ -112,7 +116,7 @@ class PreferencesMenu extends ui.OptionsState.Page
 
     public function createCheckbox(name:String)
     {
-        var checkbox:CheckboxThingie = new CheckboxThingie(0, 120 * items.length - 1, PreferencesMenu.preferences.get(name));
+        var checkbox:CheckboxThingie = new CheckboxThingie(0, 120 * (items.length - 1), PreferencesMenu.preferences.get(name));
         checkboxes.push(checkbox);
 
         add(checkbox);

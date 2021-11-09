@@ -5109,23 +5109,26 @@
                 }
             ]
         ],
-        "dialogue": [
-            {
-                "isPlayer1": true,
-                "dialogue": "gah you think you're hot stuff?",
-                "angry": false
-            },
-            {
-                "isPlayer1": true,
-                "dialogue": "If you can beat me here...",
-                "angry": false
-            },
-            {
-                "isPlayer1": true,
-                "dialogue": "Only then I will even CONSIDER\nletting you date my daughter!",
-                "angry": true
-            }
-        ],
+        "dialogue": {
+            "music": "giveALilBitBack",
+            "data": [
+                {
+                    "isPlayer1": true,
+                    "angry": false,
+                    "line": "gah you think you're\nhot stuff?"
+                },
+                {
+                    "isPlayer1": true,
+                    "angry": false,
+                    "dialogue": "If you can beat me here..."
+                },
+                {
+                    "isPlayer1": true,
+                    "angry": true,
+                    "dialogue": "Only then I will even CONSIDER\nletting you date my daughter!"
+                }
+            ]
+        },
         "needsVoices": true,
         "song": "Dadbattle",
         "bpm": 180.0,

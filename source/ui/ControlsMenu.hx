@@ -319,12 +319,11 @@ class InputItem extends TextMenuItem
 	public var control:Control;
 	var device:Device;
 
-	public var input:Int;
-	var index:Int;
+	public var input:Int = -1;
+	var index:Int = -1;
 
 	public function new(x:Float, y:Float, device:Device, control:Control, index:Int, newCallback:Void->Void):Void
 	{
-		this.input = this.index = -1;
 		this.device = device;
 		this.control = control;
 		this.index = index;

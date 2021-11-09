@@ -5,9 +5,9 @@ import ui.AtlasText.AtlasFont;
 
 class TextMenuList extends MenuTypedList
 {
-    public function createItem(?x:Float, ?y:Float, name:String, font:AtlasFont = Bold, newCallback:Void->Void, ?fireInstantly:Bool = false):Dynamic
+    public function createItem(x:Float, y:Float, name:String, font:AtlasFont = Bold, callback:Void->Void, ?fireInstantly:Bool = false):Dynamic
     {
-        var menuItem = new TextMenuItem(x, y, name, font, newCallback);
+        var menuItem = new TextMenuItem(x, y, name, font, callback);
         menuItem.fireInstantly = fireInstantly;
 
         return addItem(name, menuItem);
@@ -16,9 +16,9 @@ class TextMenuList extends MenuTypedList
 
 class TextMenuItem extends TextTypedMenuItem
 {
-    public function new(?x:Float, ?y:Float, newName:String, font:AtlasFont = Bold, newCallback:Void->Void):Void
+    public function new(x:Float, y:Float, name:String, font:AtlasFont = Bold, callback:Void->Void):Void
     {
-        super(x, y, new AtlasText(0, 0, newName, font), newName, newCallback);
+        super(x, y, new AtlasText(0, 0, name, font), name, callback);
 
         setEmptyBackground();
     }
@@ -26,7 +26,7 @@ class TextMenuItem extends TextTypedMenuItem
 
 class TextTypedMenuItem extends MenuTypedItem
 {
-    public override function setItem(itemName:String, itemCallback:Void->Void)
+    public override function setItem(itemName:String, callback:Void->Void)
     {
         if (label != null)
         {
@@ -36,7 +36,7 @@ class TextTypedMenuItem extends MenuTypedItem
             height = label.height;
         }
 
-        super.setItem(itemName, itemCallback);
+        super.setItem(itemName, callback);
     }
 
     override function set_label(atlasName:AtlasText):AtlasText

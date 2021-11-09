@@ -27,7 +27,7 @@ class PauseSubState extends MusicBeatSubstate
 
 	var practiceText:FlxText;
 
-	public function new(x:Float, y:Float)
+	public function new()
 	{
 		super();
 

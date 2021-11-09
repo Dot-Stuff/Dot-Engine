@@ -6097,23 +6097,26 @@
                 }
             ]
         ],
-        "dialogue": [
-            {
-                "isPlayer1": true,
-                "angry": false,
-                "line": "Ah, a new fair maiden has come in search of true love!"
-            },
-            {
-                "isPlayer1": true,
-                "angry": false,
-                "line": "A serenade between gentlemen shall decide where her beautiful heart shall reside."
-            },
-            {
-                "isPlayer1": false,
-                "angry": false,
-                "line": "Beep bo bop"
-            }
-        ],
+        "dialogue": {
+            "music": "Lunchbox",
+            "data": [
+                {
+                    "isPlayer1": true,
+                    "angry": false,
+                    "line": "Ah, a new fair maiden has come in search of true love!"
+                },
+                {
+                    "isPlayer1": true,
+                    "angry": false,
+                    "line": "A serenade between gentlemen shall decide where her beautiful heart shall reside."
+                },
+                {
+                    "isPlayer1": false,
+                    "angry": false,
+                    "line": "Beep bo bop"
+                }
+            ]
+        },
         "needsVoices": true,
         "song": "Senpai",
         "bpm": 144.0,

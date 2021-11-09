@@ -1,7 +1,7 @@
 package;
 
 import Section.SwagSection;
-import Section.DialogueSection;
+import Section.SwagDialogue;
 import haxe.Json;
 import lime.utils.Assets;
 
@@ -11,7 +11,7 @@ typedef SwagSong =
 {
 	var song:String;
 	var notes:Array<Array<SwagSection>>;
-	var dialogue:Array<DialogueSection>;
+	var dialogue:SwagDialogue;
 	var bpm:Float;
 	var needsVoices:Bool;
 	var stageDefault:String;
@@ -27,7 +27,7 @@ class Song
 {
 	public var song:String;
 	public var notes:Array<Array<SwagSection>>;
-	public var dialogue:Array<DialogueSection>; // TODO: Maybe redo this dialogue system and make it more moddable.
+	public var dialogue:SwagDialogue;
 	public var bpm:Float;
 	public var needsVoices:Bool = true;
 	public var stageDefault:String = 'stage';
