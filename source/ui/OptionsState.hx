@@ -50,6 +50,7 @@ class OptionsState extends MusicBeatState
 		var optionsPage:OptionsMenu = addPage(Options, new OptionsMenu(false));
 		var prefsPage:PreferencesMenu = addPage(Preferences, new PreferencesMenu());
 		var controlsPage:ControlsMenu = addPage(Controls, new ControlsMenu());
+		var colorsPage:ColorsMenu = addPage(Colors, new ColorsMenu());
 		var moddingPage:ModdingSubstate = addPage(Mods, new ModdingSubstate());
 
 		if (optionsPage.hasMultipleOptions())
@@ -61,6 +62,10 @@ class OptionsState extends MusicBeatState
 			});
 
 			prefsPage.onExit.add(function() {
+				switchPage(Options);
+			});
+
+			colorsPage.onExit.add(function() {
 				switchPage(Options);
 			});
 
@@ -200,6 +205,10 @@ class OptionsMenu extends Page
 
 		createItem('controls', function() {
 			onSwitch.dispatch(Controls);
+		});
+
+		createItem('colors', function() {
+			onSwitch.dispatch(Colors);
 		});
 
 		createItem('mods', function() {

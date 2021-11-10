@@ -1,7 +1,6 @@
 package;
 
 import ui.AtlasText;
-import haxe.Json;
 import shadersLmfao.ColorSwap;
 import ui.PreferencesMenu;
 import flixel.FlxSprite;
@@ -13,8 +12,6 @@ import flixel.group.FlxGroup;
 import flixel.input.gamepad.FlxGamepad;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
-import flixel.tweens.FlxEase;
-import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import openfl.Assets;
@@ -38,7 +35,6 @@ class TitleState extends MusicBeatState
 
 	var blackScreen:FlxSprite;
 	var credGroup:FlxGroup;
-	var credTextShit:Alphabet;
 	var textGroup:FlxGroup;
 	var ngSpr:FlxSprite;
 
@@ -187,13 +183,6 @@ class TitleState extends MusicBeatState
 		blackScreen = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		credGroup.add(blackScreen);
 
-		credTextShit = new Alphabet(0, 0, "ninjamuffin99\nPhantomArcade\nkawaisprite\nevilsk8er", true);
-		credTextShit.screenCenter();
-
-		// credTextShit.alignment = CENTER;
-
-		credTextShit.visible = false;
-
 		ngSpr = new FlxSprite(0, FlxG.height * 0.52).loadGraphic(Paths.image('newgrounds_logo'));
 		add(ngSpr);
 		ngSpr.visible = false;
@@ -201,8 +190,6 @@ class TitleState extends MusicBeatState
 		ngSpr.updateHitbox();
 		ngSpr.screenCenter(X);
 		ngSpr.antialiasing = true;
-
-		FlxTween.tween(credTextShit, {y: credTextShit.y + 20}, 2.9, {ease: FlxEase.quadInOut, type: PINGPONG});
 
 		FlxG.mouse.visible = false;
 
@@ -212,7 +199,6 @@ class TitleState extends MusicBeatState
 			initialized = true;
 
 		startedIntro = true;
-		// credGroup.add(credTextShit);
 	}
 
 	function getIntroTextShit():Array<Array<String>>
@@ -321,6 +307,14 @@ class TitleState extends MusicBeatState
 		}
 	}
 
+	function addMoreText(text:String)
+	{
+		var coolText:AtlasText = new AtlasText(0, (textGroup.length * 60) + 200, text, Bold);
+		coolText.screenCenter(X);
+		credGroup.add(coolText);
+		textGroup.add(coolText);
+	}
+
 	function deleteCoolText()
 	{
 		while (textGroup.members.length > 0)
@@ -348,13 +342,13 @@ class TitleState extends MusicBeatState
 				case 1:
 					createText(['ninjamuffin99', 'phantomArcade', 'kawaisprite', 'evilsk8er']);
 				case 3:
-					createText(['present']);
+					addMoreText('present');
 				case 4:
 					deleteCoolText();
 				case 5:
 					createText(['In association', 'with']);
 				case 7:
-					createText(['newgrounds']);
+					addMoreText('newgrounds');
 					ngSpr.visible = true;
 				case 8:
 					deleteCoolText();
@@ -362,15 +356,15 @@ class TitleState extends MusicBeatState
 				case 9:
 					createText([curWacky[0]]);
 				case 11:
-					createText([curWacky[1]]);
+					addMoreText(curWacky[1]);
 				case 12:
 					deleteCoolText();
 				case 13:
-					createText(['Friday']);
+					addMoreText('Friday');
 				case 14:
-					createText(['Night']);
+					addMoreText('Night');
 				case 15:
-					createText(['Funkin']);
+					addMoreText('Funkin');
 				case 16:
 					skipIntro();
 			}

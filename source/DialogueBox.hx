@@ -225,7 +225,7 @@ class DialogueBox extends MusicBeatSubstate
 	{
 		cleanDialog();
 
-		//dialogueEnded = false;
+		dialogueEnded = false;
 
 		// TODO: Clean up this atSchool method >:(
 		if (atSchool())
@@ -272,11 +272,10 @@ class DialogueBox extends MusicBeatSubstate
 		{
 			dialogue.text = dialogueData[dialogueIndex].line;
 
+			// TODO: Finish the dialogue text
 			playAnim('complete');
 			trace('dialogue finish');
 
-			dialogueEnded = true;
-		
 			/*var theDialog:AtlasText = new AtlasText(0, 70, dialogueData[dialogueIndex].line, Default);
 			if (dialogueData[dialogueIndex].isPlayer1)
 				theDialog.personTalking = PlayState.SONG.player1.toUpperCase();

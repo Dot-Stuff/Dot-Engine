@@ -3,7 +3,6 @@ package ui;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
-import flixel.FlxSubState;
 #if desktop
 import sys.FileSystem;
 #end
@@ -93,7 +92,7 @@ class ModdingSubstate extends ui.OptionsState.Page
 		#if desktop
 		for (file in FileSystem.readDirectory('./mods'))
 		{
-			if (FileSystem.isDirectory('./mods' + file))
+			if (FileSystem.isDirectory('./mods/' + file))
 				modFolders.push(file);
 		}
 
@@ -101,6 +100,7 @@ class ModdingSubstate extends ui.OptionsState.Page
 
 		modList = polymod.Polymod.scan('./mods');
 
+		trace('Whayt: ' + modFolders);
 		trace(modList);
 
 		var loopNum:Int = 0;

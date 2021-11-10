@@ -155,6 +155,8 @@ class Note extends FlxSprite
 	{
 		super.update(elapsed);
 
+		updateColors();
+
 		if (mustPress)
 		{
 			// Miss on the NEXT frame so lag doesn't make u miss notes.

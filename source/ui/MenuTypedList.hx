@@ -182,10 +182,10 @@ class MenuTypedItem extends ui.MenuItem
 {
     public var label(default, set):AtlasText;
 
-    public function new(x:Float, y:Float, atlasText:AtlasText, newName:String, newCallback:Void->Void)
+    public function new(x:Float, y:Float, label:AtlasText, name:String, callback:Void->Void)
     {
-        super(x, y, newName, newCallback);
-        label = atlasText;
+        super(x, y, name, callback);
+        this.label = label;
     }
 
     public function setEmptyBackground()

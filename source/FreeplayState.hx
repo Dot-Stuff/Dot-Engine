@@ -1,5 +1,6 @@
 package;
 
+import flixel.math.FlxMath;
 import flixel.tweens.FlxTween;
 import flixel.FlxSprite;
 import flixel.FlxState;
@@ -33,10 +34,10 @@ class FreeplayState extends MusicBeatState
 	var bg:FlxSprite;
 	var scoreBG:FlxSprite;
 
-	private var grpSongs:FlxTypedGroup<Alphabet>;
+	private var grpSongs:FlxTypedGroup<MenuText>;
 	private var curPlaying:Bool = false;
 
-	private var iconArray:Array<HealthIcon> = [];
+	private var grpsIcons:FlxTypedGroup<HealthIcon>;
 
 	private var coolColors:Array<FlxColor> = [0xFF9271FD, 0xFF223344, 0xFF941653, 0xFFFC96D7, 0xFFA0D1FF, 0xFFFF78BF, 0xFFF6B604];
 
@@ -97,22 +98,21 @@ class FreeplayState extends MusicBeatState
 		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		add(bg);
 
-		grpSongs = new FlxTypedGroup<Alphabet>();
+		grpSongs = new FlxTypedGroup<MenuText>();
 		add(grpSongs);
+
+		grpsIcons = new FlxTypedGroup<HealthIcon>();
+		add(grpsIcons);
 
 		for (i in 0...songs.length)
 		{
-			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, songs[i].songName, true, false);
-			songText.isMenuItem = true;
+			var songText:MenuText = new MenuText(0, (70 * i) + 30, songs[i].songName, Bold);
 			songText.targetY = i;
 			grpSongs.add(songText);
 
 			var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
 			icon.sprTracker = songText;
-
-			// using a FlxGroup is too much fuss!
-			iconArray.push(icon);
-			add(icon);
+			grpsIcons.add(icon);
 		}
 
 		scoreText = new FlxText(FlxG.width * 0.7, 5, 0, "", 32);
@@ -302,25 +302,20 @@ class FreeplayState extends MusicBeatState
 		});
 		#end
 
-		var bullShit:Int = 0;
-
-		for (i in 0...iconArray.length)
+		for (i in 0...grpSongs.members.length)
 		{
-			iconArray[i].alpha = 0.6;
-		}
+			var item = grpSongs.members[i];
+			var icon = grpsIcons.members[i];
 
-		iconArray[curSelected].alpha = 1;
-
-		for (item in grpSongs.members)
-		{
-			item.targetY = bullShit - curSelected;
-			bullShit++;
+			item.targetY = i - curSelected;
 
 			item.alpha = 0.6;
+			icon.alpha = 0.6;
 
 			if (item.targetY == 0)
 			{
 				item.alpha = 1;
+				icon.alpha = 1;
 			}
 		}
 	}
@@ -337,5 +332,20 @@ class SongMetadata
 		this.songName = song;
 		this.week = week;
 		this.songCharacter = songCharacter;
+	}
+}
+
+class MenuText extends ui.AtlasText
+{
+	public var targetY:Float = 0;
+
+	override function update(elapsed:Float)
+	{
+		var scaledY = FlxMath.remapToRange(targetY, 0, 1, 0, 1.3);
+
+		y = FlxMath.lerp(y, (scaledY * 120) + (FlxG.height * 0.48), 0.16);
+		x = FlxMath.lerp(x, (targetY * 20) + 90, 0.16);
+
+		super.update(elapsed);
 	}
 }

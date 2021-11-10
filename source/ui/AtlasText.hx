@@ -27,7 +27,7 @@ class AtlasText extends FlxTypedSpriteGroup<AtlasChar>
 	public static var fonts:EnumValueMap<AtlasFont, AtlasFontData> = new EnumValueMap<AtlasFont, AtlasFontData>();
 	public var font:AtlasFontData;
 
-	public function new(?x:Float, ?y:Float, text:String, ?font:AtlasFont = Default)
+	public function new(x:Float, y:Float, text:String, ?font:AtlasFont = Default)
 	{
 		if (!AtlasText.fonts.exists(font))
 			AtlasText.fonts.set(font, new AtlasFontData(font));

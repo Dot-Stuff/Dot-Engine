@@ -25,7 +25,7 @@ class ControlsMenu extends ui.OptionsState.Page
 	var menuCamera:FlxCamera;
 	var camFollow:FlxObject;
 
-	var labels:FlxTypedGroup<FlxSprite>;
+	var labels:FlxTypedGroup<AtlasText>;
 
 	var controlGrid:MenuTypedList;
 
@@ -44,7 +44,7 @@ class ControlsMenu extends ui.OptionsState.Page
 		menuCamera.bgColor = 0;
 		camera = menuCamera;
 
-		labels = new FlxTypedGroup<FlxSprite>();
+		labels = new FlxTypedGroup<AtlasText>();
 		var atlasTexts = new FlxTypedGroup<AtlasText>();
 
 		controlGrid = new MenuTypedList(Columns(2), Vertical);

@@ -6,25 +6,25 @@ class AtlasMenuItem extends ui.MenuItem
 {
 	var atlas:FlxFramesCollection;
 
-	public function new(x:Float, y:Float, newName:String, newAtlas:FlxFramesCollection, newCallback:Void->Void):Void
+	public function new(x:Float, y:Float, name:String, atlas:FlxFramesCollection, callback:Void->Void):Void
 	{
-		atlas = newAtlas;
+		this.atlas = atlas;
 
-		super(x, y, newName, newCallback);
+		super(x, y, name, callback);
 	}
 
-	public override function setData(newName:String, newCallback:Void->Void):Void
+	public override function setData(name:String, callback:Void->Void):Void
 	{
 		frames = atlas;
-		animation.addByPrefix('idle', newName + ' idle', 24);
-		animation.addByPrefix('selected', newName + ' selected', 24);
+		animation.addByPrefix('idle', name + ' idle', 24);
+		animation.addByPrefix('selected', name + ' selected', 24);
 
-		super.setData(newName, newCallback);
+		super.setData(name, callback);
 	}
 
-	public function changeAnim(animName:String):Void
+	public function changeAnim(name:String):Void
 	{
-		animation.play(animName);
+		animation.play(name);
 		updateHitbox();
 	}
 
@@ -36,12 +36,6 @@ class AtlasMenuItem extends ui.MenuItem
 	public override function select():Void
 	{
 		changeAnim('selected');
-	}
-
-	public override function destroy():Void
-	{
-		super.destroy();
-		atlas = null;
 	}
 
 	public override function get_selected():Bool

@@ -10,12 +10,12 @@ class MenuItem extends FlxSprite
     public var name:String;
     public var callback:Void->Void;
 
-    public function new(x:Float, y:Float, newName:String, newCallback:Void->Void):Void
+    public function new(x:Float, y:Float, name:String, callback:Void->Void):Void
     {
         super(x, y);
 
         antialiasing = true;
-        setData(newName, newCallback);
+        setData(name, callback);
         idle();
     }
 
@@ -24,17 +24,17 @@ class MenuItem extends FlxSprite
 		return alpha == 1;
 	}
 
-	public function setData(dataName:String, dataCallback:Void->Void):Void
+	public function setData(name:String, callback:Void->Void):Void
 	{
-		name = dataName;
+		this.name = name;
 
-		if (dataCallback != null)
-            callback = dataCallback;
+		if (callback != null)
+            this.callback = callback;
 	}
 
-	public function setItem(itemName:String, itemCallback:Void->Void):Void
+	public function setItem(name:String, callback:Void->Void):Void
 	{
-		setData(itemName, itemCallback);
+		setData(name, callback);
 		selected ? select() : idle();
 	}
 
