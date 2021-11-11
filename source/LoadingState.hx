@@ -148,7 +148,7 @@ class LoadingState extends MusicBeatState
 		#if NO_PRELOAD_ALL
 		var loaded = isSoundLoaded(getSongPath())
 			&& (!PlayState.SONG.needsVoices || isSoundLoaded(getVocalPath()))
-			&& isLibraryLoaded("shared");
+			&& isLibraryLoaded("shared") && isLibraryLoaded("week" + PlayState.storyWeek);
 
 		if (!loaded)
 			return new LoadingState(target, stopMusic);
