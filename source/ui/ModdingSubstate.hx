@@ -90,7 +90,7 @@ class ModdingSubstate extends ui.OptionsState.Page
 		modFolders = [];
 
 		#if desktop
-		for (file in FileSystem.readDirectory('./mods'))
+		for (file in FileSystem.readDirectory('./mods/'))
 		{
 			if (FileSystem.isDirectory('./mods/' + file))
 				modFolders.push(file);
@@ -98,7 +98,7 @@ class ModdingSubstate extends ui.OptionsState.Page
 
 		enabledMods = [];
 
-		modList = polymod.Polymod.scan('./mods');
+		modList = polymod.Polymod.scan('./mods/');
 
 		trace('Whayt: ' + modFolders);
 		trace(modList);

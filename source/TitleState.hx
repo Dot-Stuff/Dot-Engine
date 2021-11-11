@@ -54,10 +54,6 @@ class TitleState extends MusicBeatState
 
 		FlxG.sound.muteKeys = [ZERO, NUMPADZERO];
 
-		#if polymod
-		polymod.Polymod.init({modRoot: "mods", dirs: ['introMod'], framework: OPENFL});
-		#end
-
 		curWacky = FlxG.random.getObject(getIntroTextShit());
 
 		FlxG.sound.cache(Paths.music('freakyMenu'));

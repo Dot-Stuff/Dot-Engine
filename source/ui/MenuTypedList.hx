@@ -1,6 +1,5 @@
 package ui;
 
-import flixel.FlxSprite;
 import flixel.effects.FlxFlicker;
 import flixel.group.FlxGroup;
 import haxe.ds.StringMap;
@@ -14,8 +13,8 @@ class MenuTypedList extends FlxTypedGroup<MenuItem>
 	public var wrapMode:WrapMode = WrapMode.Both;
 	public var enabled:Bool = true;
 
-	public var onAcceptPress:FlxTypedSignal<FlxSprite->Void> = new FlxTypedSignal<FlxSprite->Void>();
-	public var onChange:FlxTypedSignal<FlxSprite->Void> = new FlxTypedSignal<FlxSprite->Void>();
+	public var onAcceptPress:FlxTypedSignal<MenuItem->Void> = new FlxTypedSignal<MenuItem->Void>();
+	public var onChange:FlxTypedSignal<MenuItem->Void> = new FlxTypedSignal<MenuItem->Void>();
 
 	public var selectedIndex:Int = 0;
 	public var navControls:NavControls = NavControls.Vertical;
@@ -37,7 +36,7 @@ class MenuTypedList extends FlxTypedGroup<MenuItem>
 		super();
 	}
 
-	public function addItem(name:String, menuItem:MenuItem):FlxSprite
+	public function addItem(name:String, menuItem:MenuItem):MenuItem
 	{
 		if (selectedIndex == length)
 			menuItem.select();
@@ -86,10 +85,10 @@ class MenuTypedList extends FlxTypedGroup<MenuItem>
 					navIndex = navAxis(selectedIndex, length, upP, downP, wrap);
 				case Both:
 					navIndex = navAxis(selectedIndex, length, leftP || upP, rightP || downP, wrapMode != None);
-				case Columns(colm):
-					navIndex = navGrid(colm, leftP, rightP, wrap, upP, downP, wrap);
-				case Rows(row):
-					navIndex = navGrid(row, upP, downP, wrap, leftP, rightP, wrap);
+				case Columns(num):
+					navIndex = navGrid(num, leftP, rightP, wrap, upP, downP, wrap);
+				case Rows(num):
+					navIndex = navGrid(num, upP, downP, wrap, leftP, rightP, wrap);
 			}
 
 			if (selectedIndex != navIndex)

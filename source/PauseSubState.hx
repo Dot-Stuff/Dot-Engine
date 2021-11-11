@@ -1,5 +1,6 @@
 package;
 
+import FreeplayState.MenuText;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.FlxSprite;
 import flixel.system.FlxSound;
@@ -10,7 +11,7 @@ import flixel.util.FlxColor;
 
 class PauseSubState extends MusicBeatSubstate
 {
-	var grpMenuShit:FlxTypedGroup<Alphabet>;
+	var grpMenuShit:FlxTypedGroup<MenuText>;
 
 	var menuItems:Array<String> = [];
 	var difficultyChoices:Array<String> = ["EASY", "NORMAL", "HARD", "BACK"];
@@ -88,14 +89,12 @@ class PauseSubState extends MusicBeatSubstate
 		FlxTween.tween(blueBalled, {alpha: 1, y: blueBalled.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.7});
 		FlxTween.tween(practiceText, {alpha: 1, y: practiceText.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.9});
 
-		grpMenuShit = new FlxTypedGroup<Alphabet>();
+		grpMenuShit = new FlxTypedGroup<MenuText>();
 		add(grpMenuShit);
 
 		for (i in 0...menuItems.length)
 		{
-			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, menuItems[i], true, false);
-			songText.isMenuItem = true;
-			songText.targetY = i;
+			var songText:MenuText = new MenuText(0, (70 * i) + 30, menuItems[i], Bold);
 			grpMenuShit.add(songText);
 		}
 
@@ -111,9 +110,7 @@ class PauseSubState extends MusicBeatSubstate
 
 		for (i in 0...menuItems.length)
 		{
-			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, menuItems[i], true, false);
-			songText.isMenuItem = true;
-			songText.targetY = i;
+			var songText:MenuText = new MenuText(0, (70 * i) + 30, menuItems[i], Bold);
 			grpMenuShit.add(songText);
 		}
 
@@ -183,21 +180,13 @@ class PauseSubState extends MusicBeatSubstate
 		if (curSelected >= menuItems.length)
 			curSelected = 0;
 
-		var bullShit:Int = 0;
-
-		for (item in grpMenuShit.members)
+		for (i in 0...grpMenuShit.members.length)
 		{
-			item.targetY = bullShit - curSelected;
-			bullShit++;
+			var item = grpMenuShit.members[i];
 
-			item.alpha = 0.6;
-			// item.setGraphicSize(Std.int(item.width * 0.8));
+			item.targetY = i - curSelected;
 
-			if (item.targetY == 0)
-			{
-				item.alpha = 1;
-				// item.setGraphicSize(Std.int(item.width));
-			}
+			item.alpha = item.targetY == 0 ? 1 : 0.6;
 		}
 	}
 }

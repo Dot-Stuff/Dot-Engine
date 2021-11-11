@@ -148,7 +148,7 @@ class Note extends FlxSprite
 
 	function updateColors()
 	{
-		colorSwap.update(arrowColors[noteData]);
+		colorSwap.update(Note.arrowColors[noteData]);
 	}
 
 	override function update(elapsed:Float)

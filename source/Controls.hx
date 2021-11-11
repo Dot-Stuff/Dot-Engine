@@ -351,8 +351,10 @@ class Controls extends FlxActionSet
 			var h = getInputsFor(i, device);
 			b = b && h.length == 0;
 
-			controlData[i.getIndex()] = h;
+			controlData[Control.createByIndex(i.getIndex()).getIndex()] = h;
 		}
+
+		trace(controlData);
 
 		return b ? null : controlData;
 	}

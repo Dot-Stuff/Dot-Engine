@@ -87,7 +87,7 @@ class Prompt extends FlxSubState
     public function createButtonsHelper(option1:String, ?option2:String)
     {
         buttons.exists = true;
-        var yesBtn:MenuItem = buttons.createItem(0, 0, option1, null, function()
+        var yesBtn = buttons.createItem(0, 0, option1, null, function()
         {
             onYes();
         });
@@ -99,7 +99,7 @@ class Prompt extends FlxSubState
         if (option2 != null)
         {
             yesBtn.x = FlxG.width - yesBtn.width - 100;
-            var noBtn:MenuItem = buttons.createItem(0, 0, option2, null, function()
+            var noBtn = buttons.createItem(0, 0, option2, null, function()
             {
                 onNo();
             });

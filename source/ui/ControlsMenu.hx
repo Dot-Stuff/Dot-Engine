@@ -63,7 +63,7 @@ class ControlsMenu extends ui.OptionsState.Page
 
 			deviceListSelected = true;
 
-			var keyboardItem:TextMenuItem = deviceList.createItem(0, 0, "Keyboard", Bold, function()
+			var keyboardItem = deviceList.createItem(0, 0, "Keyboard", Bold, function()
 			{
 				selectDevice(Keys);
 			});
@@ -71,7 +71,7 @@ class ControlsMenu extends ui.OptionsState.Page
 			keyboardItem.x = FlxG.width / 2 - keyboardItem.width - 30;
 			keyboardItem.y = (c.height - keyboardItem.height) / 2;
 
-			var gamepadItem:TextMenuItem = deviceList.createItem(0, 0, "Gamepad", Bold, function()
+			var gamepadItem = deviceList.createItem(0, 0, "Gamepad", Bold, function()
 			{
 				selectDevice(Device.Gamepad(FlxG.gamepads.firstActive.id));
 			});
@@ -183,11 +183,10 @@ class ControlsMenu extends ui.OptionsState.Page
 	{
 		currentDevice = selectedDevice;
 
-		for (i in controlGrid.members)
+		for (i in 0...controlGrid.members.length)
 		{
-			var idk:InputItem = cast i;
-
-			idk.updateDevice(currentDevice);
+			var item:InputItem = cast controlGrid.members[i];
+			item.updateDevice(currentDevice);
 		}
 
 		var b = selectedDevice == Keys ? 'Escape' : 'Back';

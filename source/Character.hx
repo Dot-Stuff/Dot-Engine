@@ -134,12 +134,10 @@ class Character extends FlxSprite
 				frames = Paths.getSparrowAtlas('characters/Mom_Assets');
 
 				quickAnimAdd('idle', "Mom Idle");
-				quickAnimAdd('singUP', "Mom Up Pose");
-				quickAnimAdd('singDOWN', "MOM DOWN POSE");
-				quickAnimAdd('singLEFT', 'Mom Left Pose');
-				// ANIMATION IS CALLED MOM LEFT POSE BUT ITS FOR THE RIGHT
-				// CUZ DAVE IS DUMB!
-				quickAnimAdd('singRIGHT', 'Mom Pose Left');
+				quickAnimAdd('singUP', "Mom Sing Up");
+				quickAnimAdd('singDOWN', "Mom Sing Down");
+				quickAnimAdd('singLEFT', 'Mom Sing Left');
+				quickAnimAdd('singRIGHT', 'Mom Sing Right');
 
 				loadOffsetFile(curCharacter);
 
@@ -149,12 +147,10 @@ class Character extends FlxSprite
 				frames = Paths.getSparrowAtlas('characters/momCar');
 
 				quickAnimAdd('idle', "Mom Idle");
-				quickAnimAdd('singUP', "Mom Up Pose");
-				quickAnimAdd('singDOWN', "MOM DOWN POSE");
-				quickAnimAdd('singLEFT', 'Mom Left Pose');
-				// ANIMATION IS CALLED MOM LEFT POSE BUT ITS FOR THE RIGHT
-				// CUZ DAVE IS DUMB!
-				quickAnimAdd('singRIGHT', 'Mom Pose Left');
+				quickAnimAdd('singUP', "Mom Sing Up");
+				quickAnimAdd('singDOWN', "Mom Sing Down");
+				quickAnimAdd('singLEFT', 'Mom Sing Left');
+				quickAnimAdd('singRIGHT', 'Mom Sing Right');
 				animation.addByIndices("idleHair", "Mom Idle", [10, 11, 12, 13], "", 24, true);
 
 				loadOffsetFile(curCharacter);

@@ -106,7 +106,7 @@ class FreeplayState extends MusicBeatState
 
 		for (i in 0...songs.length)
 		{
-			var songText:MenuText = new MenuText(0, (70 * i) + 30, songs[i].songName, Bold);
+			var songText:MenuText = new MenuText(0, (70 * i) + 30, songs[i].songName.replace('-', ''), Bold);
 			songText.targetY = i;
 			grpSongs.add(songText);
 
@@ -173,10 +173,7 @@ class FreeplayState extends MusicBeatState
 		var coolerColoir = coolColors[coolColors.length % songs[curSelected].week];
 		var lerpColor = CoolUtil.camLerpShit(0.045);
 
-		//bg.color = bgColor;
-
-		if (Math.abs(lerpScore - intendedScore) <= 10)
-			lerpScore = intendedScore;
+		bg.color = bgColor;
 
 		scoreText.text = "PERSONAL BEST:" + Math.round(lerpScore);
 

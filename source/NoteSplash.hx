@@ -1,12 +1,15 @@
 package;
 
+import shadersLmfao.ColorSwap;
 import flixel.FlxSprite;
 
 using StringTools;
 
 class NoteSplash extends FlxSprite
 {
-	public function new(x:Float, y:Float, noteData:Int)
+	private var colorSwap:ColorSwap;
+
+	public function new(x:Float, y:Float, noteData:Int = 0)
 	{
 		super(x, y);
 
@@ -25,21 +28,22 @@ class NoteSplash extends FlxSprite
 		animation.addByPrefix("note0-1", "note impact 2 purple", 24, false);
 		animation.addByPrefix("note3-1", "note impact 2 red", 24, false);
 
+		colorSwap = new ColorSwap();
+		shader = colorSwap.shader;
+		updateColors(noteData);
+
 		setupNoteSplash(x, y, noteData);
 	}
 
-	public function setupNoteSplash(noteX:Float, noteY:Float, noteData:Int)
+	public function setupNoteSplash(noteX:Float, noteY:Float, noteData:Int = 0)
 	{
-		#if web
-		if (noteData == null)
-			return;
-		#end
-
 		setPosition(noteX, noteY);
 
 		alpha = 0.6;
 
 		animation.play('note$noteData-${FlxG.random.int(0, 1)}', true);
+		updateColors(noteData);
+
 		var curAnimation = animation.curAnim;
 
 		if (curAnimation != null)
@@ -49,11 +53,16 @@ class NoteSplash extends FlxSprite
 		offset.set(0.3 * width, 0.3 * height);
 	}
 
+	function updateColors(noteData:Int)
+	{
+		colorSwap.update(Note.arrowColors[noteData]);
+	}
+
 	public override function update(elapsed:Float)
 	{
-		super.update(elapsed);
-
 		if (animation.curAnim.finished)
 			kill();
+
+		super.update(elapsed);
 	}
 }

@@ -26,8 +26,6 @@ class GameOverSubstate extends MusicBeatSubstate
 
 		FlxG.sound.cache(Paths.music('gameOver$stageSuffix'));
 		FlxG.sound.cache(Paths.music('gameOverEnd$stageSuffix'));
-		
-		FlxG.sound.cache(Paths.sound('fnf_loss_sfx$stageSuffix'));
 
 		Conductor.songPosition = 0;
 

@@ -114,9 +114,9 @@ class PreferencesMenu extends ui.OptionsState.Page
         trace(thing);
     }
 
-    public function createCheckbox(name:String)
+    public function createCheckbox(pref:String)
     {
-        var checkbox:CheckboxThingie = new CheckboxThingie(0, 120 * (items.length - 1), PreferencesMenu.preferences.get(name));
+        var checkbox:CheckboxThingie = new CheckboxThingie(0, 120 * (items.length - 1), PreferencesMenu.preferences.get(pref));
         checkboxes.push(checkbox);
 
         add(checkbox);

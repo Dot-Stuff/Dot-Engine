@@ -5,7 +5,7 @@ import ui.AtlasText.AtlasFont;
 
 class TextMenuList extends MenuTypedList
 {
-    public function createItem(x:Float, y:Float, name:String, font:AtlasFont = Bold, callback:Void->Void, ?fireInstantly:Bool = false):Dynamic
+    public function createItem(x:Float, y:Float, name:String, font:AtlasFont = Bold, callback:Void->Void, ?fireInstantly:Bool = false)
     {
         var menuItem = new TextMenuItem(x, y, name, font, callback);
         menuItem.fireInstantly = fireInstantly;
