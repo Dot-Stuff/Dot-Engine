@@ -1,5 +1,6 @@
 package ui;
 
+import ui.MenuTypedList.TextMenuList;
 import NGio.ConnectionResult;
 #if newgrounds
 import io.newgrounds.NG;
@@ -7,6 +8,14 @@ import io.newgrounds.NG;
 import flixel.FlxSprite;
 import flixel.util.FlxColor;
 import flixel.FlxSubState;
+
+enum ButtonStyle
+{
+    Ok;
+    Yes_No;
+    Custom(yes:String, no:String);
+    None;
+}
 
 class Prompt extends FlxSubState
 {

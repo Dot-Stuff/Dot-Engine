@@ -106,7 +106,7 @@ class FreeplayState extends MusicBeatState
 
 		for (i in 0...songs.length)
 		{
-			var songText:MenuText = new MenuText(0, (70 * i) + 30, songs[i].songName.replace('-', ''), Bold);
+			var songText:MenuText = new MenuText(0, (70 * i) + 30, songs[i].songName.replace('-', ' '), Bold);
 			songText.targetY = i;
 			grpSongs.add(songText);
 

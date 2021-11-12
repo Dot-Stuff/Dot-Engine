@@ -303,14 +303,6 @@ class TitleState extends MusicBeatState
 		}
 	}
 
-	function addMoreText(text:String)
-	{
-		var coolText:AtlasText = new AtlasText(0, (textGroup.length * 60) + 200, text, Bold);
-		coolText.screenCenter(X);
-		credGroup.add(coolText);
-		textGroup.add(coolText);
-	}
-
 	function deleteCoolText()
 	{
 		while (textGroup.members.length > 0)
@@ -338,13 +330,13 @@ class TitleState extends MusicBeatState
 				case 1:
 					createText(['ninjamuffin99', 'phantomArcade', 'kawaisprite', 'evilsk8er']);
 				case 3:
-					addMoreText('present');
+					createText(['present']);
 				case 4:
 					deleteCoolText();
 				case 5:
 					createText(['In association', 'with']);
 				case 7:
-					addMoreText('newgrounds');
+					createText(['newgrounds']);
 					ngSpr.visible = true;
 				case 8:
 					deleteCoolText();
@@ -352,15 +344,15 @@ class TitleState extends MusicBeatState
 				case 9:
 					createText([curWacky[0]]);
 				case 11:
-					addMoreText(curWacky[1]);
+					createText([curWacky[1]]);
 				case 12:
 					deleteCoolText();
 				case 13:
-					addMoreText('Friday');
+					createText(['Friday']);
 				case 14:
-					addMoreText('Night');
+					createText(['Night']);
 				case 15:
-					addMoreText('Funkin');
+					createText(['Funkin']);
 				case 16:
 					skipIntro();
 			}

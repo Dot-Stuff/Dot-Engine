@@ -1,10 +1,28 @@
 package ui;
 
+import ui.AtlasText.AtlasFont;
 import flixel.effects.FlxFlicker;
 import flixel.group.FlxGroup;
 import haxe.ds.StringMap;
 import flixel.util.FlxSignal.FlxTypedSignal;
 import ui.MenuItem;
+
+enum NavControls
+{
+    Horizontal;
+    Vertical;
+    Both;
+    Columns(num:Int);
+    Rows(num:Int);
+}
+
+enum WrapMode
+{
+    Horizontal;
+    Vertical;
+    Both;
+    None;
+}
 
 class MenuTypedList extends FlxTypedGroup<MenuItem>
 {
@@ -260,5 +278,51 @@ class MenuTypedItem extends ui.MenuItem
         }
 
         return super.set_y(Y);
+    }
+}
+
+class TextMenuList extends MenuTypedList
+{
+    public function createItem(x:Float, y:Float, name:String, font:AtlasFont = Bold, callback:Void->Void, ?fireInstantly:Bool = false)
+    {
+        var menuItem = new TextMenuItem(x, y, name, font, callback);
+        menuItem.fireInstantly = fireInstantly;
+
+        return addItem(name, menuItem);
+    }
+}
+
+class TextMenuItem extends TextTypedMenuItem
+{
+    public function new(x:Float, y:Float, name:String, font:AtlasFont = Bold, callback:Void->Void):Void
+    {
+        super(x, y, new AtlasText(0, 0, name, font), name, callback);
+
+        setEmptyBackground();
+    }
+}
+
+class TextTypedMenuItem extends MenuTypedItem
+{
+    public override function setItem(itemName:String, callback:Void->Void)
+    {
+        if (label != null)
+        {
+            label.text = itemName;
+            label.alpha = alpha;
+            width = label.width;
+            height = label.height;
+        }
+
+        super.setItem(itemName, callback);
+    }
+
+    override function set_label(atlasName:AtlasText):AtlasText
+    {
+        super.set_label(atlasName);
+
+        setItem(name, callback);
+
+        return atlasName;
     }
 }

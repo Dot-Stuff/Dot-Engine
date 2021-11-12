@@ -5,11 +5,12 @@ import flixel.FlxSubState;
 import flixel.group.FlxGroup;
 import flixel.util.FlxSignal.FlxTypedSignal;
 import haxe.ds.EnumValueMap;
+import ui.Prompt.NgPrompt;
+import ui.MenuTypedList.TextMenuList;
+
 #if newgrounds
 import io.newgrounds.NG;
 #end
-import ui.Prompt.NgPrompt;
-import ui.TextMenuList.TextMenuItem;
 
 #if discord_rpc
 import Discord.DiscordClient;
@@ -310,4 +311,3 @@ class OptionsMenu extends Page
 		FlxG.state.openSubState(target);
 	}
 }
-

@@ -1,7 +1,7 @@
 package ui;
 
+import ui.MenuTypedList.TextMenuList;
 import flixel.FlxObject;
-import ui.TextMenuList.TextMenuItem;
 import Controls.Device;
 import flixel.FlxSprite;
 import flixel.FlxCamera;
@@ -313,7 +313,7 @@ class ControlsMenu extends ui.OptionsState.Page
 	}
 }
 
-class InputItem extends TextMenuItem
+class InputItem extends ui.MenuTypedList.TextMenuItem
 {
 	public var control:Control;
 	var device:Device;
