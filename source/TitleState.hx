@@ -68,7 +68,8 @@ class TitleState extends MusicBeatState
 
 		PreferencesMenu.initPrefs();
 
-		MultiplayerMenu.init();
+		// TODO: Fix
+		//MultiplayerMenu.init();
 
 		PlayerSettings.init();
 
