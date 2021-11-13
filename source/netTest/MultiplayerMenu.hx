@@ -7,7 +7,7 @@ import netTest.schemaShit.BattleState;
 
 class MultiplayerMenu extends MusicBeatState
 {
-	private var client:Client = new Client('ws://localhost:2567');
+	static var client:Client = new Client('ws://localhost:2567');
 
 	override function create()
 	{
@@ -22,6 +22,19 @@ class MultiplayerMenu extends MusicBeatState
 		bg.antialiasing = true;
 		add(bg);
 
+		super.create();
+	}
+
+	override function update(elapsed:Float)
+	{
+		if (controls.BACK)
+			FlxG.switchState(new TitleState());
+
+		super.update(elapsed);
+	}
+
+	public static function init()
+	{
 		client.joinOrCreate("battle", [], BattleState, function(err, room)
 		{
 			if (err != null)
@@ -34,15 +47,5 @@ class MultiplayerMenu extends MusicBeatState
 				trace("player added at " + key + " => " + player);
 			}*/
 		});
-
-		super.create();
-	}
-
-	override function update(elapsed:Float)
-	{
-		if (controls.BACK)
-			FlxG.switchState(new TitleState());
-
-		super.update(elapsed);
 	}
 }

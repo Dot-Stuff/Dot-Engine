@@ -1,8 +1,5 @@
 package;
 
-import ui.AtlasText;
-import shadersLmfao.ColorSwap;
-import ui.PreferencesMenu;
 import flixel.FlxSprite;
 import flixel.addons.transition.FlxTransitionSprite.GraphicTransTileDiamond;
 import flixel.addons.transition.FlxTransitionableState;
@@ -14,16 +11,21 @@ import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
+import netTest.MultiplayerMenu;
 import openfl.Assets;
+import shadersLmfao.ColorSwap;
+import ui.AtlasText;
+import ui.PreferencesMenu;
+
+using StringTools;
 #if ANIMDEBUG
 import ui.AnimationDebug;
 #end
 
-using StringTools;
 
 #if discord_rpc
-import lime.app.Application;
 import Discord.DiscordClient;
+import lime.app.Application;
 import sys.thread.Thread;
 #end
 
@@ -65,6 +67,8 @@ class TitleState extends MusicBeatState
 		FlxG.save.bind('funkin', 'ninjamuffin99');
 
 		PreferencesMenu.initPrefs();
+
+		MultiplayerMenu.init();
 
 		PlayerSettings.init();
 

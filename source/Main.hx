@@ -28,6 +28,10 @@ class Main extends Sprite
 	public function new()
 	{
 		super();
+		
+		#if polymod
+		polymod.Polymod.init({modRoot: "mods", dirs: ['introMod'], framework: CUSTOM});
+		#end
 
 		if (stage != null)
 			init();

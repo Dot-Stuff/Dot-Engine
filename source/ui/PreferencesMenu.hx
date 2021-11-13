@@ -66,6 +66,11 @@ class PreferencesMenu extends ui.OptionsState.Page
 
     public static function initPrefs()
     {
+        if (FlxG.save.data.preferences == null)
+            FlxG.save.data.preferences = preferences;
+
+        FlxG.save.flush();
+
         preferenceCheck("cutscenes", true);
         preferenceCheck("censor-naughty", true);
         preferenceCheck("downscroll", false);

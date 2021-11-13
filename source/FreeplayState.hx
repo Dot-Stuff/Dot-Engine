@@ -39,7 +39,7 @@ class FreeplayState extends MusicBeatState
 
 	private var grpsIcons:FlxTypedGroup<HealthIcon>;
 
-	private var coolColors:Array<FlxColor> = [0xFF9271FD, 0xFF223344, 0xFF941653, 0xFFFC96D7, 0xFFA0D1FF, 0xFFFF78BF, 0xFFF6B604];
+	private var coolColors:Array<FlxColor> = [-7179779, -7179779, -14535868, -7072173, -223529, -6237697, -34625, -608764];
 
 	override function create()
 	{
@@ -162,18 +162,14 @@ class FreeplayState extends MusicBeatState
 		if (FlxG.sound.music != null)
 		{
 			if (FlxG.sound.music.volume < 0.7)
-			{
 				FlxG.sound.music.volume += 0.5 * elapsed;
-			}
 		}
 
 		lerpScore = CoolUtil.coolLerp(lerpScore, intendedScore, 0.4);
 
-		var bgColor = bg.color;
-		var coolerColoir = coolColors[coolColors.length % songs[curSelected].week];
-		var lerpColor = CoolUtil.camLerpShit(0.045);
-
-		bg.color = bgColor;
+		bg.color = FlxColor.interpolate(bg.color,
+			coolColors[songs[curSelected].week % coolColors.length],
+			CoolUtil.camLerpShit(0.045));
 
 		scoreText.text = "PERSONAL BEST:" + Math.round(lerpScore);
 
