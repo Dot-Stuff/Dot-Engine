@@ -21,7 +21,6 @@ class ColorsMenu extends ui.OptionsState.Page
         {
             var noteColor:NoteColor = new NoteColor(0, 0, i);
             noteColor.x += Note.swagWidth * Std.int(Math.abs(i));
-            noteColor.screenCenter(X);
 
             grpColors.add(noteColor);
         }
