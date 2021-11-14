@@ -44,13 +44,12 @@ class NoteSplash extends FlxSprite
 		animation.play('note$noteData-${FlxG.random.int(0, 1)}', true);
 		updateColors(noteData);
 
-		var curAnimation = animation.curAnim;
+		var curAnim = animation.curAnim;
 
-		if (curAnimation != null)
-			curAnimation.frameRate = curAnimation.frameRate + FlxG.random.int(-2, 2);
+		curAnim.frameRate = curAnim.frameRate + FlxG.random.int(-2, 2);
 
 		updateHitbox();
-		offset.set(0.3 * width, 0.3 * height);
+		offset.set(width * 0.3, height * 0.3);
 	}
 
 	function updateColors(noteData:Int)

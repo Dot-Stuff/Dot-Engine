@@ -1,5 +1,7 @@
 package;
 
+import flixel.math.FlxRect;
+import flixel.FlxObject;
 import flixel.math.FlxPoint;
 import flixel.FlxSprite;
 import flixel.FlxCamera;
@@ -85,17 +87,69 @@ class SwagCamera extends FlxCamera
 				_lastTargetPosition.y = target.y;
 			}
 
-			var framerate:Float = FlxG.game.focusLostFramerate;
+			var framerate:Float = CoolUtil.camLerpShit(0.06);
 
-			if (followLerp >= 60 / framerate)
+			if (followLerp >= framerate)
 			{
 				scroll.copyFrom(_scrollTarget); // no easing
 			}
 			else
 			{
-				scroll.x += (_scrollTarget.x - scroll.x) * followLerp * framerate / 60;
-				scroll.y += (_scrollTarget.y - scroll.y) * followLerp * framerate / 60;
+				scroll.x += (_scrollTarget.x - scroll.x) * followLerp * framerate;
+				scroll.y += (_scrollTarget.y - scroll.y) * followLerp * framerate;
 			}
 		}
+	}
+
+	public override function follow(Target:FlxObject, ?Style:FlxCameraFollowStyle, ?Lerp:Float):Void
+	{
+		if (Style == null)
+			Style = LOCKON;
+
+		if (Lerp == null)
+			Lerp = CoolUtil.camLerpShit(0.06);
+
+		style = Style;
+		target = Target;
+		followLerp = Lerp;
+		var helper:Float;
+		var w:Float = 0;
+		var h:Float = 0;
+		_lastTargetPosition = null;
+
+		switch (Style)
+		{
+			case LOCKON:
+				if (target != null)
+				{
+					w = target.width;
+					h = target.height;
+				}
+				deadzone = FlxRect.get((width - w) / 2, (height - h) / 2 - h * 0.25, w, h);
+
+			case PLATFORMER:
+				var w:Float = (width / 8);
+				var h:Float = (height / 3);
+				deadzone = FlxRect.get((width - w) / 2, (height - h) / 2 - h * 0.25, w, h);
+
+			case TOPDOWN:
+				helper = Math.max(width, height) / 4;
+				deadzone = FlxRect.get((width - helper) / 2, (height - helper) / 2, helper, helper);
+
+			case TOPDOWN_TIGHT:
+				helper = Math.max(width, height) / 8;
+				deadzone = FlxRect.get((width - helper) / 2, (height - helper) / 2, helper, helper);
+
+			case SCREEN_BY_SCREEN:
+				deadzone = FlxRect.get(0, 0, width, height);
+
+			case NO_DEAD_ZONE:
+				deadzone = null;
+		}
+	}
+
+	override function set_followLerp(Value:Float):Float
+	{
+		return followLerp = CoolUtil.coolLerp(Value, 0, 0.06);
 	}
 }

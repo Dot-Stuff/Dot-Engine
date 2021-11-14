@@ -2526,7 +2526,7 @@ class PlayState extends MusicBeatState
 			if (!dad.animation.curAnim.name.startsWith("sing"))
 				dad.dance();
 		}
-		else if (dad.curCharacter == 'spooky')
+		else if (dad.hasRightAndLeft())
 		{
 			if (!dad.animation.curAnim.name.startsWith("sing"))
 				dad.dance();

@@ -62,8 +62,8 @@ package;
 
 class APIStuff
 {
-	public static var API:String = "";
-	public static var EncKey:String = "";
+	public static inline var API:String = "";
+	public static inline var EncKey:String = "";
 }
 ```
 
