@@ -147,8 +147,6 @@ class PlayState extends MusicBeatState
 		if (FlxG.sound.music != null)
 			FlxG.sound.music.stop();
 
-		FlxG.bitmap.add(Paths.image("noteSplashes"));
-
 		FlxG.sound.cache(Paths.inst(PlayState.SONG.song));
 		FlxG.sound.cache(Paths.voices(PlayState.SONG.song));
 
@@ -644,6 +642,11 @@ class PlayState extends MusicBeatState
 		add(strumLineNotes);
 
 		grpNoteSplashes = new FlxTypedGroup<NoteSplash>();
+
+		var noteSplash:NoteSplash = new NoteSplash(100, 100);
+		grpNoteSplashes.add(noteSplash);
+		noteSplash.alpha = 0.1;
+
 		add(grpNoteSplashes);
 
 		playerStrums = new FlxTypedGroup<FlxSprite>();
