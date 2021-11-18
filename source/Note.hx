@@ -171,15 +171,10 @@ class Note extends FlxSprite
 				{
 					// The * 0.5 is so that it's easier to hit them too late, instead of too early
 					if (strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * 0.5))
-					{
 						canBeHit = true;
-					}
 				}
 				else
-				{
-					willMiss = true;
-					canBeHit = true;
-				}
+					willMiss = canBeHit = true;
 			}
 		}
 		else
@@ -194,3 +189,32 @@ class Note extends FlxSprite
 			alpha = 0.3;
 	}
 }
+
+/*if (mustPress)
+{
+	if (willMiss && !wasGoodHit)
+	{
+		tooLate = true;
+		canBeHit = false;
+	}
+	else
+	{
+		if (strumTime > Z.songPosition - Z.safeZoneOffset)
+		{
+			if (strumTime < Z.songPosition + .5 * Z.safeZoneOffset)
+				canBeHit = true;
+			else
+				willMiss = canBeHit = true
+		}
+	}
+}
+else
+{
+	canBeHit = false;
+
+	if (strumTime <= Z.songPosition)
+			wasGoodHit = true;
+}
+
+if (tooLate && .3 < alpha)
+	set_alpha(.3);*/
