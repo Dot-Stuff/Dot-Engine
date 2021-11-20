@@ -1,5 +1,8 @@
 package;
 
+import flixel.effects.FlxFlicker;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
 import flixel.FlxSprite;
 import flixel.group.FlxSpriteGroup;
 import flixel.util.FlxColor;
@@ -39,6 +42,6 @@ class MenuItem extends FlxSpriteGroup
 		if (isFlashing)
 			flashingInt++;
 
-		flashingInt % fakeFramerate >= Math.floor(fakeFramerate / 2) ? week.color = 0xFF33ffff : week.color = FlxColor.WHITE;
+		week.color = flashingInt % fakeFramerate >= Math.floor(fakeFramerate / 2) ? 0xFF33ffff : FlxColor.WHITE;
 	}
 }

@@ -69,7 +69,6 @@ class DialogueBox extends MusicBeatSubstate
 		else
 			box = new FlxSprite(40, FlxG.height * 0.5);
 
-		// TODO: REMAKE THE WEEK1 DIALOGUE ITSSSS BROKENNNNNN!!! FUCK YEAAA
 		// TODO: Unhardcode this please
 		switch (PlayState.curStage)
 		{
@@ -227,7 +226,6 @@ class DialogueBox extends MusicBeatSubstate
 
 		dialogueEnded = false;
 
-		// TODO: Clean up this atSchool method >:(
 		if (atSchool())
 		{
 			if (dialogueData[dialogueIndex].isPlayer1)

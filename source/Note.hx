@@ -26,13 +26,9 @@ class Note extends FlxSprite
 	public var isSustainNote:Bool = false;
 
 	public static var swagWidth:Float = 160 * 0.7;
-	public static var PURP_NOTE:Int = 0;
-	public static var GREEN_NOTE:Int = 2;
-	public static var BLUE_NOTE:Int = 1;
-	public static var RED_NOTE:Int = 3;
 
 	private var noteColors:Array<String> = ["purple", "blue", "green", "red"];
-	public static var arrowColors:Array<Float> = [1, 1, 1, 1];
+	public static var arrowColors:Array<Float> = [1.0, 1.0, 1.0, 1.0];
 
 	private var colorSwap:ColorSwap;
 
@@ -148,14 +144,13 @@ class Note extends FlxSprite
 
 	function updateColors()
 	{
+		// TODO: Fix
 		colorSwap.update(Note.arrowColors[noteData]);
 	}
 
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
-
-		updateColors();
 
 		if (mustPress)
 		{
@@ -189,32 +184,3 @@ class Note extends FlxSprite
 			alpha = 0.3;
 	}
 }
-
-/*if (mustPress)
-{
-	if (willMiss && !wasGoodHit)
-	{
-		tooLate = true;
-		canBeHit = false;
-	}
-	else
-	{
-		if (strumTime > Z.songPosition - Z.safeZoneOffset)
-		{
-			if (strumTime < Z.songPosition + .5 * Z.safeZoneOffset)
-				canBeHit = true;
-			else
-				willMiss = canBeHit = true
-		}
-	}
-}
-else
-{
-	canBeHit = false;
-
-	if (strumTime <= Z.songPosition)
-			wasGoodHit = true;
-}
-
-if (tooLate && .3 < alpha)
-	set_alpha(.3);*/

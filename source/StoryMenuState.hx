@@ -68,8 +68,8 @@ class StoryMenuState extends MusicBeatState
 
 	var difficultySelectors:FlxGroup;
 	var sprDifficulty:FlxSprite;
-	var leftArrow:FlxSprite;
-	var rightArrow:FlxSprite;
+	var leftArrow:DiffArrow;
+	var rightArrow:DiffArrow;
 
 	override function create()
 	{
@@ -164,11 +164,7 @@ class StoryMenuState extends MusicBeatState
 
 		trace("Line 124");
 
-		leftArrow = new FlxSprite(grpWeekText.members[0].x + grpWeekText.members[0].width + 10, grpWeekText.members[0].y + 10);
-		leftArrow.frames = ui_tex;
-		leftArrow.animation.addByPrefix('idle', "arrow left");
-		leftArrow.animation.addByPrefix('press', "arrow push left");
-		leftArrow.animation.play('idle');
+		leftArrow = new DiffArrow(grpWeekText.members[0].x + grpWeekText.members[0].width + 10, grpWeekText.members[0].y + 10, true);
 		difficultySelectors.add(leftArrow);
 
 		sprDifficulty = new FlxSprite(leftArrow.x + 130, leftArrow.y);
@@ -181,11 +177,7 @@ class StoryMenuState extends MusicBeatState
 
 		difficultySelectors.add(sprDifficulty);
 
-		rightArrow = new FlxSprite(sprDifficulty.x + sprDifficulty.width + 50, leftArrow.y);
-		rightArrow.frames = ui_tex;
-		rightArrow.animation.addByPrefix('idle', 'arrow right');
-		rightArrow.animation.addByPrefix('press', "arrow push right", 24, false);
-		rightArrow.animation.play('idle');
+		rightArrow = new DiffArrow(sprDifficulty.x + sprDifficulty.width + 50, leftArrow.y);
 		difficultySelectors.add(rightArrow);
 
 		trace("Line 150");
@@ -242,9 +234,9 @@ class StoryMenuState extends MusicBeatState
 
 					changeWeek(1);
 				}
-
-				rightArrow.animation.play(controls.UI_RIGHT ? 'press' : 'idle');
-				leftArrow.animation.play(controls.UI_LEFT ? 'press' : 'idle');
+				
+				controls.UI_RIGHT ? rightArrow.select() : rightArrow.idle();
+				controls.UI_LEFT ? leftArrow.select() : leftArrow.idle();
 
 				if (controls.UI_RIGHT_P)
 					changeDifficulty(1);
@@ -408,5 +400,37 @@ class StoryMenuState extends MusicBeatState
 		#if newgrounds
 		intendedScore = Highscore.getWeekScore(curWeek, curDifficulty);
 		#end
+	}
+}
+
+class DiffArrow extends FlxSprite
+{
+	public function new(x:Float, y:Float, ?isLeft:Bool)
+	{
+		super(x, y);
+
+		frames = Paths.getSparrowAtlas('campaign_menu_UI_assets');
+
+		animation.addByPrefix('left', "arrow left");
+		animation.addByPrefix('right', 'arrow right');
+		animation.play(isLeft ? 'left' : 'right');
+
+		idle();
+	}
+
+	public function idle()
+	{
+		/*setGraphicSize(Std.int(width * 0.9));
+		updateHitbox();*/
+
+		color = FlxColor.WHITE;
+	}
+
+	public function select()
+	{
+		/*setGraphicSize(Std.int(width * 1));
+		updateHitbox();*/
+
+		color = 0x00FFFF;
 	}
 }

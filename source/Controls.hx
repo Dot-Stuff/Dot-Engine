@@ -351,10 +351,9 @@ class Controls extends FlxActionSet
 			var h = getInputsFor(i, device);
 			b = b && h.length == 0;
 
-			controlData[Control.createByIndex(i.getIndex()).getIndex()] = h;
+			//controlData[Control.] = h;
+			//controlData[] = h;
 		}
-
-		trace(controlData);
 
 		return b ? null : controlData;
 	}
@@ -578,44 +577,44 @@ class Controls extends FlxActionSet
 		switch (scheme)
 		{
 			case Solo:
-				inline bindKeys(Control.UI_UP, [W, FlxKey.UP]);
-				inline bindKeys(Control.UI_DOWN, [S, FlxKey.DOWN]);
-				inline bindKeys(Control.UI_LEFT, [A, FlxKey.LEFT]);
-				inline bindKeys(Control.UI_RIGHT, [D, FlxKey.RIGHT]);
-				inline bindKeys(Control.NOTE_UP, [W, FlxKey.UP]);
-				inline bindKeys(Control.NOTE_DOWN, [S, FlxKey.DOWN]);
-				inline bindKeys(Control.NOTE_LEFT, [A, FlxKey.LEFT]);
-				inline bindKeys(Control.NOTE_RIGHT, [D, FlxKey.RIGHT]);
-				inline bindKeys(Control.ACCEPT, [Z, SPACE, ENTER]);
-				inline bindKeys(Control.BACK, [BACKSPACE, ESCAPE]);
-				inline bindKeys(Control.PAUSE, [P, ENTER, ESCAPE]);
-				inline bindKeys(Control.RESET, [R]);
+				bindKeys(Control.UI_UP, [W, FlxKey.UP]);
+				bindKeys(Control.UI_DOWN, [S, FlxKey.DOWN]);
+				bindKeys(Control.UI_LEFT, [A, FlxKey.LEFT]);
+				bindKeys(Control.UI_RIGHT, [D, FlxKey.RIGHT]);
+				bindKeys(Control.NOTE_UP, [W, FlxKey.UP]);
+				bindKeys(Control.NOTE_DOWN, [S, FlxKey.DOWN]);
+				bindKeys(Control.NOTE_LEFT, [A, FlxKey.LEFT]);
+				bindKeys(Control.NOTE_RIGHT, [D, FlxKey.RIGHT]);
+				bindKeys(Control.ACCEPT, [Z, SPACE, ENTER]);
+				bindKeys(Control.BACK, [BACKSPACE, ESCAPE]);
+				bindKeys(Control.PAUSE, [P, ENTER, ESCAPE]);
+				bindKeys(Control.RESET, [R]);
 			case Duo(true):
-				inline bindKeys(Control.UI_UP, [W]);
-				inline bindKeys(Control.UI_DOWN, [S]);
-				inline bindKeys(Control.UI_LEFT, [A]);
-				inline bindKeys(Control.UI_RIGHT, [D]);
-				inline bindKeys(Control.NOTE_UP, [W]);
-				inline bindKeys(Control.NOTE_DOWN, [S]);
-				inline bindKeys(Control.NOTE_LEFT, [A]);
-				inline bindKeys(Control.NOTE_RIGHT, [D]);
-				inline bindKeys(Control.ACCEPT, [G, Z]);
-				inline bindKeys(Control.BACK, [H, X]);
-				inline bindKeys(Control.PAUSE, [ONE]);
-				inline bindKeys(Control.RESET, [R]);
+				bindKeys(Control.UI_UP, [W]);
+				bindKeys(Control.UI_DOWN, [S]);
+				bindKeys(Control.UI_LEFT, [A]);
+				bindKeys(Control.UI_RIGHT, [D]);
+				bindKeys(Control.NOTE_UP, [W]);
+				bindKeys(Control.NOTE_DOWN, [S]);
+				bindKeys(Control.NOTE_LEFT, [A]);
+				bindKeys(Control.NOTE_RIGHT, [D]);
+				bindKeys(Control.ACCEPT, [G, Z]);
+				bindKeys(Control.BACK, [H, X]);
+				bindKeys(Control.PAUSE, [ONE]);
+				bindKeys(Control.RESET, [R]);
 			case Duo(false):
-				inline bindKeys(Control.UI_UP, [FlxKey.UP]);
-				inline bindKeys(Control.UI_DOWN, [FlxKey.DOWN]);
-				inline bindKeys(Control.UI_LEFT, [FlxKey.LEFT]);
-				inline bindKeys(Control.UI_RIGHT, [FlxKey.RIGHT]);
-				inline bindKeys(Control.NOTE_UP, [FlxKey.UP]);
-				inline bindKeys(Control.NOTE_DOWN, [FlxKey.DOWN]);
-				inline bindKeys(Control.NOTE_LEFT, [FlxKey.LEFT]);
-				inline bindKeys(Control.NOTE_RIGHT, [FlxKey.RIGHT]);
-				inline bindKeys(Control.ACCEPT, [O]);
-				inline bindKeys(Control.BACK, [P]);
-				inline bindKeys(Control.PAUSE, [ENTER]);
-				inline bindKeys(Control.RESET, [BACKSPACE]);
+				bindKeys(Control.UI_UP, [FlxKey.UP]);
+				bindKeys(Control.UI_DOWN, [FlxKey.DOWN]);
+				bindKeys(Control.UI_LEFT, [FlxKey.LEFT]);
+				bindKeys(Control.UI_RIGHT, [FlxKey.RIGHT]);
+				bindKeys(Control.NOTE_UP, [FlxKey.UP]);
+				bindKeys(Control.NOTE_DOWN, [FlxKey.DOWN]);
+				bindKeys(Control.NOTE_LEFT, [FlxKey.LEFT]);
+				bindKeys(Control.NOTE_RIGHT, [FlxKey.RIGHT]);
+				bindKeys(Control.ACCEPT, [O]);
+				bindKeys(Control.BACK, [P]);
+				bindKeys(Control.PAUSE, [ENTER]);
+				bindKeys(Control.RESET, [BACKSPACE]);
 			case None | Custom: // nothing
 		}
 	}

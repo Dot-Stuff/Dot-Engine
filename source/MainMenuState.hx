@@ -4,7 +4,6 @@ import ui.Prompt;
 import flixel.FlxSubState;
 import flixel.util.FlxTimer;
 import flixel.FlxState;
-import ui.AtlasMenuItem;
 import flixel.FlxObject;
 import ui.MenuTypedList;
 import flixel.FlxSprite;
@@ -83,25 +82,25 @@ class MainMenuState extends MusicBeatState
 
 		menuItems.enabled = false;
 
-		/*menuItems.createItem('multiplayer', function()
+		/*menuItems.createItem(0, 0, 'multiplayer', function()
 		{
 			startExitState(new netTest.MultiplayerMenu());
 		});*/
 
-		menuItems.createItem('story mode', function()
+		menuItems.createItem(0, 0, 'story mode', function()
 		{
 			startExitState(new StoryMenuState());
 		});
 
-		menuItems.createItem('freeplay', function()
+		menuItems.createItem(0, 0, 'freeplay', function()
 		{
 			startExitState(new FreeplayState());
 		});
 
 		#if !switch
-		menuItems.createItem('donate', selectDonate, true);
+		menuItems.createItem(0, 0, 'donate', selectDonate, true);
 
-		menuItems.createItem('options', function()
+		menuItems.createItem(0, 0, 'options', function()
 		{
 			startExitState(new ui.OptionsState());
 		});
@@ -230,11 +229,11 @@ class MainMenuState extends MusicBeatState
 	}
 }
 
-class MainMenuList extends MenuTypedList
+class MainMenuList extends ui.MenuTypedList
 {
 	var atlas:FlxFramesCollection = Paths.getSparrowAtlas('main_menu');
 
-	public function createItem(?x:Float, ?y:Float, name:String, callback:Void->Void, ?fireInstantly:Bool)
+	public function createItem(x:Float, y:Float, name:String, callback:Void->Void, ?fireInstantly:Bool)
 	{
 		var menuItem = new MainMenuItem(x, y, name, atlas, callback);
 		menuItem.fireInstantly = fireInstantly;
@@ -245,9 +244,9 @@ class MainMenuList extends MenuTypedList
 
 class MainMenuItem extends AtlasMenuItem
 {
-	public function new(x:Float, y:Float, newName:String, newAtlas:FlxFramesCollection, newCallback:Void->Void)
+	public function new(x:Float, y:Float, newName:String, atlas:FlxFramesCollection, callback:Void->Void)
 	{
-		super(x, y, newName, newAtlas, newCallback);
+		super(x, y, newName, atlas, callback);
 
 		scrollFactor.set();
 	}
@@ -262,5 +261,47 @@ class MainMenuItem extends AtlasMenuItem
 		offset.y = origin.y;
 
 		origin.putWeak();
+	}
+}
+
+class AtlasMenuItem extends ui.MenuItem
+{
+	var atlas:FlxFramesCollection;
+
+	public function new(x:Float, y:Float, name:String, atlas:FlxFramesCollection, callback:Void->Void):Void
+	{
+		this.atlas = atlas;
+
+		super(x, y, name, callback);
+	}
+
+	public override function setData(name:String, callback:Void->Void):Void
+	{
+		frames = atlas;
+		animation.addByPrefix('idle', name + ' idle', 24);
+		animation.addByPrefix('selected', name + ' selected', 24);
+
+		super.setData(name, callback);
+	}
+
+	public function changeAnim(name:String):Void
+	{
+		animation.play(name);
+		updateHitbox();
+	}
+
+	public override function idle():Void
+	{
+		changeAnim('idle');
+	}
+
+	public override function select():Void
+	{
+		changeAnim('selected');
+	}
+
+	public override function get_selected():Bool
+	{
+		return animation.curAnim != null ? animation.curAnim.name == 'selected' : false;
 	}
 }

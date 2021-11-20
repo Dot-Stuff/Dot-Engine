@@ -22,7 +22,7 @@ class GameOverSubstate extends MusicBeatSubstate
 
 		var daBf:String = PlayState.SONG.player1;
 		stageSuffix = daBf.contains('pixel') ? '-pixel' : '';
-		daBf != 'bf' ? daBf += '-dead' : daBf = 'bf';
+		daBf.startsWith('pixel') ? daBf += '-dead' : daBf = 'bf';
 
 		FlxG.sound.cache(Paths.music('gameOver$stageSuffix'));
 		FlxG.sound.cache(Paths.music('gameOverEnd$stageSuffix'));
