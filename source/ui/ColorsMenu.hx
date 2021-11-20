@@ -20,30 +20,32 @@ class ColorsMenu extends ui.OptionsState.Page
         for (i in 0...4)
         {
             var noteColor:NoteColor = new NoteColor(0, 0, i);
+            noteColor.screenCenter(XY);
             noteColor.x += Note.swagWidth * Std.int(Math.abs(i));
 
             grpColors.add(noteColor);
         }
 
-        selections();
+        changeSelection();
+        changeColor();
     }
 
     public override function update(elapsed:Float)
     {
         super.update(elapsed);
 
-        if (FlxG.keys.justPressed.I)
-            selections(-1);
-        else if (FlxG.keys.justPressed.K)
-            selections(1);
+        if (controls.UI_LEFT_P)
+            changeSelection(-1);
+        else if (controls.UI_RIGHT_P)
+            changeSelection(1);
 
-        if (controls.UI_LEFT)
+        if (controls.UI_UP)
 			changeColor(-elapsed * 0.1);
-		else if (controls.UI_RIGHT)
+		else if (controls.UI_DOWN)
 			changeColor(elapsed * 0.1);
     }
 
-    private function changeColor(change:Float = 0)
+    private function changeColor(change:Float = 1)
     {
         Note.arrowColors[curSelected] = change;
 
@@ -54,7 +56,7 @@ class ColorsMenu extends ui.OptionsState.Page
         }
     }
 
-    private function selections(change:Int = 0):Void
+    private function changeSelection(change:Int = 0):Void
     {
         curSelected += change;
 

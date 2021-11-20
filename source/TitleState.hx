@@ -15,7 +15,6 @@ import netTest.MultiplayerMenu;
 import openfl.Assets;
 import shadersLmfao.ColorSwap;
 import ui.AtlasText;
-import ui.PreferencesMenu;
 
 using StringTools;
 #if ANIMDEBUG
@@ -66,7 +65,7 @@ class TitleState extends MusicBeatState
 
 		FlxG.save.bind('funkin', 'ninjamuffin99');
 
-		PreferencesMenu.initPrefs();
+		ui.PreferencesMenu.initPrefs();
 
 		// TODO: Fix
 		//MultiplayerMenu.init();

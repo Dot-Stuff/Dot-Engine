@@ -49,6 +49,8 @@ class Note extends FlxSprite
 
 		this.noteData = noteData;
 
+		//arrowColors = FlxG.save.data.note.colors;
+
 		if (PlayState.curStage.startsWith('school'))
 		{
 			loadGraphic(Paths.image('pixelUI/arrows-pixels'), true, 17, 17);
@@ -142,7 +144,7 @@ class Note extends FlxSprite
 		super.destroy();
 	}
 
-	function updateColors()
+	public function updateColors()
 	{
 		// TODO: Fix
 		colorSwap.update(Note.arrowColors[noteData]);
