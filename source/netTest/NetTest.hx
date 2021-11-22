@@ -1,5 +1,6 @@
 package netTest;
 
+import netTest.schemaShit.BattleState;
 import flixel.addons.ui.FlxInputText;
 import io.colyseus.Client;
 import io.colyseus.Room;
@@ -7,7 +8,7 @@ import io.colyseus.Room;
 class NetTest extends MusicBeatState
 {
     private var client:Client;
-    private var room:Room<MyRoomState>;
+    private var room:Room<BattleState>;
 
     private var typeText:FlxInputText;
 
@@ -19,7 +20,7 @@ class NetTest extends MusicBeatState
         typeText = new FlxInputText(10, 10);
         add(typeText);
 
-        client.joinOrCreate("my_room", [], MyRoomState, function(err, room)
+        client.joinOrCreate("my_room", [], BattleState, function(err, room)
         {
             if (err != null)
             {

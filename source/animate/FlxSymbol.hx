@@ -153,6 +153,21 @@ class FlxSymbol extends FlxSprite
 		return awesomeMap;
 	}
 
+	public var daFrame:Int;
+	public var matrixExposed:Bool;
+
+	function changeFrame(frameChange:Int = 0):Void
+	{
+		daFrame += frameChange;
+	}
+
+	override function drawFrame(Force:Bool = false):Void
+	{
+		super.drawFrame(Force);
+	}
+
+	var _skewMatrix:Matrix = new Matrix();
+
 	override function drawComplex(camera:FlxCamera):Void
 	{
 		_frame.prepareMatrix(_matrix, FlxFrameAngle.ANGLE_0, checkFlipX(), checkFlipY());
@@ -167,6 +182,8 @@ class FlxSymbol extends FlxSprite
 
 			if (angle != 0)
 				_matrix.rotateWithTrig(_cosAngle, _sinAngle);
+
+			_matrix.concat(_skewMatrix);
 		}
 
 		_point.addPoint(origin);
@@ -181,19 +198,6 @@ class FlxSymbol extends FlxSprite
 
 		camera.drawPixels(_frame, framePixels, _matrix, colorTransform, blend, antialiasing);
 	}
-
-	public var daFrame:Int;
-	public var matrixExposed:Bool;
-
-	function changeFrame(frameChange:Int = 0):Void
-	{
-		daFrame += frameChange;
-	}
-
-	override function drawFrame(Force:Bool = false):Void
-	{
-		super.drawFrame(Force);
-	}
 }
 
 typedef Parsed =
@@ -203,10 +207,20 @@ typedef Parsed =
 	var MD:AtlasMetaData;
 }
 
+/**
+ * Basically treated like one big symbol
+ */
 typedef Animation =
 {
+	/**
+	 * Symbol Name
+	 */
 	var SN:String;
 	var TL:Timeline;
+	/**
+	 * Symbol Type Instance
+	 * NOT used in symbols, only the main AN animation.
+	 */
 	var STI:Dynamic;
 }
 
@@ -217,19 +231,31 @@ typedef SymbolDictionary =
 
 typedef Timeline =
 {
+	/**
+	 * Layers
+	 */
 	var L:Array<Layer>;
 }
 
 typedef Layer =
 {
 	var LN:String;
+	/**
+	 * Frames
+	 */
 	var FR:Array<Frame>;
 }
 
 typedef Frame =
 {
 	var I:Int;
+	/**
+	 * Duration, in frames
+	 */
 	var DU:Int;
+	/**
+	 * Elements
+	 */
 	var E:Array<Element>;
 }
 
@@ -239,9 +265,15 @@ typedef Element =
 	var ASI:AtlasSymbolInstance;
 }
 
+/**
+ * Symbol instance, for SYMBOLS and refers to SYMBOLS
+ */
 typedef SymbolInstance =
 {
 	var SN:String;
+	/**
+	 * SymbolType (Graphic, Movieclip, Button)
+	 */
 	var ST:String;
 
 	var FFP:Int;

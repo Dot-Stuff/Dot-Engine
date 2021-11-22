@@ -10,7 +10,7 @@ class CutsceneCharacter extends FlxSymbol
     var nestedShit:IntMap<FlxSymbol> = new IntMap<FlxSymbol>();
 
 	var frameTickTypeShit:Float;
-    var playAnim:Bool = true;
+    var playingAnim:Bool = false;
 
     public function new(x:Float, y:Float, anim:String)
     {
@@ -27,16 +27,27 @@ class CutsceneCharacter extends FlxSymbol
         super.draw();
 
         renderFrame(coolParse.AN.TL, coolParse, true);
+
+        if (FlxG.keys.justPressed.E)
+        {
+            if (nestedShit.keys().hasNext())
+            {
+                var nextShit = nestedShit.keys().next();
+                nestedShit.get(nextShit).draw();
+            }
+            nestedShit.clear();
+        }
     }
 
     public override function update(elapsed:Float)
     {
         super.update(elapsed);
 
-        if (playAnim)
-        {
-            playAnim = false;
+        if (FlxG.keys.justPressed.SPACE)
+			playingAnim = !playingAnim;
 
+        if (playingAnim)
+        {
             frameTickTypeShit += elapsed;
 
             if (frameTickTypeShit >= 0.041666666666666664)
@@ -45,5 +56,10 @@ class CutsceneCharacter extends FlxSymbol
                 frameTickTypeShit = 0;
             }
         }
+
+        if (FlxG.keys.justPressed.RIGHT)
+			changeFrame(1);
+		if (FlxG.keys.justPressed.LEFT)
+			changeFrame(-1);
     }
 }
