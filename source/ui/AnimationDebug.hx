@@ -8,6 +8,8 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 
+using StringTools;
+
 /**
 	*DEBUG MODE
  */
@@ -38,13 +40,13 @@ class AnimationDebug extends FlxState
 		gridBG.scrollFactor.set(0.5, 0.5);
 		add(gridBG);
 
-		if (daAnim == 'bf')
-			isDad = false;
+		isDad = daAnim.startsWith('bf');
 
-		if (isDad)
+		if (!isDad)
 		{
 			dad = new Character(0, 0, daAnim);
 			dad.screenCenter();
+			dad.debugMode = true;
 			add(dad);
 
 			char = dad;
@@ -52,8 +54,9 @@ class AnimationDebug extends FlxState
 		}
 		else
 		{
-			bf = new Boyfriend(0, 0);
+			bf = new Boyfriend(0, 0, daAnim);
 			bf.screenCenter();
+			bf.debugMode = true;
 			add(bf);
 
 			char = bf;

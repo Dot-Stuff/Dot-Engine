@@ -30,7 +30,7 @@ class Main extends Sprite
 		super();
 		
 		#if polymod
-		polymod.Polymod.init({modRoot: "mods", dirs: ['introMod'], framework: CUSTOM});
+		polymod.Polymod.init({modRoot: "mods", dirs: ['introMod'], framework: OPENFL, frameworkParams: {}});
 		#end
 
 		if (stage != null)

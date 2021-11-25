@@ -186,10 +186,10 @@ class Character extends FlxSprite
 				quickAnimAdd('idle', "Pico Idle Dance");
 				quickAnimAdd('singUP', 'pico Up note0');
 				quickAnimAdd('singDOWN', 'Pico Down Note0');
-				quickAnimAdd('singLEFT', 'Pico NOTE LEFT0');
-				quickAnimAdd('singRIGHT', 'Pico Note Right0');
-				quickAnimAdd('singRIGHTmiss', 'Pico Note Right Miss');
-				quickAnimAdd('singLEFTmiss', 'Pico NOTE LEFT miss');
+				quickAnimAdd('singRIGHT', 'Pico NOTE LEFT0');
+				quickAnimAdd('singLEFT', 'Pico Note Right0');
+				quickAnimAdd('singLEFTmiss', 'Pico Note Right Miss');
+				quickAnimAdd('singRIGHTmiss', 'Pico NOTE LEFT miss');
 
 				quickAnimAdd('singUPmiss', 'pico Up note miss');
 				quickAnimAdd('singDOWNmiss', 'Pico Down Note MISS');
@@ -432,10 +432,10 @@ class Character extends FlxSprite
 				quickAnimAdd('idle', "Tankman Idle Dance");
 				quickAnimAdd('singUP', 'Tankman UP note 0');
 				quickAnimAdd('singDOWN', 'Tankman DOWN note 0');
-				quickAnimAdd('singLEFT', 'Tankman Note Left 0');
-				quickAnimAdd('singRIGHT', 'Tankman Right Note 0');
-				quickAnimAdd('singLEFTmiss', 'Tankman Note Left MISS');
-				quickAnimAdd('singRIGHTmiss', 'Tankman Right Note MISS');
+				quickAnimAdd('singRIGHT', 'Tankman Note Left 0');
+				quickAnimAdd('singLEFT', 'Tankman Right Note 0');
+				quickAnimAdd('singRIGHTmiss', 'Tankman Note Left MISS');
+				quickAnimAdd('singLEFTmiss', 'Tankman Right Note MISS');
 
 				quickAnimAdd('singUPmiss', 'Tankman UP note MISS');
 				quickAnimAdd('singDOWNmiss', 'Tankman DOWN note MISS');
@@ -597,9 +597,13 @@ class Character extends FlxSprite
 	}
 
 	private var danced:Bool = false;
+	public var debugMode:Bool = false;
 
 	public function dance()
 	{
+		if (debugMode)
+			return;
+
 		switch (curCharacter)
 		{
 			case 'tankman':
