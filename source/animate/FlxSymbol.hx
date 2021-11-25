@@ -62,59 +62,56 @@ class FlxSymbol extends FlxSprite
 
 			var swagFrame:Frame = layer.FR[newFrameNum % layer.FR.length];
 
-			if (swagFrame != null)
+			for (element in swagFrame.E)
 			{
-				for (element in swagFrame.E)
+				if (Reflect.hasField(element, 'ASI'))
 				{
-					if (Reflect.hasField(element, 'ASI'))
+					var m3d = element.ASI.M3D;
+					var dumbassMatrix:Matrix = new Matrix(m3d[0], m3d[1], m3d[4]);
+
+					var spr:FlxSymbol = new FlxSymbol(0, 0, coolParsed);
+					matrixExposed = true;
+					spr.frames = frames;
+					spr.frame = spr.frames.getByName(element.ASI.N);
+
+					dumbassMatrix.concat(_matrix);
+					spr.matrixExposed = true;
+					spr.transformMatrix.concat(dumbassMatrix);
+
+					spr.origin.set();
+
+					spr.antialiasing = true;
+					spr.draw();
+
+					if (FlxG.keys.justPressed.ONE)
 					{
-						var m3d = element.ASI.M3D;
-						var dumbassMatrix:Matrix = new Matrix(m3d[0], m3d[1], m3d[4]);
-
-						var spr:FlxSymbol = new FlxSymbol(0, 0, coolParsed);
-						matrixExposed = true;
-						spr.frames = frames;
-						spr.frame = spr.frames.getByName(element.ASI.N);
-
-						dumbassMatrix.concat(_matrix);
-						spr.matrixExposed = true;
-						spr.transformMatrix.concat(dumbassMatrix);
-
-						spr.origin.set();
-
-						spr.antialiasing = true;
-						spr.draw();
-
-						if (FlxG.keys.justPressed.ONE)
-						{
-							trace("ASI - " + layer.LN + ": " + element.ASI.N);
-						}
+						trace("ASI - " + layer.LN + ": " + element.ASI.N);
 					}
-					else
+				}
+				else
+				{
+					var nestedSymbol = symbolMap.get(element.SI.SN);
+					var nestedShit:FlxSymbol = new FlxSymbol(0, 0, coolParse);
+					nestedShit.frames = frames;
+
+					var swagMatrix:FlxMatrix = new FlxMatrix(element.SI.M3D[0], element.SI.M3D[13]);
+
+					swagMatrix.concat(_matrix);
+
+					nestedShit._matrix.concat(swagMatrix);
+					nestedShit.origin.set(element.SI.TRP.x, element.SI.TRP.y);
+
+					if (FlxG.keys.justPressed.ONE)
 					{
-						var nestedSymbol = symbolMap.get(element.SI.SN);
-						var nestedShit:FlxSymbol = new FlxSymbol(0, 0, coolParse);
-						nestedShit.frames = frames;
-
-						var swagMatrix:FlxMatrix = new FlxMatrix(element.SI.M3D[0], element.SI.M3D[13]);
-
-						swagMatrix.concat(_matrix);
-
-						nestedShit._matrix.concat(swagMatrix);
-						nestedShit.origin.set(element.SI.TRP.x, element.SI.TRP.y);
-
-						if (FlxG.keys.justPressed.ONE)
-						{
-							trace("SI - " + layer.LN + ": " + element.SI.SN + " - LO");
-						}
-
-						nestedShit.firstFrame = element.SI.FFP;
-
-						nestedShit.daLoopType = element.SI.LP;
-						nestedShit.daFrame = daFrame;
-						nestedShit.scrollFactor.set(1, 1);
-						nestedShit.renderFrame(nestedSymbol.TL, coolParsed);
+						trace("SI - " + layer.LN + ": " + element.SI.SN + " - LO");
 					}
+
+					nestedShit.firstFrame = element.SI.FFP;
+
+					nestedShit.daLoopType = element.SI.LP;
+					nestedShit.daFrame = daFrame;
+					nestedShit.scrollFactor.set(1, 1);
+					nestedShit.renderFrame(nestedSymbol.TL, coolParsed);
 				}
 			}
 		}

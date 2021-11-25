@@ -59,7 +59,7 @@ class FreeplayState extends MusicBeatState
 
 		for (i in 0...initSonglist.length)
 		{
-			songs.push(new SongMetadata(initSonglist[i], 1, 'gf'));
+			addSong(initSonglist[i], 1, 'gf');
 		}
 
 		#if NO_PRELOAD_ALL
@@ -106,11 +106,11 @@ class FreeplayState extends MusicBeatState
 
 		for (i in 0...songs.length)
 		{
-			var songText:MenuText = new MenuText(0, (70 * i) + 30, songs[i].songName.replace('-', ' '), Bold);
+			var songText:MenuText = new MenuText(0, (70 * i) + 30, songs[i].name.replace('-', ' '), Bold);
 			songText.targetY = i;
 			grpSongs.add(songText);
 
-			var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
+			var icon:HealthIcon = new HealthIcon(songs[i].character);
 			icon.sprTracker = songText;
 			grpsIcons.add(icon);
 		}
@@ -137,7 +137,7 @@ class FreeplayState extends MusicBeatState
 
 	public function addSong(songName:String, weekNum:Int, songCharacter:String)
 	{
-		songs.push(new SongMetadata(songName, weekNum, songCharacter));
+		songs.push({name: songName, week: weekNum, character: songCharacter});
 	}
 
 	public function addWeek(songs:Array<String>, weekNum:Int, ?songCharacters:Array<String>)
@@ -214,7 +214,7 @@ class FreeplayState extends MusicBeatState
 
 		if (controls.ACCEPT)
 		{
-			PlayState.SONG = Song.loadFromJson(songs[curSelected].songName.toLowerCase());
+			PlayState.SONG = Song.loadFromJson(songs[curSelected].name.toLowerCase());
 			PlayState.isStoryMode = false;
 			PlayState.storyDifficulty = curDifficulty;
 
@@ -226,7 +226,7 @@ class FreeplayState extends MusicBeatState
 
 	override function switchTo(nextState:FlxState):Bool
 	{
-		clearDaCache(songs[curSelected].songName);
+		clearDaCache(songs[curSelected].name);
 		return super.switchTo(nextState);
 	}
 
@@ -239,7 +239,7 @@ class FreeplayState extends MusicBeatState
 		if (curDifficulty > 2)
 			curDifficulty = 0;
 
-		intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
+		intendedScore = Highscore.getScore(songs[curSelected].name, curDifficulty);
 
 		PlayState.storyDifficulty = curDifficulty;
 
@@ -257,17 +257,18 @@ class FreeplayState extends MusicBeatState
 		diffText.x -= diffText.width / 2;
 	}
 
-	function clearDaCache(songName:String)
+	function clearDaCache(currentSongName:String)
 	{
 		for (song in songs)
 		{
-			var songNameFat = song.songName;
+			var songName = song.name;
 
-			if (songName != songNameFat)
+			if (currentSongName != songName)
 			{
-				trace('trying to remove: $songNameFat');
-				Assets.cache.clear(Paths.inst(songNameFat));
-				Assets.cache.clear(Paths.voices(songNameFat));
+				trace('trying to remove: $songName');
+
+				Assets.cache.clear(Paths.inst(songName));
+				Assets.cache.clear(Paths.voices(songName));
 			}
 		}
 	}
@@ -284,14 +285,14 @@ class FreeplayState extends MusicBeatState
 			curSelected = 0;
 
 		#if newgrounds
-		intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
+		intendedScore = Highscore.getScore(songs[curSelected].name, curDifficulty);
 		#end
 
 		#if PRELOAD_ALL
 		FlxG.sound.music.stop();
 		songWait.cancel();
 		songWait.start(1, function(tmr:FlxTimer) {
-			FlxG.sound.playMusic(Paths.inst(songs[curSelected].songName), 0);
+			FlxG.sound.playMusic(Paths.inst(songs[curSelected].name), 0);
 		});
 		#end
 
@@ -314,18 +315,10 @@ class FreeplayState extends MusicBeatState
 	}
 }
 
-class SongMetadata
-{
-	public var songName:String = "";
-	public var week:Int = 0;
-	public var songCharacter:String = "";
-
-	public function new(song:String, week:Int, songCharacter:String)
-	{
-		this.songName = song;
-		this.week = week;
-		this.songCharacter = songCharacter;
-	}
+typedef SongMetadata = {
+	var name:String;
+	var week:Int;
+	var character:String;
 }
 
 class MenuText extends ui.AtlasText

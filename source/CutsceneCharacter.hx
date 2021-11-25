@@ -10,7 +10,7 @@ class CutsceneCharacter extends FlxSymbol
     var nestedShit:IntMap<FlxSymbol> = new IntMap<FlxSymbol>();
 
 	var frameTickTypeShit:Float;
-    var playingAnim:Bool = false;
+    public var playingAnim:Bool = false;
 
     public function new(x:Float, y:Float, anim:String)
     {

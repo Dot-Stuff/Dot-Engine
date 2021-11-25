@@ -186,24 +186,14 @@ class Character extends FlxSprite
 				quickAnimAdd('idle', "Pico Idle Dance");
 				quickAnimAdd('singUP', 'pico Up note0');
 				quickAnimAdd('singDOWN', 'Pico Down Note0');
-				if (isPlayer)
-				{
-					quickAnimAdd('singLEFT', 'Pico NOTE LEFT0');
-					quickAnimAdd('singRIGHT', 'Pico Note Right0');
-					quickAnimAdd('singRIGHTmiss', 'Pico Note Right Miss');
-					quickAnimAdd('singLEFTmiss', 'Pico NOTE LEFT miss');
-				}
-				else
-				{
-					// Need to be flipped! REDO THIS LATER!
-					quickAnimAdd('singLEFT', 'Pico Note Right0');
-					quickAnimAdd('singRIGHT', 'Pico NOTE LEFT0');
-					quickAnimAdd('singRIGHTmiss', 'Pico NOTE LEFT miss');
-					quickAnimAdd('singLEFTmiss', 'Pico Note Right Miss');
-				}
+				quickAnimAdd('singLEFT', 'Pico NOTE LEFT0');
+				quickAnimAdd('singRIGHT', 'Pico Note Right0');
+				quickAnimAdd('singRIGHTmiss', 'Pico Note Right Miss');
+				quickAnimAdd('singLEFTmiss', 'Pico NOTE LEFT miss');
 
 				quickAnimAdd('singUPmiss', 'pico Up note miss');
 				quickAnimAdd('singDOWNmiss', 'Pico Down Note MISS');
+				quickAnimAdd('singDOWN-alt', 'Pico Down Shoot0');
 
 				loadOffsetFile(curCharacter);
 
@@ -440,20 +430,15 @@ class Character extends FlxSprite
 				frames = Paths.getSparrowAtlas('characters/tankmanCaptain');
 
 				quickAnimAdd('idle', "Tankman Idle Dance");
-				quickAnimAdd('singUP', 'Tankman UP note');
-				quickAnimAdd('singDOWN', 'Tankman DOWN note');
-				if (isPlayer)
-				{
-					quickAnimAdd('singLEFT', 'Tankman Note Left');
-					quickAnimAdd('singRIGHT', 'Tankman Right Note');
-				}
-				else
-				{
-					// Need to be flipped! REDO THIS LATER!
-					quickAnimAdd('singLEFT', 'Tankman Right Note');
-					quickAnimAdd('singRIGHT', 'Tankman Note Left');
-				}
+				quickAnimAdd('singUP', 'Tankman UP note 0');
+				quickAnimAdd('singDOWN', 'Tankman DOWN note 0');
+				quickAnimAdd('singLEFT', 'Tankman Note Left 0');
+				quickAnimAdd('singRIGHT', 'Tankman Right Note 0');
+				quickAnimAdd('singLEFTmiss', 'Tankman Note Left MISS');
+				quickAnimAdd('singRIGHTmiss', 'Tankman Right Note MISS');
 
+				quickAnimAdd('singUPmiss', 'Tankman UP note MISS');
+				quickAnimAdd('singDOWNmiss', 'Tankman DOWN note MISS');
 				quickAnimAdd('singDOWN-alt', 'PRETTY GOOD'); // PRETTY GOOD
 				quickAnimAdd('singUP-alt', 'TANKMAN UGH'); // UGHHHHHHHH
 

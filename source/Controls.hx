@@ -324,16 +324,16 @@ class Controls extends FlxActionSet
 	{
 		for (i in Control.createAll())
 		{
-			var key = Reflect.field(keyData, i.getName());
+			var key:Dynamic = Reflect.field(keyData, i.getName());
 
 			if (key != null)
 			{
 				switch (keys)
 				{
 					case Keys:
-						bindKeys(i, key.slice());
+						bindKeys(i, key);
 					case Gamepad(id):
-						//bindButtons(i, id, key.slice());
+						//bindButtons(i, id, key);
 				}
 			}
 		}
@@ -351,8 +351,8 @@ class Controls extends FlxActionSet
 			var h = getInputsFor(i, device);
 			b = b && h.length == 0;
 
-			//controlData[Control.] = h;
-			//controlData[] = h;
+			controlData[i.getIndex()] = h;
+			trace('name: ${i.getName()} inputs: ${h}');
 		}
 
 		return b ? null : controlData;

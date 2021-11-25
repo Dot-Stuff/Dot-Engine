@@ -250,9 +250,9 @@ class ChartingState extends MusicBeatState
 		tab_group_song.add(loadAutosaveBtn);
 		tab_group_song.add(stepperBPM);
 		tab_group_song.add(stepperSpeed);
+		tab_group_song.add(stageDropDown);
 		tab_group_song.add(player1DropDown);
 		tab_group_song.add(player2DropDown);
-		tab_group_song.add(stageDropDown);
 
 		UI_box.addGroup(tab_group_song);
 		UI_box.scrollFactor.set();
@@ -926,14 +926,15 @@ class ChartingState extends MusicBeatState
 		var noteStrum = getStrumTime(dummyArrow.y) + sectionStartTime();
 		var noteData = Math.floor(FlxG.mouse.x / GRID_SIZE);
 		var noteSus = 0;
+		var noteAlt = false;
 		var note = _song.notes[PlayState.storyDifficulty][curSection];
 
-		note.sectionNotes.push([noteStrum, noteData, noteSus]);
+		note.sectionNotes.push([noteStrum, noteData, noteSus, noteAlt]);
 
 		curSelectedNote = note.sectionNotes[note.sectionNotes.length - 1];
 
 		if (FlxG.keys.pressed.CONTROL)
-			note.sectionNotes.push([noteStrum, (noteData + 4) % 8, noteSus]);
+			note.sectionNotes.push([noteStrum, (noteData + 4) % 8, noteSus, noteAlt]);
 
 		trace(noteStrum);
 		trace(curSection);
