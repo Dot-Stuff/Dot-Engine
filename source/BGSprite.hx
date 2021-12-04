@@ -6,44 +6,38 @@ using StringTools;
 
 class BGSprite extends FlxSprite
 {
-	private var idleAnim:Array<String>;
+	private var idleAnim:String;
 
-	// KADEDEV DO NOT FUCKING COPY THIS FOR THE LAST TIME.
-	public function new(name:String, x:Float, y:Float, ?scrollX:Float = 1, ?scrollY:Float = 1, ?idleAnim:Array<String>, ?isLoop:Bool = false)
+	public function new(name:String, x:Float, y:Float, scrollX:Float = 1, scrollY:Float = 1, ?idleAnim:Array<String>, looped:Bool = false)
 	{
 		super(x, y);
 
-		this.idleAnim = idleAnim;
+		if (idleAnim != null)
+		{
+			frames = Paths.getSparrowAtlas(name);
 
-        // PlayState.spriteList.push(name);
+			for (i in idleAnim)
+			{
+				animation.addByPrefix(i, i, 24, looped);
+				animation.play(i);
 
-		antialiasing = true;
+				if (idleAnim == null)
+					this.idleAnim = i;
+			}
+		}
+		else
+		{
+			loadGraphic(Paths.image(name));
+			active = false;
+		}
 
         scrollFactor.set(scrollX, scrollY);
-
-		if (idleAnim == null)
-            loadGraphic(Paths.image(name));
-		else
-        {
-            frames = Paths.getSparrowAtlas(name);
-
-            // KadeDev don't copy this you're fat.
-            // trace('KadeDev is ew: ${idleAnim}');
-			for (i in 0...idleAnim.length)
-			{
-				animation.addByPrefix(idleAnim[i], idleAnim[i], 24, isLoop);
-			}
-
-			dance();
-        }
+		antialiasing = true;
 	}
 
 	public function dance():Void
 	{
 		if (idleAnim != null)
-		{
-			// KadeEngine is bad it be lookin like dream.
-			animation.play(idleAnim[0]);
-		}
+			animation.play(idleAnim);
 	}
 }
