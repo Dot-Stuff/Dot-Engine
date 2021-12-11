@@ -67,6 +67,7 @@ class PlayState extends MusicBeatState
 
 	private var strumLineNotes:FlxTypedGroup<FlxSprite>;
 	private var playerStrums:FlxTypedGroup<FlxSprite>;
+	private var player2Strums:FlxTypedGroup<FlxSprite>;
 
 	private var camZooming:Bool = false;
 	private var curSong:String = "";
@@ -650,6 +651,7 @@ class PlayState extends MusicBeatState
 		add(grpNoteSplashes);
 
 		playerStrums = new FlxTypedGroup<FlxSprite>();
+		player2Strums = new FlxTypedGroup<FlxSprite>();
 
 		generateSong(SONG.song);
 
@@ -1331,6 +1333,8 @@ class PlayState extends MusicBeatState
 
 			if (player == 1)
 				playerStrums.add(babyArrow);
+			else
+				player2Strums.add(babyArrow);
 
 			babyArrow.animation.play('static');
 			babyArrow.x += notesX + ((FlxG.width / 2) * player);
@@ -1672,6 +1676,8 @@ class PlayState extends MusicBeatState
 
 			if (generatedMusic)
 			{
+				var strumming2:Array<Bool> = [false, false, false, false];
+
 				notes.forEachAlive(function(daNote:Note)
 				{
 					if ((PreferencesMenu.getPref('downscroll') && daNote.y < -FlxG.height)
@@ -1755,6 +1761,16 @@ class PlayState extends MusicBeatState
 								dad.playAnim('singRIGHT' + altAnim, true);
 						}
 
+						player2Strums.forEach(function(spr:FlxSprite)
+						{
+							if (Math.abs(daNote.noteData) == spr.ID)
+							{
+								strumming2[daNote.noteData] = true;
+
+								spr.animation.play('confirm', true);
+							}
+						});
+
 						dad.holdTimer = 0;
 
 						if (SONG.needsVoices)
@@ -1796,6 +1812,26 @@ class PlayState extends MusicBeatState
 						notes.remove(daNote, true);
 						daNote.destroy();
 					}
+				});
+
+				player2Strums.forEach(function(spr:FlxSprite)
+				{
+					if (strumming2[spr.ID])
+						spr.animation.play('confirm');
+					else if (dad.holdTimer == 0)
+					{
+						strumming2[spr.ID] = false;
+						spr.animation.play('static');
+					}
+		
+					if (spr.animation.curAnim.name == 'confirm' && !curStage.toLowerCase().startsWith('school'))
+					{
+						spr.centerOffsets();
+						spr.offset.x -= 13;
+						spr.offset.y -= 13;
+					}
+					else
+						spr.centerOffsets();
 				});
 			}
 		}

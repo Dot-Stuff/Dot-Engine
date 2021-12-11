@@ -63,7 +63,7 @@ class ControlsMenu extends ui.OptionsState.Page
 
 			deviceListSelected = true;
 
-			var keyboardItem = deviceList.createItem(0, 0, "Keyboard", Bold, function()
+			var keyboardItem = deviceList.createItem(null, null, "Keyboard", Bold, function()
 			{
 				selectDevice(Keys);
 			});
@@ -71,7 +71,7 @@ class ControlsMenu extends ui.OptionsState.Page
 			keyboardItem.x = FlxG.width / 2 - keyboardItem.width - 30;
 			keyboardItem.y = (c.height - keyboardItem.height) / 2;
 
-			var gamepadItem = deviceList.createItem(0, 0, "Gamepad", Bold, function()
+			var gamepadItem = deviceList.createItem(null, null, "Gamepad", Bold, function()
 			{
 				selectDevice(Device.Gamepad(FlxG.gamepads.firstActive.id));
 			});
@@ -150,7 +150,7 @@ class ControlsMenu extends ui.OptionsState.Page
 		add(prompt);
 	}
 
-	public function createItem(x:Float, y:Float, control:Control, index:Int)
+	public function createItem(x:Null<Float>, y:Null<Float>, control:Control, index:Int)
 	{
 		var inputItem = new InputItem(x, y, currentDevice, control, index, onSelect);
 
