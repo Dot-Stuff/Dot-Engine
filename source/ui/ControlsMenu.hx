@@ -14,7 +14,7 @@ using StringTools;
 class ControlsMenu extends ui.OptionsState.Page
 {
 	inline static public var COLUMNS = 2;
-	static var controlList = Control.createAll();
+	static var controlList = Type.allEnums(Control);
 
 	static var controlGroups:Array<Array<Control>> = [
 		[NOTE_UP, NOTE_DOWN, NOTE_LEFT, NOTE_RIGHT],
@@ -228,9 +228,9 @@ class ControlsMenu extends ui.OptionsState.Page
                     var what = FlxG.gamepads.getByID(id);
 					var what2 = what.mapping.getID(what.firstJustReleasedRawID());
 
-					if (what2 != -1)
+					if (what2 != NONE)
 					{
-						if (what2 != 6)
+						if (what2 != BACK)
 							onInputSelect(what2);
 
 						closePrompt();
