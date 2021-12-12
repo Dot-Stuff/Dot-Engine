@@ -1,6 +1,6 @@
 package;
 
-import ui.AtlasText.AtlasFont;
+import ui.DialogueText;
 import flixel.util.FlxColor;
 import Section.DialogueSection;
 import flixel.FlxSprite;
@@ -143,8 +143,7 @@ class DialogueBox extends MusicBeatSubstate
 		}
 		else
 		{
-			var shouldBeBold:AtlasFont = dialogueData[dialogueIndex].angry ? Bold : Default;
-			dialogue = new DialogueText(100, 80 + (FlxG.height * 0.5), '', shouldBeBold);
+			dialogue = new DialogueText(100, 80 + (FlxG.height * 0.5), '', Bold);
 			add(dialogue);
 		}
 	}
@@ -154,8 +153,6 @@ class DialogueBox extends MusicBeatSubstate
 
 	override function update(elapsed:Float)
 	{
-		trace('our index: ' + dialogueIndex);
-
 		if (atSchool())
 			dropText.text = swagDialogue.text;
 
@@ -210,8 +207,14 @@ class DialogueBox extends MusicBeatSubstate
 					startDialogue();
 				}
 			}
-			else if (dialogueStarted && atSchool())
-				swagDialogue.skip();
+			else if (dialogueStarted)
+			{
+				if (atSchool())
+					swagDialogue.skip();
+				else
+					dialogue.skip();
+			}
+				
 		}
 
 		super.update(elapsed);
@@ -264,23 +267,19 @@ class DialogueBox extends MusicBeatSubstate
 				trace('dialogue finish');
 	
 				dialogueEnded = true;
-			};
+			}
 		}
 		else
 		{
-			dialogue.text = dialogueData[dialogueIndex].line;
+			dialogue.resetText(dialogueData[dialogueIndex].line);
+			dialogue.start(0.04);
 
-			// TODO: Finish the dialogue text
-			playAnim('complete');
-			trace('dialogue finish');
+			dialogue.completeCallback = function()
+			{
+				trace('dialogue finish');
 
-			/*var theDialog:AtlasText = new AtlasText(0, 70, dialogueData[dialogueIndex].line, Default);
-			if (dialogueData[dialogueIndex].isPlayer1)
-				theDialog.personTalking = PlayState.SONG.player1.toUpperCase();
-			else
-				theDialog.personTalking = PlayState.SONG.player2.toUpperCase();
-			dialogue = theDialog;
-			add(theDialog);*/
+				dialogueEnded = true;
+			}
 		}
 	}
 
@@ -294,18 +293,5 @@ class DialogueBox extends MusicBeatSubstate
 	{
 		var angry:String = dialogueData[dialogueIndex].angry ? '-angry' : '';
 		box.animation.play(anim + angry);
-	}
-}
-
-/**
- * Type Text
- */
-class DialogueText extends ui.AtlasText
-{
-	public var finalText(default, set):String = '';
-
-	function set_finalText(value:String):String
-	{
-		return this.text;
 	}
 }
