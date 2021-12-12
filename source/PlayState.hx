@@ -1540,6 +1540,8 @@ class PlayState extends MusicBeatState
 			#end
 		}
 
+		FlxG.camera.followLerp = CoolUtil.camLerpShit(0.04);
+
 		if (FlxG.keys.justPressed.NINE)
 			iconP1.swapOldIcon();
 
