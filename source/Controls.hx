@@ -351,7 +351,9 @@ class Controls extends FlxActionSet
 			var h = getInputsFor(i, device);
 			b = b && h.length == 0;
 
-			controlData[Type.enumIndex(i)] = h;
+			trace('${Std.parseInt(Type.enumConstructor(i))}, $h');
+			// TODO: Remove parsing
+			controlData[Std.parseInt(Type.enumConstructor(i))] = h;
 		}
 
 		return b ? null : controlData;
