@@ -37,19 +37,21 @@ class MenuTypedList extends FlxTypedGroup<MenuItem>
 	public var selectedIndex:Int = 0;
 	public var navControls:NavControls = NavControls.Vertical;
 
-	public function new(?navControls:NavControls = NavControls.Vertical, ?wrapMode:WrapMode)
+	public function new(?navControls:NavControls = Vertical, ?wrapMode:Null<WrapMode>)
 	{
 		this.navControls = navControls;
 
 		if (wrapMode != null)
 			this.wrapMode = wrapMode;
 		else
-			wrapMode = switch (navControls)
+		{
+			this.wrapMode = switch (navControls)
 			{
-				case Horizontal: WrapMode.Horizontal;
-				case Vertical: WrapMode.Vertical;
-				default: WrapMode.Both;
+				case Horizontal: Horizontal;
+				case Vertical: Vertical;
+				default: Both;
 			}
+		}
 
 		super();
 	}
@@ -109,7 +111,7 @@ class MenuTypedList extends FlxTypedGroup<MenuItem>
 					navIndex = navGrid(num, upP, downP, wrap, leftP, rightP, wrap);
 			}
 
-			if (selectedIndex != navIndex)
+			if (navIndex != selectedIndex)
 			{
 				FlxG.sound.play(Paths.sound("scrollMenu"));
 				selectItem(navIndex);
@@ -122,7 +124,7 @@ class MenuTypedList extends FlxTypedGroup<MenuItem>
 
 	function navAxis(change:Int, dir1:Int, direction1:Bool, direction2:Bool, wrap:Bool)
 	{
-		if (direction2 == direction1)
+		if (direction1 == direction2)
 			return change;
 
 		if (direction1)
@@ -143,15 +145,14 @@ class MenuTypedList extends FlxTypedGroup<MenuItem>
 		return change;
 	}
 
-	function navGrid(a:Int, b:Bool, c:Bool, d:Bool, e:Bool, f:Bool, h:Bool)
+	function navGrid(a:Int, b:Bool, c:Bool, d:Bool, e:Bool, f:Bool, h:Bool):Int
 	{
 		var m = Math.ceil(length / a);
 		var n = Math.floor(selectedIndex / a);
 		var k = selectedIndex % a;
-		var kPoop = navAxis(k, a, b, c, d);
-		var nPoop = navAxis(n, m, e, f, h);
-
-		return Std.int(Math.min(length - 1, nPoop * a + kPoop));
+		k = navAxis(k, a, b, c, d);
+		n = navAxis(n, m, e, f, h);
+		return Std.int(Math.min(length - 1, n * a + k));
 	}
 
 	function accept()
@@ -199,7 +200,7 @@ class MenuTypedItem extends ui.MenuItem
 {
     public var label(default, set):AtlasText;
 
-    public function new(x:Float, y:Float, label:AtlasText, name:String, callback:Void->Void)
+    public function new(x:Null<Float>, y:Null<Float>, label:AtlasText, name:String, callback:Void->Void)
     {
         super(x, y, name, callback);
         this.label = label;
@@ -283,7 +284,7 @@ class MenuTypedItem extends ui.MenuItem
 
 class TextMenuList extends MenuTypedList
 {
-    public function createItem(x:Float, y:Float, name:String, font:AtlasFont = Bold, callback:Void->Void, ?fireInstantly:Bool = false)
+    public function createItem(x:Null<Float>, y:Null<Float>, name:String, font:AtlasFont = Bold, callback:Void->Void, ?fireInstantly:Bool = false)
     {
         var menuItem = new TextMenuItem(x, y, name, font, callback);
         menuItem.fireInstantly = fireInstantly;
@@ -294,7 +295,7 @@ class TextMenuList extends MenuTypedList
 
 class TextMenuItem extends TextTypedMenuItem
 {
-    public function new(x:Float, y:Float, name:String, font:AtlasFont = Bold, callback:Void->Void):Void
+    public function new(x:Null<Float>, y:Null<Float>, name:String, font:AtlasFont = Bold, callback:Void->Void):Void
     {
         super(x, y, new AtlasText(0, 0, name, font), name, callback);
 

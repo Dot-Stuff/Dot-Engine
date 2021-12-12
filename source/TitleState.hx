@@ -1,5 +1,7 @@
 package;
 
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
 import netTest.schemaShit.BattleState;
 import io.colyseus.Room;
 import io.colyseus.Client;
@@ -50,6 +52,8 @@ class TitleState extends MusicBeatState
 	private var client:Client;
 	private var room:Room<BattleState>;
 
+	var dotLogo:FlxSprite;
+
 	override public function create():Void
 	{
 		startedIntro = false;
@@ -95,6 +99,12 @@ class TitleState extends MusicBeatState
 		Highscore.load();
 
 		NGio.init();
+
+		dotLogo = new FlxSprite().loadGraphic(Paths.image('dotArt'));
+		dotLogo.screenCenter();
+		dotLogo.antialiasing = true;
+		add(dotLogo);
+		FlxTween.tween(dotLogo, {y: dotLogo.y + 50}, 0.6, {ease: FlxEase.quadInOut, type: PINGPONG, startDelay: 0.1});
 
 		if (FlxG.save.data.weekUnlocked != null)
 		{
@@ -144,6 +154,8 @@ class TitleState extends MusicBeatState
 
 	function startIntro()
 	{
+		dotLogo.destroy();
+
 		if (!initialized)
 		{
 			var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileDiamond);
@@ -290,6 +302,7 @@ class TitleState extends MusicBeatState
 			FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);
 			transitioning = true;
 
+			Assets.cache.clear(Paths.image('dotArt'));
 			Assets.cache.clear(Paths.image('gfDanceTitle'));
 			Assets.cache.clear(Paths.image('logoBumpin'));
 			Assets.cache.clear(Paths.image('titleEnter'));

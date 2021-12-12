@@ -523,9 +523,13 @@ class Character extends FlxSprite
 		animation.addByPrefix(name, prefix, 24, false);
 	}
 
+	/**
+	 * If they have danceLeft and danceRight animations
+	 * @return Bool
+	 */
 	public function hasRightAndLeft():Bool
 	{
-		return animOffsets.exists('danceRight') && animOffsets.exists('danceLeft');
+		return animation.getByName('danceRight') != null && animation.getByName('danceLeft') != null;
 	}
 
 	private function loadOffsetFile(offsetCharacter:String)

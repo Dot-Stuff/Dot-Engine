@@ -82,25 +82,25 @@ class MainMenuState extends MusicBeatState
 
 		menuItems.enabled = false;
 
-		/*menuItems.createItem(0, 0, 'multiplayer', function()
+		/*menuItems.createItem(null, null, 'multiplayer', function()
 		{
 			startExitState(new netTest.MultiplayerMenu());
 		});*/
 
-		menuItems.createItem(0, 0, 'story mode', function()
+		menuItems.createItem(null, null, 'story mode', function()
 		{
 			startExitState(new StoryMenuState());
 		});
 
-		menuItems.createItem(0, 0, 'freeplay', function()
+		menuItems.createItem(null, null, 'freeplay', function()
 		{
 			startExitState(new FreeplayState());
 		});
 
 		#if !switch
-		menuItems.createItem(0, 0, 'donate', selectDonate, true);
+		menuItems.createItem(null, null, 'donate', selectDonate, true);
 
-		menuItems.createItem(0, 0, 'options', function()
+		menuItems.createItem(null, null, 'options', function()
 		{
 			startExitState(new ui.OptionsState());
 		});
@@ -141,6 +141,8 @@ class MainMenuState extends MusicBeatState
 	{
 		#if linux
 		Sys.command('xdg-open', ["https://ninja-muffin24.itch.io/funkin"]);
+		#elseif mac
+		Sys.command('open', ['https://ninja-muffin24.itch.io/funkin']);
 		#else
 		FlxG.openURL('https://ninja-muffin24.itch.io/funkin');
 		#end
@@ -231,22 +233,36 @@ class MainMenuState extends MusicBeatState
 
 class MainMenuList extends ui.MenuTypedList
 {
-	var atlas:FlxFramesCollection = Paths.getSparrowAtlas('main_menu');
+	var atlas:FlxFramesCollection;
 
-	public function createItem(x:Float, y:Float, name:String, callback:Void->Void, ?fireInstantly:Bool)
+	public function new()
+	{
+		atlas = Paths.getSparrowAtlas('main_menu');
+
+		super(Vertical);
+	}
+
+	public function createItem(x:Null<Float>, y:Null<Float>, name:String, callback:Void->Void, ?fireInstantly:Bool)
 	{
 		var menuItem = new MainMenuItem(x, y, name, atlas, callback);
 		menuItem.fireInstantly = fireInstantly;
 		menuItem.ID = length;
+
 		return addItem(name, menuItem);
+	}
+
+	public override function destroy()
+	{
+		super.destroy();
+		atlas = null;
 	}
 }
 
 class MainMenuItem extends AtlasMenuItem
 {
-	public function new(x:Float, y:Float, newName:String, atlas:FlxFramesCollection, callback:Void->Void)
+	public function new(x:Null<Float>, y:Null<Float>, name:String, atlas:FlxFramesCollection, callback:Void->Void)
 	{
-		super(x, y, newName, atlas, callback);
+		super(x, y, name, atlas, callback);
 
 		scrollFactor.set();
 	}
@@ -268,7 +284,7 @@ class AtlasMenuItem extends ui.MenuItem
 {
 	var atlas:FlxFramesCollection;
 
-	public function new(x:Float, y:Float, name:String, atlas:FlxFramesCollection, callback:Void->Void):Void
+	public function new(x:Null<Float>, y:Null<Float>, name:String, atlas:FlxFramesCollection, callback:Void->Void):Void
 	{
 		this.atlas = atlas;
 
