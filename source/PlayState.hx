@@ -1437,6 +1437,8 @@ class PlayState extends MusicBeatState
 
 	override public function update(elapsed:Float)
 	{
+		FlxG.camera.followLerp = CoolUtil.camLerpShit(0.04);
+
 		#if !debug
 		perfectMode = false;
 		#else
@@ -1539,8 +1541,6 @@ class PlayState extends MusicBeatState
 			DiscordClient.changePresence("Chart Editor", null, null, true);
 			#end
 		}
-
-		FlxG.camera.followLerp = CoolUtil.camLerpShit(0.04);
 
 		if (FlxG.keys.justPressed.NINE)
 			iconP1.swapOldIcon();
