@@ -1,10 +1,8 @@
 package;
 
+import netTest.Net;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
-import netTest.schemaShit.BattleState;
-import io.colyseus.Room;
-import io.colyseus.Client;
 import flixel.FlxSprite;
 import flixel.addons.transition.FlxTransitionSprite.GraphicTransTileDiamond;
 import flixel.addons.transition.FlxTransitionableState;
@@ -49,32 +47,11 @@ class TitleState extends MusicBeatState
 
 	var swagShader:ColorSwap;
 
-	private var client:Client;
-	private var room:Room<BattleState>;
-
 	var dotLogo:FlxSprite;
 
 	override public function create():Void
 	{
 		startedIntro = false;
-
-		/*client = new Client('ws://localhost:2567');
-
-		client.joinOrCreate("battle", [], BattleState, function(err, room)
-		{
-			if (err != null)
-			{
-				trace('JOIN ERROR: $err');
-				return;
-			}
-
-			this.room = room;
-
-			this.room.state.players.onAdd = function(player, key)
-			{
-				trace("player added at " + key + " => " + player);
-			}
-		});*/
 
 		FlxG.game.focusLostFramerate = 60;
 
@@ -97,6 +74,8 @@ class TitleState extends MusicBeatState
 		PlayerSettings.init();
 
 		Highscore.load();
+
+		Net.init();
 
 		NGio.init();
 
@@ -285,7 +264,7 @@ class TitleState extends MusicBeatState
 
 		if (pressedEnter && !transitioning && skippedIntro)
 		{
-			//room.send('type', "enterPressed");
+			Net.send('type', "enterPressed");
 
 			#if newgrounds
 			NGio.unlockMedal(60960);

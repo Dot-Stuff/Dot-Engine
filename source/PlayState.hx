@@ -1,5 +1,6 @@
 package;
 
+import netTest.Net;
 import animate.FlxAnimate;
 import shadersLmfao.ColorSwap;
 import Section.SwagSection;
@@ -796,21 +797,21 @@ class PlayState extends MusicBeatState
 		inCutscene = true;
 
 		/*var background:FlxSprite = new FlxSprite(-200, -200).makeGraphic(2 * FlxG.width, 2 * FlxG.height, FlxColor.BLACK);
-		background.scrollFactor.set();
-		add(background);
+			background.scrollFactor.set();
+			add(background);
 
-		var vid:FlxVideo = new FlxVideo('ughCutscene');
-		vid.finishCutscene = function()
-		{
-			remove(background);
-			FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, (Conductor.crochet / 1000) * 5, {ease: FlxEase.quadInOut});
-			startCountdown();
-			cameraMovement();
-		}
+			var vid:FlxVideo = new FlxVideo('ughCutscene');
+			vid.finishCutscene = function()
+			{
+				remove(background);
+				FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, (Conductor.crochet / 1000) * 5, {ease: FlxEase.quadInOut});
+				startCountdown();
+				cameraMovement();
+			}
 
-		FlxG.camera.zoom *= 1.2;
-		camFollow.x += 100;
-		camFollow.y += 100;*/
+			FlxG.camera.zoom *= 1.2;
+			camFollow.x += 100;
+			camFollow.y += 100; */
 
 		// D
 		FlxG.camera.zoom = defaultCamZoom * 1.2;
@@ -829,7 +830,7 @@ class PlayState extends MusicBeatState
 		FlxG.camera.zoom *= 1.2;
 		camFollow.y += 100;
 
-		//tankCutscene.startSyncAudio = FlxG.sound.load(Paths.sound('wellWellWell'));
+		// tankCutscene.startSyncAudio = FlxG.sound.load(Paths.sound('wellWellWell'));
 
 		new FlxTimer().start(3, function(tmr:FlxTimer)
 		{
@@ -852,7 +853,7 @@ class PlayState extends MusicBeatState
 				camFollow.x -= 800;
 				camFollow.y -= 100;
 				FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom * 1.2}, 0.5, {ease: FlxEase.quadInOut});
-				//tankCutscene.animation.play('killYou');
+				// tankCutscene.animation.play('killYou');
 				FlxG.sound.play(Paths.sound('killYou'));
 				new FlxTimer().start(6.1, function(swagasdga:FlxTimer)
 				{
@@ -1802,6 +1803,9 @@ class PlayState extends MusicBeatState
 					{
 						if (daNote.tooLate)
 						{
+							if (!Net.connecting)
+								Net.send('lateNote', {dir: daNote.noteData});
+
 							health -= 0.0475;
 							vocals.volume = 0;
 							killCombo();
@@ -2326,6 +2330,9 @@ class PlayState extends MusicBeatState
 
 	function noteMiss(direction:Int = 1):Void
 	{
+		if (!Net.connecting)
+			Net.send('noteMiss', {dir: direction});
+
 		health -= 0.04;
 		killCombo();
 
@@ -2349,6 +2356,9 @@ class PlayState extends MusicBeatState
 	{
 		if (!note.wasGoodHit)
 		{
+			if (!Net.connecting)
+				Net.send('goodNoteHit', {dir: note.noteData});
+
 			if (!note.isSustainNote)
 			{
 				combo += 1;

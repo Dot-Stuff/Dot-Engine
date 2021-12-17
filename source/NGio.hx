@@ -83,7 +83,7 @@ class NGio
 	}
 
 	// Add check if we have a API
-	public static function login(a:Dynamic, b:ConnectionResult->Void)
+	public static function login(pendingCallback, otherCallback:ConnectionResult->Void)
 	{
 		trace('Logging in manually');
 
@@ -92,24 +92,24 @@ class NGio
 		var onFail:Error->Void = null;
 		var onCancel:Void->Void = null;
 
-		if (a != null)
+		if (pendingCallback != null)
 			onPending = function() {
-				a(NG.core.openPassportUrl);
+				pendingCallback(NG.core.openPassportUrl);
 			}
 
-		if (b != null)
+		if (otherCallback != null)
 		{
 			onSuccess = function() {
 				onNGLogin();
-				b(Success);
+				otherCallback(Success);
 			}
 
 			onFail = function(fail) {
-				b(Fail(fail.message));
+				otherCallback(Fail(fail.message));
 			}
 
 			onCancel = function() {
-				b(Cancelled);
+				otherCallback(Cancelled);
 			}
 		}
 
