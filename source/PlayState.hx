@@ -1803,9 +1803,6 @@ class PlayState extends MusicBeatState
 					{
 						if (daNote.tooLate)
 						{
-							if (!Net.connecting)
-								Net.send('lateNote', {dir: daNote.noteData});
-
 							health -= 0.0475;
 							vocals.volume = 0;
 							killCombo();
@@ -2006,6 +2003,8 @@ class PlayState extends MusicBeatState
 			score = 200;
 			isSick = false;
 		}
+
+		Net.send('scoreRating', {rating: daRating, score: score});
 
 		// TODO: Add Note Skins and Special Notes (Burning etc).
 		if (isSick)
@@ -2209,6 +2208,9 @@ class PlayState extends MusicBeatState
 			controls.NOTE_RIGHT_R
 		];
 
+		if (!Net.connecting && generatedMusic)
+			Net.send('hitNote', {held: holdArray});
+
 		// HOLDS, check for sustain notes.
 		if (holdArray.contains(true) && generatedMusic)
 		{
@@ -2330,9 +2332,6 @@ class PlayState extends MusicBeatState
 
 	function noteMiss(direction:Int = 1):Void
 	{
-		if (!Net.connecting)
-			Net.send('noteMiss', {dir: direction});
-
 		health -= 0.04;
 		killCombo();
 
@@ -2356,9 +2355,6 @@ class PlayState extends MusicBeatState
 	{
 		if (!note.wasGoodHit)
 		{
-			if (!Net.connecting)
-				Net.send('goodNoteHit', {dir: note.noteData});
-
 			if (!note.isSustainNote)
 			{
 				combo += 1;

@@ -22,7 +22,7 @@ class GitarooPause extends MusicBeatSubstate
 
 		FlxG.sound.list.add(trollMusic);
 
-		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('pauseAlt/pauseBG'));
+		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.loadImage('pauseAlt/pauseBG'));
 		add(bg);
 
 		var bf:FlxSprite = new FlxSprite(0, 30);

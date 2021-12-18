@@ -77,9 +77,11 @@ class TitleState extends MusicBeatState
 
 		Net.init();
 
+		Modding.init();
+
 		NGio.init();
 
-		dotLogo = new FlxSprite().loadGraphic(Paths.image('dotArt'));
+		dotLogo = new FlxSprite().loadGraphic(Paths.loadImage('dotArt'));
 		dotLogo.screenCenter();
 		dotLogo.antialiasing = true;
 		add(dotLogo);
@@ -194,7 +196,7 @@ class TitleState extends MusicBeatState
 		blackScreen = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		credGroup.add(blackScreen);
 
-		ngSpr = new FlxSprite(0, FlxG.height * 0.52).loadGraphic(Paths.image('newgrounds_logo'));
+		ngSpr = new FlxSprite(0, FlxG.height * 0.52).loadGraphic(Paths.loadImage('newgrounds_logo'));
 		add(ngSpr);
 		ngSpr.visible = false;
 		ngSpr.setGraphicSize(Std.int(ngSpr.width * 0.8));
@@ -281,10 +283,10 @@ class TitleState extends MusicBeatState
 			FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);
 			transitioning = true;
 
-			Assets.cache.clear(Paths.image('dotArt'));
-			Assets.cache.clear(Paths.image('gfDanceTitle'));
-			Assets.cache.clear(Paths.image('logoBumpin'));
-			Assets.cache.clear(Paths.image('titleEnter'));
+			Assets.cache.clear(Paths.loadImage('dotArt').key);
+			Assets.cache.clear(Paths.loadImage('gfDanceTitle').key);
+			Assets.cache.clear(Paths.loadImage('logoBumpin').key);
+			Assets.cache.clear(Paths.loadImage('titleEnter').key);
 
 			#if newgrounds
 			NGio.checkVersion(function(ver:String)

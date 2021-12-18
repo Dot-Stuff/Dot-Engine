@@ -101,17 +101,17 @@ class DebugBoundingState extends FlxState
             #end
             #if sys
             trace("DROPPED FILE FROM: " + Std.string(path));
-            var newPath = "./" + Paths.image('characters/temp');
+            var newPath = "./" + Paths.loadImage('characters/temp');
             File.copy(path, newPath);
 
-            var swag = Paths.image('characters/temp');
+            var swag = Paths.loadImage('characters/temp');
 
             if (bf != null)
                 remove(bf);
-            FlxG.bitmap.removeByKey(Paths.image('characters/temp'));
+            FlxG.bitmap.removeByKey(Paths.loadImage('characters/temp'));
             Assets.cache.clear();
 
-            bf.loadGraphic(Paths.image('characters/temp'));
+            bf.loadGraphic(Paths.loadImage('characters/temp'));
             add(bf);
             #end
         });

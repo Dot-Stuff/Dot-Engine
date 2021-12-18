@@ -1,6 +1,6 @@
 package;
 
-import lime.utils.Assets;
+import openfl.utils.Assets;
 
 using StringTools;
 

@@ -100,7 +100,6 @@ class ModdingSubstate extends ui.OptionsState.Page
 
 		modList = polymod.Polymod.scan('./mods/');
 
-		trace('Whayt: ' + modFolders);
 		trace(modList);
 
 		var loopNum:Int = 0;

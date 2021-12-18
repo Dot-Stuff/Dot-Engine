@@ -38,19 +38,9 @@ class Net
 				trace("onMessage: 'type' => " + message);
 			});
 
-			room.onMessage("noteMiss", function(message)
+			room.onMessage("hitNote", function(message)
 			{
-				trace("onMessage: 'noteMiss' => " + message);
-			});
-
-			room.onMessage("goodNoteHit", function(message)
-			{
-				trace("onMessage: 'goodNoteHit' => " + message);
-			});
-
-			room.onMessage("lateNote", function(message)
-			{
-				trace("onMessage: 'lateNote' => " + message);
+				trace("onMessage: 'hitNote' => " + message);
 			});
 		});
 	}

@@ -35,6 +35,22 @@ class Paths
 		return getPreloadPath(file);
 	}
 
+	 static public function loadImage(key:String, ?library:String):FlxGraphic
+	{
+		var path = image(key, library);
+
+		if (OpenFlAssets.exists(path, IMAGE))
+		{
+			var bitmap = OpenFlAssets.getBitmapData(path);
+			return FlxGraphic.fromBitmapData(bitmap);
+		}
+		else
+		{
+			trace('Could not find image at path $path');
+			return null;
+		}
+	}
+
 	static public function getLibraryPath(file:String, library = "preload")
 	{
 		return library == "preload" || library == "default" ? getPreloadPath(file) : getLibraryPathForce(file, library);
@@ -112,16 +128,16 @@ class Paths
 
 	inline static public function getSparrowAtlas(key:String, ?library:String)
 	{
-		return FlxAtlasFrames.fromSparrow(image(key, library), getPath('images/$key.xml', TEXT, library));
+		return FlxAtlasFrames.fromSparrow(loadImage(key, library), getPath('images/$key.xml', TEXT, library));
 	}
 
 	inline static public function getPackerAtlas(key:String, ?library:String)
 	{
-		return FlxAtlasFrames.fromSpriteSheetPacker(image(key, library), getPath('images/$key.txt', TEXT, library));
+		return FlxAtlasFrames.fromSpriteSheetPacker(loadImage(key, library), getPath('images/$key.txt', TEXT, library));
 	}
 
 	inline static public function getAnimateAtlas(key:String, ?library:String)
 	{
-		return animate.FlxAnimate.fromAnimate(image('$key/spritemap1', library), getPath('images/$key/spritemap1.json', TEXT, library));
+		return animate.FlxAnimate.fromAnimate(loadImage('$key/spritemap1', library), getPath('images/$key/spritemap1.json', TEXT, library));
 	}
 }
