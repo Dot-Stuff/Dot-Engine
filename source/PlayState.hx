@@ -2208,7 +2208,7 @@ class PlayState extends MusicBeatState
 			controls.NOTE_RIGHT_R
 		];
 
-		if (!Net.connecting && generatedMusic)
+		if (generatedMusic)
 			Net.send('hitNote', {held: holdArray});
 
 		// HOLDS, check for sustain notes.
