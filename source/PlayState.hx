@@ -821,7 +821,7 @@ class PlayState extends MusicBeatState
 
 		dad.visible = false;
 		var tankCutscene:CutsceneCharacter = new CutsceneCharacter(-20, 320, 'tightBars');
-		add(tankCutscene);
+		tankCutscene.antialiasing = true;
 		tankCutscene.playingAnim = true;
 		gfCutsceneLayer.add(tankCutscene);
 

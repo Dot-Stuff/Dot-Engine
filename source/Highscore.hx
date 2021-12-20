@@ -24,10 +24,10 @@ class Highscore
 	public static function saveWeekScore(week:Int = 1, score:Int = 0, ?diff:Int = 0):Void
 	{
 		#if newgrounds
-		NGio.postScore(score, "Week " + week);
+		NGio.postScore(score, 'Week $week');
 		#end
 
-		var daWeek:String = formatSong('week' + week, diff);
+		var daWeek:String = formatSong('week$week', diff);
 
 		if (songScores.exists(daWeek))
 		{
