@@ -113,8 +113,6 @@ class TitleState extends MusicBeatState
 		new FlxTimer().start(1, function(tmr:FlxTimer)
 		{
 			startIntro();
-
-			var test = new mods.ModTest();
 		});
 		#end
 

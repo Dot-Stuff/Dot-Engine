@@ -1,5 +1,6 @@
 package;
 
+import mods.ModTest;
 import netTest.Net;
 import animate.FlxAnimate;
 import shadersLmfao.ColorSwap;
@@ -119,7 +120,7 @@ class PlayState extends MusicBeatState
 
 	var talking:Bool = true;
 	var songScore:Int = 0;
-	var scoreTxt:FlxText;
+	public static var scoreTxt:FlxText;
 
 	var grpNoteSplashes:FlxTypedGroup<NoteSplash>;
 
@@ -143,6 +144,8 @@ class PlayState extends MusicBeatState
 	#end
 
 	var camPos:FlxPoint;
+
+	var modTest:ModTest;
 
 	override public function create()
 	{
@@ -774,6 +777,8 @@ class PlayState extends MusicBeatState
 		}
 		else
 			startCountdown();
+
+		modTest = new ModTest();
 
 		super.create();
 	}
@@ -1513,6 +1518,8 @@ class PlayState extends MusicBeatState
 
 		scoreTxt.text = "Score:" + songScore;
 
+		modTest.onUpdate();
+
 		var androidPause:Bool = false;
 
 		#if android
@@ -1845,6 +1852,8 @@ class PlayState extends MusicBeatState
 
 	function killCombo():Void
 	{
+		modTest.onKillCombo();
+
 		if (combo > 5 && gf.animOffsets.exists('sad'))
 			gf.playAnim('sad');
 		if (combo != 0)

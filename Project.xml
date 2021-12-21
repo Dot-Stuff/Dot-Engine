@@ -189,7 +189,7 @@
 	<haxedef name="CAN_CHEAT" if="switch debug" />
 
 	<!-- Polymod -->
-	<haxedef name="POLYMOD_SCRIPT_EXT" value=".hscript" />
+	<haxedef name="POLYMOD_SCRIPT_EXT" value=".hxs" />
 	<haxedef name="POLYMOD_SCRIPT_LIBRARY" value="scripts" />
 	<haxedef name="POLYMOD_USE_NAMESPACE" value="false" />
 	<haxedef name="POLYMOD_ROOT_PATH" value="assets/scripts/" />

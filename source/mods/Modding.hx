@@ -4,13 +4,6 @@ import polymod.backends.OpenFLBackend;
 import polymod.format.ParseRules.TextFileFormat;
 import polymod.Polymod;
 
-@:hscript({
-    context: [Std, Math]
-})
-interface HScript extends polymod.hscript.HScriptable
-{
-}
-
 class Modding
 {
 	static final API_VERSION = "0.1.0";
