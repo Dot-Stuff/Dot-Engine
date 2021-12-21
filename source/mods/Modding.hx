@@ -1,8 +1,15 @@
-package;
+package mods;
 
 import polymod.backends.OpenFLBackend;
 import polymod.format.ParseRules.TextFileFormat;
 import polymod.Polymod;
+
+@:hscript({
+    context: [Std, Math]
+})
+interface HScript extends polymod.hscript.HScriptable
+{
+}
 
 class Modding
 {
@@ -66,6 +73,7 @@ class Modding
 		return {
 			assetLibraryPaths: [
 				"default" => "./preload",
+				"scripts" => "./scripts",
 				"songs" => "./songs",
 				"shared" => "./",
 				"tutorial" => "./tutorial",

@@ -77,8 +77,6 @@ class TitleState extends MusicBeatState
 
 		Net.init();
 
-		Modding.init();
-
 		NGio.init();
 
 		dotLogo = new FlxSprite().loadGraphic(Paths.loadImage('dotArt'));
@@ -115,6 +113,8 @@ class TitleState extends MusicBeatState
 		new FlxTimer().start(1, function(tmr:FlxTimer)
 		{
 			startIntro();
+
+			var test = new mods.ModTest();
 		});
 		#end
 

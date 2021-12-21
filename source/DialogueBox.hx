@@ -10,7 +10,6 @@ import flixel.util.FlxTimer;
 
 using StringTools;
 
-// Wait just a moment. Why is this not a substate!!!??? W T F   AHHHHHHHHHHHHHHHHHHHHHHHHH
 class DialogueBox extends MusicBeatSubstate
 {
 	var box:FlxSprite;
