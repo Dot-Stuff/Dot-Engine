@@ -1260,7 +1260,7 @@ class PlayState extends MusicBeatState
 
 			var colorSwap:ColorSwap = new ColorSwap();
 			babyArrow.shader = colorSwap.shader;
-			colorSwap.update(Note.arrowColors[i]);
+			colorSwap.update(ui.ColorsMenu.arrowColors[i]);
 
 			if (curStage.toLowerCase().startsWith('school'))
 			{

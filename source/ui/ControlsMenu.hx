@@ -14,7 +14,7 @@ using StringTools;
 class ControlsMenu extends ui.OptionsState.Page
 {
 	inline static public var COLUMNS = 2;
-	static var controlList = Type.allEnums(Control);
+	static var controlList = Control.createAll();
 
 	static var controlGroups:Array<Array<Control>> = [
 		[NOTE_UP, NOTE_DOWN, NOTE_LEFT, NOTE_RIGHT],

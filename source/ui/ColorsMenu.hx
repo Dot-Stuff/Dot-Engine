@@ -6,6 +6,8 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 
 class ColorsMenu extends ui.OptionsState.Page
 {
+    public static var arrowColors:Array<Float> = [1.0, 1.0, 1.0, 1.0];
+
     var grpColors:FlxTypedGroup<NoteColor>;
 
     var curSelected:Int = 0;
@@ -47,13 +49,8 @@ class ColorsMenu extends ui.OptionsState.Page
 
     private function changeColor(change:Float = 1)
     {
-        Note.arrowColors[curSelected] = change;
-
-        for (color in 0...grpColors.length)
-        {
-            if (color == curSelected)
-                grpColors.members[color].updateColors();
-        }
+        arrowColors[curSelected] = change;
+        grpColors.members[curSelected].updateColors();
     }
 
     private function changeSelection(change:Int = 0):Void
@@ -108,6 +105,6 @@ class NoteColor extends FlxSprite
 
     public function updateColors()
     {
-        colorSwap.update(Note.arrowColors[noteData]);
+        colorSwap.update(ColorsMenu.arrowColors[noteData]);
     }
 }

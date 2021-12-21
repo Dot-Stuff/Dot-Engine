@@ -88,7 +88,16 @@ class MenuTypedList extends FlxTypedGroup<MenuItem>
 		{
 			var controls = PlayerSettings.player1.controls;
 
-			var wrap:Bool = wrapMode == Both;
+			var horWrap:Bool = switch (wrapMode)
+			{
+				case Horizontal | Both: true;
+				default: false;
+			}
+			var verWrap:Bool = switch (wrapMode)
+			{
+				case Vertical | Both: true;
+				default: false;
+			}
 
             var navIndex:Int = 0;
 
@@ -100,15 +109,15 @@ class MenuTypedList extends FlxTypedGroup<MenuItem>
 			switch (navControls)
 			{
 				case Horizontal:
-					navIndex = navAxis(selectedIndex, length, leftP, rightP, wrap);
+					navIndex = navAxis(selectedIndex, length, leftP, rightP, horWrap);
 				case Vertical:
-					navIndex = navAxis(selectedIndex, length, upP, downP, wrap);
+					navIndex = navAxis(selectedIndex, length, upP, downP, verWrap);
 				case Both:
 					navIndex = navAxis(selectedIndex, length, leftP || upP, rightP || downP, wrapMode != None);
 				case Columns(num):
-					navIndex = navGrid(num, leftP, rightP, wrap, upP, downP, wrap);
+					navIndex = navGrid(num, leftP, rightP, horWrap, upP, downP, verWrap);
 				case Rows(num):
-					navIndex = navGrid(num, upP, downP, wrap, leftP, rightP, wrap);
+					navIndex = navGrid(num, upP, downP, verWrap, leftP, rightP, horWrap);
 			}
 
 			if (navIndex != selectedIndex)

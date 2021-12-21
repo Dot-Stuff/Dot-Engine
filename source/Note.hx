@@ -28,7 +28,6 @@ class Note extends FlxSprite
 	public static var swagWidth:Float = 160 * 0.7;
 
 	private var noteColors:Array<String> = ["purple", "blue", "green", "red"];
-	public static var arrowColors:Array<Float> = [1.0, 1.0, 1.0, 1.0];
 
 	private var colorSwap:ColorSwap;
 
@@ -147,7 +146,7 @@ class Note extends FlxSprite
 	public function updateColors()
 	{
 		// TODO: Fix
-		colorSwap.update(Note.arrowColors[noteData]);
+		colorSwap.update(ui.ColorsMenu.arrowColors[noteData]);
 	}
 
 	override function update(elapsed:Float)

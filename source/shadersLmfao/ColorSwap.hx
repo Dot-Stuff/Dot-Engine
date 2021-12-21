@@ -6,8 +6,8 @@ class ColorSwap
 {
 	public var shader(default, null):ColorSwapShader;
 
-	public var hueShit:Float;
-	public var hasOutline:Bool;
+	public var hueShit(default, null):Float;
+	public var hasOutline(default, null):Bool;
 
 	public function new():Void
 	{
