@@ -187,6 +187,7 @@
 	<haxedef name="LOCALSHIT" if="debug" />
 	<haxedef name="NG_LOGIN" if="newgrounds" />
 	<haxedef name="CAN_CHEAT" if="switch debug" />
+	<haxedef name="MODDING" if="false" />
 
 	<!-- Polymod -->
 	<haxedef name="POLYMOD_SCRIPT_EXT" value=".hxs" />

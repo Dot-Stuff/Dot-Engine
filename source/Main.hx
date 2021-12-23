@@ -40,7 +40,9 @@ class Main extends Sprite
 		if (hasEventListener(Event.ADDED_TO_STAGE))
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 
+		#if MODDING
 		mods.Modding.init();
+		#end
 
 		setupGame();
 	}

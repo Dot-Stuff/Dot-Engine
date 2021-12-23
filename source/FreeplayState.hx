@@ -177,8 +177,7 @@ class FreeplayState extends MusicBeatState
 
 		if (FlxG.mouse.wheel != 0)
 		{
-			//Cleanup.
-			// Due to edge or chrome not liking mouseWheel / 4 it goes to 0
+			// TODO: Fix this shit it's fps based >:(
 
 			var whelSpop;
 

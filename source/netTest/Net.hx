@@ -5,16 +5,16 @@ import netTest.schemaShit.BattleState;
 
 enum ConnectionTypes
 {
-	None;
-	Connecting;
-	Connected;
+	NONE;
+	CONNECTING;
+	CONNECTED;
 }
 
 class Net
 {
 	public static var client(default, null):Client;
 	public static var room(default, null):Room<BattleState>;
-    public static var connection(default, null):ConnectionTypes = ConnectionTypes.None;
+    public static var connection(default, null):ConnectionTypes = ConnectionTypes.NONE;
 
 	public static function init()
 	{
@@ -25,7 +25,7 @@ class Net
         else if (room != null)
             leaveCurrentRoom();
 
-        connection = ConnectionTypes.Connecting;
+        connection = ConnectionTypes.CONNECTING;
 
 		client.joinOrCreate("battle", ["song" => "ugh"], BattleState, function(err, room)
 		{
@@ -38,7 +38,7 @@ class Net
             trace("Joined successfully");
 
 			Net.room = room;
-            connection = ConnectionTypes.Connected;
+            connection = ConnectionTypes.CONNECTED;
 
 			room.onMessage("type", function(message)
 			{
@@ -65,7 +65,7 @@ class Net
 
 	inline static public function send(type:Dynamic, data:Dynamic)
 	{
-		if (Net.connection != Connected)
+		if (Net.connection != CONNECTED)
 			return;
 
 		room.send(type, data);
@@ -73,7 +73,7 @@ class Net
 
     inline static public function onMessage(type:Dynamic, callback:Dynamic->Void)
     {
-		if (Net.connection != Connected)
+		if (Net.connection != CONNECTED)
 			return;
 
         room.onMessage(type, callback);

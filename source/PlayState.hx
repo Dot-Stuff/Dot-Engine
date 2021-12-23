@@ -1,11 +1,11 @@
 package;
 
+#if MODDING
 import mods.ModTest;
-import netTest.Net;
-import animate.FlxAnimate;
-import shadersLmfao.ColorSwap;
+#end
 import Section.SwagSection;
 import Song.SwagSong;
+import animate.FlxAnimate;
 import flixel.FlxCamera;
 import flixel.FlxObject;
 import flixel.FlxSprite;
@@ -28,8 +28,10 @@ import flixel.util.FlxColor;
 import flixel.util.FlxSort;
 import flixel.util.FlxTimer;
 import lime.utils.Assets;
-import shadersLmfao.WaveShader;
+import netTest.Net;
 import shadersLmfao.BuildingShaders;
+import shadersLmfao.ColorSwap;
+import shadersLmfao.WaveShader;
 import ui.*;
 
 using StringTools;
@@ -120,7 +122,7 @@ class PlayState extends MusicBeatState
 
 	var talking:Bool = true;
 	var songScore:Int = 0;
-	public static var scoreTxt:FlxText;
+	var scoreTxt:FlxText;
 
 	var grpNoteSplashes:FlxTypedGroup<NoteSplash>;
 
@@ -145,7 +147,9 @@ class PlayState extends MusicBeatState
 
 	var camPos:FlxPoint;
 
+	#if MODDING
 	var modTest:ModTest;
+	#end
 
 	override public function create()
 	{
@@ -778,7 +782,10 @@ class PlayState extends MusicBeatState
 		else
 			startCountdown();
 
-		modTest = new ModTest();
+		#if MODDING
+		modTest = new ModTest(scoreTxt, healthBarBG);
+		modTest.onCreate();
+		#end
 
 		super.create();
 	}
@@ -1518,7 +1525,9 @@ class PlayState extends MusicBeatState
 
 		scoreTxt.text = "Score:" + songScore;
 
+		#if MODDING
 		modTest.onUpdate();
+		#end
 
 		var androidPause:Bool = false;
 
@@ -1852,7 +1861,9 @@ class PlayState extends MusicBeatState
 
 	function killCombo():Void
 	{
+		#if MODDING
 		modTest.onKillCombo();
+		#end
 
 		if (combo > 5 && gf.animOffsets.exists('sad'))
 			gf.playAnim('sad');
@@ -2012,6 +2023,10 @@ class PlayState extends MusicBeatState
 			score = 200;
 			isSick = false;
 		}
+
+		#if MODDING
+		modTest.onPopUpScore(daRating);
+		#end
 
 		Net.send('scoreRating', {rating: daRating, score: score});
 
@@ -2362,6 +2377,10 @@ class PlayState extends MusicBeatState
 
 	function goodNoteHit(note:Note):Void
 	{
+		#if MODDING
+		modTest.onGoodNoteHit(note);
+		#end
+
 		if (!note.wasGoodHit)
 		{
 			if (!note.isSustainNote)
