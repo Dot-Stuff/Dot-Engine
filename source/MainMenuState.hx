@@ -235,11 +235,11 @@ class MainMenuList extends ui.MenuTypedList
 {
 	var atlas:FlxFramesCollection;
 
-	public function new()
+	public function new(?navControls:NavControls = Vertical)
 	{
 		atlas = Paths.getSparrowAtlas('main_menu');
 
-		super(Vertical);
+		super(navControls);
 	}
 
 	public function createItem(x:Null<Float>, y:Null<Float>, name:String, callback:Void->Void, ?fireInstantly:Bool)

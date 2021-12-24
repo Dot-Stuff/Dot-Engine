@@ -3,7 +3,7 @@ package mods;
 import polymod.hscript.HScriptable;
 
 @:hscript({
-    context: [Std, Math]
+    context: [FlxG, Std, Math]
 })
 interface IHook extends HScriptable
 {

@@ -3,6 +3,7 @@ package mods;
 import openfl.Assets;
 import flixel.text.FlxText;
 import flixel.FlxSprite;
+import polymod.hscript.HScriptable.HScriptParams;
 
 class ModTest implements IHook
 {
@@ -14,7 +15,7 @@ class ModTest implements IHook
 		this.scoreTxt = scoreTxt;
 		this.healthBarBG = healthBarBG;
 
-		buildPlayStateHooks();
+		buildScriptHooks();
 	}
 
 	public var onCreate:Void->Void = function() return;
@@ -25,9 +26,9 @@ class ModTest implements IHook
 
 	@:hscript({
 		context: [scoreTxt, healthBarBG],
-		pathName: "initTest"
+		pathName: 'states/PlayState'
 	})
-	function buildPlayStateHooks():Void
+	function buildScriptHooks():Void
 	{
 		if (script_variables.get('onCreate') != null)
 		{

@@ -1,5 +1,6 @@
 package ui;
 
+import mods.Modding;
 import flixel.FlxSprite;
 import flixel.FlxSubState;
 import flixel.group.FlxGroup;
@@ -71,7 +72,14 @@ class OptionsState extends MusicBeatState
 			});
 
 			moddingPage.onExit.add(function() {
-				switchPage(Options);
+				moddingPage.writeModPreferences();
+
+				// Load any configured mods
+				Modding.loadConfiguredMods();
+
+				pages.get(currentName).enabled = false;
+
+				FlxG.switchState(new InitState());
 			});
 		}
 		else
