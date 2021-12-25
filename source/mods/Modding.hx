@@ -108,7 +108,7 @@ class Modding
 		var output = polymod.format.ParseRules.getDefault();
 		// Ensure TXT files have merge support.
 		output.addType("txt", TextFileFormat.LINES);
-		// Ensure script files have merge support.
+		// Ensure scripts have merge support.
 		output.addType("hxs", TextFileFormat.PLAINTEXT);
 
 		return output;
@@ -122,14 +122,15 @@ class Modding
 				"scripts" => "./scripts",
 				"songs" => "./songs",
 				"shared" => "./",
-				"tutorial" => "./tutorial",
-				"week1" => "./week1",
-				"week2" => "./week2",
-				"week3" => "./week3",
-				"week4" => "./week4",
-				"week5" => "./week5",
-				"week6" => "./week6",
-				"week7" => "./week7"
+				"stage" => "./stage",
+				"spooky" => "./spooky",
+				"philly" => "./philly",
+				"limo" => "./limo",
+				"mall" => "./mall",
+				"mall-evil" => "./mall-evil",
+				"school" => "./school",
+				"school-evil" => "./school-evil",
+				"tank" => "./tank"
 			]
 		}
 	}

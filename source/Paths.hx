@@ -35,7 +35,7 @@ class Paths
 		return getPreloadPath(file);
 	}
 
-	 static public function loadImage(key:String, ?library:String):FlxGraphic
+	static public function loadImage(key:String, ?library:String):FlxGraphic
 	{
 		var path = image(key, library);
 

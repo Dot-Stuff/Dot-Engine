@@ -180,8 +180,7 @@ class PlayState extends MusicBeatState
 		initDiscord();
 		#end
 
-		curStage = SONG.stageDefault;
-		switch (curStage.toLowerCase())
+		switch (curStage)
 		{
 			case 'spooky':
 				{
@@ -578,7 +577,7 @@ class PlayState extends MusicBeatState
 		boyfriend = new Boyfriend(770, 450, SONG.player1);
 
 		// REPOSITIONING PER STAGE
-		switch (curStage.toLowerCase())
+		switch (curStage)
 		{
 			case 'limo':
 				boyfriend.y -= 220;
@@ -628,7 +627,7 @@ class PlayState extends MusicBeatState
 		add(gfCutsceneLayer);
 
 		// Shitty layering but whatev it works LOL
-		if (curStage.toLowerCase() == 'limo')
+		if (curStage == 'limo')
 			add(limo);
 
 		dialogueBox = addDialogue();
@@ -783,7 +782,7 @@ class PlayState extends MusicBeatState
 			startCountdown();
 
 		#if MODDING
-		modTest = new ModTest(scoreTxt, healthBarBG);
+		modTest = new ModTest(scoreTxt, healthBarBG, dad, boyfriend, curSong, camHUD);
 		modTest.onCreate();
 		#end
 
@@ -1112,7 +1111,7 @@ class PlayState extends MusicBeatState
 			var introSprPaths:Array<String> = ["ready", "set", "go"];
 			var altSuffix:String = "";
 
-			if (curStage.toLowerCase().startsWith("school"))
+			if (curStage.startsWith("school"))
 			{
 				altSuffix = '-pixel';
 				introSprPaths = ['pixelUI/ready-pixel', 'pixelUI/set-pixel', 'pixelUI/date-pixel'];
@@ -1136,7 +1135,7 @@ class PlayState extends MusicBeatState
 		var spr:FlxSprite = new FlxSprite().loadGraphic(Paths.image(path));
 		spr.scrollFactor.set();
 
-		if (curStage.toLowerCase().startsWith('school'))
+		if (curStage.startsWith('school'))
 			spr.setGraphicSize(Std.int(spr.width * daPixelZoom));
 
 		spr.updateHitbox();
@@ -1274,7 +1273,7 @@ class PlayState extends MusicBeatState
 			babyArrow.shader = colorSwap.shader;
 			colorSwap.update(ui.ColorsMenu.arrowColors[i]);
 
-			if (curStage.toLowerCase().startsWith('school'))
+			if (curStage.startsWith('school'))
 			{
 				babyArrow.loadGraphic(Paths.image('pixelUI/arrows-pixels'), true, 17, 17);
 
@@ -1500,7 +1499,7 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		switch (curStage.toLowerCase())
+		switch (curStage)
 		{
 			case 'philly':
 				if (trainMoving)
@@ -1757,16 +1756,7 @@ class PlayState extends MusicBeatState
 						if (SONG.song != 'Tutorial')
 							camZooming = true;
 
-						var altAnim:String = "";
-
-						if (SONG.notes[storyDifficulty][Math.floor(curStep / 16)] != null)
-						{
-							if (SONG.notes[storyDifficulty][Math.floor(curStep / 16)].altAnim)
-								altAnim = '-alt';
-						}
-
-						if (daNote.altNote)
-							altAnim = '-alt';
+						var altAnim:String = daNote.altNote ? '-alt' : '';
 
 						switch (Math.abs(daNote.noteData))
 						{
@@ -1843,7 +1833,7 @@ class PlayState extends MusicBeatState
 						spr.animation.play('static');
 					}
 		
-					if (spr.animation.curAnim.name == 'confirm' && !curStage.toLowerCase().startsWith('school'))
+					if (spr.animation.curAnim.name == 'confirm' && !curStage.startsWith('school'))
 					{
 						spr.centerOffsets();
 						spr.offset.x -= 13;
@@ -2044,7 +2034,7 @@ class PlayState extends MusicBeatState
 		var rating:FlxSprite = new FlxSprite();
 		var ratingPath:String = daRating;
 
-		if (curStage.toLowerCase().startsWith('school'))
+		if (curStage.startsWith('school'))
 			ratingPath = "pixelUI/" + ratingPath + "-pixel";
 
 		rating.loadGraphic(Paths.image(ratingPath));
@@ -2062,7 +2052,7 @@ class PlayState extends MusicBeatState
 
 		add(rating);
 
-		if (curStage.toLowerCase().startsWith('school'))
+		if (curStage.startsWith('school'))
 			rating.setGraphicSize(Std.int(rating.width * daPixelZoom * 0.7));
 		else
 		{
@@ -2088,7 +2078,7 @@ class PlayState extends MusicBeatState
 		var pixelShitPart1:String = "";
 		var pixelShitPart2:String = "";
 
-		if (curStage.toLowerCase().startsWith('school'))
+		if (curStage.startsWith('school'))
 		{
 			pixelShitPart1 = 'pixelUI/';
 			pixelShitPart2 = '-pixel';
@@ -2110,7 +2100,7 @@ class PlayState extends MusicBeatState
 
 		add(comboSpr);
 
-		if (curStage.toLowerCase().startsWith('school'))
+		if (curStage.startsWith('school'))
 			comboSpr.setGraphicSize(Std.int(comboSpr.width * daPixelZoom * 0.7));
 		else
 		{
@@ -2144,7 +2134,7 @@ class PlayState extends MusicBeatState
 			var numScore:FlxSprite = new FlxSprite().loadGraphic(Paths.image(pixelShitPart1 + 'num' + Std.int(i) + pixelShitPart2));
 			numScore.y = comboSpr.y;
 
-			if (curStage.toLowerCase().startsWith('school'))
+			if (curStage.startsWith('school'))
 				numScore.setGraphicSize(Std.int(numScore.width * daPixelZoom));
 			else
 			{
@@ -2200,7 +2190,7 @@ class PlayState extends MusicBeatState
 		{
 			camFollow.setPosition(boyfriend.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
 
-			switch (curStage.toLowerCase())
+			switch (curStage)
 			{
 				case 'limo':
 					camFollow.x = boyfriend.getMidpoint().x - 300;
@@ -2335,7 +2325,7 @@ class PlayState extends MusicBeatState
 			if (!holdArray[spr.ID])
 				spr.animation.play('static');
 
-			if (spr.animation.curAnim.name == 'confirm' && !curStage.toLowerCase().startsWith('school'))
+			if (spr.animation.curAnim.name == 'confirm' && !curStage.startsWith('school'))
 			{
 				spr.centerOffsets();
 				spr.offset.x -= 13;
@@ -2540,6 +2530,10 @@ class PlayState extends MusicBeatState
 		{
 			resyncVocals();
 		}
+
+		#if MODDING
+		modTest.onStepHit(curStep);
+		#end
 	}
 
 	var lightningStrikeBeat:Int = 0;
@@ -2548,6 +2542,10 @@ class PlayState extends MusicBeatState
 	override function beatHit()
 	{
 		super.beatHit();
+
+		#if MODDING
+		modTest.onBeatHit();
+		#end
 
 		if (generatedMusic)
 			notes.sort(FlxSort.byY, FlxSort.DESCENDING);
@@ -2623,7 +2621,7 @@ class PlayState extends MusicBeatState
 		});
 
 		// boppin friends
-		switch (curStage.toLowerCase())
+		switch (curStage)
 		{
 			case 'school':
 				bgGirls.dance();
