@@ -4,8 +4,8 @@
 	<!-- http://www.adobe.com/products/animate.html -->
 	<SubTexture name="arrow static instance 10000" x="488" y="238" width="155" height="158"/>
 	<SubTexture name="arrow static instance 20000" x="647" y="238" width="157" height="155"/>
-	<SubTexture name="arrow static instance 30000" x="323" y="240" width="157" height="154"/>
-	<SubTexture name="arrow static instance 40000" x="808" y="238" width="155" height="157"/>
+	<SubTexture name="arrow static instance 30000" x="808" y="238" width="155" height="157"/>
+	<SubTexture name="arrow static instance 40000" x="323" y="240" width="157" height="154"/>
 	<SubTexture name="blue hold end instance 10000" x="1062" y="452" width="51" height="64"/>
 	<SubTexture name="blue hold piece instance 10000" x="1282" y="457" width="51" height="44"/>
 	<SubTexture name="blue instance 10000" x="0" y="240" width="158" height="154"/>

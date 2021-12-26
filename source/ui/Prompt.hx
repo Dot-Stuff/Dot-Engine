@@ -1,8 +1,8 @@
 package ui;
 
 import ui.MenuTypedList.TextMenuList;
-import NGio.ConnectionResult;
 #if newgrounds
+import NGio.ConnectionResult;
 import io.newgrounds.NG;
 #end
 import flixel.FlxSprite;
@@ -138,6 +138,7 @@ class NgPrompt extends Prompt
     }
 
     public static function showLogout():NgPrompt {
+        #if newgrounds
         var ngPrompt = new NgPrompt('Logout of ${NG.core.user.name}?', Yes_No);
         ngPrompt.onYes = function()
         {
@@ -147,6 +148,9 @@ class NgPrompt extends Prompt
 
         ngPrompt.onNo = ngPrompt.close;
         return ngPrompt;
+        #else
+        return null;
+        #end
     }
 
     public static function showSavedSessionFailed():FlxSubState {
@@ -173,7 +177,9 @@ class NgPrompt extends Prompt
                 ngPrompt.onNo = function() {
                     ngPrompt.close();
                     ngPrompt = null;
+                    #if newgrounds
                     NG.core.cancelLoginRequest();
+                    #end
                 }
             }
             else
@@ -183,6 +189,7 @@ class NgPrompt extends Prompt
             }
         }
 
+        #if newgrounds
         var d:ConnectionResult->Void = function(a) {
             switch (a)
             {
@@ -210,6 +217,7 @@ class NgPrompt extends Prompt
         ngPrompt.openCallback = function() {
             NGio.login(whatever, d);
         }
+        #end
 
         return ngPrompt;
     }

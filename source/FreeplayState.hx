@@ -175,6 +175,7 @@ class FreeplayState extends MusicBeatState
 
 		positionHighscore();
 
+		#if !mobile
 		if (FlxG.mouse.wheel != 0)
 		{
 			// TODO: Fix this shit it's fps based >:(
@@ -189,6 +190,7 @@ class FreeplayState extends MusicBeatState
 			trace('wheel Spop: ' + whelSpop);
 			changeSelection(whelSpop);
 		}
+		#end
 
 		if (controls.UI_UP_P)
 			changeSelection(-1);

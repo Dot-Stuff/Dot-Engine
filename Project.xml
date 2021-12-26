@@ -126,7 +126,7 @@
 
 	<!--In case you want to use the ui package-->
 	<haxelib name="flixel-ui" />
-	<haxelib name="newgrounds" unless='switch' />
+	<haxelib name="newgrounds" unless='switch||mobile' />
 	<haxelib name="faxe" if='switch' />
 	<haxelib name="polymod" />
 	<haxelib name="colyseus" />
@@ -188,7 +188,6 @@
 
 	<!-- <haxedef name="SKIP_TO_PLAYSTATE" if="debug" /> -->
 	<haxedef name="LOCALSHIT" if="debug" />
-	<haxedef name="NG_LOGIN" if="newgrounds" />
 	<haxedef name="CAN_CHEAT" if="switch debug" />
 	<haxedef name="MODDING" if="cpp" />
 
@@ -199,7 +198,7 @@
 	<haxedef name="POLYMOD_ROOT_PATH" value="assets/scripts/" />
 	<haxedef name="POLYMOD_DEBUG" if="debug" />
 
-	<section unless='switch|hl'>
+	<section unless='switch||hl||mobile'>
 		<!-- Compiles tool for old song conversion shit -->
 		<postbuild command='haxe -main art/SongConverter.hx --cs export/songShit' />
 		<postbuild command='ren export/songShit/tools' />

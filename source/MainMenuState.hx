@@ -177,6 +177,7 @@ class MainMenuState extends MusicBeatState
 	{
 		var logout = menuItems.has('logout');
 
+		#if newgrounds
 		if (!logout && NG.core != null)
 		{
 			if (!logout && NG.core.loggedIn && NG.core != null)
@@ -184,6 +185,7 @@ class MainMenuState extends MusicBeatState
 			else
 				menuItems.resetItem('login', 'logout', selectLogout);
 		}
+		#end
 	}
 
 	public function openPrompt(target:FlxSubState, ?openCallback:Void->Void)
@@ -271,7 +273,7 @@ class MainMenuItem extends AtlasMenuItem
 	{
 		super.changeAnim(animName);
 
-		origin.set(frameWidth * 0.5, frameHeight * 0.5);
+		centerOrigin();
 
 		offset.x = origin.x;
 		offset.y = origin.y;

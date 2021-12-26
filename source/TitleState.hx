@@ -77,7 +77,9 @@ class TitleState extends MusicBeatState
 
 		Net.init();
 
+		#if newgrounds
 		NGio.init();
+		#end
 
 		dotLogo = new FlxSprite().loadGraphic(Paths.loadImage('dotArt'));
 		dotLogo.screenCenter();
@@ -200,7 +202,9 @@ class TitleState extends MusicBeatState
 		ngSpr.screenCenter(X);
 		ngSpr.antialiasing = true;
 
+		#if !mobile
 		FlxG.mouse.visible = false;
+		#end
 
 		if (initialized)
 			skipIntro();

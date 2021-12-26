@@ -296,6 +296,7 @@ class OptionsMenu extends Page
 	{
 		var logout = items.has('logout');
 
+		#if newgrounds
 		if (!logout && NG.core != null)
 		{
 			if (!logout && NG.core.loggedIn && NG.core != null)
@@ -303,6 +304,7 @@ class OptionsMenu extends Page
 			else
 				items.resetItem('login', 'logout', selectLogout);
 		}
+		#end
 	}
 
 	public override function openPrompt(target:FlxSubState, ?openCallback:Void->Void)

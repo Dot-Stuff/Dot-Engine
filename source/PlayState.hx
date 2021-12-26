@@ -69,9 +69,7 @@ class PlayState extends MusicBeatState
 
 	private static var prevCamFollow:FlxObject;
 
-	private var strumLineNotes:FlxTypedGroup<FlxSprite>;
-	private var playerStrums:FlxTypedGroup<FlxSprite>;
-	private var player2Strums:FlxTypedGroup<FlxSprite>;
+	private var strumLineNotes:StaticNotes;
 
 	private var camZooming:Bool = false;
 	private var curSong:String = "";
@@ -646,7 +644,7 @@ class PlayState extends MusicBeatState
 
 		strumLine.scrollFactor.set();
 
-		strumLineNotes = new FlxTypedGroup<FlxSprite>();
+		strumLineNotes = new StaticNotes(0, strumLine.y);
 		add(strumLineNotes);
 
 		grpNoteSplashes = new FlxTypedGroup<NoteSplash>();
@@ -656,9 +654,6 @@ class PlayState extends MusicBeatState
 		noteSplash.alpha = 0.1;
 
 		add(grpNoteSplashes);
-
-		playerStrums = new FlxTypedGroup<FlxSprite>();
-		player2Strums = new FlxTypedGroup<FlxSprite>();
 
 		generateSong(SONG.song);
 
@@ -1081,7 +1076,9 @@ class PlayState extends MusicBeatState
 		inCutscene = false;
 		camHUD.visible = true;
 
-		generateStaticArrows(0);
+		if (!PreferencesMenu.getPref('middlescroll'))
+			generateStaticArrows(0);
+
 		generateStaticArrows(1);
 
 		talking = false;
@@ -1267,92 +1264,14 @@ class PlayState extends MusicBeatState
 	{
 		for (i in 0...4)
 		{
-			var babyArrow:FlxSprite = new FlxSprite(0, strumLine.y);
-
-			var colorSwap:ColorSwap = new ColorSwap();
-			babyArrow.shader = colorSwap.shader;
-			colorSwap.update(ui.ColorsMenu.arrowColors[i]);
-
-			if (curStage.startsWith('school'))
-			{
-				babyArrow.loadGraphic(Paths.image('pixelUI/arrows-pixels'), true, 17, 17);
-
-				babyArrow.setGraphicSize(Std.int(babyArrow.width * daPixelZoom));
-				babyArrow.updateHitbox();
-				babyArrow.antialiasing = false;
-
-				babyArrow.x += Note.swagWidth * Std.int(Math.abs(i));
-				switch (Math.abs(i))
-				{
-					case 0:
-						babyArrow.animation.add('static', [0]);
-						babyArrow.animation.add('pressed', [4, 8], 12, false);
-						babyArrow.animation.add('confirm', [12, 16], 24, false);
-					case 1:
-						babyArrow.animation.add('static', [1]);
-						babyArrow.animation.add('pressed', [5, 9], 12, false);
-						babyArrow.animation.add('confirm', [13, 17], 24, false);
-					case 2:
-						babyArrow.animation.add('static', [2]);
-						babyArrow.animation.add('pressed', [6, 10], 12, false);
-						babyArrow.animation.add('confirm', [14, 18], 12, false);
-					case 3:
-						babyArrow.animation.add('static', [3]);
-						babyArrow.animation.add('pressed', [7, 11], 12, false);
-						babyArrow.animation.add('confirm', [15, 19], 24, false);
-				}
-			}
-			else
-			{
-				babyArrow.frames = Paths.getSparrowAtlas('NOTE_assets');
-
-				babyArrow.antialiasing = true;
-				babyArrow.setGraphicSize(Std.int(babyArrow.width * 0.7));
-
-				babyArrow.x += Note.swagWidth * Std.int(Math.abs(i));
-				switch (Math.abs(i))
-				{
-					case 0:
-						babyArrow.animation.addByPrefix('static', 'arrow static instance 1');
-						babyArrow.animation.addByPrefix('pressed', 'left press', 24, false);
-						babyArrow.animation.addByPrefix('confirm', 'left confirm', 24, false);
-					case 1:
-						babyArrow.animation.addByPrefix('static', 'arrow static instance 2');
-						babyArrow.animation.addByPrefix('pressed', 'down press', 24, false);
-						babyArrow.animation.addByPrefix('confirm', 'down confirm', 24, false);
-					case 2:
-						babyArrow.animation.addByPrefix('static', 'arrow static instance 4');
-						babyArrow.animation.addByPrefix('pressed', 'up press', 24, false);
-						babyArrow.animation.addByPrefix('confirm', 'up confirm', 24, false);
-					case 3:
-						babyArrow.animation.addByPrefix('static', 'arrow static instance 3');
-						babyArrow.animation.addByPrefix('pressed', 'right press', 24, false);
-						babyArrow.animation.addByPrefix('confirm', 'right confirm', 24, false);
-				}
-			}
-
-			babyArrow.updateHitbox();
-			babyArrow.scrollFactor.set();
+			var item = strumLineNotes.createItem(player);
 
 			if (!isStoryMode)
-			{
-				babyArrow.y -= 10;
-				babyArrow.alpha = 0;
-				FlxTween.tween(babyArrow, {y: babyArrow.y + 10, alpha: 1}, 1, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
-			}
-
-			babyArrow.ID = i;
-
-			if (player == 1)
-				playerStrums.add(babyArrow);
-			else
-				player2Strums.add(babyArrow);
-
-			babyArrow.animation.play('static');
-			babyArrow.x += notesX + ((FlxG.width / 2) * player);
-
-			strumLineNotes.add(babyArrow);
+				item.tweenNote();
 		}
+
+		if (PreferencesMenu.getPref('middlescroll'))
+			strumLineNotes.screenCenter(X);
 	}
 
 	function loadStage(stage:String)
@@ -1549,6 +1468,7 @@ class PlayState extends MusicBeatState
 			#end
 		}
 
+		#if !mobile
 		if (FlxG.keys.justPressed.SEVEN)
 		{
 			FlxG.switchState(new ChartingState());
@@ -1557,6 +1477,7 @@ class PlayState extends MusicBeatState
 			DiscordClient.changePresence("Chart Editor", null, null, true);
 			#end
 		}
+		#end
 
 		if (FlxG.keys.justPressed.NINE)
 			iconP1.swapOldIcon();
@@ -1687,6 +1608,14 @@ class PlayState extends MusicBeatState
 			while (unspawnNotes[0] != null && unspawnNotes[0].strumTime - Conductor.songPosition < 1800 / SONG.speed[storyDifficulty])
 			{
 				var dunceNote:Note = unspawnNotes[0];
+
+				if (PreferencesMenu.getPref('middlescroll'))
+				{
+					dunceNote.x = strumLineNotes.members[dunceNote.noteData].x;
+					if (dunceNote.isSustainNote)
+						dunceNote.x += dunceNote.width / 2 + 17;
+				}
+
 				notes.add(dunceNote);
 
 				unspawnNotes.shift();
@@ -1711,6 +1640,12 @@ class PlayState extends MusicBeatState
 					}
 
 					var strumLineMid = strumLine.y + Note.swagWidth / 2;
+
+					if (PreferencesMenu.getPref('middlescroll'))
+					{
+						if (!daNote.mustPress)
+							daNote.visible = false;
+					}
 
 					if (PreferencesMenu.getPref('downscroll'))
 					{
@@ -1765,7 +1700,8 @@ class PlayState extends MusicBeatState
 								altAnim = '-alt';
 						}
 
-						switch (Math.abs(daNote.noteData))
+						var noteData = Math.abs(daNote.noteData);
+						switch (noteData)
 						{
 							case 0:
 								dad.playAnim('singLEFT' + altAnim, true);
@@ -1777,15 +1713,13 @@ class PlayState extends MusicBeatState
 								dad.playAnim('singRIGHT' + altAnim, true);
 						}
 
-						player2Strums.forEach(function(spr:FlxSprite)
+						if (!PreferencesMenu.getPref('middlescroll'))
 						{
-							if (Math.abs(daNote.noteData) == spr.ID)
-							{
-								strumming2[daNote.noteData] = true;
+							var strumLineNote = strumLineNotes.members[Std.int(noteData)];
 
-								spr.animation.play('confirm', true);
-							}
-						});
+							if (noteData == strumLineNote.ID % StaticNotes.maxNotes)
+								strumLineNote.animation.play('confirm', true);
+						}
 
 						dad.holdTimer = 0;
 
@@ -1830,25 +1764,28 @@ class PlayState extends MusicBeatState
 					}
 				});
 
-				player2Strums.forEach(function(spr:FlxSprite)
+				if (!PreferencesMenu.getPref('middlescroll'))
 				{
-					if (strumming2[spr.ID])
-						spr.animation.play('confirm');
-					else if (dad.holdTimer == 0)
+					strumLineNotes.forEach(function(spr:FlxSprite)
 					{
-						strumming2[spr.ID] = false;
-						spr.animation.play('static');
-					}
-		
-					if (spr.animation.curAnim.name == 'confirm' && !curStage.startsWith('school'))
-					{
-						spr.centerOffsets();
-						spr.offset.x -= 13;
-						spr.offset.y -= 13;
-					}
-					else
-						spr.centerOffsets();
-				});
+						if (strumming2[spr.ID])
+							spr.animation.play('confirm');
+						else if (dad.holdTimer == 0)
+						{
+							strumming2[spr.ID] = false;
+							spr.animation.play('static');
+						}
+	
+						if (spr.animation.curAnim.name == 'confirm' && !curStage.startsWith('school'))
+						{
+							spr.centerOffsets();
+							spr.offset.x -= 13;
+							spr.offset.y -= 13;
+						}
+						else
+							spr.centerOffsets();
+					});
+				}
 			}
 		}
 
@@ -2325,11 +2262,15 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		playerStrums.forEach(function(spr:FlxSprite)
+		var bruh = PreferencesMenu.getPref('middlescroll') ? StaticNotes.maxNotes : 1;
+
+		strumLineNotes.forEach(function(spr:FlxSprite)
 		{
-			if (pressArray[spr.ID] && spr.animation.curAnim.name != 'confirm')
+			var sprID = spr.ID % bruh;
+
+			if (pressArray[sprID] && spr.animation.curAnim.name != 'confirm')
 				spr.animation.play('pressed');
-			if (!holdArray[spr.ID])
+			if (!holdArray[sprID])
 				spr.animation.play('static');
 
 			if (spr.animation.curAnim.name == 'confirm' && !curStage.startsWith('school'))
@@ -2403,13 +2344,10 @@ class PlayState extends MusicBeatState
 					boyfriend.playAnim('singRIGHT', true);
 			}
 
-			playerStrums.forEach(function(spr:FlxSprite)
-			{
-				if (Math.abs(note.noteData) == spr.ID)
-				{
-					spr.animation.play('confirm', true);
-				}
-			});
+			var strumLineNote = strumLineNotes.members[Std.int(note.noteData)];
+
+			if (note.noteData == strumLineNote.ID)
+				strumLineNote.animation.play('confirm', true);
 
 			note.wasGoodHit = true;
 			vocals.volume = 1;

@@ -31,6 +31,7 @@ class PreferencesMenu extends ui.OptionsState.Page
         createPrefItem("cutscenes", "cutscenes", true);
         createPrefItem("naughtyness", "censor-naughty", true);
         createPrefItem("downscroll", "downscroll", false);
+        createPrefItem("middlescroll", "middlescroll", true);
         createPrefItem("flashing menu", "flashing-menu", false);
         createPrefItem("Camera Zooming on Beat", "camera-zoom", false);
         createPrefItem("FPS Counter", "fps-counter", true);
@@ -69,6 +70,7 @@ class PreferencesMenu extends ui.OptionsState.Page
         preferenceCheck("cutscenes", true);
         preferenceCheck("censor-naughty", true);
         preferenceCheck("downscroll", false);
+        preferenceCheck("middlescroll", true);
         preferenceCheck("flashing-menu", true);
         preferenceCheck("camera-zoom", true);
         preferenceCheck("fps-counter", true);
