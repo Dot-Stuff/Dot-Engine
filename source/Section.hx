@@ -8,6 +8,7 @@ typedef SwagSection =
 	var mustHitSection:Bool;
 	var bpm:Float;
 	var changeBPM:Bool;
+	var altAnim:Bool;
 }
 
 typedef SwagDialogue =

@@ -189,14 +189,13 @@ class CheckboxThingie extends FlxSprite
         }
     }
 
-    @:noCompletion
-    function set_daValue(daValue:Bool):Bool
+    function set_daValue(value:Bool):Bool
     {
-        if (daValue)
+        if (value)
             animation.play('checked', true);
         else
             animation.play('static');
 
-        return daValue;
+        return value;
     }
 }

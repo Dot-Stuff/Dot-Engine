@@ -1758,6 +1758,13 @@ class PlayState extends MusicBeatState
 
 						var altAnim:String = daNote.altNote ? '-alt' : '';
 
+						// WILL BE REMOVED SOON
+						if (SONG.notes[storyDifficulty][Math.floor(curStep / 16)] != null)
+						{
+							if (SONG.notes[storyDifficulty][Math.floor(curStep / 16)].altAnim)
+								altAnim = '-alt';
+						}
+
 						switch (Math.abs(daNote.noteData))
 						{
 							case 0:
