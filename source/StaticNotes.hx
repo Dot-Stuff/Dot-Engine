@@ -20,6 +20,24 @@ class StaticNotes extends FlxTypedSpriteGroup<StaticNote>
 
         return add(item);
     }
+
+    public function getPlayer(player:Int) {
+        return player * maxNotes;
+    }
+
+    public function eachStaticNote(callback:StaticNote->Void, ?player:Int)
+    {
+        var i:Int = 0;
+		var basic:StaticNote = null;
+
+		while (i < length)
+		{
+			basic = members[i++ + getPlayer(player)];
+
+			if (basic != null)
+				callback(basic);
+		}
+    }
 }
 
 class StaticNote extends FlxSprite

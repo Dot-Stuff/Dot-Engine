@@ -131,7 +131,7 @@
 	<haxelib name="polymod" />
 	<haxelib name="colyseus" />
 	<haxelib name="colyseus-websocket" />
-	<haxelib name="discord_rpc" if="cpp" />
+	<haxelib name="discord_rpc" if="cpp" unless='switch||mobile' />
 	<!--<haxelib name="hxcpp-debug-server" if="desktop debug"/>-->
 
 	<!--<haxelib name="flixel-animate" />

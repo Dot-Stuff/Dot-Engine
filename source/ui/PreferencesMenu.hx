@@ -191,7 +191,7 @@ class CheckboxThingie extends FlxSprite
         }
     }
 
-    function set_daValue(value:Bool):Bool
+    function set_daValue(value:Bool = false):Bool
     {
         if (value)
             animation.play('checked', true);

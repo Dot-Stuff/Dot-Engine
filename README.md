@@ -36,6 +36,7 @@ First you need to install Haxe and HaxeFlixel. I'm too lazy to write and keep up
 
 Other installations you'd need are the additional libraries, a fully updated list will be in `Project.xml` in the project root. Just copy and paste this into your terminal to install them:
 ```
+haxelib install format
 haxelib install hscript
 haxelib install newgrounds
 haxelib install colyseus
@@ -48,6 +49,8 @@ You'll also need to install a couple things that involve Gits. To do this, you n
 1. Download [git-scm](https://git-scm.com/downloads). Works for Windows, Mac, and Linux, just select your build.
 2. Follow instructions to install the application properly.
 3. Run `haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc` to install Discord RPC.
+4. Run `haxelib git flixel https://github.com/HaxeFlixel/flixel.git` to install Flixel.
+5. Run `haxelib git firetongue https://github.com/Metlmeta/firetongue.git` to install Firetongue.
 
 You should have everything ready for compiling the game! Follow the guide below to continue!
 

@@ -20,8 +20,6 @@ class DialogueBox extends MusicBeatSubstate
 	// SECOND DIALOGUE FOR THE PIXEL SHIT INSTEAD???
 	var swagDialogue:FlxTypeText;
 
-	var dropText:FlxText;
-
 	public var finishThing:Void->Void;
 
 	var portraitLeft:FlxSprite;
@@ -56,13 +54,13 @@ class DialogueBox extends MusicBeatSubstate
 
 			box = new FlxSprite(-20, 45);
 
-			dropText = new FlxText(242, 502, Std.int(FlxG.width * 0.6), "", 32);
-			dropText.font = 'Pixel Arial 11 Bold';
-			dropText.color = 0xFFD89494;
-
 			swagDialogue = new FlxTypeText(240, 500, Std.int(FlxG.width * 0.6), "", 32);
 			swagDialogue.font = 'Pixel Arial 11 Bold';
 			swagDialogue.color = 0xFF3F2021;
+			swagDialogue.borderStyle = SHADOW;
+			swagDialogue.borderColor = 0xFFD89494;
+			swagDialogue.borderSize = 2;
+			swagDialogue.shadowOffset.set(2, 2);
 			swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
 		}
 		else
@@ -86,7 +84,7 @@ class DialogueBox extends MusicBeatSubstate
 				box.animation.addByIndices('confirm', 'Spirit Dialogue Confirm', [0], "", 24);
 
 				swagDialogue.color = FlxColor.WHITE;
-				dropText.color = FlxColor.BLACK;
+				swagDialogue.borderColor = FlxColor.BLACK;
 			default:
 				box.frames = Paths.getSparrowAtlas('speech_bubble_talking');
 				box.animation.addByPrefix('intro', 'Speech Bubble Normal Open', 24, false);
@@ -137,7 +135,6 @@ class DialogueBox extends MusicBeatSubstate
 		{
 			portraitLeft.screenCenter(X);
 
-			add(dropText);
 			add(swagDialogue);
 		}
 		else
@@ -152,9 +149,6 @@ class DialogueBox extends MusicBeatSubstate
 
 	override function update(elapsed:Float)
 	{
-		if (atSchool())
-			dropText.text = swagDialogue.text;
-
 		dialogueOpened = box.animation.curAnim != null && box.animation.curAnim.name.startsWith('intro') && box.animation.curAnim.finished;
 
 		if (dialogueOpened && !dialogueStarted)
@@ -189,7 +183,6 @@ class DialogueBox extends MusicBeatSubstate
 								portraitLeft.visible = false;
 								portraitRight.visible = false;
 								swagDialogue.alpha -= 1 / 5;
-								dropText.alpha = swagDialogue.alpha;
 							}, 5);
 						}
 

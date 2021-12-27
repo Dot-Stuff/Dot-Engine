@@ -69,7 +69,8 @@ class PlayState extends MusicBeatState
 
 	private static var prevCamFollow:FlxObject;
 
-	private var strumLineNotes:StaticNotes;
+	private var playerStrums:StaticNotes;
+	private var player2Strums:StaticNotes;
 
 	private var camZooming:Bool = false;
 	private var curSong:String = "";
@@ -644,8 +645,11 @@ class PlayState extends MusicBeatState
 
 		strumLine.scrollFactor.set();
 
-		strumLineNotes = new StaticNotes(0, strumLine.y);
-		add(strumLineNotes);
+		playerStrums = new StaticNotes(0, strumLine.y);
+		add(playerStrums);
+
+		player2Strums = new StaticNotes(0, strumLine.y);
+		add(player2Strums);
 
 		grpNoteSplashes = new FlxTypedGroup<NoteSplash>();
 
@@ -707,7 +711,8 @@ class PlayState extends MusicBeatState
 		add(scoreTxt);
 
 		grpNoteSplashes.cameras = [camHUD];
-		strumLineNotes.cameras = [camHUD];
+		playerStrums.cameras = [camHUD];
+		player2Strums.cameras = [camHUD];
 		notes.cameras = [camHUD];
 		healthBar.cameras = [camHUD];
 		healthBarBG.cameras = [camHUD];
@@ -777,8 +782,8 @@ class PlayState extends MusicBeatState
 			startCountdown();
 
 		#if MODDING
-		modTest = new ModTest(scoreTxt, healthBarBG, dad, boyfriend, curSong, camHUD);
-		modTest.onCreate();
+		modTest = new ModTest(scoreTxt, healthBarBG, dad, boyfriend, curSong, curStage, camHUD);
+		modTest.onCreate(camPos);
 		#end
 
 		super.create();
@@ -1262,16 +1267,18 @@ class PlayState extends MusicBeatState
 
 	private function generateStaticArrows(player:Int):Void
 	{
-		for (i in 0...4)
+		var strums = player == 1 ? playerStrums : player2Strums;
+
+		for (i in 0...StaticNotes.maxNotes)
 		{
-			var item = strumLineNotes.createItem(player);
+			var item = strums.createItem(player);
 
 			if (!isStoryMode)
 				item.tweenNote();
 		}
 
 		if (PreferencesMenu.getPref('middlescroll'))
-			strumLineNotes.screenCenter(X);
+			strums.screenCenter(X);
 	}
 
 	function loadStage(stage:String)
@@ -1611,7 +1618,7 @@ class PlayState extends MusicBeatState
 
 				if (PreferencesMenu.getPref('middlescroll'))
 				{
-					dunceNote.x = strumLineNotes.members[dunceNote.noteData].x;
+					dunceNote.x = playerStrums.members[dunceNote.noteData].x;
 					if (dunceNote.isSustainNote)
 						dunceNote.x += dunceNote.width / 2 + 17;
 				}
@@ -1700,7 +1707,7 @@ class PlayState extends MusicBeatState
 								altAnim = '-alt';
 						}
 
-						var noteData = Math.abs(daNote.noteData);
+						var noteData = Std.int(Math.abs(daNote.noteData));
 						switch (noteData)
 						{
 							case 0:
@@ -1715,10 +1722,15 @@ class PlayState extends MusicBeatState
 
 						if (!PreferencesMenu.getPref('middlescroll'))
 						{
-							var strumLineNote = strumLineNotes.members[Std.int(noteData)];
+							player2Strums.forEach(function(spr)
+							{
+								if (Math.abs(daNote.noteData) == spr.ID)
+								{
+									strumming2[daNote.noteData] = true;
 
-							if (noteData == strumLineNote.ID % StaticNotes.maxNotes)
-								strumLineNote.animation.play('confirm', true);
+									spr.animation.play('confirm', true);
+								}
+							});
 						}
 
 						dad.holdTimer = 0;
@@ -1766,7 +1778,7 @@ class PlayState extends MusicBeatState
 
 				if (!PreferencesMenu.getPref('middlescroll'))
 				{
-					strumLineNotes.forEach(function(spr:FlxSprite)
+					player2Strums.forEach(function(spr)
 					{
 						if (strumming2[spr.ID])
 							spr.animation.play('confirm');
@@ -1775,7 +1787,7 @@ class PlayState extends MusicBeatState
 							strumming2[spr.ID] = false;
 							spr.animation.play('static');
 						}
-	
+
 						if (spr.animation.curAnim.name == 'confirm' && !curStage.startsWith('school'))
 						{
 							spr.centerOffsets();
@@ -2262,15 +2274,11 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		var bruh = PreferencesMenu.getPref('middlescroll') ? StaticNotes.maxNotes : 1;
-
-		strumLineNotes.forEach(function(spr:FlxSprite)
+		playerStrums.forEach(function(spr)
 		{
-			var sprID = spr.ID % bruh;
-
-			if (pressArray[sprID] && spr.animation.curAnim.name != 'confirm')
+			if (pressArray[spr.ID] && spr.animation.curAnim.name != 'confirm')
 				spr.animation.play('pressed');
-			if (!holdArray[sprID])
+			if (!holdArray[spr.ID])
 				spr.animation.play('static');
 
 			if (spr.animation.curAnim.name == 'confirm' && !curStage.startsWith('school'))
@@ -2344,10 +2352,12 @@ class PlayState extends MusicBeatState
 					boyfriend.playAnim('singRIGHT', true);
 			}
 
-			var strumLineNote = strumLineNotes.members[Std.int(note.noteData)];
-
-			if (note.noteData == strumLineNote.ID)
-				strumLineNote.animation.play('confirm', true);
+			//strumLineNotes.playAnim('confirm', true, note.noteData, 1);
+			playerStrums.forEach(function(spr)
+			{
+				if (Math.abs(note.noteData) == spr.ID)
+					spr.animation.play('confirm', true);
+			});
 
 			note.wasGoodHit = true;
 			vocals.volume = 1;
