@@ -1,5 +1,6 @@
 package ui;
 
+import flixel.ui.FlxButton;
 import flixel.FlxSprite;
 
 class MenuItem extends FlxSprite

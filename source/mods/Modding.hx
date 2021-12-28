@@ -1,5 +1,6 @@
 package mods;
 
+import polymod.backends.LimeBackend;
 import polymod.backends.OpenFLBackend;
 import polymod.format.ParseRules.TextFileFormat;
 import polymod.Polymod;
@@ -21,10 +22,7 @@ class Modding
 	 */
 	public static function init()
 	{
-		var modIds = getAllModIds();
-
-        loadModsById(modIds);
-		createSaveData(modIds);
+        loadModsById(getAllModIds());
 	}
 
 	/**
@@ -34,14 +32,6 @@ class Modding
 	{
 		trace('User mod config: ${FlxG.save.data.modConfig}');
 		loadModsById(getConfiguredMods());
-	}
-
-	/**
-	 * TODO: Make this save data and not a static var
-	 */
-	public static function createSaveData(modIds:Array<String>)
-	{
-		//loadedMods = modIds;
 	}
 
 	/**

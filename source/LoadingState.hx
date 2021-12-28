@@ -7,8 +7,8 @@ import lime.app.Future;
 import flixel.FlxState;
 import flixel.FlxSprite;
 import flixel.util.FlxTimer;
-import openfl.utils.Assets;
 import lime.utils.Assets as LimeAssets;
+import openfl.utils.Assets as OpenFlAssets;
 import lime.utils.AssetLibrary;
 import lime.utils.AssetManifest;
 import haxe.io.Path;
@@ -68,10 +68,10 @@ class LoadingState extends MusicBeatState
 
 	function checkLoadSong(path:String)
 	{
-		if (!Assets.cache.hasSound(path))
+		if (!OpenFlAssets.cache.hasSound(path))
 		{
 			var callback = callbacks.add("song:" + path);
-			Assets.loadSound(path).onComplete(function(_)
+			OpenFlAssets.loadSound(path).onComplete(function(_)
 			{
 				callback();
 			});
@@ -80,18 +80,30 @@ class LoadingState extends MusicBeatState
 
 	function checkLibrary(library:String)
 	{
-		trace(Assets.hasLibrary(library));
-		if (Assets.getLibrary(library) == null)
+		trace(OpenFlAssets.hasLibrary(library));
+		if (OpenFlAssets.getLibrary(library) == null)
 		{
 			@:privateAccess
 			if (!LimeAssets.libraryPaths.exists(library))
 				throw "Missing library: " + library;
 
 			var callback = callbacks.add("library:" + library);
-			Assets.loadLibrary(library).onComplete(function(_)
+			OpenFlAssets.loadLibrary(library).onComplete(function(_)
 			{
 				callback();
 			});
+		}
+	}
+
+	public static function unloadLibrary(library:String)
+	{
+		if (OpenFlAssets.getLibrary(library) == null)
+		{
+			@:privateAccess
+			if (!LimeAssets.libraryPaths.exists(library))
+				throw "Missing library: " + library;
+
+			OpenFlAssets.unloadLibrary(library);
 		}
 	}
 
@@ -141,6 +153,8 @@ class LoadingState extends MusicBeatState
 
 	static function getNextState(target:FlxState, stopMusic = false):FlxState
 	{
+		//unloadLibrary(PlayState.curStage);
+
 		PlayState.curStage = PlayState.SONG.stageDefault.toLowerCase();
 		Paths.setCurrentLevel(PlayState.curStage);
 		#if NO_PRELOAD_ALL
@@ -158,12 +172,12 @@ class LoadingState extends MusicBeatState
 	#if NO_PRELOAD_ALL
 	static function isSoundLoaded(path:String):Bool
 	{
-		return Assets.cache.hasSound(path);
+		return OpenFlAssets.cache.hasSound(path);
 	}
 
 	static function isLibraryLoaded(library:String):Bool
 	{
-		return Assets.getLibrary(library) != null;
+		return OpenFlAssets.getLibrary(library) != null;
 	}
 	#end
 
@@ -179,7 +193,7 @@ class LoadingState extends MusicBeatState
 		var id = "songs";
 		var promise = new Promise<AssetLibrary>();
 
-		var library = LimeAssets.getLibrary(id);
+		var library = OpenFlAssets.getLibrary(id);
 
 		if (library != null)
 		{

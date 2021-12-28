@@ -1,8 +1,5 @@
 package;
 
-#if MODDING
-import mods.ModTest;
-#end
 import Section.SwagSection;
 import Song.SwagSong;
 import animate.FlxAnimate;
@@ -40,7 +37,8 @@ using StringTools;
 import Discord.DiscordClient;
 #end
 
-class PlayState extends MusicBeatState
+@:hscript(this, StringTools)
+class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 {
 	public static var curStage:String;
 	public static var SONG:SwagSong;
@@ -146,9 +144,14 @@ class PlayState extends MusicBeatState
 
 	var camPos:FlxPoint;
 
-	#if MODDING
-	var modTest:ModTest;
-	#end
+	public function new()
+	{
+		#if MODDING
+		buildScriptHooks();
+		#end
+
+		super();
+	}
 
 	override public function create()
 	{
@@ -488,6 +491,40 @@ class PlayState extends MusicBeatState
 					var fgTank3:BGSprite = new BGSprite('tank3', 1300, 1200, 3.5, 2.5, ['fg']);
 					foregroundSprites.add(fgTank3);
 				}
+			case 'sonic':
+				{
+					defaultCamZoom = 1.0;
+
+					var sky:BGSprite = new BGSprite('SKY', -222, 134);
+					add(sky);
+
+					var hills:BGSprite = new BGSprite('HILLS', -264, -6, 1.1);
+					add(hills);
+
+					var bg2:BGSprite = new BGSprite('FLOOR2', -345, -119, 1.2);
+					bg2.updateHitbox();
+					add(bg2);
+
+					var bg:BGSprite = new BGSprite('FLOOR1', -297, -96, 1.3);
+					add(bg);
+
+					var eggman:BGSprite = new BGSprite('EGGMAN', -218, -69, 1.32);
+					eggman.updateHitbox();
+					add(eggman);
+
+					var tail:BGSprite = new BGSprite('TAIL', -349, -109, 1.34);
+					tail.updateHitbox();
+					add(tail);
+
+					var knuckle:BGSprite = new BGSprite('KNUCKLE', 285, -200, 1.36);
+					knuckle.updateHitbox();
+					add(knuckle);
+
+					var tailsSpike = new BGSprite('TailsSpikeAnimated', -100, 50, 1.37, 1, ['Tails Spike Animated instance 1'], true);
+					tailsSpike.setGraphicSize(Std.int(tailsSpike.width * 1.2));
+					tailsSpike.updateHitbox();
+					add(tailsSpike);
+				}
 			case 'stage':
 				{
 					defaultCamZoom = 0.9;
@@ -782,12 +819,55 @@ class PlayState extends MusicBeatState
 			startCountdown();
 
 		#if MODDING
-		modTest = new ModTest(scoreTxt, healthBarBG, dad, boyfriend, curSong, curStage, camHUD);
-		modTest.onCreate(camPos);
+		onCreate(camPos);
 		#end
 
 		super.create();
 	}
+
+	#if MODDING
+	public var onCreate:FlxPoint->Void = function(camPos) return;
+	public var onUpdate:Void->Void = function() return;
+	public var onStepHit:Int->Void = function(curStep) return;
+	public var onBeatHit:Int->Void = function(curBeat) return;
+
+    public var onKillCombo:Void->Void = function() return;
+	public var onGoodNoteHit:Note->Void = function(note) return;
+	public var onPopUpScore:String->Void = function(daRating) return;
+
+	public var onDadNotes:Note->Void = function(note) return;
+
+	@:hscript({
+		pathName: 'states/PlayState'
+	})
+	public function buildScriptHooks():Void
+	{
+		if (script_variables.get('onCreate') != null)
+			onCreate = script_variables.get('onCreate');
+
+		// TODO: Add FixedUpdate and LateUpdate
+		if (script_variables.get('onUpdate') != null)
+			onUpdate = script_variables.get('onUpdate');
+
+		if (script_variables.get('onStepHit') != null)
+			onStepHit = script_variables.get('onStepHit');
+
+		if (script_variables.get('onBeatHit') != null)
+			onBeatHit = script_variables.get('onBeatHit');
+
+		if (script_variables.get('onKillCombo') != null)
+			onKillCombo = script_variables.get('onKillCombo');
+
+		if (script_variables.get('onGoodNoteHit') != null)
+			onGoodNoteHit = script_variables.get('onGoodNoteHit');
+
+		if (script_variables.get('onPopUpScore') != null)
+			onPopUpScore = script_variables.get('onPopUpScore');
+
+		if (script_variables.get('onDadNotes') != null)
+			onDadNotes = script_variables.get('onDadNotes');
+	}
+	#end
 
 	function addDialogue():DialogueBox
 	{
@@ -1269,7 +1349,7 @@ class PlayState extends MusicBeatState
 	{
 		var strums = player == 1 ? playerStrums : player2Strums;
 
-		for (i in 0...StaticNotes.maxNotes)
+		for (i in 0...4)
 		{
 			var item = strums.createItem(player);
 
@@ -1451,7 +1531,7 @@ class PlayState extends MusicBeatState
 		scoreTxt.text = "Score:" + songScore;
 
 		#if MODDING
-		modTest.onUpdate();
+		onUpdate();
 		#end
 
 		var androidPause:Bool = false;
@@ -1634,6 +1714,10 @@ class PlayState extends MusicBeatState
 
 				notes.forEachAlive(function(daNote:Note)
 				{
+					#if MODDING
+					onDadNotes(daNote);
+					#end
+
 					if ((PreferencesMenu.getPref('downscroll') && daNote.y < -FlxG.height)
 						|| (PreferencesMenu.getPref('downscroll') && daNote.y > FlxG.height))
 					{
@@ -1801,7 +1885,7 @@ class PlayState extends MusicBeatState
 	function killCombo():Void
 	{
 		#if MODDING
-		modTest.onKillCombo();
+		onKillCombo();
 		#end
 
 		if (combo > 5 && gf.animOffsets.exists('sad'))
@@ -1964,7 +2048,7 @@ class PlayState extends MusicBeatState
 		}
 
 		#if MODDING
-		modTest.onPopUpScore(daRating);
+		onPopUpScore(daRating);
 		#end
 
 		Net.send('scoreRating', {rating: daRating, score: score});
@@ -2308,7 +2392,7 @@ class PlayState extends MusicBeatState
 	function goodNoteHit(note:Note):Void
 	{
 		#if MODDING
-		modTest.onGoodNoteHit(note);
+		onGoodNoteHit(note);
 		#end
 
 		if (!note.wasGoodHit)
@@ -2471,7 +2555,7 @@ class PlayState extends MusicBeatState
 		}
 
 		#if MODDING
-		modTest.onStepHit(curStep);
+		onStepHit(curStep);
 		#end
 	}
 
@@ -2483,7 +2567,7 @@ class PlayState extends MusicBeatState
 		super.beatHit();
 
 		#if MODDING
-		modTest.onBeatHit();
+		onBeatHit(curBeat);
 		#end
 
 		if (generatedMusic)

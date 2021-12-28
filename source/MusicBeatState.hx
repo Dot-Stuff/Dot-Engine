@@ -2,6 +2,9 @@ package;
 
 import Conductor.BPMChangeEvent;
 import flixel.addons.ui.FlxUIState;
+#if mobile
+import MobileControls as Controls;
+#end
 
 class MusicBeatState extends FlxUIState
 {

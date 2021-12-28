@@ -11,32 +11,12 @@ using StringTools;
 
 class StaticNotes extends FlxTypedSpriteGroup<StaticNote>
 {
-    public static var maxNotes:Int = 4;
-
     public function createItem(player:Int)
     {
-        var item = new StaticNote(length % maxNotes, player);
+        var item = new StaticNote(length, player);
         item.ID = length;
 
         return add(item);
-    }
-
-    public function getPlayer(player:Int) {
-        return player * maxNotes;
-    }
-
-    public function eachStaticNote(callback:StaticNote->Void, ?player:Int)
-    {
-        var i:Int = 0;
-		var basic:StaticNote = null;
-
-		while (i < length)
-		{
-			basic = members[i++ + getPlayer(player)];
-
-			if (basic != null)
-				callback(basic);
-		}
     }
 }
 

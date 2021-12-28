@@ -22,7 +22,9 @@ enum PageName
 	Options;
 	Controls;
 	Colors;
+	#if MODDING
 	Mods;
+	#end
 	Preferences;
 }
 
@@ -51,9 +53,15 @@ class OptionsState extends MusicBeatState
 
 		var optionsPage:OptionsMenu = addPage(Options, new OptionsMenu(false));
 		var prefsPage:PreferencesMenu = addPage(Preferences, new PreferencesMenu());
+		#if mobile
+		var controlsPage:MobileControlsMenu = addPage(Controls, new MobileControlsMenu());
+		#else
 		var controlsPage:ControlsMenu = addPage(Controls, new ControlsMenu());
+		#end
 		var colorsPage:ColorsMenu = addPage(Colors, new ColorsMenu());
+		#if MODDING
 		var moddingPage:ModdingSubstate = addPage(Mods, new ModdingSubstate());
+		#end
 
 		if (optionsPage.hasMultipleOptions())
 		{
@@ -71,6 +79,7 @@ class OptionsState extends MusicBeatState
 				switchPage(Options);
 			});
 
+			#if MODDING
 			moddingPage.onExit.add(function() {
 				moddingPage.writeModPreferences();
 
@@ -81,6 +90,7 @@ class OptionsState extends MusicBeatState
 
 				FlxG.switchState(new InitState());
 			});
+			#end
 		}
 		else
 		{
@@ -220,9 +230,11 @@ class OptionsMenu extends Page
 			onSwitch.dispatch(Colors);
 		});
 
+		#if MODDING
 		createItem('mods', function() {
 			onSwitch.dispatch(Mods);
 		});
+		#end
 
 		if (canDonate)
 			createItem('donate', selectDonate, true);

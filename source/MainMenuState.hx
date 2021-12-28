@@ -1,5 +1,6 @@
 package;
 
+import flixel.ui.FlxVirtualPad;
 import ui.Prompt;
 import flixel.FlxSubState;
 import flixel.util.FlxTimer;
@@ -121,6 +122,13 @@ class MainMenuState extends MusicBeatState
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
+
+		#if mobile
+		var virtualPad:MobilePad = new MobilePad(UP_DOWN, NONE);
+		add(virtualPad);
+
+		controls.setVirtualPad(virtualPad);
+		#end
 
 		super.create();
 	}

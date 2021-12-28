@@ -1,5 +1,6 @@
 package ui;
 
+import flixel.util.FlxDestroyUtil;
 import ui.AtlasText.AtlasFont;
 import flixel.effects.FlxFlicker;
 import flixel.group.FlxGroup;
@@ -202,6 +203,15 @@ class MenuTypedList extends FlxTypedGroup<MenuItem>
 	public function getItem(item:String):MenuItem
 	{
 		return byName.get(item);
+	}
+
+	public override function destroy()
+	{
+		super.destroy();
+
+		byName = new StringMap<MenuItem>();
+		onChange.removeAll();
+		onAcceptPress.removeAll();
 	}
 }
 
