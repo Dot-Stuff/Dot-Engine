@@ -52,7 +52,7 @@ class StaticNote extends FlxSprite
 
         var colorSwap:ColorSwap = new ColorSwap();
         shader = colorSwap.shader;
-        colorSwap.update(ui.ColorsMenu.arrowColors[noteData]);
+        colorSwap.update(Note.arrowColors[noteData]);
 
         if (PlayState.curStage.startsWith('school'))
         {
@@ -124,5 +124,19 @@ class StaticNote extends FlxSprite
         y -= 10;
         alpha = 0;
         FlxTween.tween(this, {y: y + 10, alpha: 1}, 1, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * noteData)});
+    }
+
+    public function playAnim(animName:String, force:Bool = false, reversed:Bool = false, frame:Int = 0):Void
+    {
+        animation.play(animName, force, reversed, frame);
+
+        if (animName == 'confirm' && !PlayState.curStage.startsWith('school'))
+        {
+            centerOffsets();
+            offset.x -= 13;
+            offset.y -= 13;
+        }
+        else
+            centerOffsets();
     }
 }

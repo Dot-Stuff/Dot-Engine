@@ -33,6 +33,7 @@ class Note extends FlxSprite
 	private var noteColors:Array<String> = ["purple", "blue", "green", "red"];
 
 	private var colorSwap:ColorSwap;
+	public static var arrowColors:Array<Float> = [1, 1, 1, 1];
 
 	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false)
 	{
@@ -149,7 +150,7 @@ class Note extends FlxSprite
 	public function updateColors()
 	{
 		// TODO: Fix
-		colorSwap.update(ui.ColorsMenu.arrowColors[noteData]);
+		colorSwap.update(arrowColors[noteData]);
 	}
 
 	override function update(elapsed:Float)

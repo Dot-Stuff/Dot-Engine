@@ -1722,7 +1722,9 @@ class PlayState extends MusicBeatState
 
 						if (!PreferencesMenu.getPref('middlescroll'))
 						{
-							player2Strums.forEach(function(spr)
+							player2Strums.members[noteData].playAnim('confirm', true);
+							strumming2[noteData] = true;
+							/*player2Strums.forEach(function(spr)
 							{
 								if (Math.abs(daNote.noteData) == spr.ID)
 								{
@@ -1730,7 +1732,7 @@ class PlayState extends MusicBeatState
 
 									spr.animation.play('confirm', true);
 								}
-							});
+							});*/
 						}
 
 						dad.holdTimer = 0;
@@ -1781,21 +1783,12 @@ class PlayState extends MusicBeatState
 					player2Strums.forEach(function(spr)
 					{
 						if (strumming2[spr.ID])
-							spr.animation.play('confirm');
+							spr.playAnim('confirm');
 						else if (dad.holdTimer == 0)
 						{
 							strumming2[spr.ID] = false;
-							spr.animation.play('static');
+							spr.playAnim('static');
 						}
-
-						if (spr.animation.curAnim.name == 'confirm' && !curStage.startsWith('school'))
-						{
-							spr.centerOffsets();
-							spr.offset.x -= 13;
-							spr.offset.y -= 13;
-						}
-						else
-							spr.centerOffsets();
 					});
 				}
 			}
@@ -2277,18 +2270,9 @@ class PlayState extends MusicBeatState
 		playerStrums.forEach(function(spr)
 		{
 			if (pressArray[spr.ID] && spr.animation.curAnim.name != 'confirm')
-				spr.animation.play('pressed');
+				spr.playAnim('pressed');
 			if (!holdArray[spr.ID])
-				spr.animation.play('static');
-
-			if (spr.animation.curAnim.name == 'confirm' && !curStage.startsWith('school'))
-			{
-				spr.centerOffsets();
-				spr.offset.x -= 13;
-				spr.offset.y -= 13;
-			}
-			else
-				spr.centerOffsets();
+				spr.playAnim('static');
 		});
 	}
 
@@ -2352,12 +2336,12 @@ class PlayState extends MusicBeatState
 					boyfriend.playAnim('singRIGHT', true);
 			}
 
-			//strumLineNotes.playAnim('confirm', true, note.noteData, 1);
-			playerStrums.forEach(function(spr)
+			playerStrums.members[note.noteData].playAnim('confirm', true);
+			/*playerStrums.forEach(function(spr)
 			{
 				if (Math.abs(note.noteData) == spr.ID)
 					spr.animation.play('confirm', true);
-			});
+			});*/
 
 			note.wasGoodHit = true;
 			vocals.volume = 1;

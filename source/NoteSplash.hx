@@ -54,7 +54,7 @@ class NoteSplash extends FlxSprite
 
 	function updateColors(noteData:Int)
 	{
-		colorSwap.update(ui.ColorsMenu.arrowColors[noteData]);
+		colorSwap.update(Note.arrowColors[noteData]);
 	}
 
 	public override function update(elapsed:Float)

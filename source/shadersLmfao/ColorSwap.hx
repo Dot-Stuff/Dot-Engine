@@ -6,13 +6,11 @@ class ColorSwap
 {
 	public var shader(default, null):ColorSwapShader;
 
-	public var hueShit(default, null):Float;
-	public var hasOutline(default, null):Bool;
+	public var hueShit(default, null):Float = 0;
+	public var hasOutline(default, null):Bool = false;
 
 	public function new():Void
 	{
-		hueShit = 0;
-		hasOutline = false;
 		shader = new ColorSwapShader();
 		shader.uTime.value = [0];
 		shader.money.value = [0];

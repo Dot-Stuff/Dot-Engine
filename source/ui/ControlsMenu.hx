@@ -142,9 +142,9 @@ class ControlsMenu extends ui.OptionsState.Page
 			labels.members[Std.int(controlGrid.selectedIndex / 2)].alpha = 1;
 		});
 
-		prompt = new Prompt("\nPress any key to rebind\n\n\n    Escape to cancel", None);
+		prompt = new Prompt("\nPress any key to rebind\n\n\n\n    Escape to cancel", None);
 		prompt.create();
-		prompt.createBgFromMargin(300, -328339);
+		prompt.createBgFromMargin(100, -328339);
 		prompt.back.scrollFactor.set(0, 0);
 		prompt.exists = false;
 		add(prompt);
@@ -191,7 +191,7 @@ class ControlsMenu extends ui.OptionsState.Page
 
 		var b = selectedDevice == Keys ? 'Escape' : 'Back';
 		if (selectedDevice == Keys)
-			prompt.setText('\nPress any key to rebind\n\n\n\n		$b to cancel');
+			prompt.setText('\nPress any key to rebind\n\n\n\n    $b to cancel');
 		else
 			prompt.setText('\nPress any button\n   to rebind\n\n\n $b to cancel');
 
@@ -252,7 +252,7 @@ class ControlsMenu extends ui.OptionsState.Page
             flooredIndex = 0;
             for (i in itemGroups)
             {
-                if (i.indexOf(controlGridSelected) != -1)
+                if (i.contains(controlGridSelected))
                 {
                     for (o in i)
                     {
@@ -276,7 +276,7 @@ class ControlsMenu extends ui.OptionsState.Page
 	public function closePrompt()
 	{
 		prompt.exists = false;
-        controlGrid.enabled = false;
+        controlGrid.enabled = true;
 
         if (deviceList == null)
             canExit = true;

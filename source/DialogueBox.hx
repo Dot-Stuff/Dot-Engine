@@ -76,6 +76,7 @@ class DialogueBox extends MusicBeatSubstate
 				box.animation.addByPrefix('confirm', 'Normal Dialogue Confirm', 24, false);
 
 				box.animation.addByPrefix('intro-angry', 'Impact Dialogue Intro', 24, false);
+				box.animation.addByPrefix('complete-angry', 'Normal Dialogue Complete', 24, true);
 				box.animation.addByPrefix('confirm-angry', 'Normal Dialogue Complete', 24, true);
 			case 'school-evil':
 				box.frames = Paths.getSparrowAtlas('dialogue/dialogueBox-evil');
