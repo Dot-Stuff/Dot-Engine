@@ -159,7 +159,7 @@ class NgPrompt extends Prompt
 
     public static function showLoginPrompt(show:Bool):FlxSubState
     {
-        var ngPrompt = new NgPrompt("Talking to server...", None);
+        var ngPrompt = new NgPrompt("Talking to the server...", None);
 
         var whatever = function(c:Void->Void) {
             var d = show ? "Login to Newgrounds?" : "Your session has expired.\n Please login again.";

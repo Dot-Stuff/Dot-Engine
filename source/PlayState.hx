@@ -491,40 +491,6 @@ class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 					var fgTank3:BGSprite = new BGSprite('tank3', 1300, 1200, 3.5, 2.5, ['fg']);
 					foregroundSprites.add(fgTank3);
 				}
-			case 'sonic':
-				{
-					defaultCamZoom = 1.0;
-
-					var sky:BGSprite = new BGSprite('SKY', -222, 134);
-					add(sky);
-
-					var hills:BGSprite = new BGSprite('HILLS', -264, -6, 1.1);
-					add(hills);
-
-					var bg2:BGSprite = new BGSprite('FLOOR2', -345, -119, 1.2);
-					bg2.updateHitbox();
-					add(bg2);
-
-					var bg:BGSprite = new BGSprite('FLOOR1', -297, -96, 1.3);
-					add(bg);
-
-					var eggman:BGSprite = new BGSprite('EGGMAN', -218, -69, 1.32);
-					eggman.updateHitbox();
-					add(eggman);
-
-					var tail:BGSprite = new BGSprite('TAIL', -349, -109, 1.34);
-					tail.updateHitbox();
-					add(tail);
-
-					var knuckle:BGSprite = new BGSprite('KNUCKLE', 285, -200, 1.36);
-					knuckle.updateHitbox();
-					add(knuckle);
-
-					var tailsSpike = new BGSprite('TailsSpikeAnimated', -100, 50, 1.37, 1, ['Tails Spike Animated instance 1'], true);
-					tailsSpike.setGraphicSize(Std.int(tailsSpike.width * 1.2));
-					tailsSpike.updateHitbox();
-					add(tailsSpike);
-				}
 			case 'stage':
 				{
 					defaultCamZoom = 0.9;
@@ -945,7 +911,7 @@ class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 				camFollow.y -= 100;
 				FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom * 1.2}, 0.5, {ease: FlxEase.quadInOut});
 				// tankCutscene.animation.play('killYou');
-				FlxG.sound.play(Paths.sound('killYou'));
+				FlxG.sound.play(Paths.sound('wellWellWell'));
 				new FlxTimer().start(6.1, function(swagasdga:FlxTimer)
 				{
 					FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, (Conductor.crochet / 1000) * 5, {ease: FlxEase.quadInOut});
