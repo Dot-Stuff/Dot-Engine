@@ -794,8 +794,8 @@ class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 	#if MODDING
 	public var onCreate:FlxPoint->Void = function(camPos) return;
 	public var onUpdate:Void->Void = function() return;
-	public var onStepHit:Int->Void = function(curStep) return;
-	public var onBeatHit:Int->Void = function(curBeat) return;
+	public var onStepHit:Void->Void = function() return;
+	public var onBeatHit:Void->Void = function() return;
 
     public var onKillCombo:Void->Void = function() return;
 	public var onGoodNoteHit:Note->Void = function(note) return;
@@ -2521,7 +2521,7 @@ class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 		}
 
 		#if MODDING
-		onStepHit(curStep);
+		onStepHit();
 		#end
 	}
 
@@ -2533,7 +2533,7 @@ class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 		super.beatHit();
 
 		#if MODDING
-		onBeatHit(curBeat);
+		onBeatHit();
 		#end
 
 		if (generatedMusic)
