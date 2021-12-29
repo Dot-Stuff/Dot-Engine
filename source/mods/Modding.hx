@@ -1,6 +1,6 @@
 package mods;
 
-import polymod.backends.LimeBackend;
+import firetongue.FireTongue;
 import polymod.backends.OpenFLBackend;
 import polymod.format.ParseRules.TextFileFormat;
 import polymod.Polymod;
@@ -16,13 +16,29 @@ class Modding
 
 	static final MOD_DIRECTORY = "mods";
 
+	static var tongue:FireTongue;
+
 	/**
 	 * Loads all mods
 	 * Saves the mods as well
 	 */
 	public static function init()
 	{
-        loadModsById(getAllModIds());
+		tongue = new FireTongue();
+		tongue.initialize({
+			locale: "en-US",
+			finishedCallback: tongueFinish
+		});
+
+		loadModsById(getAllModIds());
+	}
+
+	/**
+	 * The FireTongue finishedCallback
+	 */
+	public static function tongueFinish()
+	{
+		trace('FireTongue is finished');
 	}
 
 	/**
@@ -77,13 +93,16 @@ class Modding
 
 			// Parsing rules for various data formats.
 			parseRules: buildParseRules(),
+
+			// Pass FireTongue into Polymod
+			//fireTongue: tongue
 		});
 	}
 
 	public static function getAllMods():Array<ModMetadata>
 	{
 		var modMetadata = Polymod.scan(MOD_DIRECTORY);
-		//trace('${modMetadata.length} Mods were scanned');
+		// trace('${modMetadata.length} Mods were scanned');
 		return modMetadata;
 	}
 
@@ -108,19 +127,9 @@ class Modding
 	{
 		return {
 			assetLibraryPaths: [
-				"default" => "./preload",
-				"scripts" => "./scripts",
-				"songs" => "./songs",
-				"shared" => "./",
-				"stage" => "./stage",
-				"spooky" => "./spooky",
-				"philly" => "./philly",
-				"limo" => "./limo",
-				"mall" => "./mall",
-				"mall-evil" => "./mall-evil",
-				"school" => "./school",
-				"school-evil" => "./school-evil",
-				"tank" => "./tank"
+				"default" => "./preload", "locales" => "./locales", "scripts" => "./scripts", "songs" => "./songs", "shared" => "./", "stage" => "./stage", "spooky" => "./spooky",
+				"philly" => "./philly", "limo" => "./limo", "mall" => "./mall", "mall-evil" => "./mall-evil", "school" => "./school",
+				"school-evil" => "./school-evil", "tank" => "./tank"
 			]
 		}
 	}
