@@ -16,7 +16,7 @@ class Modding
 
 	static final MOD_DIRECTORY = "mods";
 
-	static var tongue:FireTongue;
+	public static var tongue:FireTongue;
 
 	/**
 	 * Loads all mods
@@ -24,11 +24,11 @@ class Modding
 	 */
 	public static function init()
 	{
-		tongue = new FireTongue();
+		/*tongue = new FireTongue();
 		tongue.initialize({
 			locale: "en-US",
 			finishedCallback: tongueFinish
-		});
+		});*/
 
 		loadModsById(getAllModIds());
 	}

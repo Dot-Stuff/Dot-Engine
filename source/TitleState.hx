@@ -68,6 +68,8 @@ class TitleState extends MusicBeatState
 		super.create();
 
 		FlxG.save.bind('funkin', 'ninjamuffin99');
+		/*@:privateAccess
+		FlxG.sound.loadSavedPrefs();*/
 
 		ui.PreferencesMenu.initPrefs();
 

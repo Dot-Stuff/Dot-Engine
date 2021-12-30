@@ -60,7 +60,7 @@ class DialogueBox extends MusicBeatSubstate
 			swagDialogue.borderStyle = SHADOW;
 			swagDialogue.borderColor = 0xFFD89494;
 			swagDialogue.borderSize = 2;
-			swagDialogue.shadowOffset.set(2, 2);
+			//swagDialogue.shadowOffset.set(2, 2);
 			swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
 		}
 		else
@@ -279,7 +279,7 @@ class DialogueBox extends MusicBeatSubstate
 	function atSchool():Bool
 	{
 		// Simplify this later pls.
-		return PlayState.curStage.toLowerCase().startsWith('school');
+		return PlayState.curStage.startsWith('school');
 	}
 
 	function playAnim(anim:String)

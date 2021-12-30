@@ -37,7 +37,7 @@ using StringTools;
 import Discord.DiscordClient;
 #end
 
-@:hscript(this, StringTools)
+@:hscript(this, PlayState)
 class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 {
 	public static var curStage:String;
@@ -887,7 +887,7 @@ class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 		FlxG.camera.zoom *= 1.2;
 		camFollow.y += 100;
 
-		// tankCutscene.startSyncAudio = FlxG.sound.load(Paths.sound('wellWellWell'));
+		tankCutscene.startSyncAudio = FlxG.sound.load(Paths.sound('wellWellWell'));
 
 		new FlxTimer().start(3, function(tmr:FlxTimer)
 		{
@@ -911,7 +911,7 @@ class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 				camFollow.y -= 100;
 				FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom * 1.2}, 0.5, {ease: FlxEase.quadInOut});
 				// tankCutscene.animation.play('killYou');
-				FlxG.sound.play(Paths.sound('wellWellWell'));
+				FlxG.sound.play(Paths.sound('killYou'));
 				new FlxTimer().start(6.1, function(swagasdga:FlxTimer)
 				{
 					FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, (Conductor.crochet / 1000) * 5, {ease: FlxEase.quadInOut});

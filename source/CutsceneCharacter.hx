@@ -1,5 +1,6 @@
 package;
 
+import flixel.system.FlxSound;
 import openfl.Assets;
 import haxe.Json;
 import haxe.ds.IntMap;
@@ -7,10 +8,13 @@ import animate.FlxSymbol;
 
 class CutsceneCharacter extends FlxSymbol
 {
-    var nestedShit:IntMap<FlxSymbol> = new IntMap<FlxSymbol>();
+    public var nestedShit:IntMap<FlxSymbol> = new IntMap<FlxSymbol>();
 
 	var frameTickTypeShit:Float;
     public var playingAnim:Bool = false;
+
+    public var startSyncAudio:FlxSound;
+    var startedPlayingSound:Bool = false;
 
     public function new(x:Float, y:Float, anim:String)
     {
@@ -27,24 +31,11 @@ class CutsceneCharacter extends FlxSymbol
         super.draw();
 
         renderFrame(coolParse.AN.TL, coolParse, true);
-
-        if (FlxG.keys.justPressed.E)
-        {
-            if (nestedShit.keys().hasNext())
-            {
-                var nextShit = nestedShit.keys().next();
-                nestedShit.get(nextShit).draw();
-            }
-            nestedShit.clear();
-        }
     }
 
     public override function update(elapsed:Float)
     {
         super.update(elapsed);
-
-        if (FlxG.keys.justPressed.SPACE)
-			playingAnim = !playingAnim;
 
         if (playingAnim)
         {
@@ -57,9 +48,10 @@ class CutsceneCharacter extends FlxSymbol
             }
         }
 
-        if (FlxG.keys.justPressed.RIGHT)
-			changeFrame(1);
-		if (FlxG.keys.justPressed.LEFT)
-			changeFrame(-1);
+        if (daFrame >= 1 && !startedPlayingSound)
+        {
+            startSyncAudio.play();
+            startedPlayingSound = true;
+        }
     }
 }
