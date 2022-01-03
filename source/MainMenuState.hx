@@ -124,7 +124,7 @@ class MainMenuState extends MusicBeatState
 		add(versionShit);
 
 		#if mobile
-		var virtualPad:MobilePad = new MobilePad(UP_DOWN, NONE);
+		var virtualPad:MobilePad = new MobilePad(UP_DOWN, A);
 		add(virtualPad);
 
 		controls.setVirtualPad(virtualPad);
