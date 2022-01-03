@@ -8,26 +8,26 @@ class BGSprite extends FlxSprite
 {
 	private var idleAnim:String;
 
-	public function new(name:String, x:Float, y:Float, scrollX:Float = 1, scrollY:Float = 1, ?idleAnim:Array<String>, looped:Bool = false)
+	public function new(name:String, x:Float, y:Float, scrollX:Float = 1, scrollY:Float = 1, ?anims:Array<String>, looped:Bool = false)
 	{
 		super(x, y);
 
-		if (idleAnim != null)
+		if (anims != null)
 		{
 			frames = Paths.getSparrowAtlas(name);
 
-			for (i in idleAnim)
+			for (i in anims)
 			{
 				animation.addByPrefix(i, i, 24, looped);
 				animation.play(i);
 
 				if (idleAnim == null)
-					this.idleAnim = i;
+					idleAnim = i;
 			}
 		}
 		else
 		{
-			loadGraphic(Paths.image(name));
+			loadGraphic(Paths.loadImage(name));
 			active = false;
 		}
 

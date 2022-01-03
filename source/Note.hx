@@ -1,5 +1,6 @@
 package;
 
+import flixel.graphics.frames.FlxFramesCollection;
 import shadersLmfao.ColorSwap;
 import ui.PreferencesMenu;
 import flixel.FlxSprite;
@@ -25,12 +26,14 @@ class Note extends FlxSprite
 	public var sustainLength:Float = 0;
 	public var isSustainNote:Bool = false;
 
+	public var specialData:SpecialNote;
+
 	public static var swagWidth:Float = 160 * 0.7;
 
 	private var noteColors:Array<String> = ["purple", "blue", "green", "red"];
-	public static var arrowColors:Array<Float> = [1.0, 1.0, 1.0, 1.0];
 
 	private var colorSwap:ColorSwap;
+	public static var arrowColors:Array<Float> = [1, 1, 1, 1];
 
 	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false)
 	{
@@ -53,7 +56,7 @@ class Note extends FlxSprite
 
 		if (PlayState.curStage.startsWith('school'))
 		{
-			loadGraphic(Paths.image('pixelUI/arrows-pixels'), true, 17, 17);
+			loadGraphic(Paths.loadImage('pixelUI/arrows-pixels'), true, 17, 17);
 
 			animation.add('greenScroll', [6]);
 			animation.add('redScroll', [7]);
@@ -62,7 +65,7 @@ class Note extends FlxSprite
 
 			if (isSustainNote)
 			{
-				loadGraphic(Paths.image('pixelUI/arrowEnds'), true, 7, 6);
+				loadGraphic(Paths.loadImage('pixelUI/arrowEnds'), true, 7, 6);
 
 				animation.add('purpleholdend', [4]);
 				animation.add('greenholdend', [6]);
@@ -147,7 +150,7 @@ class Note extends FlxSprite
 	public function updateColors()
 	{
 		// TODO: Fix
-		colorSwap.update(Note.arrowColors[noteData]);
+		colorSwap.update(arrowColors[noteData]);
 	}
 
 	override function update(elapsed:Float)
@@ -184,5 +187,26 @@ class Note extends FlxSprite
 
 		if (tooLate && alpha > 0.3)
 			alpha = 0.3;
+	}
+}
+
+class SpecialNote
+{
+	public var name:String;
+	public var atlas:FlxFramesCollection;
+
+	public function hitNote()
+	{
+		
+	}
+
+	public function missNote()
+	{
+		
+	}
+
+	public function lateNote()
+	{
+		
 	}
 }

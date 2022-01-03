@@ -1,5 +1,6 @@
 package;
 
+import flixel.ui.FlxVirtualPad;
 import ui.Prompt;
 import flixel.FlxSubState;
 import flixel.util.FlxTimer;
@@ -50,7 +51,7 @@ class MainMenuState extends MusicBeatState
 		persistentUpdate = true;
 		persistentDraw = true;
 
-		bg = new FlxSprite(-80).loadGraphic(Paths.image('menuBG'));
+		bg = new FlxSprite(-80).loadGraphic(Paths.loadImage('menuBG'));
 		bg.scrollFactor.set(0, 0.17);
 		bg.setGraphicSize(Std.int(bg.width * 1.2));
 		bg.updateHitbox();
@@ -61,7 +62,7 @@ class MainMenuState extends MusicBeatState
 		camFollow = new FlxObject(0, 0, 1, 1);
 		add(camFollow);
 
-		magenta = new FlxSprite(-80).loadGraphic(Paths.image('menuDesat'));
+		magenta = new FlxSprite(-80).loadGraphic(Paths.loadImage('menuDesat'));
 		magenta.scrollFactor.set(bg.scrollFactor.x, bg.scrollFactor.y);
 		magenta.setGraphicSize(Std.int(bg.width));
 		magenta.updateHitbox();
@@ -122,6 +123,13 @@ class MainMenuState extends MusicBeatState
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
 
+		#if mobile
+		var virtualPad:MobilePad = new MobilePad(UP_DOWN, A);
+		add(virtualPad);
+
+		controls.setVirtualPad(virtualPad);
+		#end
+
 		super.create();
 	}
 
@@ -177,6 +185,7 @@ class MainMenuState extends MusicBeatState
 	{
 		var logout = menuItems.has('logout');
 
+		#if newgrounds
 		if (!logout && NG.core != null)
 		{
 			if (!logout && NG.core.loggedIn && NG.core != null)
@@ -184,6 +193,7 @@ class MainMenuState extends MusicBeatState
 			else
 				menuItems.resetItem('login', 'logout', selectLogout);
 		}
+		#end
 	}
 
 	public function openPrompt(target:FlxSubState, ?openCallback:Void->Void)
@@ -235,11 +245,11 @@ class MainMenuList extends ui.MenuTypedList
 {
 	var atlas:FlxFramesCollection;
 
-	public function new()
+	public function new(?navControls:NavControls = Vertical)
 	{
 		atlas = Paths.getSparrowAtlas('main_menu');
 
-		super(Vertical);
+		super(navControls);
 	}
 
 	public function createItem(x:Null<Float>, y:Null<Float>, name:String, callback:Void->Void, ?fireInstantly:Bool)
@@ -271,7 +281,7 @@ class MainMenuItem extends AtlasMenuItem
 	{
 		super.changeAnim(animName);
 
-		origin.set(frameWidth * 0.5, frameHeight * 0.5);
+		centerOrigin();
 
 		offset.x = origin.x;
 		offset.y = origin.y;

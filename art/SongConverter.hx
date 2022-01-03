@@ -75,7 +75,7 @@ class SongConverter
 		if (!FileSystem.exists('songs'))
 			FileSystem.createDirectory('songs');
 
-		var daJson = Json.stringify(fileNormal);
+		var daJson = Json.stringify(fileNormal, '\t');
 		File.saveContent('songs/$songName.json', daJson);
 	}
 

@@ -2,7 +2,11 @@ package;
 
 import haxe.Json;
 import flixel.input.gamepad.FlxGamepad;
+#if mobile
+import MobileControls as Controls;
+#else
 import Controls;
+#end
 
 class PlayerSettings
 {

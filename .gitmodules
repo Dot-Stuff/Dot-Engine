@@ -1,0 +1,3 @@
+[submodule "assets/Dot-Engine.Locales"]
+	path = assets/Dot-Engine.Locales
+	url = https://github.com/Dot-Stuff/Dot-Engine.Locales.git

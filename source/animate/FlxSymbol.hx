@@ -156,7 +156,7 @@ class FlxSymbol extends FlxSprite
 	public var daFrame:Int;
 	public var matrixExposed:Bool;
 
-	function changeFrame(frameChange:Int = 0):Void
+	public function changeFrame(frameChange:Int = 0):Void
 	{
 		daFrame += frameChange;
 	}

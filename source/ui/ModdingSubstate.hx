@@ -1,45 +1,28 @@
 package ui;
 
-import flixel.group.FlxGroup.FlxTypedGroup;
+import polymod.Polymod.ModMetadata;
+import mods.Modding;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
-#if desktop
-import sys.FileSystem;
-#end
+
+using StringTools;
 
 class ModdingSubstate extends ui.OptionsState.Page
 {
-    var grpMods:FlxTypedGroup<ModMenuItem>;
-	var modFolders:Array<String>;
-	var enabledMods:Array<String>;
-
-	var curSelected:Int = 0;
+	var grpMods:ModMenuList;
 
 	public function new():Void
 	{
 		super();
 
-		grpMods = new FlxTypedGroup<ModMenuItem>();
+		grpMods = new ModMenuList();
 		add(grpMods);
 
-		refreshModList();
+		initModLists();
 	}
 
-	public override function update(elapsed:Float)
+	/*public override function update(elapsed:Float)
 	{
-		if (FlxG.keys.justPressed.R)
-			refreshModList();
-
-		selections();
-
-		if (controls.UI_UP_P)
-			selections(-1);
-		else if (controls.UI_DOWN_P)
-			selections(1);
-
-		if (FlxG.keys.justPressed.SPACE)
-			grpMods.members[curSelected].modEnabled = !grpMods.members[curSelected].modEnabled;
-
 		if (FlxG.keys.justPressed.I && curSelected != 0)
 		{
 			var oldOne = grpMods.members[curSelected - 1];
@@ -59,7 +42,7 @@ class ModdingSubstate extends ui.OptionsState.Page
 		super.update(elapsed);
 	}
 
-	private function selections(change:Int = 0):Void
+	function selections(change:Int = 0):Void
 	{
 		curSelected += change;
 
@@ -69,53 +52,65 @@ class ModdingSubstate extends ui.OptionsState.Page
 			curSelected = modFolders.length - 1;
 
 		for (txt in 0...grpMods.length)
-		{
-			if (txt == curSelected)
-				grpMods.members[txt].color = FlxColor.YELLOW;
-			else
-				grpMods.members[txt].color = FlxColor.WHITE;
-		}
+			grpMods.members[txt].unloaded = txt == curSelected;
 
 		organizeByY();
-	}
+	}*/
 
-	private function refreshModList():Void
+	function initModLists():Void
 	{
-		while (grpMods.members.length > 0)
+		var modDatas = Modding.getAllMods().filter(function(m)
 		{
-			grpMods.remove(grpMods.members[0], true);
-		}
+			return m != null;
+		});
+		var loadedModIds = Modding.getConfiguredMods();
 
-		var modList = [];
-		modFolders = [];
+		var loadedMods:Array<ModMetadata> = [];
+		var unloadedMods:Array<ModMetadata> = [];
 
-		#if desktop
-		for (file in FileSystem.readDirectory('./mods/'))
+		if (loadedModIds != null)
 		{
-			if (FileSystem.isDirectory('./mods/' + file))
-				modFolders.push(file);
+			loadedMods = modDatas.filter(function(m)
+			{
+				return loadedModIds.contains(m.id);
+			});
+			unloadedMods = modDatas.filter(function(m)
+			{
+				return !loadedModIds.contains(m.id);
+			});
 		}
-
-		enabledMods = [];
-
-		modList = polymod.Polymod.scan('./mods/');
-
-		trace('Whayt: ' + modFolders);
-		trace(modList);
+		else
+		{
+			unloadedMods = [];
+			loadedMods = modDatas;
+		}
 
 		var loopNum:Int = 0;
-		for (i in modFolders)
+
+		for (i in loadedMods)
 		{
-			var txt:ModMenuItem = new ModMenuItem(0, 10 + (40 * loopNum), 0, i, 32);
-			txt.text = i;
-			grpMods.add(txt);
+			grpMods.createItem(i, 0, 10 + (40 * loopNum), true);
 
 			loopNum++;
 		}
-		#end
+
+		for (i in unloadedMods)
+		{
+			grpMods.createItem(i, 0, 10 + (40 * loopNum));
+
+			loopNum++;
+		}
 	}
 
-	private function organizeByY():Void
+	public function writeModPreferences()
+	{
+		var loadedModIds:Array<String> = grpMods.listCurrentMods().map(function(mod:ModMetadata) return mod.id);
+
+		FlxG.save.data.modConfig = loadedModIds.join('~');
+		FlxG.save.flush();
+	}
+
+	function organizeByY():Void
 	{
 		for (i in 0...grpMods.length)
 		{
@@ -124,23 +119,128 @@ class ModdingSubstate extends ui.OptionsState.Page
 	}
 }
 
-class ModMenuItem extends FlxText
+class ModMenuList extends MenuTypedList
 {
-    public var modEnabled:Bool = false;
-	public var daMod:String;
-
-	public function new(x:Float, y:Float, w:Float, str:String, size:Int)
+	public function createItem(modMetadata:ModMetadata, x:Null<Float>, y:Null<Float>, ?modEnabled:Bool)
 	{
-		super(x, y, w, str, size);
+		var menuItem = new ModMenuItem(modMetadata, x, y);
+		menuItem.fireInstantly = true;
+		menuItem.modEnabled = modEnabled;
+		menuItem.ID = length;
+
+		return addItem(menuItem.name, menuItem);
 	}
 
-	override function update(elapsed:Float)
+	public function listCurrentMods()
 	{
-		if (modEnabled)
-			alpha = 1;
-		else
-			alpha = 0.5;
+		return members.map(function(a)
+		{
+			if (Std.isOfType(a, ModMenuItem))
+			{
+				var modA:ModMenuItem = cast a;
 
-		super.update(elapsed);
+				if (modA.modEnabled)
+					return modA.modMetadata;
+			}
+			return null;
+		}).filter(function(b)
+		{
+			return b != null;
+		});
+	}
+}
+
+class ModMenuItem extends MenuItem
+{
+	public var modEnabled(default, set):Bool = false;
+	public var modMetadata:ModMetadata;
+
+	var label:FlxText;
+
+	public function new(modMetadata:ModMetadata, x:Float, y:Float)
+	{
+		this.modMetadata = modMetadata;
+
+		label = new FlxText(x, y, 0, modMetadata.title, 32);
+
+		super(x, y, modMetadata.title, modCallback);
+
+		if (modMetadata.icon != null)
+			loadIcon(modMetadata.icon);
+
+		label.x += width + 10;
+	}
+
+    public function loadIcon(bytes:haxe.io.Bytes)
+    {
+		var future = openfl.utils.ByteArray.loadFromBytes(bytes);
+
+		future.onComplete(function(openFlBytes:openfl.utils.ByteArray)
+		{
+			var iconSize:Int = Std.int(label.height);
+			var bitmapData = openfl.display.BitmapData.fromBytes(openFlBytes);
+
+			loadGraphic(bitmapData);
+			setGraphicSize(iconSize, iconSize);
+			antialiasing = true;
+			updateHitbox();
+		});
+    }
+
+	function modCallback()
+	{
+		modEnabled = !modEnabled;
+	}
+
+	function set_modEnabled(value:Bool):Bool
+	{
+		modEnabled = value;
+
+		if (modEnabled)
+		{
+			color = FlxColor.YELLOW;
+
+			if (label != null)
+				label.color = FlxColor.YELLOW;
+		}
+		else
+		{
+			color = FlxColor.WHITE;
+
+			if (label != null)
+				label.color = FlxColor.WHITE;
+		}
+
+		return modEnabled;
+	}
+
+	public override function draw()
+	{
+		super.draw();
+
+		if (label != null)
+		{
+			label.cameras = cameras;
+			label.scrollFactor.x = scrollFactor.x;
+			label.scrollFactor.y = scrollFactor.y;
+			scrollFactor.putWeak();
+			label.draw();
+		}
+	}
+
+	public override function idle():Void
+	{
+		alpha = 0.6;
+
+		if (label != null)
+			label.alpha = 0.6;
+	}
+
+	public override function select():Void
+	{
+		alpha = 1;
+
+		if (label != null)
+			label.alpha = 1;
 	}
 }

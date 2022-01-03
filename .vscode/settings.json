@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "*.hxp": "haxe", // Haxe Project files.
+        "*.hxs": "haxe", // HScript files.
+    }
+}

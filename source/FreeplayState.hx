@@ -95,7 +95,7 @@ class FreeplayState extends MusicBeatState
 
 		// LOAD CHARACTERS
 
-		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
+		bg = new FlxSprite().loadGraphic(Paths.loadImage('menuDesat'));
 		add(bg);
 
 		grpSongs = new FlxTypedGroup<MenuText>();
@@ -175,10 +175,10 @@ class FreeplayState extends MusicBeatState
 
 		positionHighscore();
 
+		#if !mobile
 		if (FlxG.mouse.wheel != 0)
 		{
-			//Cleanup.
-			// Due to edge or chrome not liking mouseWheel / 4 it goes to 0
+			// TODO: Fix this shit it's fps based >:(
 
 			var whelSpop;
 
@@ -190,6 +190,7 @@ class FreeplayState extends MusicBeatState
 			trace('wheel Spop: ' + whelSpop);
 			changeSelection(whelSpop);
 		}
+		#end
 
 		if (controls.UI_UP_P)
 			changeSelection(-1);

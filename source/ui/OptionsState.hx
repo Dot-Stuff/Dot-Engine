@@ -1,5 +1,6 @@
 package ui;
 
+import mods.Modding;
 import flixel.FlxSprite;
 import flixel.FlxSubState;
 import flixel.group.FlxGroup;
@@ -21,7 +22,9 @@ enum PageName
 	Options;
 	Controls;
 	Colors;
+	#if MODDING
 	Mods;
+	#end
 	Preferences;
 }
 
@@ -40,7 +43,7 @@ class OptionsState extends MusicBeatState
 		DiscordClient.changePresence('In the Options Menu', null);
 		#end
 
-		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
+		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.loadImage('menuDesat'));
 		bg.color = 0xFFEA71FD;
 		bg.setGraphicSize(Std.int(bg.width * 1.1));
 		bg.updateHitbox();
@@ -50,9 +53,15 @@ class OptionsState extends MusicBeatState
 
 		var optionsPage:OptionsMenu = addPage(Options, new OptionsMenu(false));
 		var prefsPage:PreferencesMenu = addPage(Preferences, new PreferencesMenu());
+		#if mobile
+		var controlsPage:MobileControlsMenu = addPage(Controls, new MobileControlsMenu());
+		#else
 		var controlsPage:ControlsMenu = addPage(Controls, new ControlsMenu());
+		#end
 		var colorsPage:ColorsMenu = addPage(Colors, new ColorsMenu());
+		#if MODDING
 		var moddingPage:ModdingSubstate = addPage(Mods, new ModdingSubstate());
+		#end
 
 		if (optionsPage.hasMultipleOptions())
 		{
@@ -70,9 +79,18 @@ class OptionsState extends MusicBeatState
 				switchPage(Options);
 			});
 
+			#if MODDING
 			moddingPage.onExit.add(function() {
-				switchPage(Options);
+				moddingPage.writeModPreferences();
+
+				// Load any configured mods
+				Modding.loadConfiguredMods();
+
+				pages.get(currentName).enabled = false;
+
+				FlxG.switchState(new InitState());
 			});
+			#end
 		}
 		else
 		{
@@ -212,9 +230,11 @@ class OptionsMenu extends Page
 			onSwitch.dispatch(Colors);
 		});
 
+		#if MODDING
 		createItem('mods', function() {
 			onSwitch.dispatch(Mods);
 		});
+		#end
 
 		if (canDonate)
 			createItem('donate', selectDonate, true);
@@ -288,6 +308,7 @@ class OptionsMenu extends Page
 	{
 		var logout = items.has('logout');
 
+		#if newgrounds
 		if (!logout && NG.core != null)
 		{
 			if (!logout && NG.core.loggedIn && NG.core != null)
@@ -295,6 +316,7 @@ class OptionsMenu extends Page
 			else
 				items.resetItem('login', 'logout', selectLogout);
 		}
+		#end
 	}
 
 	public override function openPrompt(target:FlxSubState, ?openCallback:Void->Void)

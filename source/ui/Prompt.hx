@@ -1,8 +1,8 @@
 package ui;
 
 import ui.MenuTypedList.TextMenuList;
-import NGio.ConnectionResult;
 #if newgrounds
+import NGio.ConnectionResult;
 import io.newgrounds.NG;
 #end
 import flixel.FlxSprite;
@@ -55,7 +55,7 @@ class Prompt extends FlxSubState
     public function createBg(bgWidth:Int, bgHeight:Int, bgColor:FlxColor = -8355712)
     {
         back = new FlxSprite().makeGraphic(bgWidth, bgHeight, bgColor, false, 'prompt-bg');
-        back.screenCenter(XY);
+        back.screenCenter();
         add(back);
 
         members.unshift(members.pop());
@@ -138,6 +138,7 @@ class NgPrompt extends Prompt
     }
 
     public static function showLogout():NgPrompt {
+        #if newgrounds
         var ngPrompt = new NgPrompt('Logout of ${NG.core.user.name}?', Yes_No);
         ngPrompt.onYes = function()
         {
@@ -147,6 +148,9 @@ class NgPrompt extends Prompt
 
         ngPrompt.onNo = ngPrompt.close;
         return ngPrompt;
+        #else
+        return null;
+        #end
     }
 
     public static function showSavedSessionFailed():FlxSubState {
@@ -155,7 +159,7 @@ class NgPrompt extends Prompt
 
     public static function showLoginPrompt(show:Bool):FlxSubState
     {
-        var ngPrompt = new NgPrompt("Talking to server...", None);
+        var ngPrompt = new NgPrompt("Talking to the server...", None);
 
         var whatever = function(c:Void->Void) {
             var d = show ? "Login to Newgrounds?" : "Your session has expired.\n Please login again.";
@@ -173,7 +177,9 @@ class NgPrompt extends Prompt
                 ngPrompt.onNo = function() {
                     ngPrompt.close();
                     ngPrompt = null;
+                    #if newgrounds
                     NG.core.cancelLoginRequest();
+                    #end
                 }
             }
             else
@@ -183,6 +189,7 @@ class NgPrompt extends Prompt
             }
         }
 
+        #if newgrounds
         var d:ConnectionResult->Void = function(a) {
             switch (a)
             {
@@ -210,6 +217,7 @@ class NgPrompt extends Prompt
         ngPrompt.openCallback = function() {
             NGio.login(whatever, d);
         }
+        #end
 
         return ngPrompt;
     }

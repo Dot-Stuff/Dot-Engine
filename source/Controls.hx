@@ -1,5 +1,6 @@
 package;
 
+import haxe.DynamicAccess;
 import flixel.input.FlxInput;
 import flixel.input.actions.FlxAction;
 import flixel.input.actions.FlxActionInput;
@@ -341,22 +342,18 @@ class Controls extends FlxActionSet
 
 	public function createSaveData(device:Device):Dynamic
 	{
-		var b:Bool = true;
+		var resultNull:Bool = true;
+		var controlData:DynamicAccess<Dynamic> = {};
 
-		//  {"NOTE_LEFT":[87,37],"NOTE_DOWN":[83,40],"NOTE_UP":[65,38],"NOTE_RIGHT":[68,39],"UI_UP":[87,38],"UI_LEFT":[65,37],"UI_RIGHT":[68,39],"UI_DOWN":[83,40],"RESET":[82],"ACCEPT":[90,32,13],"BACK":[88,8,27],"PAUSE":[80,13,27]}
-		var controlData:Dynamic = {};
-
-		for (i in Type.allEnums(Control))
+		for (i in Control.createAll())
 		{
-			var h = getInputsFor(i, device);
-			b = b && h.length == 0;
+			var keys = getInputsFor(i, device);
+			resultNull = resultNull && keys.length == 0;
 
-			trace('${Std.parseInt(Type.enumConstructor(i))}, $h');
-			// TODO: Remove parsing
-			controlData[Std.parseInt(Type.enumConstructor(i))] = h;
+			controlData.set(i.getName(), keys);
 		}
 
-		return b ? null : controlData;
+		return resultNull ? null : controlData;
 	}
 
 	public function getDialogueName(action:FlxActionDigital):String

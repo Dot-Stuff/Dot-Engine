@@ -1,10 +1,8 @@
 package;
 
+import netTest.Net;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
-import netTest.schemaShit.BattleState;
-import io.colyseus.Room;
-import io.colyseus.Client;
 import flixel.FlxSprite;
 import flixel.addons.transition.FlxTransitionSprite.GraphicTransTileDiamond;
 import flixel.addons.transition.FlxTransitionableState;
@@ -49,32 +47,11 @@ class TitleState extends MusicBeatState
 
 	var swagShader:ColorSwap;
 
-	private var client:Client;
-	private var room:Room<BattleState>;
-
 	var dotLogo:FlxSprite;
 
 	override public function create():Void
 	{
 		startedIntro = false;
-
-		/*client = new Client('ws://localhost:2567');
-
-		client.joinOrCreate("battle", [], BattleState, function(err, room)
-		{
-			if (err != null)
-			{
-				trace('JOIN ERROR: $err');
-				return;
-			}
-
-			this.room = room;
-
-			this.room.state.players.onAdd = function(player, key)
-			{
-				trace("player added at " + key + " => " + player);
-			}
-		});*/
 
 		FlxG.game.focusLostFramerate = 60;
 
@@ -91,6 +68,8 @@ class TitleState extends MusicBeatState
 		super.create();
 
 		FlxG.save.bind('funkin', 'ninjamuffin99');
+		/*@:privateAccess
+		FlxG.sound.loadSavedPrefs();*/
 
 		ui.PreferencesMenu.initPrefs();
 
@@ -98,9 +77,13 @@ class TitleState extends MusicBeatState
 
 		Highscore.load();
 
-		NGio.init();
+		Net.init();
 
-		dotLogo = new FlxSprite().loadGraphic(Paths.image('dotArt'));
+		#if newgrounds
+		NGio.init();
+		#end
+
+		dotLogo = new FlxSprite().loadGraphic(Paths.loadImage('dotArt'));
 		dotLogo.screenCenter();
 		dotLogo.antialiasing = true;
 		add(dotLogo);
@@ -124,8 +107,6 @@ class TitleState extends MusicBeatState
 		FlxG.switchState(new FreeplayState());
 		#elseif CHARTING
 		FlxG.switchState(new ChartingState());
-		#elseif NETTEST
-		FlxG.switchState(new netTest.NetTest());
 		#elseif ANIMDEBUG
 		FlxG.switchState(new AnimationDebug());
 		#elseif CUTSCENE
@@ -215,7 +196,7 @@ class TitleState extends MusicBeatState
 		blackScreen = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		credGroup.add(blackScreen);
 
-		ngSpr = new FlxSprite(0, FlxG.height * 0.52).loadGraphic(Paths.image('newgrounds_logo'));
+		ngSpr = new FlxSprite(0, FlxG.height * 0.52).loadGraphic(Paths.loadImage('newgrounds_logo'));
 		add(ngSpr);
 		ngSpr.visible = false;
 		ngSpr.setGraphicSize(Std.int(ngSpr.width * 0.8));
@@ -223,7 +204,9 @@ class TitleState extends MusicBeatState
 		ngSpr.screenCenter(X);
 		ngSpr.antialiasing = true;
 
+		#if !mobile
 		FlxG.mouse.visible = false;
+		#end
 
 		if (initialized)
 			skipIntro();
@@ -285,7 +268,7 @@ class TitleState extends MusicBeatState
 
 		if (pressedEnter && !transitioning && skippedIntro)
 		{
-			//room.send('type', "enterPressed");
+			Net.send('type', "enterPressed");
 
 			#if newgrounds
 			NGio.unlockMedal(60960);
@@ -302,10 +285,10 @@ class TitleState extends MusicBeatState
 			FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);
 			transitioning = true;
 
-			Assets.cache.clear(Paths.image('dotArt'));
-			Assets.cache.clear(Paths.image('gfDanceTitle'));
-			Assets.cache.clear(Paths.image('logoBumpin'));
-			Assets.cache.clear(Paths.image('titleEnter'));
+			Assets.cache.clear(Paths.loadImage('dotArt').key);
+			Assets.cache.clear(Paths.loadImage('gfDanceTitle').key);
+			Assets.cache.clear(Paths.loadImage('logoBumpin').key);
+			Assets.cache.clear(Paths.loadImage('titleEnter').key);
 
 			#if newgrounds
 			NGio.checkVersion(function(ver:String)

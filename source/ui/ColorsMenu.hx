@@ -48,12 +48,7 @@ class ColorsMenu extends ui.OptionsState.Page
     private function changeColor(change:Float = 1)
     {
         Note.arrowColors[curSelected] = change;
-
-        for (color in 0...grpColors.length)
-        {
-            if (color == curSelected)
-                grpColors.members[color].updateColors();
-        }
+        grpColors.members[curSelected].updateColors();
     }
 
     private function changeSelection(change:Int = 0):Void
