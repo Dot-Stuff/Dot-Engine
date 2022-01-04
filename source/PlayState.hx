@@ -37,7 +37,9 @@ using StringTools;
 import Discord.DiscordClient;
 #end
 
+#if MODDING
 @:hscript(this, PlayState)
+#end
 class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 {
 	public static var curStage:String;
@@ -186,6 +188,8 @@ class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 		{
 			case 'spooky':
 				{
+					defaultCamZoom = 1;
+
 					halloweenBG = new FlxSprite(-200, -100);
 					halloweenBG.frames = Paths.getSparrowAtlas('halloween_bg');
 					halloweenBG.animation.addByPrefix('idle', 'halloweem bg0', 0, false);
@@ -713,6 +717,11 @@ class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 		scoreTxt.scrollFactor.set();
 		add(scoreTxt);
 
+		#if mobile
+		virtualPad = new MobilePad(FULL, NONE);
+		add(virtualPad);
+		#end
+
 		grpNoteSplashes.cameras = [camHUD];
 		playerStrums.cameras = [camHUD];
 		player2Strums.cameras = [camHUD];
@@ -722,6 +731,13 @@ class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 		iconP1.cameras = [camHUD];
 		iconP2.cameras = [camHUD];
 		scoreTxt.cameras = [camHUD];
+
+		if (virtualPad != null)
+			virtualPad.cameras = [camHUD];
+
+		#if mobile
+		controls.setVirtualPad(virtualPad);
+		#end
 
 		startingSong = true;
 
@@ -790,6 +806,8 @@ class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 
 		super.create();
 	}
+
+	var virtualPad:MobilePad;
 
 	#if MODDING
 	public var onCreate:FlxPoint->Void = function(camPos) return;
@@ -1131,6 +1149,9 @@ class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 			generateStaticArrows(0);
 
 		generateStaticArrows(1);
+
+		if (virtualPad != null && !isStoryMode)
+			virtualPad.tweenPad();
 
 		talking = false;
 		startedCountdown = true;

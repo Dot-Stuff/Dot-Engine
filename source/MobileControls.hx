@@ -19,7 +19,7 @@ class MobileControls extends Controls
 {
 	public function setVirtualPad(virtualPad:MobilePad)
 	{
-		switch (virtualPad.DPad)
+		switch (virtualPad.dPadMode)
 		{
 			case UP_DOWN:
 				inline forEachBound(Control.UI_UP, (action, state) -> addButton(action, virtualPad.buttonUp, state));
@@ -39,7 +39,7 @@ class MobileControls extends Controls
 			case NONE:
 		}
 
-		switch (virtualPad.Action)
+		switch (virtualPad.actionMode)
 		{
 			case A:
 				inline forEachBound(Control.ACCEPT, (action, state) -> addButton(action, virtualPad.buttonA, state));

@@ -107,6 +107,26 @@ class MenuTypedList extends FlxTypedGroup<MenuItem>
 			var upP = controls.UI_UP_P;
 			var downP = controls.UI_DOWN_P;
 
+			for (swipe in FlxG.swipes)
+			{
+				var degrees = swipe.angle; 
+				degrees = (degrees % 360 + 360) % 360; 
+
+				if (degrees != 0)
+				{
+					if (degrees <= 45)
+						upP = true;
+					else if (degrees >= 45)
+						downP = true;
+					else if (degrees <= 180)
+						leftP = true;
+					else if (degrees >= 180)
+						rightP = true;
+				}
+				else
+					accept();
+			}
+
 			switch (navControls)
 			{
 				case Horizontal:

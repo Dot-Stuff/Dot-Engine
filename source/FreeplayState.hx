@@ -190,6 +190,26 @@ class FreeplayState extends MusicBeatState
 			trace('wheel Spop: ' + whelSpop);
 			changeSelection(whelSpop);
 		}
+		#else
+		for (swipe in FlxG.swipes)
+		{
+			var degrees = swipe.angle; 
+			degrees = (degrees % 360 + 360) % 360; 
+
+			if (degrees != 0)
+			{
+				if (degrees <= 45)
+					changeSelection(-1)
+				else if (degrees >= 45)
+					changeSelection(1);
+				else if (degrees <= 180)
+					changeDiff(-1);
+				else if (degrees >= 180)
+					changeDiff(1);
+			}
+			else
+				accept();
+		}
 		#end
 
 		if (controls.UI_UP_P)
@@ -214,15 +234,18 @@ class FreeplayState extends MusicBeatState
 		}
 
 		if (controls.ACCEPT)
-		{
-			PlayState.SONG = Song.loadFromJson(songs[curSelected].name.toLowerCase());
-			PlayState.isStoryMode = false;
-			PlayState.storyDifficulty = curDifficulty;
+			accept();
+	}
 
-			PlayState.storyWeek = songs[curSelected].week;
-			trace('CUR WEEK' + PlayState.storyWeek);
-			LoadingState.loadAndSwitchState(new PlayState());
-		}
+	function accept()
+	{
+		PlayState.SONG = Song.loadFromJson(songs[curSelected].name.toLowerCase());
+		PlayState.isStoryMode = false;
+		PlayState.storyDifficulty = curDifficulty;
+
+		PlayState.storyWeek = songs[curSelected].week;
+		trace('CUR WEEK' + PlayState.storyWeek);
+		LoadingState.loadAndSwitchState(new PlayState());
 	}
 
 	override function switchTo(nextState:FlxState):Bool

@@ -1,5 +1,6 @@
 package;
 
+import flixel.ui.FlxButton.FlxTypedButton;
 #if discord_rpc
 import Discord.DiscordClient;
 #end
@@ -13,7 +14,6 @@ import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 
 using StringTools;
-
 
 class StoryMenuState extends MusicBeatState
 {
@@ -106,7 +106,7 @@ class StoryMenuState extends MusicBeatState
 		add(grpLocks);
 
 		trace("Line 70");
-		
+
 		#if discord_rpc
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Story Mode Menu", null);
@@ -164,7 +164,10 @@ class StoryMenuState extends MusicBeatState
 
 		trace("Line 124");
 
-		leftArrow = new DiffArrow(grpWeekText.members[0].x + grpWeekText.members[0].width + 10, grpWeekText.members[0].y + 10, true);
+		leftArrow = new DiffArrow(grpWeekText.members[0].x + grpWeekText.members[0].width + 10, grpWeekText.members[0].y + 10, true, function()
+		{
+			changeDifficulty(-1);
+		});
 		difficultySelectors.add(leftArrow);
 
 		sprDifficulty = new FlxSprite(leftArrow.x + 130, leftArrow.y);
@@ -177,7 +180,10 @@ class StoryMenuState extends MusicBeatState
 
 		difficultySelectors.add(sprDifficulty);
 
-		rightArrow = new DiffArrow(sprDifficulty.x + sprDifficulty.width + 50, leftArrow.y);
+		rightArrow = new DiffArrow(sprDifficulty.x + sprDifficulty.width + 50, leftArrow.y, function()
+		{
+			changeDifficulty(1);
+		});
 		difficultySelectors.add(rightArrow);
 
 		trace("Line 150");
@@ -222,6 +228,36 @@ class StoryMenuState extends MusicBeatState
 		{
 			if (!selectedWeek)
 			{
+				#if mobile
+				for (swipe in FlxG.swipes)
+				{
+					var degrees = swipe.angle;
+					degrees = (degrees % 360 + 360) % 360;
+
+					if (degrees != 0)
+					{
+						if (degrees <= 45)
+						{
+							FlxG.sound.play(Paths.sound('scrollMenu'));
+
+							changeWeek(-1);
+						}
+						else if (degrees >= 45)
+						{
+							FlxG.sound.play(Paths.sound('scrollMenu'));
+
+							changeWeek(1);
+						}
+						/*else if (degrees <= 180)
+								changeDifficulty(-1);
+							else if (degrees >= 180)
+								changeDifficulty(1); */
+					}
+					else
+						selectWeek();
+				}
+				#end
+
 				if (controls.UI_UP_P)
 				{
 					FlxG.sound.play(Paths.sound('scrollMenu'));
@@ -234,9 +270,11 @@ class StoryMenuState extends MusicBeatState
 
 					changeWeek(1);
 				}
-				
+
+				#if !mobile
 				controls.UI_RIGHT ? rightArrow.select() : rightArrow.idle();
 				controls.UI_LEFT ? leftArrow.select() : leftArrow.idle();
+				#end
 
 				if (controls.UI_RIGHT_P)
 					changeDifficulty(1);
@@ -342,18 +380,19 @@ class StoryMenuState extends MusicBeatState
 		for (item in grpWeekText.members)
 		{
 			item.targetY = i - curWeek;
-			item.targetY == Std.int(0) && weekUnlocked[curWeek] ? item.alpha = 1 : item.alpha = 0.6;
+			item.targetY == Std.int(0)
+		&& weekUnlocked[curWeek] ? item.alpha = 1 : item.alpha = 0.6;
+
 			i++;
 		}
 
 		updateText();
 	}
-
 	function updateText()
 	{
 		for (i in 0...2)
 			grpWeekCharacters.members[i].animation.play(weekCharacters[curWeek][i]);
-		
+
 		txtTracklist.text = "Tracks\n\n";
 
 		var member0 = grpWeekCharacters.members[0];
@@ -399,34 +438,45 @@ class StoryMenuState extends MusicBeatState
 	}
 }
 
-class DiffArrow extends FlxSprite
+class DiffArrow extends FlxTypedButton<FlxSprite>
 {
-	public function new(x:Float, y:Float, ?isLeft:Bool)
+	var isLeft:Bool;
+
+	public function new(x:Float, y:Float, ?isLeft:Bool, ?clickCallback:Void->Void)
 	{
-		super(x, y);
+		this.isLeft = isLeft;
 
-		frames = Paths.getSparrowAtlas('campaign_menu_UI_assets');
+		super(x, y, clickCallback);
+	}
 
-		animation.addByPrefix('left', "arrow left");
-		animation.addByPrefix('right', 'arrow right');
-		animation.play(isLeft ? 'left' : 'right');
+	override function graphicLoaded()
+	{
+	}
 
-		idle();
+	override function loadDefaultGraphic()
+	{
+		loadGraphic(Paths.loadImage('campaign_ui_arrow'), false);
+		flipX = isLeft;
+	}
+
+	override function updateStatusAnimation()
+	{
+		switch (status)
+		{
+			case 0:
+				idle();
+			case 1, 2:
+				select();
+		}
 	}
 
 	public function idle()
 	{
-		/*setGraphicSize(Std.int(width * 0.9));
-		updateHitbox();*/
-
 		color = FlxColor.WHITE;
 	}
 
 	public function select()
 	{
-		/*setGraphicSize(Std.int(width * 1));
-		updateHitbox();*/
-
 		color = 0x00FFFF;
 	}
 }
