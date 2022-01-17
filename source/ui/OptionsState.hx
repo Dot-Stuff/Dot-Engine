@@ -162,7 +162,7 @@ class Page extends FlxGroup
 	var controls(get, never):Controls;
 
 	inline function get_controls():Controls
-		return PlayerSettings.player1.controls;
+		return PlayerSettings.players[0].controls;
 
 	public function exit()
 	{

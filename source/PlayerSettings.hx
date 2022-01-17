@@ -10,9 +10,7 @@ import Controls;
 
 class PlayerSettings
 {
-	public static var numPlayers(default, null) = 0;
-	public static var player1(default, null):PlayerSettings;
-	public static var player2(default, null):PlayerSettings;
+	public static var players(default, null):Array<PlayerSettings> = [];
 
 	public var id(default, null):Int;
 
@@ -47,14 +45,13 @@ class PlayerSettings
 
 	static public function init():Void
 	{
-		if (player1 == null)
+		if (players[0] == null)
 		{
-			player1 = new PlayerSettings(0);
-			++numPlayers;
+			players.push(new PlayerSettings(0));
 		}
 
 		FlxG.gamepads.deviceConnected.add(onGamepadAdded);
-	
+
 		var numGamepads = FlxG.gamepads.numActiveGamepads;
 		for (i in 0...numGamepads)
 		{
@@ -66,7 +63,7 @@ class PlayerSettings
 
 	static function onGamepadAdded(gamepad:FlxGamepad)
 	{
-		player1.addGamepad(gamepad);
+		players[0].addGamepad(gamepad);
 	}
 
 	public function addGamepad(gamepad:FlxGamepad)
@@ -98,7 +95,7 @@ class PlayerSettings
 		if (FlxG.save.data.controls == null)
 			FlxG.save.data.controls = {};
 
-		var playerData:{ ?keys:Dynamic, ?pad:Dynamic }
+		var playerData:{?keys:Dynamic, ?pad:Dynamic}
 		if (id == 0)
 		{
 			if (FlxG.save.data.controls.p1 == null)

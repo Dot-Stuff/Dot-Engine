@@ -87,7 +87,7 @@ class MenuTypedList extends FlxTypedGroup<MenuItem>
 
 		if (enabled && !busy)
 		{
-			var controls = PlayerSettings.player1.controls;
+			var controls = PlayerSettings.players[0].controls;
 
 			var horWrap:Bool = switch (wrapMode)
 			{

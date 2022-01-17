@@ -50,12 +50,13 @@ class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 	public static var storyDifficulty:Int = 1;
 	public static var deathCounter:Int = 0;
 	public static var practiceMode:Bool = false;
+	public static var coopMode:Bool = false;
 	public static var notesX:Float = 78;
 
 	private var vocals:FlxSound;
 	private var vocalsFinished:Bool = false;
 
-	private var dad:Character;
+	private var dad:Player;
 	private var gf:Character;
 	private var boyfriend:Boyfriend;
 
@@ -541,7 +542,7 @@ class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 			}
 		}
 
-		dad = new Character(100, 100, SONG.player2);
+		dad = createPlayer(100, 100, SONG.player2, false, true);
 
 		camPos = new FlxPoint(dad.getGraphicMidpoint().x, dad.getGraphicMidpoint().y);
 
@@ -807,6 +808,19 @@ class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 		super.create();
 	}
 
+	function createPlayer(x:Float, y:Float, char:String, isPlayer:Bool = false, isBot:Bool = false):Player
+	{
+		// TODO: Add to controls
+		var avatar = new Player(x, y, char, isPlayer, isBot);
+		return avatar;
+	}
+
+	@:allow(PauseSubState)
+	function takeControlOfDad()
+	{
+		dad.isBot = !dad.isBot;
+	}
+
 	var virtualPad:MobilePad;
 
 	#if MODDING
@@ -815,7 +829,7 @@ class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 	public var onStepHit:Void->Void = function() return;
 	public var onBeatHit:Void->Void = function() return;
 
-    public var onKillCombo:Void->Void = function() return;
+	public var onKillCombo:Void->Void = function() return;
 	public var onGoodNoteHit:Note->Void = function(note) return;
 	public var onPopUpScore:String->Void = function(daRating) return;
 
@@ -855,7 +869,7 @@ class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 
 	function addDialogue():DialogueBox
 	{
-		if (PreferencesMenu.getPref('cutscenes') && SONG.dialogue != null)
+		if (PreferencesMenu.getPref('cutscenes') && SONG.dialogue != null && SONG.dialogue.data.length > 0)
 		{
 			var doof = new DialogueBox();
 			doof.finishThing = startCountdown;
@@ -1764,89 +1778,7 @@ class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 						}
 					}
 
-					if (!daNote.mustPress && daNote.wasGoodHit)
-					{
-						if (SONG.song != 'Tutorial')
-							camZooming = true;
-
-						var altAnim:String = daNote.altNote ? '-alt' : '';
-
-						// WILL BE REMOVED SOON
-						if (SONG.notes[storyDifficulty][Math.floor(curStep / 16)] != null)
-						{
-							if (SONG.notes[storyDifficulty][Math.floor(curStep / 16)].altAnim)
-								altAnim = '-alt';
-						}
-
-						var noteData = Std.int(Math.abs(daNote.noteData));
-						switch (noteData)
-						{
-							case 0:
-								dad.playAnim('singLEFT' + altAnim, true);
-							case 1:
-								dad.playAnim('singDOWN' + altAnim, true);
-							case 2:
-								dad.playAnim('singUP' + altAnim, true);
-							case 3:
-								dad.playAnim('singRIGHT' + altAnim, true);
-						}
-
-						if (!PreferencesMenu.getPref('middlescroll'))
-						{
-							player2Strums.members[noteData].playAnim('confirm', true);
-							strumming2[noteData] = true;
-							/*player2Strums.forEach(function(spr)
-							{
-								if (Math.abs(daNote.noteData) == spr.ID)
-								{
-									strumming2[daNote.noteData] = true;
-
-									spr.animation.play('confirm', true);
-								}
-							});*/
-						}
-
-						dad.holdTimer = 0;
-
-						if (SONG.needsVoices)
-							vocals.volume = 1;
-
-						daNote.kill();
-						notes.remove(daNote, true);
-						daNote.destroy();
-					}
-
-					// WIP interpolation shit? Need to fix the pause issue
-					// daNote.y = (strumLine.y - (songTime - daNote.strumTime) * (0.45 * PlayState.SONG.speed[storyDifficulty]));
-
-					if (daNote.isSustainNote && daNote.wasGoodHit)
-					{
-						if (daNote.y < -daNote.height)
-						{
-							daNote.active = false;
-							daNote.visible = false;
-
-							daNote.kill();
-							notes.remove(daNote, true);
-							daNote.destroy();
-						}
-					}
-					if (daNote.tooLate || daNote.wasGoodHit)
-					{
-						if (daNote.tooLate)
-						{
-							health -= 0.0475;
-							vocals.volume = 0;
-							killCombo();
-						}
-
-						daNote.active = false;
-						daNote.visible = false;
-
-						daNote.kill();
-						notes.remove(daNote, true);
-						daNote.destroy();
-					}
+					playerBot(daNote, player2Strums, strumming2, dad);
 				});
 
 				if (!PreferencesMenu.getPref('middlescroll'))
@@ -2408,11 +2340,6 @@ class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 			}
 
 			playerStrums.members[note.noteData].playAnim('confirm', true);
-			/*playerStrums.forEach(function(spr)
-			{
-				if (Math.abs(note.noteData) == spr.ID)
-					spr.animation.play('confirm', true);
-			});*/
 
 			note.wasGoodHit = true;
 			vocals.volume = 1;
@@ -2423,6 +2350,87 @@ class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 				notes.remove(note, true);
 				note.destroy();
 			}
+		}
+	}
+
+	function playerBot(daNote:Note, strums:StaticNotes, strumming, char:Player)
+	{
+		if (!char.isBot)
+			return;
+
+		if (!daNote.mustPress && daNote.wasGoodHit)
+		{
+			if (SONG.song != 'Tutorial')
+				camZooming = true;
+
+			var altAnim:String = daNote.altNote ? '-alt' : '';
+
+			// WILL BE REMOVED SOON
+			if (SONG.notes[storyDifficulty][Math.floor(curStep / 16)] != null)
+			{
+				if (SONG.notes[storyDifficulty][Math.floor(curStep / 16)].altAnim)
+					altAnim = '-alt';
+			}
+
+			var noteData = Std.int(Math.abs(daNote.noteData));
+			switch (noteData)
+			{
+				case 0:
+					char.playAnim('singLEFT' + altAnim, true);
+				case 1:
+					char.playAnim('singDOWN' + altAnim, true);
+				case 2:
+					char.playAnim('singUP' + altAnim, true);
+				case 3:
+					char.playAnim('singRIGHT' + altAnim, true);
+			}
+
+			if (!PreferencesMenu.getPref('middlescroll'))
+			{
+				strums.members[noteData].playAnim('confirm', true);
+				strumming[noteData] = true;
+			}
+
+			char.holdTimer = 0;
+
+			if (SONG.needsVoices)
+				vocals.volume = 1;
+
+			daNote.kill();
+			notes.remove(daNote, true);
+			daNote.destroy();
+		}
+
+		// WIP interpolation shit? Need to fix the pause issue
+		// daNote.y = (strumLine.y - (songTime - daNote.strumTime) * (0.45 * PlayState.SONG.speed[storyDifficulty]));
+
+		if (daNote.isSustainNote && daNote.wasGoodHit)
+		{
+			if (daNote.y < -daNote.height)
+			{
+				daNote.active = false;
+				daNote.visible = false;
+
+				daNote.kill();
+				notes.remove(daNote, true);
+				daNote.destroy();
+			}
+		}
+		if (daNote.tooLate || daNote.wasGoodHit)
+		{
+			if (daNote.tooLate)
+			{
+				health -= 0.0475;
+				vocals.volume = 0;
+				killCombo();
+			}
+
+			daNote.active = false;
+			daNote.visible = false;
+
+			daNote.kill();
+			notes.remove(daNote, true);
+			daNote.destroy();
 		}
 	}
 

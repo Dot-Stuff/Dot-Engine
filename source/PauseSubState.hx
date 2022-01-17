@@ -20,6 +20,7 @@ class PauseSubState extends MusicBeatSubstate
 		"Restart Song",
 		"Change Difficulty",
 		"Toggle Practice Mode",
+		"Toggle Cooperative Mode",
 		"Exit to menu"
 	];
 	var curSelected:Int = 0;
@@ -27,6 +28,8 @@ class PauseSubState extends MusicBeatSubstate
 	var pauseMusic:FlxSound;
 
 	var practiceText:FlxText;
+
+	var coopText:FlxText;
 
 	public function new()
 	{
@@ -73,21 +76,32 @@ class PauseSubState extends MusicBeatSubstate
 		practiceText.visible = PlayState.practiceMode;
 		add(practiceText);
 
+		coopText = new FlxText(20, 143, 0, "CO-OP MODE", 32);
+		coopText.scrollFactor.set();
+		coopText.setFormat(Paths.font('vcr.ttf'), 32);
+		coopText.updateHitbox();
+		coopText.x -= FlxG.width + 20;
+		coopText.visible = PlayState.coopMode;
+		add(coopText);
+
 		levelDifficulty.alpha = 0;
 		levelInfo.alpha = 0;
 		blueBalled.alpha = 0;
 		practiceText.alpha = 0;
+		coopText.alpha = 0;
 
 		levelInfo.x = FlxG.width - (levelInfo.width + 20);
 		levelDifficulty.x = FlxG.width - (levelDifficulty.width + 20);
 		blueBalled.x = FlxG.width - (blueBalled.width + 20);
 		practiceText.x = FlxG.width - (practiceText.width + 20);
+		coopText.x = FlxG.width - (coopText.width + 20);
 
 		FlxTween.tween(bg, {alpha: 0.6}, 0.4, {ease: FlxEase.quartInOut});
 		FlxTween.tween(levelInfo, {alpha: 1, y: 20}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.3});
 		FlxTween.tween(levelDifficulty, {alpha: 1, y: levelDifficulty.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.5});
 		FlxTween.tween(blueBalled, {alpha: 1, y: blueBalled.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.7});
 		FlxTween.tween(practiceText, {alpha: 1, y: practiceText.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.9});
+		FlxTween.tween(coopText, {alpha: 1, y: coopText.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: 1.1});
 
 		grpMenuShit = new FlxTypedGroup<MenuText>();
 		add(grpMenuShit);
@@ -153,6 +167,10 @@ class PauseSubState extends MusicBeatSubstate
 				case "Change Difficulty":
 					menuItems = difficultyChoices;
 					regenMenu();
+				case "Toggle Cooperative Mode":
+					PlayState.coopMode = !PlayState.coopMode;
+					coopText.visible = PlayState.coopMode;
+					cast (FlxG.state, PlayState).takeControlOfDad();
 				case "Exit to menu":
 					PlayState.seenCutscene = false;
 					PlayState.deathCounter = 0;

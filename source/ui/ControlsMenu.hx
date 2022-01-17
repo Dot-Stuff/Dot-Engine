@@ -269,7 +269,7 @@ class ControlsMenu extends ui.OptionsState.Page
             controls.replaceBinding(controlGridSelected.control, this.currentDevice, input, controlGridSelected.input);
             controlGridSelected.input = input;
             controlGridSelected.label.text = controlGridSelected.getLabel(input);
-            PlayerSettings.player1.saveControls();
+            PlayerSettings.players[0].saveControls();
         }
     }
 
@@ -343,7 +343,7 @@ class InputItem extends ui.MenuTypedList.TextMenuItem
 
 	function getInput():Int
 	{
-		var inputs = PlayerSettings.player1.controls.getInputsFor(control, device);
+		var inputs = PlayerSettings.players[0].controls.getInputsFor(control, device);
 
 		if (index < inputs.length)
 		{
