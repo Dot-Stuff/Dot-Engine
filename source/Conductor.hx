@@ -1,12 +1,12 @@
 package;
 
+import haxe.Json;
 import Song.SwagSong;
 
 /**
  * ...
  * @author
  */
-
 typedef BPMChangeEvent =
 {
 	var stepTime:Int;
@@ -39,13 +39,12 @@ class Conductor
 		var curBPM:Float = song.bpm;
 		var totalSteps:Int = 0;
 		var totalPos:Float = 0;
-		for (i in 0...song.notes.length)
+		var diff = song.notes[PlayState.storyDifficulty];
+		for (i in 0...diff.length)
 		{
-			var note = song.notes[PlayState.storyDifficulty][i];
-
-			if(note.changeBPM && note.bpm != curBPM)
+			if (diff[i].changeBPM && diff[i].bpm != curBPM)
 			{
-				curBPM = note.bpm;
+				curBPM = diff[i].bpm;
 				var event:BPMChangeEvent = {
 					stepTime: totalSteps,
 					songTime: totalPos,
@@ -54,11 +53,11 @@ class Conductor
 				bpmChangeMap.push(event);
 			}
 
-			var deltaSteps:Int = note.lengthInSteps;
+			var deltaSteps:Int = diff[i].lengthInSteps;
 			totalSteps += deltaSteps;
 			totalPos += ((60 / curBPM) * 1000 / 4) * deltaSteps;
 		}
-		trace("new BPM map BUDDY " + bpmChangeMap);
+		trace("new BPM map BUDDY " + Json.stringify(bpmChangeMap));
 	}
 
 	public static function changeBPM(newBpm:Float)

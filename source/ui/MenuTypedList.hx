@@ -107,6 +107,7 @@ class MenuTypedList extends FlxTypedGroup<MenuItem>
 			var upP = controls.UI_UP_P;
 			var downP = controls.UI_DOWN_P;
 
+			#if mobile
 			for (swipe in FlxG.swipes)
 			{
 				var degrees = swipe.angle; 
@@ -126,6 +127,7 @@ class MenuTypedList extends FlxTypedGroup<MenuItem>
 				else
 					accept();
 			}
+			#end
 
 			switch (navControls)
 			{

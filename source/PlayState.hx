@@ -836,7 +836,8 @@ class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 	public var onDadNotes:Note->Void = function(note) return;
 
 	@:hscript({
-		pathName: 'states/PlayState'
+		pathName: 'states/PlayState',
+		context: [FlxTween, FlxTimer]
 	})
 	public function buildScriptHooks():Void
 	{
@@ -889,7 +890,7 @@ class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 			background.scrollFactor.set();
 			add(background);
 
-			var vid:FlxVideo = new FlxVideo('ughCutscene');
+			var vid:FlxVideo = new FlxVideo(Paths.video('ughCutscene'));
 			vid.finishCutscene = function()
 			{
 				remove(background);
@@ -973,7 +974,7 @@ class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 		background.scrollFactor.set();
 		add(background);
 
-		var vid:FlxVideo = new FlxVideo('gunsCutscene');
+		var vid:FlxVideo = new FlxVideo(Paths.video('gunsCutscene'));
 		vid.finishCutscene = function()
 		{
 			remove(background);
@@ -1028,7 +1029,7 @@ class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 		background.scrollFactor.set();
 		add(background);
 
-		var vid:FlxVideo = new FlxVideo('stressCutscene');
+		var vid:FlxVideo = new FlxVideo(Paths.video('stressCutscene'));
 		vid.finishCutscene = function()
 		{
 			remove(background);

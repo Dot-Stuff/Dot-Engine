@@ -129,13 +129,13 @@
 
 	<!--In case you want to use the ui package-->
 	<haxelib name="flixel-ui" />
-	<haxelib name="newgrounds" unless='switch||mobile' />
+	<haxelib name="newgrounds" unless='switch || mobile' />
 	<haxelib name="faxe" if='switch' />
 	<haxelib name="polymod" />
 	<haxelib name="firetongue" />
 	<haxelib name="colyseus" />
 	<haxelib name="colyseus-websocket" />
-	<haxelib name="discord_rpc" if="cpp" unless='switch||mobile' />
+	<haxelib name="discord_rpc" if="cpp" unless='switch || mobile' />
 	<!--<haxelib name="hxcpp-debug-server" if="desktop debug"/>-->
 
 	<!--<haxelib name="flixel-animate" />
@@ -202,7 +202,7 @@
 	<haxedef name="POLYMOD_ROOT_PATH" value="assets/scripts/" />
 	<haxedef name="POLYMOD_DEBUG" if="debug" />
 
-	<section unless='switch||hl||mobile'>
+	<section unless='switch || hl || mobile'>
 		<!-- Compiles tool for old song conversion shit -->
 		<postbuild command='haxe -main art/SongConverter.hx --cs export/songShit' />
 		<postbuild command='ren export/songShit/tools' />

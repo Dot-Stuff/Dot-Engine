@@ -16,17 +16,24 @@ class Character extends FlxSprite
 
 	public var animationNotes:Array<Dynamic> = [];
 
-	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false)
+	public function new(x:Float, y:Float, ?char:String = "bf", ?isPlayer:Bool = false)
 	{
 		super(x, y);
 
 		animOffsets = new Map<String, Array<Dynamic>>();
-		curCharacter = character;
 		this.isPlayer = isPlayer;
 
-		antialiasing = true;
+		changeChar(char);
+	}
 
-		switch (curCharacter)
+	public function changeChar(newChar:String):Void
+	{
+		curCharacter = newChar;
+
+		antialiasing = true;
+		var pixelSize:Float = 1;
+
+		switch (newChar)
 		{
 			case 'gf':
 				frames = Paths.getSparrowAtlas('characters/GF_assets');
@@ -101,7 +108,7 @@ class Character extends FlxSprite
 
 				playAnim('danceRight');
 
-				setGraphicSize(Std.int(width * PlayState.daPixelZoom));
+				pixelSize = PlayState.daPixelZoom;
 				updateHitbox();
 				antialiasing = false;
 
@@ -337,7 +344,7 @@ class Character extends FlxSprite
 
 				playAnim('firstDeath');
 				// pixel bullshit
-				setGraphicSize(Std.int(width * 6));
+				pixelSize = PlayState.daPixelZoom;
 				updateHitbox();
 				antialiasing = false;
 				flipX = true;
@@ -369,7 +376,7 @@ class Character extends FlxSprite
 
 				playAnim('idle');
 
-				setGraphicSize(Std.int(width * 6));
+				pixelSize = PlayState.daPixelZoom;
 				updateHitbox();
 
 				antialiasing = false;
@@ -386,7 +393,7 @@ class Character extends FlxSprite
 
 				playAnim('idle');
 
-				setGraphicSize(Std.int(width * 6));
+				pixelSize = PlayState.daPixelZoom;
 				updateHitbox();
 
 				antialiasing = false;
@@ -402,7 +409,7 @@ class Character extends FlxSprite
 
 				loadOffsetFile(curCharacter);
 
-				setGraphicSize(Std.int(width * 6));
+				pixelSize = PlayState.daPixelZoom;
 				updateHitbox();
 
 				playAnim('idle');
@@ -462,6 +469,8 @@ class Character extends FlxSprite
 				playAnim('idle');
 		}
 
+		setGraphicSize(Std.int(width * pixelSize));
+
 		dance();
 		animation.finish();
 
@@ -470,7 +479,7 @@ class Character extends FlxSprite
 			flipX = !flipX;
 
 			// Doesn't flip for BF, since his are already in the right place???
-			if (!curCharacter.startsWith('bf'))
+			if (!newChar.startsWith('bf'))
 			{
 				var left = animation.getByName('singLEFT');
 				var right = animation.getByName('singRIGHT');
