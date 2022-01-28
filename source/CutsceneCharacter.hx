@@ -15,11 +15,16 @@ class CutsceneCharacter extends FlxSymbol
 
     public var startSyncAudio:FlxSound;
     var startedPlayingSound:Bool = false;
+    public var framerate:Float = 30;
 
-    public function new(x:Float, y:Float, anim:String)
+    public function new(x:Float, y:Float, anim:String, ?frameRate:Float)
     {
         coolParse = Json.parse(Assets.getText(Paths.file('images/$anim/Animation.json')));
 		coolParse.AN.TL.L.reverse();
+	if (frameRate != null)
+		framerate = frameRate;
+	else
+		framerate = coolParse.MD.FRT;
 
 		super(x, y, coolParse);
 
@@ -41,7 +46,7 @@ class CutsceneCharacter extends FlxSymbol
         {
             frameTickTypeShit += elapsed;
 
-            if (frameTickTypeShit >= 0.041666666666666664)
+            if (frameTickTypeShit >= 1 / framerate)
             {
                 changeFrame(1);
                 frameTickTypeShit = 0;
