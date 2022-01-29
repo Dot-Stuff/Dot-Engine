@@ -218,35 +218,35 @@ class OptionsMenu extends Page
 		items = new TextMenuList();
 		add(items);
 
-		createItem('preferences', function() {
+		createItem(Modding.getTranslation('preferences', 'options'), function() {
 			onSwitch.dispatch(Preferences);
 		});
 
-		createItem('controls', function() {
+		createItem(Modding.getTranslation('controls', 'options'), function() {
 			onSwitch.dispatch(Controls);
 		});
 
-		createItem('colors', function() {
+		createItem(Modding.getTranslation('colors', 'options'), function() {
 			onSwitch.dispatch(Colors);
 		});
 
 		#if MODDING
-		createItem('mods', function() {
+		createItem(Modding.getTranslation('mods', 'options'), function() {
 			onSwitch.dispatch(Mods);
 		});
 		#end
 
 		if (canDonate)
-			createItem('donate', selectDonate, true);
+			createItem(Modding.getTranslation('donate', 'options'), selectDonate, true);
 
 		#if newgrounds
 		if (NG.core != null && NG.core.loggedIn)
-			createItem("logout", selectLogout);
+			createItem(Modding.getTranslation('logout', 'options'), selectLogout);
 		else
-			createItem("login", selectLogin);
+			createItem(Modding.getTranslation('login', 'options'), selectLogin);
 		#end
 
-		createItem("exit", exit);
+		createItem(Modding.getTranslation('exit', 'options'), exit);
 	}
 
 	public override function set_enabled(val:Bool):Bool

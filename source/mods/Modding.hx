@@ -3,7 +3,6 @@ package mods;
 #if firetongue
 import firetongue.FireTongue;
 #end
-import polymod.backends.OpenFLBackend;
 import polymod.format.ParseRules.TextFileFormat;
 import polymod.Polymod;
 
@@ -28,18 +27,32 @@ class Modding
 	 */
 	public static function init()
 	{
+		#if firetongue
 		loadLocale('en-US');
+		#end
 		loadModsById(getAllModIds());
 	}
 
+	#if firetongue
 	public static function loadLocale(locale:String)
 	{
-		/*if (tongue == null)
+		if (tongue == null)
 			tongue = new FireTongue();
+
 		tongue.initialize({
 			locale: locale,
 			directory: 'locales/',
-		});*/
+		});
+	}
+	#end
+
+	public static function getTranslation(flag:String, context:String = "data"):String
+	{
+		#if firetongue
+		return tongue.get(flag, context);
+		#else
+		return flag;
+		#end
 	}
 
 	/**
@@ -92,7 +105,9 @@ class Modding
 			parseRules: buildParseRules(),
 
 			// Pass FireTongue into Polymod
-			//fireTongue: tongue
+			#if firetongue
+			firetongue: tongue
+			#end
 		});
 	}
 

@@ -42,8 +42,9 @@
 
 	<assets path="assets/preload/music" include="*mp4" embed='false' />
 
-	<assets path="assets/preload" rename="assets" exclude="*.ogg" if="web"/>
-	<assets path="assets/preload" rename="assets" exclude="*.mp3" unless="web"/>
+	<assets path="assets/preload" 			 rename="assets" exclude="*.ogg" if="web"/>
+	<assets path="assets/preload" 			 rename="assets" exclude="*.mp3" unless="web"/>
+	<assets path="assets/Dot-Engine.Locales" rename="locales" />
 
 	<!-- <define name="PRELOAD_ALL" /> -->
 	<define name="PRELOAD_ALL" unless="web||mobile" />
@@ -81,7 +82,6 @@
 		<library name="tank"    	 preload="false" />
 	</section>
 
-	<assets path="assets/Dot-Engine.Locales"  		library="locales" 		rename="assets/locales" />
 	<assets path="assets/scripts"  					library="scripts" 		include="*hxs" />
 	<assets path="assets/songs"    					library="songs"    		exclude="*.ogg" if="web"/>
 	<assets path="assets/songs"    					library="songs"    		exclude="*.mp3" unless="web"/>
