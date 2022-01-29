@@ -25,7 +25,6 @@ import openfl.net.FileReference;
 
 using StringTools;
 
-
 class ChartingState extends MusicBeatState
 {
 	var _file:FileReference;
@@ -167,6 +166,8 @@ class ChartingState extends MusicBeatState
 		add(curRenderedNotes);
 		add(curRenderedSustains);
 
+		changeSection();
+
 		super.create();
 	}
 
@@ -274,7 +275,7 @@ class ChartingState extends MusicBeatState
 		stepperLength = new FlxUINumericStepper(10, 10, 4, _song.notes[PlayState.storyDifficulty][curSection].lengthInSteps, 0, 999, 0);
 		stepperLength.name = "section_length";
 
-		stepperSectionBPM = new FlxUINumericStepper(10, 80, 0.1, Conductor.bpm, -999, 999, 1);
+		stepperSectionBPM = new FlxUINumericStepper(10, 80, 0.1, Conductor.bpm, -999, 999, 1, 3);
 		stepperSectionBPM.name = 'section_bpm';
 
 		var stepperCopy:FlxUINumericStepper = new FlxUINumericStepper(110, 130, 0.1, 1, -999, 999, 1);
@@ -464,8 +465,8 @@ class ChartingState extends MusicBeatState
 
 		strumLine.y = getYfromStrum((Conductor.songPosition - sectionStartTime()) % (Conductor.stepCrochet * _song.notes[PlayState.storyDifficulty][curSection].lengthInSteps));
 
-		/*if (FlxG.keys.justPressed.X)
-			toggleAltAnimation();*/
+		if (FlxG.keys.justPressed.X)
+			toggleAltAnimNote();
 
 		if (curBeat % 4 == 0 && curStep >= 16 * (curSection + 1))
 		{
@@ -665,6 +666,21 @@ class ChartingState extends MusicBeatState
 
 		updateNoteUI();
 		updateGrid();
+	}
+
+	function toggleAltAnimNote()
+	{
+		if (curSelectedNote != null)
+		{
+			if (curSelectedNote[3] != null)
+			{
+				trace("ALT NOTE SHIT");
+				curSelectedNote[3] = !curSelectedNote[3];
+				trace(curSelectedNote[3]);
+			}
+			else
+				curSelectedNote[3] = true;
+		}
 	}
 
 	function recalculateSteps():Int

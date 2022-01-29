@@ -38,7 +38,7 @@ import Discord.DiscordClient;
 #end
 
 #if MODDING
-@:hscript(this, PlayState)
+@:hscript(this, PlayState, FlxTween, FlxTimer)
 #end
 class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 {
@@ -515,6 +515,11 @@ class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 					stageCurtains.updateHitbox();
 					add(stageCurtains);
 				}
+			default:
+				#if MODDING
+				// KEEP IN MIND, THIS WILL GET REMOVED ONCE ZINDEX MACRO IS FINISHED
+				stageCreate();
+				#end
 		}
 
 		gf = new Character(400, 130, SONG.gf);
@@ -824,6 +829,7 @@ class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 	var virtualPad:MobilePad;
 
 	#if MODDING
+	public var stageCreate:Void->Void = function() return;
 	public var onCreate:FlxPoint->Void = function(camPos) return;
 	public var onUpdate:Void->Void = function() return;
 	public var onStepHit:Void->Void = function() return;
@@ -836,11 +842,13 @@ class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 	public var onDadNotes:Note->Void = function(note) return;
 
 	@:hscript({
-		pathName: 'states/PlayState',
-		context: [FlxTween, FlxTimer]
+		pathName: 'states/PlayState'
 	})
 	public function buildScriptHooks():Void
 	{
+		if (script_variables.get('stageCreate') != null)
+			stageCreate = script_variables.get('stageCreate');
+
 		if (script_variables.get('onCreate') != null)
 			onCreate = script_variables.get('onCreate');
 

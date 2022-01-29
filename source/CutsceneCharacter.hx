@@ -41,7 +41,7 @@ class CutsceneCharacter extends FlxSymbol
         {
             frameTickTypeShit += elapsed;
 
-            if (frameTickTypeShit >= 0.041666666666666664)
+            if (frameTickTypeShit >= 1 / coolParse.MD.FRT)
             {
                 changeFrame(1);
                 frameTickTypeShit = 0;

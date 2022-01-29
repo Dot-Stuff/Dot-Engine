@@ -1,6 +1,8 @@
 package mods;
 
+#if firetongue
 import firetongue.FireTongue;
+#end
 import polymod.backends.OpenFLBackend;
 import polymod.format.ParseRules.TextFileFormat;
 import polymod.Polymod;
@@ -16,7 +18,9 @@ class Modding
 
 	static final MOD_DIRECTORY = "mods";
 
+	#if firetongue
 	public static var tongue:FireTongue;
+	#end
 
 	/**
 	 * Loads all mods

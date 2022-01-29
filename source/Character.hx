@@ -26,6 +26,8 @@ class Character extends FlxSprite
 		changeChar(char);
 	}
 
+	var maxHoldTime:Float = 4;
+
 	public function changeChar(newChar:String):Void
 	{
 		curCharacter = newChar;
@@ -109,7 +111,6 @@ class Character extends FlxSprite
 				playAnim('danceRight');
 
 				pixelSize = PlayState.daPixelZoom;
-				updateHitbox();
 				antialiasing = false;
 
 			case 'dad':
@@ -122,6 +123,7 @@ class Character extends FlxSprite
 				quickAnimAdd('singLEFT', 'Dad Sing Note RIGHT');
 
 				loadOffsetFile(curCharacter);
+				maxHoldTime = 6.1;
 
 				playAnim('idle');
 			case 'spooky':
@@ -320,8 +322,7 @@ class Character extends FlxSprite
 
 				loadOffsetFile(curCharacter);
 
-				setGraphicSize(Std.int(width * 6));
-				updateHitbox();
+				pixelSize = PlayState.daPixelZoom;
 
 				playAnim('idle');
 
@@ -345,7 +346,6 @@ class Character extends FlxSprite
 				playAnim('firstDeath');
 				// pixel bullshit
 				pixelSize = PlayState.daPixelZoom;
-				updateHitbox();
 				antialiasing = false;
 				flipX = true;
 
@@ -377,7 +377,6 @@ class Character extends FlxSprite
 				playAnim('idle');
 
 				pixelSize = PlayState.daPixelZoom;
-				updateHitbox();
 
 				antialiasing = false;
 			case 'senpai-angry':
@@ -394,7 +393,6 @@ class Character extends FlxSprite
 				playAnim('idle');
 
 				pixelSize = PlayState.daPixelZoom;
-				updateHitbox();
 
 				antialiasing = false;
 
@@ -410,7 +408,6 @@ class Character extends FlxSprite
 				loadOffsetFile(curCharacter);
 
 				pixelSize = PlayState.daPixelZoom;
-				updateHitbox();
 
 				playAnim('idle');
 
@@ -470,6 +467,7 @@ class Character extends FlxSprite
 		}
 
 		setGraphicSize(Std.int(width * pixelSize));
+		updateHitbox();
 
 		dance();
 		animation.finish();
@@ -561,9 +559,7 @@ class Character extends FlxSprite
 				holdTimer += elapsed;
 			}
 
-			var dadVar:Float = curCharacter == 'dad' ? 6.1 : 4;
-
-			if (holdTimer >= Conductor.stepCrochet * dadVar * 0.001)
+			if (holdTimer >= Conductor.stepCrochet * maxHoldTime * 0.001)
 			{
 				dance();
 				holdTimer = 0;

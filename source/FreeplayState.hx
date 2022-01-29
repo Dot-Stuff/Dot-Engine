@@ -10,7 +10,6 @@ import flixel.util.FlxColor;
 import openfl.Assets;
 import flixel.util.FlxTimer;
 
-using flixel.util.FlxColorTransformUtil;
 using StringTools;
 
 #if discord_rpc
@@ -39,7 +38,7 @@ class FreeplayState extends MusicBeatState
 
 	private var grpsIcons:FlxTypedGroup<HealthIcon>;
 
-	private var coolColors:Array<FlxColor> = [-7179779, -7179779, -14535868, -7072173, -223529, -6237697, -34625, -608764];
+	private var coolColors:Array<FlxColor> = [0x9271FD, 0x9271FD, 0x223344, 0x941653, 0xFC96D7, 0xA0D1FF, 0xFF78BF, 0xF6B604];
 
 	override function create()
 	{
@@ -48,18 +47,15 @@ class FreeplayState extends MusicBeatState
 		DiscordClient.changePresence("In the Freeplay Menu", null);
 		#end
 
-		var isDebug:Bool = false;
-
 		#if debug
-		isDebug = true;
-		addSong('Test', 1, 'bf-pixel');
+		addSong('Test');
 		#end
 
 		var initSonglist = CoolUtil.coolTextFile(Paths.txt('freeplaySonglist'));
 
-		for (i in 0...initSonglist.length)
+		for (name in initSonglist)
 		{
-			addSong(initSonglist[i], 1, 'gf');
+			addSong(name);
 		}
 
 		#if NO_PRELOAD_ALL
@@ -69,31 +65,6 @@ class FreeplayState extends MusicBeatState
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 		}
 		#end
-
-		if (StoryMenuState.weekUnlocked[2] || isDebug)
-			addWeek(['Bopeebo', 'Fresh', 'Dadbattle'], 1, ['dad']);
-
-		if (StoryMenuState.weekUnlocked[2] || isDebug)
-			addWeek(['Spookeez', 'South', 'Monster'], 2, ['spooky', 'spooky', 'monster']);
-
-		if (StoryMenuState.weekUnlocked[3] || isDebug)
-			addWeek(['Pico', 'Philly', 'Blammed'], 3, ['pico']);
-
-		if (StoryMenuState.weekUnlocked[4] || isDebug)
-			addWeek(['Satin-Panties', 'High', 'Milf'], 4, ['mom']);
-
-		if (StoryMenuState.weekUnlocked[5] || isDebug)
-			addWeek(['Cocoa', 'Eggnog', 'Winter-Horrorland'], 5, ['parents-christmas', 'parents-christmas', 'monster-christmas']);
-
-		if (StoryMenuState.weekUnlocked[6] || isDebug)
-			addWeek(['Senpai', 'Roses', 'Thorns'], 6, ['senpai', 'senpai', 'spirit']);
-
-		if (StoryMenuState.weekUnlocked[7] || isDebug)
-			addWeek(['Ugh', 'Guns', 'Stress'], 7, ['tankman']);
-
-		// LOAD MUSIC
-
-		// LOAD CHARACTERS
 
 		bg = new FlxSprite().loadGraphic(Paths.loadImage('menuDesat'));
 		add(bg);
@@ -110,7 +81,7 @@ class FreeplayState extends MusicBeatState
 			songText.targetY = i;
 			grpSongs.add(songText);
 
-			var icon:HealthIcon = new HealthIcon(songs[i].character);
+			var icon:HealthIcon = new HealthIcon(songs[i].song.player2);
 			icon.sprTracker = songText;
 			grpsIcons.add(icon);
 		}
@@ -135,24 +106,13 @@ class FreeplayState extends MusicBeatState
 		super.create();
 	}
 
-	public function addSong(songName:String, weekNum:Int, songCharacter:String)
+	public function addSong(songName:String)
 	{
-		songs.push({name: songName, week: weekNum, character: songCharacter});
-	}
+		var splitWords = songName.split(" ");
+		var song = Song.loadFromJson(splitWords[0]);
+		var shit = splitWords[1] == null ? 0 : Std.parseInt(splitWords[1]);
 
-	public function addWeek(songs:Array<String>, weekNum:Int, ?songCharacters:Array<String>)
-	{
-		if (songCharacters == null)
-			songCharacters = ['bf'];
-
-		var num:Int = 0;
-		for (song in songs)
-		{
-			addSong(song, weekNum, songCharacters[num]);
-
-			if (songCharacters.length != 1)
-				num++;
-		}
+		songs.push({name: splitWords[0], week: shit, song: song});
 	}
 
 	override function update(elapsed:Float)
@@ -342,7 +302,7 @@ class FreeplayState extends MusicBeatState
 typedef SongMetadata = {
 	var name:String;
 	var week:Int;
-	var character:String;
+	var song:Song.SwagSong;
 }
 
 class MenuText extends ui.AtlasText

@@ -37,7 +37,7 @@ First you need to install Haxe and HaxeFlixel. I'm too lazy to write and keep up
 Other installations you'd need are the additional libraries, a fully updated list will be in `Project.xml` in the project root. Just copy and paste this into your terminal to install them:
 ```
 haxelib install format
-haxelib install hscript
+haxelib install hscript-ex
 haxelib install newgrounds
 haxelib install colyseus
 haxelib install colyseus-websocket
