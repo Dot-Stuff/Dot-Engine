@@ -30,6 +30,7 @@ class PreferencesMenu extends ui.OptionsState.Page
 
         createPrefItem("cutscenes", "cutscenes", true);
         createPrefItem("naughtyness", "censor-naughty", true);
+        createPrefItem("New Input", "new-input", true);
         createPrefItem("downscroll", "downscroll", false);
         createPrefItem("middlescroll", "middlescroll", false);
         createPrefItem("flashing menu", "flashing-menu", false);
@@ -70,6 +71,7 @@ class PreferencesMenu extends ui.OptionsState.Page
         preferenceCheck("cutscenes", true);
         preferenceCheck("censor-naughty", true);
         preferenceCheck("downscroll", false);
+        preferenceCheck("new-input", true);
         preferenceCheck("middlescroll", false);
         preferenceCheck("flashing-menu", true);
         preferenceCheck("camera-zoom", true);
@@ -79,7 +81,9 @@ class PreferencesMenu extends ui.OptionsState.Page
 
         if (getPref("fps-counter"))
             FlxG.stage.removeChild(Main.fpsCounter);
-
+        if (getPref("fullscreen")){
+            FlxG.fullscreen = !FlxG.fullscreen;
+        }
         FlxG.autoPause = getPref("auto-pause");
     }
 

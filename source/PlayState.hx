@@ -2336,11 +2336,14 @@ class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 
 	function noteMiss(direction:Int = 1):Void
 	{
-		health -= 0.04;
-		killCombo();
+		if(!PreferencesMenu.getPref("new-input"))
+		{	
+			health -= 0.04;
+			killCombo();
 
-		vocals.volume = 0;
-		FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2));
+			vocals.volume = 0;
+			FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2));
+			
 
 		switch (direction)
 		{
@@ -2353,6 +2356,7 @@ class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 			case 3:
 				boyfriend.playAnim('singRIGHTmiss', true);
 		}
+	}
 	}
 
 	function goodNoteHit(note:Note):Void
