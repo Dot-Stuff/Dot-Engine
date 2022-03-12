@@ -1,5 +1,6 @@
 package;
 
+import netTest.Net;
 import flixel.math.FlxMath;
 import flixel.tweens.FlxTween;
 import flixel.FlxSprite;
@@ -199,13 +200,12 @@ class FreeplayState extends MusicBeatState
 
 	function accept()
 	{
-		PlayState.SONG = Song.loadFromJson(songs[curSelected].name.toLowerCase());
-		PlayState.isStoryMode = false;
-		PlayState.storyDifficulty = curDifficulty;
-
-		PlayState.storyWeek = songs[curSelected].week;
-		trace('CUR WEEK' + PlayState.storyWeek);
-		LoadingState.loadAndSwitchState(new PlayState());
+		Net.send('switchSong', {
+			name: songs[curSelected].name.toLowerCase(),
+			storyMode: false,
+			difficulty: curDifficulty,
+			week: songs[curSelected].week
+		});
 	}
 
 	override function switchTo(nextState:FlxState):Bool

@@ -67,10 +67,6 @@ class TitleState extends MusicBeatState
 
 		super.create();
 
-		FlxG.save.bind('funkin', 'ninjamuffin99');
-		/*@:privateAccess
-		FlxG.sound.loadSavedPrefs();*/
-
 		ui.PreferencesMenu.initPrefs();
 
 		PlayerSettings.init();
@@ -268,8 +264,6 @@ class TitleState extends MusicBeatState
 
 		if (pressedEnter && !transitioning && skippedIntro)
 		{
-			Net.send('type', "enterPressed");
-
 			#if newgrounds
 			NGio.unlockMedal(60960);
 

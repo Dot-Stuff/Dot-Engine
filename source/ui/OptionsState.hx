@@ -1,6 +1,5 @@
 package ui;
 
-import mods.Modding;
 import flixel.FlxSprite;
 import flixel.FlxSubState;
 import flixel.group.FlxGroup;
@@ -22,6 +21,7 @@ enum PageName
 	Options;
 	Controls;
 	Colors;
+	Language;
 	#if MODDING
 	Mods;
 	#end
@@ -59,8 +59,9 @@ class OptionsState extends MusicBeatState
 		var controlsPage:ControlsMenu = addPage(Controls, new ControlsMenu());
 		#end
 		var colorsPage:ColorsMenu = addPage(Colors, new ColorsMenu());
+		var languagePage:ColorsMenu = addPage(Language, new ColorsMenu());
 		#if MODDING
-		var moddingPage:ModdingSubstate = addPage(Mods, new ModdingSubstate());
+		var moddingPage:ModMenu = addPage(Mods, new ModMenu());
 		#end
 
 		if (optionsPage.hasMultipleOptions())
@@ -75,12 +76,22 @@ class OptionsState extends MusicBeatState
 				switchPage(Options);
 			});
 
-			colorsPage.onExit.add(function() {
+			/*colorsPage.onExit.add(function() {
+				switchPage(Options);
+			});*/
+
+			languagePage.onExit.add(function() {
 				switchPage(Options);
 			});
 
 			#if MODDING
 			moddingPage.onExit.add(function() {
+				if (!moddingPage.modPreferencesChanged())
+				{
+					switchPage(Options);
+					return;
+				}
+
 				moddingPage.writeModPreferences();
 
 				// Load any configured mods
@@ -218,35 +229,35 @@ class OptionsMenu extends Page
 		items = new TextMenuList();
 		add(items);
 
-		createItem(Modding.getTranslation('preferences', 'options'), function() {
+		createItem('preferences', function() {
 			onSwitch.dispatch(Preferences);
 		});
 
-		createItem(Modding.getTranslation('controls', 'options'), function() {
+		createItem('controls', function() {
 			onSwitch.dispatch(Controls);
 		});
 
-		createItem(Modding.getTranslation('colors', 'options'), function() {
+		createItem('colors', function() {
 			onSwitch.dispatch(Colors);
 		});
 
 		#if MODDING
-		createItem(Modding.getTranslation('mods', 'options'), function() {
+		createItem('mods', function() {
 			onSwitch.dispatch(Mods);
 		});
 		#end
 
 		if (canDonate)
-			createItem(Modding.getTranslation('donate', 'options'), selectDonate, true);
+			createItem('donate', selectDonate, true);
 
 		#if newgrounds
 		if (NG.core != null && NG.core.loggedIn)
-			createItem(Modding.getTranslation('logout', 'options'), selectLogout);
+			createItem('logout', selectLogout);
 		else
-			createItem(Modding.getTranslation('login', 'options'), selectLogin);
+			createItem('login', selectLogin);
 		#end
 
-		createItem(Modding.getTranslation('exit', 'options'), exit);
+		createItem('exit', exit);
 	}
 
 	public override function set_enabled(val:Bool):Bool
@@ -257,7 +268,9 @@ class OptionsMenu extends Page
 
 	public function createItem(name:String, callback:Void->Void, ?fireInstantly:Bool)
 	{
-		var item = items.createItem(0, 100 + 100 * items.length, name, Bold, callback, fireInstantly);
+		// TODO: Create a refresh name function for translations.
+		var transName = #if MODDING mods.ModHandler.getTranslation(name) #else name #end;
+		var item = items.createItem(0, 100 + 100 * items.length, transName, Bold, callback, fireInstantly);
 		item.screenCenter(X);
 
 		return item;

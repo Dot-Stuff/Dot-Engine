@@ -40,12 +40,17 @@ class Net
 			Net.room = room;
             connection = ConnectionTypes.CONNECTED;
 
-			room.onMessage("type", function(message)
+			onMessage("switchSong", function(message:Dynamic)
 			{
-				trace("onMessage: 'type' => " + message);
+				PlayState.SONG = Song.loadFromJson(message.name);
+				PlayState.isStoryMode = message.storyMode;
+				PlayState.storyDifficulty = message.difficulty;
+				PlayState.storyWeek = message.week;
+
+				LoadingState.loadAndSwitchState(new PlayState());
 			});
 
-			room.onMessage("hitNote", function(message)
+			onMessage("hitNote", function(message)
 			{
 				trace("onMessage: 'hitNote' => " + message);
 			});

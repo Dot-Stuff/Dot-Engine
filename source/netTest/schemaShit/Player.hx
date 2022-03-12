@@ -10,7 +10,7 @@ import io.colyseus.serializer.schema.Schema;
 import io.colyseus.serializer.schema.types.*;
 
 class Player extends Schema {
-	@:type("array", KeyData)
-	public var keyShit: ArraySchema<KeyData> = new ArraySchema<KeyData>();
+	@:type("number")
+	public var score: Dynamic = 0;
 
 }

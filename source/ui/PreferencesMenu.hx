@@ -100,7 +100,8 @@ class PreferencesMenu extends ui.OptionsState.Page
     {
         var thing = Type.typeof(defaultVal);
 
-        items.createItem(120, 120 * items.length + 30, name, Bold, function() {
+        var transName = #if MODDING mods.ModHandler.getTranslation(name) #else name #end;
+        items.createItem(120, 120 * items.length + 30, transName, Bold, function() {
             preferenceCheck(pref, defaultVal);
 
             if (thing == ValueType.TBool)

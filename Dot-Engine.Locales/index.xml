@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<file id="options" value="options.tsv"/>
+	
+	<file id="fonts" value="fonts.xml"/>
+	
+	<!--American English-->
+	<locale id="en-US" is_default="true" sort="0">	
+		<contributors value="ninjamuffin99"/>
+		<ui language="Language" region="Region" accept="Okay" />
+		<label id="en-US,en-GB,en-CA" language="English" region="United States"/>
+		<label id="nb-NO" language="Engelsk" region="U.S.A."/>
+	</locale>
+	
+	<note id="official">
+		<!--This means that we solicited and paid the translator for an official translation-->
+		<text id="en-US,en-GB,en-CA,yo-DA" title="OFFICIAL" body="This is an official (paid) translation.$N$NContributors:"/>
+		<text id="nb-US" title="OFFISIELL" body="Dette er en offisiell (betalt) oversettelse.$N$NBidragsytere:"/>
+	</note>
+</data>
