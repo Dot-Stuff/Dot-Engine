@@ -1,6 +1,6 @@
 package ui;
 
-import mods.ModHandler;
+import mods.LocaleHandler;
 import flixel.util.FlxColor;
 import flixel.text.FlxText;
 
@@ -8,22 +8,42 @@ class LanguageMenu extends ui.OptionsState.Page
 {
     var grpLocales:LanguageMenuList;
 
+	var selectedLocale:String;
+
 	public function new():Void
 	{
 		super();
+
+		selectedLocale = LocaleHandler.tongue.locale;
 
 		grpLocales = new LanguageMenuList();
 		add(grpLocales);
 
         var loopNum:Int = 0;
 
-		for (locale in ModHandler.tongue.locales)
+		for (i in LocaleHandler.tongue.locales)
 		{
-            var thing = ModHandler.tongue.getIndexString(LanguageRegionNative, locale, ModHandler.tongue.locale);
-			grpLocales.createItem(0, 10 + (40 * loopNum), thing, null, true);
+			var locale = LocaleHandler.tongue.getIndexString(LanguageNative, i, LocaleHandler.tongue.locale);
+			var item = grpLocales.createItem(null, null, locale, function()
+			{
+				selectedLocale = i;
+			}, FlxG.save.data.locale == i);
+			item.screenCenter();
+			item.y += (40 * loopNum);
 
 			loopNum++;
 		}
+	}
+
+	public function writeLocalePreferences()
+	{
+		FlxG.save.data.locale = selectedLocale;
+		FlxG.save.flush();
+	}
+
+	public function localePreferencesChanged():Bool
+	{
+		return FlxG.save.data.locale != selectedLocale;
 	}
 }
 
@@ -80,6 +100,8 @@ class LanguageMenuItem extends MenuItem
 			label.cameras = cameras;
 			label.scrollFactor.x = scrollFactor.x;
 			label.scrollFactor.y = scrollFactor.y;
+			label.x = x;
+			label.y = y;
 			scrollFactor.putWeak();
 			label.draw();
 		}

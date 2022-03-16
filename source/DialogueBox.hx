@@ -35,8 +35,11 @@ class DialogueBox extends MusicBeatSubstate
 
 		dialogueData = PlayState.SONG.dialogue.data;
 
-		FlxG.sound.playMusic(Paths.music(PlayState.SONG.dialogue.music), 0);
-		FlxG.sound.music.fadeIn(1, 0, 0.8);
+		if (PlayState.SONG.dialogue.music != null)
+		{
+			FlxG.sound.playMusic(Paths.music(PlayState.SONG.dialogue.music), 0);
+			FlxG.sound.music.fadeIn(1, 0, 0.8);
+		}
 
 		if (atSchool())
 		{

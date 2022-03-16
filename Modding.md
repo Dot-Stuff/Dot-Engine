@@ -1,13 +1,22 @@
-# RIGHT NOW THE MODS FOLDER DOES NOT WORK ENTIRELY JUST YET!!!
-## THIS IS WORK IN PROGRESS!!!
+# Modding | Getting Started Guide
+Lets get started on the basics
+First, make a new folder in `mods`. Make sure to name it your mod's name. Then, create a `_polymod_meta.json` include this structure. You can add a `_polymod_icon.png` it's not mandatory.
+```json
+{
+    "title": "Your New Mod",
+    "description": "Your Mod's Description",
+    "author": [
+        {
+            "name": "Your Name",
+            "role": "Your Role"
+        }
+    ],
+    "api_version": "0.1.0",
+    "mod_version": "1.0.0-alpha",
+    "license": "Apache License 2.0"
+}
+```
 
-# QUICK AND DIRTY MOD GUIDE
-
-With the 0.2.6 update, I added a bit of a slightly nicer mod support backend.
-
-It's POLYMOD, which is made by Lars Doucet: https://github.com/larsiusprime/polymod
-
-You may have noticed that there's a new folder in the assets. MODS. Within it you will see 2 files. modList.txt, and a folder called introMod.
-modList.txt will load any folder into the game. Put the folder you want to load into a new line in modList.txt, and reboot the game.
-
-Now you may be wondering, what do I put in the folder? Well later down it'll get a bit more complicated, especially as I'll make the IN-GAME mod loader nicer.
+## Appending and Merging.
+- Appending to add onto the data
+- Merging to combine two files. There's a different way of merging file types XML, JSON, etc. [Read more here.](https://polymod.io/docs/merging-files/)

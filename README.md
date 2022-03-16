@@ -43,6 +43,7 @@ haxelib install colyseus
 haxelib install colyseus-websocket
 haxelib install hxcs
 haxelib install polymod
+haxelib install flxanimate
 ```
 
 You'll also need to install a couple things that involve Gits. To do this, you need to do a few things first.

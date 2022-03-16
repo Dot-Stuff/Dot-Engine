@@ -1,5 +1,6 @@
 package ui;
 
+import openfl.Lib;
 import Type.ValueType;
 import flixel.FlxSprite;
 import haxe.ds.StringMap;
@@ -100,7 +101,7 @@ class PreferencesMenu extends ui.OptionsState.Page
     {
         var thing = Type.typeof(defaultVal);
 
-        var transName = #if MODDING mods.ModHandler.getTranslation(name) #else name #end;
+        var transName = mods.LocaleHandler.getTranslation(name, 'options');
         items.createItem(120, 120 * items.length + 30, transName, Bold, function() {
             preferenceCheck(pref, defaultVal);
 
@@ -140,9 +141,9 @@ class PreferencesMenu extends ui.OptionsState.Page
                 FlxG.autoPause = PreferencesMenu.getPref("auto-pause");
             case 'fps-counter':
                 if (PreferencesMenu.getPref("fps-counter"))
-                    FlxG.stage.addChild(Main.fpsCounter);
+                    Lib.current.addChild(Main.fpsCounter);
                 else
-                    FlxG.stage.removeChild(Main.fpsCounter);
+                    Lib.current.removeChild(Main.fpsCounter);
         }
     }
 

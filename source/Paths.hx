@@ -136,8 +136,8 @@ class Paths
 		return FlxAtlasFrames.fromSpriteSheetPacker(loadImage(key, library), getPath('images/$key.txt', TEXT, library));
 	}
 
-	inline static public function getAnimateAtlas(key:String, ?library:String)
+	inline static public function getTextureAtlas(key:String, ?library:String)
 	{
-		return animate.FlxAnimate.fromAnimate(loadImage('$key/spritemap1', library), getPath('images/$key/spritemap1.json', TEXT, library));
+		return getPath('images/$key.zip', BINARY, library);
 	}
 }

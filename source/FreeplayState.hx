@@ -45,7 +45,7 @@ class FreeplayState extends MusicBeatState
 	{
 		#if discord_rpc
 		// Updating Discord Rich Presence
-		DiscordClient.changePresence("In the Freeplay Menu", null);
+		DiscordClient.changePresence(mods.LocaleHandler.getTranslation("FREEPLAY_MENU", "discord_rpc"), null);
 		#end
 
 		#if debug
@@ -200,12 +200,24 @@ class FreeplayState extends MusicBeatState
 
 	function accept()
 	{
-		Net.send('switchSong', {
-			name: songs[curSelected].name.toLowerCase(),
-			storyMode: false,
-			difficulty: curDifficulty,
-			week: songs[curSelected].week
-		});
+		if (Net.connection == CONNECTED)
+		{
+			Net.send('switchSong', {
+				name: songs[curSelected].name.toLowerCase(),
+				storyMode: false,
+				difficulty: curDifficulty,
+				week: songs[curSelected].week
+			});
+		}
+		else
+		{
+			PlayState.SONG = Song.loadFromJson(songs[curSelected].name.toLowerCase());
+			PlayState.isStoryMode = false;
+			PlayState.storyDifficulty = curDifficulty;
+			PlayState.storyWeek = songs[curSelected].week;
+
+			LoadingState.loadAndSwitchState(new PlayState());
+		}
 	}
 
 	override function switchTo(nextState:FlxState):Bool

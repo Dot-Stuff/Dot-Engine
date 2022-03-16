@@ -73,8 +73,6 @@ class TitleState extends MusicBeatState
 
 		Highscore.load();
 
-		Net.init();
-
 		#if newgrounds
 		NGio.init();
 		#end
@@ -183,6 +181,8 @@ class TitleState extends MusicBeatState
 		titleText.antialiasing = true;
 		titleText.animation.play('idle');
 		titleText.updateHitbox();
+		titleText.screenCenter(X);
+		//titleText.setGraphicSize(Std.int(titleText.width * 0.8));
 		add(titleText);
 
 		credGroup = new FlxGroup();
@@ -231,9 +231,6 @@ class TitleState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
-		if (FlxG.keys.justPressed.FIVE)
-			FlxG.switchState(new CutsceneAnimTestState());
-
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
 

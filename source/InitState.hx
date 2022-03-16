@@ -10,8 +10,10 @@ class InitState extends FlxState
 		/*@:privateAccess
 		FlxG.sound.loadSavedPrefs();*/
 
+        mods.LocaleHandler.init();
+
         #if MODDING
-		mods.Modding.init();
+		mods.ModHandler.init();
 		#end
 
         FlxG.switchState(new TitleState());

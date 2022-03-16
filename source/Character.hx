@@ -33,7 +33,8 @@ class Character extends FlxSprite
 		curCharacter = newChar;
 
 		antialiasing = true;
-		var pixelSize:Float = 1;
+
+		scale.set(1, 1);
 
 		switch (newChar)
 		{
@@ -110,7 +111,8 @@ class Character extends FlxSprite
 
 				playAnim('danceRight');
 
-				pixelSize = PlayState.daPixelZoom;
+				setGraphicSize(Std.int(width * PlayState.daPixelZoom));
+				updateHitbox();
 				antialiasing = false;
 
 			case 'dad':
@@ -322,7 +324,8 @@ class Character extends FlxSprite
 
 				loadOffsetFile(curCharacter);
 
-				pixelSize = PlayState.daPixelZoom;
+				setGraphicSize(Std.int(width * 6));
+				updateHitbox();
 
 				playAnim('idle');
 
@@ -345,7 +348,8 @@ class Character extends FlxSprite
 
 				playAnim('firstDeath');
 				// pixel bullshit
-				pixelSize = PlayState.daPixelZoom;
+				setGraphicSize(Std.int(width * PlayState.daPixelZoom));
+				updateHitbox();
 				antialiasing = false;
 				flipX = true;
 
@@ -376,7 +380,8 @@ class Character extends FlxSprite
 
 				playAnim('idle');
 
-				pixelSize = PlayState.daPixelZoom;
+				setGraphicSize(Std.int(width * PlayState.daPixelZoom));
+				updateHitbox();
 
 				antialiasing = false;
 			case 'senpai-angry':
@@ -392,7 +397,8 @@ class Character extends FlxSprite
 
 				playAnim('idle');
 
-				pixelSize = PlayState.daPixelZoom;
+				setGraphicSize(Std.int(width * PlayState.daPixelZoom));
+				updateHitbox();
 
 				antialiasing = false;
 
@@ -407,7 +413,8 @@ class Character extends FlxSprite
 
 				loadOffsetFile(curCharacter);
 
-				pixelSize = PlayState.daPixelZoom;
+				setGraphicSize(Std.int(width * PlayState.daPixelZoom));
+				updateHitbox();
 
 				playAnim('idle');
 
@@ -465,9 +472,6 @@ class Character extends FlxSprite
 
 				playAnim('idle');
 		}
-
-		setGraphicSize(Std.int(width * pixelSize));
-		updateHitbox();
 
 		dance();
 		animation.finish();

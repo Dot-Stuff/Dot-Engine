@@ -109,7 +109,7 @@ class StoryMenuState extends MusicBeatState
 
 		#if discord_rpc
 		// Updating Discord Rich Presence
-		DiscordClient.changePresence("In the Story Mode Menu", null);
+		DiscordClient.changePresence(mods.LocaleHandler.getTranslation("STORY_MODE_MENU", "discord_rpc"), null);
 		#end
 
 		for (i in 0...weekData.length)
@@ -180,7 +180,7 @@ class StoryMenuState extends MusicBeatState
 
 		difficultySelectors.add(sprDifficulty);
 
-		rightArrow = new DiffArrow(sprDifficulty.x + sprDifficulty.width + 50, leftArrow.y, function()
+		rightArrow = new DiffArrow(sprDifficulty.x + sprDifficulty.width + 50, leftArrow.y, false, function()
 		{
 			changeDifficulty(1);
 		});

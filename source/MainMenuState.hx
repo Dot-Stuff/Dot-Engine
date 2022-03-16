@@ -1,5 +1,6 @@
 package;
 
+import netTest.Net;
 import flixel.ui.FlxVirtualPad;
 import ui.Prompt;
 import flixel.FlxSubState;
@@ -39,7 +40,7 @@ class MainMenuState extends MusicBeatState
 	{
 		#if discord_rpc
 		// Updating Discord Rich Presence
-		DiscordClient.changePresence("In the Menus", null);
+		DiscordClient.changePresence(mods.LocaleHandler.getTranslation("MENU", "discord_rpc"), null);
 		#end
 
 		transIn = FlxTransitionableState.defaultTransIn;
@@ -83,10 +84,11 @@ class MainMenuState extends MusicBeatState
 
 		menuItems.enabled = false;
 
-		/*menuItems.createItem(null, null, 'multiplayer', function()
+		menuItems.createItem(null, null, 'multiplayer', function()
 		{
-			startExitState(new netTest.MultiplayerMenu());
-		});*/
+			// TODO: Add some join system like amoung us :))))) SUSUSUSS
+			Net.init();
+		});
 
 		menuItems.createItem(null, null, 'story mode', function()
 		{

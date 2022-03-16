@@ -15,32 +15,13 @@ class ModHandler
 
 	static final MOD_DIRECTORY = "mods";
 
-	public static var tongue:FireTongue;
-
 	/**
 	 * Loads all mods
 	 * Saves the mods as well
 	 */
 	public static function init()
 	{
-		loadLocale(getConfiguredLocale());
 		loadConfiguredMods();
-	}
-
-	public static function loadLocale(locale:String)
-	{
-		if (tongue == null)
-			tongue = new FireTongue();
-
-		tongue.initialize({
-			locale: locale,
-			directory: 'locales/',
-		});
-	}
-
-	public static function getTranslation(flag:String, context:String = "data"):String
-	{
-		return tongue.get(flag.toUpperCase().replace(' ', '_'), context);
 	}
 
 	/**
@@ -48,7 +29,7 @@ class ModHandler
 	 */
 	public static function loadConfiguredMods()
 	{
-		trace('User mod config: ${FlxG.save.data.modConfig}');
+		trace('User mod config: ${getConfiguredMods()}');
 		loadModsById(getConfiguredMods());
 	}
 
@@ -64,16 +45,6 @@ class ModHandler
 			return rawSaveData.split('~');
 
 		return null;
-	}
-
-	public static function getConfiguredLocale():String
-	{
-		var rawSaveData = FlxG.save.data.locale;
-
-		if (rawSaveData != null)
-			return rawSaveData;
-
-		return FireTongue.defaultLocale;
 	}
 
 	public static function loadModsById(ids:Array<String>)
@@ -103,7 +74,7 @@ class ModHandler
 			parseRules: buildParseRules(),
 
 			// Pass FireTongue into Polymod
-			firetongue: tongue
+			firetongue: LocaleHandler.tongue
 		});
 	}
 

@@ -40,7 +40,7 @@ class OptionsState extends MusicBeatState
 	{
 		#if discord_rpc
 		// Updating Discord Rich Presence
-		DiscordClient.changePresence('In the Options Menu', null);
+		DiscordClient.changePresence(mods.LocaleHandler.getTranslation("OPTIONS_MENU", "discord_rpc"), null);
 		#end
 
 		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.loadImage('menuDesat'));
@@ -58,8 +58,8 @@ class OptionsState extends MusicBeatState
 		#else
 		var controlsPage:ControlsMenu = addPage(Controls, new ControlsMenu());
 		#end
-		var colorsPage:ColorsMenu = addPage(Colors, new ColorsMenu());
-		var languagePage:ColorsMenu = addPage(Language, new ColorsMenu());
+		//var colorsPage:ColorsMenu = addPage(Colors, new ColorsMenu());
+		var languagePage:LanguageMenu = addPage(Language, new LanguageMenu());
 		#if MODDING
 		var moddingPage:ModMenu = addPage(Mods, new ModMenu());
 		#end
@@ -81,12 +81,25 @@ class OptionsState extends MusicBeatState
 			});*/
 
 			languagePage.onExit.add(function() {
-				switchPage(Options);
+				if (!languagePage.localePreferencesChanged())
+				{
+					switchPage(Options);
+					return;
+				}
+
+				languagePage.writeLocalePreferences();
+
+				// Load any configured locale
+				mods.LocaleHandler.loadLocale(FlxG.save.data.locale);
+
+				FlxG.save.flush();
+
+				FlxG.switchState(new InitState());
 			});
 
 			#if MODDING
 			moddingPage.onExit.add(function() {
-				if (!moddingPage.modPreferencesChanged())
+				if (moddingPage.modPreferencesChanged())
 				{
 					switchPage(Options);
 					return;
@@ -95,7 +108,7 @@ class OptionsState extends MusicBeatState
 				moddingPage.writeModPreferences();
 
 				// Load any configured mods
-				Modding.loadConfiguredMods();
+				mods.ModHandler.loadConfiguredMods();
 
 				pages.get(currentName).enabled = false;
 
@@ -149,7 +162,8 @@ class OptionsState extends MusicBeatState
 	{
 		#if discord_rpc
 		// Updating Discord Rich Presence
-		DiscordClient.changePresence('In the ${page.getName()} Menu', null);
+		var pageName = mods.LocaleHandler.getTranslation(page.getName(), 'options');
+		DiscordClient.changePresence(mods.LocaleHandler.getTranslationReplace("PAGE_X_MENU", 'discord_rpc', ["<X>"], [pageName]), null);
 		#end
 
 		setPage(page);
@@ -237,8 +251,12 @@ class OptionsMenu extends Page
 			onSwitch.dispatch(Controls);
 		});
 
-		createItem('colors', function() {
+		/*createItem('colors', function() {
 			onSwitch.dispatch(Colors);
+		});*/
+
+		createItem('language', function() {
+			onSwitch.dispatch(Language);
 		});
 
 		#if MODDING
@@ -269,8 +287,7 @@ class OptionsMenu extends Page
 	public function createItem(name:String, callback:Void->Void, ?fireInstantly:Bool)
 	{
 		// TODO: Create a refresh name function for translations.
-		var transName = #if MODDING mods.ModHandler.getTranslation(name) #else name #end;
-		var item = items.createItem(0, 100 + 100 * items.length, transName, Bold, callback, fireInstantly);
+		var item = items.createItem(0, 100 + 100 * items.length, mods.LocaleHandler.getTranslation(name, 'options'), Bold, callback, fireInstantly);
 		item.screenCenter(X);
 
 		return item;

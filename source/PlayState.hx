@@ -2,7 +2,6 @@ package;
 
 import Section.SwagSection;
 import Song.SwagSong;
-import animate.FlxAnimate;
 import flixel.FlxCamera;
 import flixel.FlxObject;
 import flixel.FlxSprite;
@@ -894,41 +893,25 @@ class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 	{
 		inCutscene = true;
 
-		/*var background:FlxSprite = new FlxSprite(-200, -200).makeGraphic(2 * FlxG.width, 2 * FlxG.height, FlxColor.BLACK);
-			background.scrollFactor.set();
-			add(background);
-
-			var vid:FlxVideo = new FlxVideo(Paths.video('ughCutscene'));
-			vid.finishCutscene = function()
-			{
-				remove(background);
-				FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, (Conductor.crochet / 1000) * 5, {ease: FlxEase.quadInOut});
-				startCountdown();
-				cameraMovement();
-			}
-
-			FlxG.camera.zoom *= 1.2;
-			camFollow.x += 100;
-			camFollow.y += 100; */
-
-		// D
 		FlxG.camera.zoom = defaultCamZoom * 1.2;
 
 		FlxG.sound.playMusic(Paths.music('DISTORTO'), 0);
 		FlxG.sound.music.fadeIn(5, 0, 0.5);
 
 		dad.visible = false;
-		var tankCutscene:CutsceneCharacter = new CutsceneCharacter(-20, 320, 'tightBars');
+		var tankCutscene:CutsceneCharacter = new CutsceneCharacter(-20, 320, Paths.getTextureAtlas('tankTalking'));
 		tankCutscene.antialiasing = true;
-		tankCutscene.playingAnim = true;
 		gfCutsceneLayer.add(tankCutscene);
+		tankCutscene.startSyncAudio = FlxG.sound.load(Paths.sound('wellWellWell'));
+		tankCutscene.anim.addByAnimIndices("wellWellWell", CoolUtil.numberArray(67), 24);
+		tankCutscene.anim.addByAnimIndices("killYou", CoolUtil.numberArray(288, 146), 24);
 
 		camHUD.visible = false;
 
 		FlxG.camera.zoom *= 1.2;
 		camFollow.y += 100;
 
-		tankCutscene.startSyncAudio = FlxG.sound.load(Paths.sound('wellWellWell'));
+		tankCutscene.playAnim('wellWellWell');
 
 		new FlxTimer().start(3, function(tmr:FlxTimer)
 		{
@@ -951,7 +934,7 @@ class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 				camFollow.x -= 800;
 				camFollow.y -= 100;
 				FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom * 1.2}, 0.5, {ease: FlxEase.quadInOut});
-				// tankCutscene.animation.play('killYou');
+				tankCutscene.playAnim('killYou');
 				FlxG.sound.play(Paths.sound('killYou'));
 				new FlxTimer().start(6.1, function(swagasdga:FlxTimer)
 				{
@@ -978,55 +961,49 @@ class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 	{
 		inCutscene = true;
 
-		var background:FlxSprite = new FlxSprite(-200, -200).makeGraphic(2 * FlxG.width, 2 * FlxG.height, FlxColor.BLACK);
-		background.scrollFactor.set();
-		add(background);
+		camFollow.setPosition(camPos.x, camPos.y);
 
-		var vid:FlxVideo = new FlxVideo(Paths.video('gunsCutscene'));
-		vid.finishCutscene = function()
+		camHUD.visible = false;
+
+		FlxG.sound.playMusic(Paths.music('DISTORTO'), 0);
+		FlxG.sound.music.fadeIn(5, 0, 0.5);
+
+		camFollow.y += 100;
+
+		FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom * 1.3}, 4, {ease: FlxEase.quadInOut});
+
+		dad.visible = false;
+
+		var tankCutscene:CutsceneCharacter = new CutsceneCharacter(-20, 320, Paths.getTextureAtlas('tightBars'));
+		tankCutscene.antialiasing = true;
+		gfCutsceneLayer.add(tankCutscene);
+		/*tankCutscene.startSyncAudio = FlxG.sound.load(Paths.sound('tankSong2'));
+		tankCutscene.startSyncFrame = 6;*/
+		tankCutscene.playAnim();
+
+		new FlxTimer().start(4.1, function(ugly:FlxTimer)
 		{
-			remove(background);
-			FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, (Conductor.crochet / 1000) * 5, {ease: FlxEase.quadInOut});
+			FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom * 1.4}, 0.4, {ease: FlxEase.quadOut});
+			FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom * 1.3}, 0.7, {ease: FlxEase.quadInOut, startDelay: 0.45});
+
+			gf.playAnim('sad');
+		});
+
+		new FlxTimer().start(11, function(tmr:FlxTimer)
+		{
+			FlxG.sound.music.fadeOut((Conductor.crochet / 1000) * 5, 0);
+
+			FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, (Conductor.crochet * 5) / 1000, {ease: FlxEase.quartIn});
 			startCountdown();
-			cameraMovement();
-		}
-
-		/*camFollow.setPosition(camPos.x, camPos.y);
-
-			camHUD.visible = false;
-
-			FlxG.sound.playMusic(Paths.music('DISTORTO'), 0);
-			FlxG.sound.music.fadeIn(5, 0, 0.5);
-
-			camFollow.y += 100;
-
-			FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom * 1.3}, 4, {ease: FlxEase.quadInOut});
-
-			dad.visible = false;
-
-			new FlxTimer().start(4.1, function(ugly:FlxTimer)
+			gf.dance();
+			new FlxTimer().start((Conductor.crochet * 25) / 1000, function(daTim:FlxTimer)
 			{
-				FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom * 1.4}, 0.4, {ease: FlxEase.quadOut});
-				FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom * 1.3}, 0.7, {ease: FlxEase.quadInOut, startDelay: 0.45});
-
-				gf.playAnim('sad');
+				dad.visible = true;
+				gfCutsceneLayer.remove(tankCutscene);
 			});
 
-			new FlxTimer().start(11, function(tmr:FlxTimer)
-			{
-				FlxG.sound.music.fadeOut((Conductor.crochet / 1000) * 5, 0);
-
-				FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, (Conductor.crochet * 5) / 1000, {ease: FlxEase.quartIn});
-				startCountdown();
-				gf.dance();
-				new FlxTimer().start((Conductor.crochet * 25) / 1000, function(daTim:FlxTimer)
-				{
-					dad.visible = true;
-					// gfCutsceneLayer.remove(tankCutscene);
-				});
-
-				camHUD.visible = true;
-		});*/
+			camHUD.visible = true;
+		});
 	}
 
 	function stressIntro():Void
@@ -1571,7 +1548,7 @@ class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 			FlxG.switchState(new ChartingState());
 
 			#if discord_rpc
-			DiscordClient.changePresence("Chart Editor", null, null, true);
+			DiscordClient.changePresence(mods.LocaleHandler.getTranslation("CHART_EDITOR", "discord_rpc"), null, null, true);
 			#end
 		}
 		#end
@@ -1979,7 +1956,7 @@ class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 		onPopUpScore(daRating);
 		#end
 
-		Net.send('scoreRating', {rating: daRating, score: score});
+		Net.send('addScore', score);
 
 		// TODO: Add Note Skins and Special Notes (Burning etc).
 		if (isSick)
