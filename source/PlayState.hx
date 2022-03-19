@@ -899,7 +899,7 @@ class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 		FlxG.sound.music.fadeIn(5, 0, 0.5);
 
 		dad.visible = false;
-		var tankCutscene:CutsceneCharacter = new CutsceneCharacter(-20, 320, Paths.getTextureAtlas('tankTalking'));
+		var tankCutscene:CutsceneCharacter = new CutsceneCharacter(123, 544.3, Paths.getTextureAtlas('tankTalking'));
 		tankCutscene.antialiasing = true;
 		gfCutsceneLayer.add(tankCutscene);
 		tankCutscene.startSyncAudio = FlxG.sound.load(Paths.sound('wellWellWell'));
@@ -936,17 +936,18 @@ class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 				FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom * 1.2}, 0.5, {ease: FlxEase.quadInOut});
 				tankCutscene.playAnim('killYou');
 				FlxG.sound.play(Paths.sound('killYou'));
+
+				tankCutscene.onComplete = function()
+				{
+					dad.visible = true;
+					gfCutsceneLayer.remove(tankCutscene);
+				}
+
 				new FlxTimer().start(6.1, function(swagasdga:FlxTimer)
 				{
 					FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, (Conductor.crochet / 1000) * 5, {ease: FlxEase.quadInOut});
 
 					FlxG.sound.music.fadeOut((Conductor.crochet / 1000) * 5, 0);
-
-					new FlxTimer().start((Conductor.crochet / 1000) * 5, function(money:FlxTimer)
-					{
-						dad.visible = true;
-						gfCutsceneLayer.remove(tankCutscene);
-					});
 
 					cameraMovement();
 
@@ -977,8 +978,8 @@ class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 		var tankCutscene:CutsceneCharacter = new CutsceneCharacter(-20, 320, Paths.getTextureAtlas('tightBars'));
 		tankCutscene.antialiasing = true;
 		gfCutsceneLayer.add(tankCutscene);
-		/*tankCutscene.startSyncAudio = FlxG.sound.load(Paths.sound('tankSong2'));
-		tankCutscene.startSyncFrame = 6;*/
+		tankCutscene.startSyncAudio = FlxG.sound.load(Paths.sound('tankSong2'));
+		tankCutscene.startSyncFrame = 7;
 		tankCutscene.playAnim();
 
 		new FlxTimer().start(4.1, function(ugly:FlxTimer)
@@ -1010,7 +1011,12 @@ class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 	{
 		inCutscene = true;
 
-		var background:FlxSprite = new FlxSprite(-200, -200).makeGraphic(2 * FlxG.width, 2 * FlxG.height, FlxColor.BLACK);
+		if (PreferencesMenu.getPref('censor-naughty'))
+			FlxG.sound.play(Paths.sound('song3censor'), 1);
+		else
+			FlxG.sound.play(Paths.sound('stressCutscene'), 1);
+
+		/*var background:FlxSprite = new FlxSprite(-200, -200).makeGraphic(2 * FlxG.width, 2 * FlxG.height, FlxColor.BLACK);
 		background.scrollFactor.set();
 		add(background);
 
@@ -1021,7 +1027,7 @@ class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 			FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, (Conductor.crochet / 1000) * 5, {ease: FlxEase.quadInOut});
 			startCountdown();
 			cameraMovement();
-		}
+		}*/
 	}
 
 	function initDiscord():Void

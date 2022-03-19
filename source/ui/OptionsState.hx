@@ -163,7 +163,7 @@ class OptionsState extends MusicBeatState
 		#if discord_rpc
 		// Updating Discord Rich Presence
 		var pageName = mods.LocaleHandler.getTranslation(page.getName(), 'options');
-		DiscordClient.changePresence(mods.LocaleHandler.getTranslationReplace("PAGE_X_MENU", 'discord_rpc', ["<X>"], [pageName]), null);
+		DiscordClient.changePresence(mods.LocaleHandler.getTranslationReplace("PAGE_X_MENU", ["X" => pageName], 'discord_rpc'), null);
 		#end
 
 		setPage(page);

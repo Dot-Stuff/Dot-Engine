@@ -44,10 +44,18 @@ class LocaleHandler
 		return tongue.get(flag.toUpperCase().replace(' ', '_'), context);
 	}
 
-	public static function getTranslationReplace(flag:String, context:String = "data", flags:Array<String>, values:Array<String>):String
+	public static function getTranslationReplace(flag:String, format:Map<String, String>, context:String = "data"):String
 	{
-		var str = getTranslation(flag, context);
-		str = Replace.flags(str, flags, values);
-		return str;
+		var keys = [];
+		var values = [];
+		for (key => value in format)
+		{
+			keys.push(key);
+			values.push(value);
+		};
+
+		var result = Replace.flags(tongue.get(flag, context), keys, values);
+
+		return result;
 	}
 }

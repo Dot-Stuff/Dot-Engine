@@ -39,24 +39,29 @@ class HealthIcon extends FlxSprite
 
 	public function changeIcon(newChar:String):Void
 	{
-		// TODO: Unhard-code this list
-		if (newChar != 'bf-pixel' && newChar != 'bf-old')
-			newChar = newChar.split('-')[0].trim();
-
 		if (newChar != char)
 		{
 			if (animation.getByName(newChar) == null)
 			{
-				var img = Paths.loadImage('icons/icon-${newChar}');
-				if (img == null)
-					img = Paths.loadImage('icons/icon-face');
-
-				loadGraphic(img, true, 150, 150);
+				loadGraphic(findIcon(newChar), true, 150, 150);
 				animation.add(newChar, [0, 1], 0, false, isPlayer);
 			}
 			animation.play(newChar);
 			char = newChar;
 		}
+	}
+
+	function findIcon(char:String)
+	{
+		var img = Paths.loadImage('icons/icon-${char}');
+		if (img == null)
+		{
+			img = Paths.loadImage('icons/icon-${char.split('-')[0].trim()}');
+
+			if (img == null)
+				img = Paths.loadImage('icons/icon-face');
+		}
+		return img;
 	}
 
 	override function update(elapsed:Float)

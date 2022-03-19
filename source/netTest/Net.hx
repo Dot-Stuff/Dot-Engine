@@ -27,7 +27,7 @@ class Net
 
         connection = ConnectionTypes.CONNECTING;
 
-		client.joinOrCreate("battle", ["song" => "ugh"], BattleState, function(err, room)
+		client.joinOrCreate("battle", ["password" => ""], BattleState, function(err, room)
 		{
 			if (err != null)
 			{
