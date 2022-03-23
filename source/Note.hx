@@ -26,8 +26,6 @@ class Note extends FlxSprite
 	public var sustainLength:Float = 0;
 	public var isSustainNote:Bool = false;
 
-	public var specialData:SpecialNote;
-
 	public static var swagWidth:Float = 160 * 0.7;
 
 	private var noteColors:Array<String> = ["purple", "blue", "green", "red"];
@@ -187,26 +185,5 @@ class Note extends FlxSprite
 
 		if (tooLate && alpha > 0.3)
 			alpha = 0.3;
-	}
-}
-
-class SpecialNote
-{
-	public var name:String;
-	public var atlas:FlxFramesCollection;
-
-	public function hitNote()
-	{
-		
-	}
-
-	public function missNote()
-	{
-		
-	}
-
-	public function lateNote()
-	{
-		
 	}
 }

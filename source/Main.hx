@@ -16,7 +16,7 @@ class Main extends Sprite
 	var framerate:Int = #if (web || android) 60 #else 144 #end; // How many frames per second the game should run at.
 	var skipSplash:Bool = true; // Whether to skip the flixel splash screen that appears in release mode.
 	var startFullscreen:Bool = false; // Whether to start the game in fullscreen on desktop targets
-	public static var fpsCounter:FPS;
+	public static var fpsCounter:FPS_Mem;
 
 	// You can pretty much ignore everything from here on - your code should go in your states.
 
@@ -48,7 +48,7 @@ class Main extends Sprite
 		addChild(new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen));
 
 		#if !mobile
-		fpsCounter = new FPS(10, 3, 0xFFFFFF);
+		fpsCounter = new FPS_Mem(10, 3, 0xFFFFFF);
 		Lib.current.addChild(fpsCounter);
 		#end
 	}
