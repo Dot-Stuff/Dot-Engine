@@ -2166,9 +2166,6 @@ class PlayState extends MusicBeatState #if MODDING implements mods.IHook #end
 			controls.NOTE_RIGHT_R
 		];
 
-		if (generatedMusic)
-			Net.send('hitNote', {held: holdArray});
-
 		// HOLDS, check for sustain notes.
 		if (holdArray.contains(true) && generatedMusic)
 		{
