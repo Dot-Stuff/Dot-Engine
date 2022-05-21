@@ -44,6 +44,7 @@ haxelib install colyseus-websocket
 haxelib install hxcs
 haxelib install polymod
 haxelib install flxanimate
+haxelib install firetongue
 ```
 
 You'll also need to install a couple things that involve Gits. To do this, you need to do a few things first.
@@ -51,7 +52,6 @@ You'll also need to install a couple things that involve Gits. To do this, you n
 2. Follow instructions to install the application properly.
 3. Run `haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc` to install Discord RPC.
 4. Run `haxelib git flixel https://github.com/HaxeFlixel/flixel.git` to install Flixel.
-5. Run `haxelib git firetongue https://github.com/Metlmeta/firetongue.git` to install Firetongue.
 
 You should have everything ready for compiling the game! Follow the guide below to continue!
 
